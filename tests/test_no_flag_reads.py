@@ -10,6 +10,7 @@ FORBIDDEN = re.compile(r"(?<!\w)(?:8013|8016)(?!\w)|ofrep|demo\.flagd\.json|defa
                        + "|".join(re.escape(name) for name in FLAG_NAMES), re.I)
 SKIP = {".git", ".venv", ".build", ".specs", ".pytest_cache", "__pycache__", "tests", "runs"}
 EXEMPT_FILES = {"action_api/flags.py", "tools/redact.py"}
+CODE_SUFFIXES = {".py", ".js", ".ts", ".ps1", ".sh"}
 
 
 def test_port_scan_does_not_match_digits_inside_recorded_timestamps():
@@ -32,7 +33,14 @@ def production_files():
             continue
         for path in directory.rglob("*"):
             if path.is_file() and not any(part in SKIP for part in path.relative_to(ROOT).parts):
-                if path.relative_to(ROOT).as_posix() in EXEMPT_FILES:
+                relative = path.relative_to(ROOT)
+                if relative.as_posix() in EXEMPT_FILES:
+                    continue
+                # Child directories of reports/ are retained run artifacts, not
+                # configuration for its renderer package. Operator reset output
+                # may legitimately name infrastructure. Code is still checked
+                # everywhere, including a source file placed inside a bundle.
+                if relative.parts[0] == "reports" and len(relative.parts) > 2 and path.suffix not in CODE_SUFFIXES:
                     continue
                 if path.suffix in {".py", ".json", ".yaml", ".yml", ".toml", ".md", ".txt", ".ps1", ".sh", ".js", ".ts"}:
                     yield path
@@ -57,6 +65,22 @@ def test_scanner_covers_future_packages(tmp_path, monkeypatch):
     assert list(production_files()) == [package / "reader.py"]
     with pytest.raises(AssertionError, match="Forbidden"):
         test_no_flag_reads()
+
+
+def test_report_artifacts_do_not_exempt_nested_code_or_renderer_configuration(tmp_path, monkeypatch):
+    import sys
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    package = tmp_path / "reports"
+    bundle = package / "retained-run"
+    bundle.mkdir(parents=True)
+    (package / "render.py").write_text("pass", encoding="utf-8")
+    (bundle / "operator-reset.json").write_text('{"service": "flagd"}', encoding="utf-8")
+    test_no_flag_reads()
+    for path in (bundle / "reader.py", package / "config.json"):
+        path.write_text('"flagd"', encoding="utf-8")
+        with pytest.raises(AssertionError, match="Forbidden"):
+            test_no_flag_reads()
+        path.unlink()
 
 
 @pytest.mark.parametrize("relative", ["tools/reader.py", "tools/nested/redact.py",

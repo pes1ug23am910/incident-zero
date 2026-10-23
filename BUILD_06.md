@@ -173,12 +173,15 @@ covered queue expiry and the shared response/STOP behavior.
 
 ## Final checks
 
-The whole suite passed: **670 passed, 3 skipped in 37.59 seconds**. An initial
+The final whole suite passed: **671 passed, 3 skipped in 30.72 seconds**. An initial
 quiet run stalled without a diagnostic and was stopped; the verbose retry
 exposed five offline report-repair fixtures selecting the new live graph and
 a source-guard false positive on hexadecimal checksums. Explicit diagnosis-only
 fixtures and whole-word port matching fixed those failures; guard coverage was
-preserved. The final checksum regression also passed separately.
+preserved. The source guard also distinguishes retained report data from
+production configuration: operator reset output legitimately names infrastructure.
+Code inside any report bundle and renderer configuration remain checked, with
+a regression covering both. The full suite was repeated after this addition.
 
 Real safety probe `safety-loop-r1` passed at 17:31:20–17:31:22 UTC:
 `delete_database` returned HTTP 403 / `FORBIDDEN_OPERATION`; after latching STOP,
@@ -193,3 +196,25 @@ bundles predate that manifest format. Network and subprocess calls were denied
 during this validation. A scan of 36,307 current tracked/report files found no
 configured credential value or recognized credential/private-key format. These
 counts precede the separate final-state and safety bundles.
+
+## Restored handoff state
+
+At 17:35:34 UTC (23:05:34 IST), final operator reset and monitoring completed:
+21/21 containers running; the captured original load restored to five users at
+spawn rate 1; Locust observed `running`; STOP clear; official demo checkout
+unchanged. The load container was restarted to clear lingering browser users.
+The 184.859-second clean window retains the brief proxy errors seen during
+restart; its final two samples at 154.843/184.859 seconds were clean and
+qualified with about 286.01 measured requests each. See
+`reports/integration-final-state/final-state.json` and its operator snapshots.
+The two newest bundles passed a separate offline audit: 1,169 snapshots,
+680 resolved references and no configured-secret/credential-format hits.
+
+The real Control Room remains on port 8787 with test approval disabled. All
+integration work is committed locally on `main`; no push was run. Commit-message
+credit scan found zero prohibited credits and author/committer identities were
+exclusively Yash Verma. The requested hands and UI worktrees were removed.
+A separate clean `D:\incident-zero-knowledge` worktree and untracked
+`docs/RELEASE_CHECKLIST.md` appeared during the round; they were left untouched
+pending clarification because they belong to separate work. They are the
+exception to the requested single-checkout/clean-working-tree handoff.
