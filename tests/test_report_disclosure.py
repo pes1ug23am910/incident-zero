@@ -76,7 +76,8 @@ def execute_fixture(root, fixture, monkeypatch):
         'alert': json.loads((fixture / 'alert.json').read_text(encoding='utf-8')),
         'incident_id': 'synthetic-disclosure', 'run_id': 'disclosure-repair',
         'output': root / 'reports' / 'repaired' / 'report.json',
-        'router': router, 'toolset': reads.toolset(), 'resolver': reads.resolve}
+        'router': router, 'toolset': reads.toolset(), 'resolver': reads.resolve,
+        'graph_factory': build_graph}
 
 
 @pytest.mark.parametrize('exhausted', [False, True])

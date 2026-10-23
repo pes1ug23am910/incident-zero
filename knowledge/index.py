@@ -133,7 +133,9 @@ class KnowledgeIndex:
                            "document_id": meta["id"], "text": text,
                            "file": self._relative(path), "section": section,
                            "version": str(meta["version"]), "sha256": digest,
-                           "attributes": {"action_types": meta.get("action_types", [])},
+                           "attributes": {"action_types": meta.get("action_types", []),
+                                          "applies_to": list(meta["applies_to"]),
+                                          "category": meta["category"]},
                            "_tokens": tokens(text + " " + _json(meta))})
         return result
 

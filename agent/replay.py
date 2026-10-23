@@ -38,6 +38,9 @@ class ReplayRouter:
         self.secrets = ()
 
     def complete(self, messages, functions, *, purpose="investigate"):
+        if purpose == 'plan' and (self.index >= len(self.records)
+                                 or self.records[self.index].get('purpose') != 'plan'):
+            raise ModelUnavailable('This recorded fixture has no knowledge planner response; no new model call was made')
         if self.index >= len(self.records):
             if self.terminal_failure and not self.failure_consumed:
                 self.failure_consumed = True
