@@ -64,9 +64,11 @@ def _nonfinite_paths(value: Any, parts: tuple = ()):
         yield parts
 
 
-def _live_resolve(evidence_id: str, *, run_dir: str | None = None) -> Any:
+def _live_resolve(evidence_id: str, *, run_dir: str | None = None, bundle_dir: str | Path | None = None) -> Any:
     from tools.resolve import resolve
 
+    if bundle_dir is not None:
+        return resolve(evidence_id, run_dir=run_dir, bundle_dir=bundle_dir)
     return resolve(evidence_id, run_dir=run_dir)
 
 
@@ -97,8 +99,33 @@ def _resolved(value: Any) -> bool:
     return bool(value)
 
 
-def validate_report(report: Any, *, resolver: Resolver | None = None) -> list[str]:
-    """Check evidence live first, then use snapshots from this report's run."""
+def _mentions_component(evidence_id: str, resolved: Any, component: str) -> bool:
+    """Use source identifiers/structured service names, never generated summaries."""
+    if evidence_id.startswith((f"container:{component}:", f"dlog:{component}:")):
+        return True
+    if evidence_id.startswith("metric:") and re.search(
+        r'(?:service_name|container_name|service)="' + re.escape(component) + '"', evidence_id
+    ):
+        return True
+
+    def visit(value):
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if key in {"service", "service_name", "serviceName", "container_name", "name"} and item == component:
+                    return True
+                if key == "services" and isinstance(item, list) and component in item:
+                    return True
+                if visit(item):
+                    return True
+        elif isinstance(value, list):
+            return any(visit(item) for item in value)
+        return False
+
+    return visit(resolved)
+
+
+def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir: str | Path | None = None) -> list[str]:
+    """Check live evidence, its run snapshots, and an optional retained bundle."""
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     validator = Draft202012Validator(schema, format_checker=FORMAT_CHECKER)
     errors = [f"{_path(error.absolute_path)}: {error.message}" for error in sorted(
@@ -117,7 +144,7 @@ def validate_report(report: Any, *, resolver: Resolver | None = None) -> list[st
 
     status = report["status"]
     root = report["root_cause"]
-    if root["confidence"] < 0.6 and status not in {"needs_human", "no_incident"}:
+    if root["confidence"] < 0.6 and status not in {"needs_human", "no_incident", "aborted"}:
         fail("status", "confidence below 0.6 requires needs_human")
     if status == "needs_human" and not (report["escalation_note"] or "").strip():
         fail("escalation_note", "needs_human requires findings, uncertainty, and next checks")
@@ -134,6 +161,47 @@ def validate_report(report: Any, *, resolver: Resolver | None = None) -> list[st
                     fail(f"{collection}[{index}].evidence_ids[{id_index}]", "id does not appear in evidence")
     if status in {"diagnosed", "fixed", "rolled_back", "no_incident"} and not evidence:
         fail("evidence", "a diagnosis, clean finding, or completed action requires evidence")
+
+    causes = report.get("root_causes")
+    if causes is not None:
+        if root != causes[0]:
+            fail("root_cause", "must equal the first root_causes entry")
+        if [cause["confidence"] for cause in causes] != sorted((cause["confidence"] for cause in causes), reverse=True):
+            fail("root_causes", "must be ordered by descending confidence")
+        services = {item["service"] for item in report["symptoms"]}
+        for index, cause in enumerate(causes):
+            expected = min(cause["confidence_model"], cause["confidence_evidence"])
+            if not math.isclose(cause["confidence"], expected, abs_tol=1e-9):
+                fail(f"root_causes[{index}].confidence", "must equal min(confidence_model, confidence_evidence)")
+            for id_index, evidence_id in enumerate(cause["evidence_ids"]):
+                if evidence_id not in known:
+                    fail(f"root_causes[{index}].evidence_ids[{id_index}]", "id does not appear in evidence")
+            for symptom in cause["explains_symptoms"]:
+                if symptom not in services:
+                    fail(f"root_causes[{index}].explains_symptoms", "must name a service in symptoms")
+            if cause["confidence"] < 0.6 and status not in {"needs_human", "no_incident", "aborted"}:
+                fail("status", "a cause below 0.6 requires needs_human")
+        proposals = report["proposed_actions"]
+        if report["proposed_action"] != (proposals[0] if proposals else None):
+            fail("proposed_action", "must equal the first proposed_actions entry, or null when empty")
+        if len(proposals) > len(causes):
+            fail("proposed_actions", "cannot contain more than one action per cause")
+        impact = report["impact"]
+        if impact["tier"] == 3:
+            if proposals or report["proposed_action"] is not None:
+                fail("proposed_actions", "tier 3 never carries a proposed action")
+            if status not in {"needs_human", "no_incident", "aborted"}:
+                fail("status", "tier 3 requires needs_human")
+        if status == "no_incident" and proposals:
+            fail("proposed_actions", "no_incident cannot propose remediation")
+        if status == "no_incident" and any(cause["category"] != "unknown" for cause in causes):
+            fail("root_causes", "no_incident cannot assign incident cause categories")
+
+    all_proposals = report.get("proposed_actions", [report["proposed_action"]])
+    for index, proposal in enumerate(all_proposals):
+        if proposal and proposal["type"] in {"restart_service", "toggle_flag"}:
+            if proposal["parameters"]["service"] != proposal["target"]:
+                fail(f"proposed_actions[{index}].parameters.service", "must equal the proposal target")
 
     component = root["component"].casefold()
     text = [item["summary"] for item in evidence]
@@ -208,8 +276,9 @@ def validate_report(report: Any, *, resolver: Resolver | None = None) -> list[st
             fail(path, "timestamp precedes the prior recorded event")
         previous = current
 
-    resolver = resolver or (lambda evidence_id: _live_resolve(evidence_id, run_dir=report["run_id"]))
+    resolver = resolver or (lambda evidence_id: _live_resolve(evidence_id, run_dir=report["run_id"], bundle_dir=bundle_dir))
     expected_source = {"trace": "jaeger", "span": "jaeger", "log": "opensearch", "dlog": "docker", "metric": "prometheus", "container": "docker", "action_log": "action_log"}
+    resolved_evidence = {}
     for index, item in enumerate(evidence):
         if expected_source.get(item["id"].split(":", 1)[0]) != item["source"]:
             fail(f"evidence[{index}].source", "source does not match the evidence id type")
@@ -217,10 +286,18 @@ def validate_report(report: Any, *, resolver: Resolver | None = None) -> list[st
             resolved = resolver(item["id"])
             if not _resolved(resolved):
                 raise LookupError("resolver did not return existing evidence")
+            resolved_evidence[item["id"]] = resolved
             if isinstance(resolved, dict) and resolved.get("source") not in (None, item["source"]):
                 fail(f"evidence[{index}].source", "source does not match the resolved evidence")
         except Exception as exc:
             fail(f"evidence[{index}].id", f"cannot resolve evidence: {exc}")
+    if causes is not None:
+        for index, cause in enumerate(causes):
+            if cause["category"] == "unknown" and cause["confidence"] < 0.6:
+                continue
+            if not any(_mentions_component(identity, resolved_evidence.get(identity), cause["component"])
+                       for identity in cause["evidence_ids"]):
+                fail(f"root_causes[{index}].component", "cited evidence must identify the component in source data")
     return errors
 
 
@@ -248,7 +325,8 @@ def main(argv: list[str] | None = None) -> int:
     for name in dict.fromkeys(paths):
         try:
             report = json.loads(Path(name).read_text(encoding="utf-8"))
-            errors = validate_report(report, resolver=resolver)
+            parent = Path(name).parent
+            errors = validate_report(report, resolver=resolver, bundle_dir=parent if (parent / "evidence").is_dir() else None)
         except (OSError, ValueError) as exc:
             errors = [f"$: {exc}"]
         if errors:
@@ -256,7 +334,7 @@ def main(argv: list[str] | None = None) -> int:
             for error in errors:
                 print(f"{name}: {error}")
         else:
-            print(f"{name}: valid ({'offline fixture' if resolver else 'evidence resolved live or from this run snapshot'})")
+            print(f"{name}: valid ({'offline fixture' if resolver else 'evidence resolved live, from run snapshots, or from the retained bundle'})")
     return int(failed)
 
 

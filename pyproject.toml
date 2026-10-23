@@ -7,7 +7,7 @@ name = "incident-zero"
 version = "0.1.0"
 description = "Telemetry tools and incident rehearsal utilities for the OpenTelemetry Demo"
 requires-python = ">=3.11"
-dependencies = ["requests>=2.32,<3", "jsonschema>=4.23,<5"]
+dependencies = ["requests>=2.32,<3", "jsonschema>=4.23,<5", "langgraph>=1,<2", "langgraph-checkpoint-sqlite>=3,<4", "PyYAML>=6,<7"]
 
 [project.optional-dependencies]
 test = ["pytest>=8,<10"]
@@ -17,11 +17,14 @@ faultctl = "faultctl.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["faultctl*", "tools*", "schema*", "reports*"]
+include = ["faultctl*", "tools*", "schema*", "reports*", "agent*", "detect*", "action_api*", "eval*"]
 
 [tool.setuptools.package-data]
 faultctl = ["config.yaml", "netem/Dockerfile"]
-schema = ["*.json", "examples/*.json"]
+schema = ["*.json", "*.md", "examples/*.json"]
+action_api = ["policy.yaml"]
+detect = ["thresholds.yaml"]
+eval = ["cases.jsonl"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

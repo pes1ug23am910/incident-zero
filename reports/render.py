@@ -32,14 +32,38 @@ def render_report(report: dict) -> str:
     ])
     lines += ["", "## Symptoms", ""]
     lines += _table(["Service", "Signal", "Observed", "Evidence"], [(s["service"], s["signal"], s["observed"], ", ".join(s["evidence_ids"])) for s in report["symptoms"]])
+    if "root_causes" in report:
+        lines += ["", "## Root causes", ""]
+        lines += _table(["Component", "Cause", "Model confidence", "Evidence confidence", "Final confidence", "Explained symptoms", "Evidence"], [
+            (cause["component"], cause["cause"], f"{cause['confidence_model']:.0%}",
+             f"{cause['confidence_evidence']:.0%}", f"{cause['confidence']:.0%}",
+             ", ".join(cause["explains_symptoms"]), ", ".join(cause["evidence_ids"]))
+            for cause in report["root_causes"]
+        ])
     lines += ["", "## Investigation", ""]
     lines += _table(["Step", "Tool", "Why", "Finding"], [(s["step"], s["tool"], s["why"], s["finding"]) for s in report["investigation"]])
     lines += ["", "## Evidence", ""]
     lines += _table(["ID", "Source", "Summary", "Reproduce"], [(e["id"], e["source"], e["summary"], e["raw_ref"]) for e in report["evidence"]])
-    lines += ["", f"Resolve an ID with `python -m tools.resolve '<evidence-id>' --run-dir '{_cell(report['run_id'])}'`; the resolver reports whether it used the live source or a recorded snapshot.", "", "## Proposed action", ""]
-    proposal = report["proposed_action"]
-    if proposal:
-        lines += [f"**{_cell(proposal['type'])}** → {_cell(proposal['target'])}", "", f"Reason: {_cell(proposal['reason'])}", "", f"Risk: {_cell(proposal['risk'])}", "", f"Parameters: `{json.dumps(proposal['parameters'], sort_keys=True)}`", "", f"Dry run performed: {_cell(proposal['dry_run']['performed'])}. {_cell(proposal['dry_run']['predicted_effect'])}"]
+    lines += ["", f"Resolve an ID with `python -m tools.resolve '<evidence-id>' --run-dir '{_cell(report['run_id'])}'`; add `--bundle-dir reports/<incident-id>` to use the retained report bundle after run expiry. The resolver identifies live evidence, run snapshots, or bundle snapshots."]
+    impact = report.get("impact")
+    if impact:
+        lines += ["", "## Impact", ""]
+        lines += _table(["Field", "Assessment"], [
+            ("Approval tier", f"T{impact['tier']}"), ("Score", f"{impact['score']}/100"),
+            ("Business criticality", impact["business"]), ("Journeys affected", ", ".join(impact["journeys_affected"])),
+            ("Estimated users affected", impact["users_affected_estimate"]), ("Blast radius", impact["blast_radius"]),
+            ("Reversibility", impact["reversibility"]), ("Data risk", impact["data_risk"]),
+            ("Confidence", f"{impact['confidence']:.0%}"), ("Rationale", impact["rationale"]),
+        ])
+    lines += ["", "## Proposed action", ""]
+    proposals = report.get("proposed_actions", [report["proposed_action"]] if report["proposed_action"] else [])
+    if proposals:
+        for index, proposal in enumerate(proposals, 1):
+            lines += [f"**{index}. {_cell(proposal['type'])}** → {_cell(proposal['target'])}", "", f"Reason: {_cell(proposal['reason'])}", "", f"Risk: {_cell(proposal['risk'])}", "", f"Parameters: `{json.dumps(proposal['parameters'], sort_keys=True)}`", "", f"Dry run performed: {_cell(proposal['dry_run']['performed'])}. {_cell(proposal['dry_run']['predicted_effect'])}", ""]
+            if impact and impact["tier"] == 1:
+                lines += [f"Quick approval: {_cell(proposal['type'])} on {_cell(proposal['target'])}; predicted effect: {_cell(proposal['dry_run']['predicted_effect'])}. A human yes is required.", ""]
+        if len(proposals) > 1:
+            lines += ["Approve and execute each action separately in the listed impact order. Rejecting one does not approve or cancel another."]
     else:
         lines += ["No action proposed."]
     lines += ["", "## Approval record", ""]
@@ -47,7 +71,7 @@ def render_report(report: dict) -> str:
     lines += ["", "## Verification", ""]
     lines += _table(["Signal", "Before", "After", "Recovered", "Rolled back"], [(verification["signal"], verification["before"], verification["after"], verification["recovered"], verification["rolled_back"])])
     lines += ["", "## Alternatives and escalation", ""]
-    lines += [f"- {_cell(item)}" for item in root["alternatives_considered"]] or ["No alternatives recorded."]
+    lines += [f"- {_cell(item)}" for item in root.get("alternatives_considered", [])] or ["No alternatives recorded."]
     lines += ["", _cell(report["escalation_note"]), "", "## Prevention", "", _cell(report["prevention"]), "", "## Limitations", ""]
     lines += [f"- {_cell(item)}" for item in report["limitations"]] or ["No limitations recorded."]
     agent = report["agent"]

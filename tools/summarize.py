@@ -22,7 +22,9 @@ def health_table(lookback_s=120):
     for item in health["data"]:
         rows[item["name"]] = {"service": item["name"], "error_rate": None, "p95_ms": None, "rps": None,
                               "restarts": item["RestartCount"], "status": item["Status"],
-                              "cpu_percent": item["cpu_percent"], "memory_mb": item["memory_mb"]}
+                              "cpu_percent": item["cpu_percent"], "memory_mb": item["memory_mb"],
+                              "oom_killed": item.get("OOMKilled"), "cpu_limit_nanos": item.get("NanoCpus"),
+                              "memory_limit_bytes": item.get("Memory"), "container_health": item.get("health")}
     for field, result in results.items():
         for series in result["data"]:
             name = series["metric"].get("service_name", series["metric"].get("service"))
