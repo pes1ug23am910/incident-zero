@@ -60,6 +60,8 @@ flowchart TD
 7. Verification samples every 30 seconds for at least 180 seconds. Every original
    alert signal must satisfy its recovery predicate on two consecutive samples,
    with at least 20 measured frontend requests and a running load generator.
+   Both container liveness and a current Locust `running` state with positive
+   users are required; residual request counts after swarm stop do not qualify.
    Final JSON, Markdown, evidence and the action-log excerpt are saved together.
 
 The mentor/demo wrappers capture the operator's initial swarm, use 20 Locust
@@ -128,9 +130,9 @@ multi-user authentication service.
 | Action API, responder and execution | Built and verified live for [payment toggle/recovery](../reports/payment-failure-loop-r3/report.json) and [recommendation restart/recovery](../reports/container-stopped-loop-r1/report.json), with explicit developer test approval; timings in [BUILD_05](../BUILD_05.md) |
 | Rejection without mutation | Verified live: [payment-failure-loop-r4](../reports/payment-failure-loop-r4/report.json); before/after world hashes match, no execute event |
 | Mid-run STOP | Verified live: [payment-failure-loop-r5](../reports/payment-failure-loop-r5/report.json), aborted after execution; verification and rollback refused, operator cleanup measured separately |
-| Conditional settings rollback | Built and regression-tested; live acceptance tracked in [BUILD_05](../BUILD_05.md) |
-| Real Control Room and checkpoint reconciliation | Built; live browser acceptance tracked in [BUILD_06](../BUILD_06.md) |
+| Conditional settings rollback | Verified live in [payment-failure-loop-r8](../reports/payment-failure-loop-r8/report.json): stopped swarm prevented recovery and captured settings were restored; complete runner and measured cleanup passed. Earlier failed attempts remain in [BUILD_05](../BUILD_05.md) |
+| Real Control Room and checkpoint reconciliation | Verified live via [payment-failure-loop-r9](../reports/payment-failure-loop-r9/report.json): browser confirmation resumed the terminal's checkpoint, executed once, persisted fixed and completed cleanup; automated browser acceptance documented in [BUILD_06](../BUILD_06.md) |
 | Mock Control Room | Built with isolated state and no executor/recovery simulation |
-| Full-loop mentor and demo scripts | Built; before/after measurements and run timings retained per bundle |
+| Full-loop mentor and demo scripts | Mentor wrapper verified live in r9 with terminal waiting and browser approval; demo sequence implemented with explicit preparation boundary, not yet timed end to end |
 | Offline calibration utility | Built; historical tuning data are limited and are not held-out accuracy |
 | Reviewer model, adaptive memory, prevention, Kubernetes scaling | Not implemented |

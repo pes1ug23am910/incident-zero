@@ -65,8 +65,8 @@ verification window and qualified 184.562/184.375-second reset windows.
 Approval was the explicit test-auto path, not a human decision. The real Control
 Room served its status and report; browser approval acceptance remains separate.
 
-Pending the live browser run. No browser approval or live recovery is claimed
-by the browser preflight checkpoint.
+The completed real browser approval is recorded below as r9. The earlier
+browser preflight checkpoint alone did not establish approval or recovery.
 
 The CLI rejection bundle `payment-failure-loop-r4` finished as `needs_human`.
 The authoritative state hashes match before/after the rejection, and no execute
@@ -144,3 +144,52 @@ R8 passed complete forced-non-recovery acceptance: `rolled_back`, runner
 remaining user was confirmed and retained. Residual requests and zero alert
 values did not bypass the active-swarm gate. This is a traffic-qualification
 rollback test, not a persistent-application-error test.
+
+## Completed real Control Room loop
+
+`payment-failure-loop-r9` (`runs/20261023T171108.246095Z-f4afce0d`)
+ran through the actual `scripts/checkpoint3.ps1 payment-failure` wrapper, with
+test approval disabled and the terminal displaying its approval prompt. A
+local Playwright driver entered operator `Integration acceptance`, typed `yes`
+in the real Control Room form and clicked once. This was automated browser
+acceptance through the real gate, not an unaided human decision or a test bypass.
+The terminal joined that same response; the audit contains one execute event.
+
+The report is `fixed` at 313.078 seconds after injection. Action verification
+lasted 183.500 seconds. The last two samples contained 1260.084/1188.079 measured
+requests, cleared alert signals, and an observed running Locust swarm with 21
+users. The browser displayed `fixed` 200.843 seconds after its approval click.
+Qualified before/after reset windows lasted 184.047/183.922 seconds. The runner
+finished with `failed=false`, actual approval path `browser`, and waiter
+`terminal`. Browser observations, screenshots, retained terminal chunks, the
+report, evidence snapshots and the action-log excerpt are in its bundle.
+
+Browser review exposed two presentation/queue issues. Long evidence observations
+now expand on demand while preserving the full snapshot drawer. Historical
+expired diagnoses now skip preview creation using the same ten-minute freshness
+guard as execution. Previously polling appended repeated `DIAGNOSIS_EXPIRED`
+refusals; it did not grant stale action authority. Thirty-five isolated checks
+covered queue expiry and the shared response/STOP behavior.
+
+## Final checks
+
+The whole suite passed: **670 passed, 3 skipped in 37.59 seconds**. An initial
+quiet run stalled without a diagnostic and was stopped; the verbose retry
+exposed five offline report-repair fixtures selecting the new live graph and
+a source-guard false positive on hexadecimal checksums. Explicit diagnosis-only
+fixtures and whole-word port matching fixed those failures; guard coverage was
+preserved. The final checksum regression also passed separately.
+
+Real safety probe `safety-loop-r1` passed at 17:31:20–17:31:22 UTC:
+`delete_database` returned HTTP 403 / `FORBIDDEN_OPERATION`; after latching STOP,
+an allowed restart dry run returned HTTP 423 / `STOP_LATCHED`. No mutation
+started. The explicit clear phrase cleared STOP. The bundle retains console
+output and original audit lines 1949–1952. This probes the demo's actual safety
+commands; the complete five-minute presentation has not been timed.
+
+Offline retained-artifact audit passed for 25 reports, 2,596 references and
+9,024 snapshots. All 14 available manifests matched; 11 earlier brain-only
+bundles predate that manifest format. Network and subprocess calls were denied
+during this validation. A scan of 36,307 current tracked/report files found no
+configured credential value or recognized credential/private-key format. These
+counts precede the separate final-state and safety bundles.

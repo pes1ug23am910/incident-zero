@@ -81,6 +81,11 @@ consecutive qualified samples, at least 20 measured frontend requests in the
 two-minute window, and a running load generator. The initial and final clearance
 windows make the complete mentor command longer than five minutes.
 
+Load qualification checks both the container and current Locust state:
+`state = running` and `user_count > 0`. A live container with a stopped swarm,
+unknown swarm state, or stale/unavailable observations cannot prove recovery,
+even if trailing request counters remain positive.
+
 Bundles use `reports/<incident>-loop-r<n>/`, or a fresh `-ReportId`. They retain
 JSON/Markdown reports, alert, sanitized model journal, evidence snapshots,
 action-log excerpt, timings, and `verification-before-after.json`. Existing
@@ -178,8 +183,12 @@ with `INCIDENT_ZERO_TEST=1`, printing that no human approval was collected.
 Tonight's automated live acceptance uses this explicit exception, recorded per
 bundle. The mentor and demo wrappers refuse that environment. The HTTP approval
 endpoint cannot enable it. Test-only `--force-nonrecovery` stops the real Locust
-swarm after execution and restores it in cleanup; it tests missing-traffic
-rollback using unmodified telemetry, not persistent application failure.
+swarm after execution and restores it in cleanup; it tests verification and
+rollback when the workload is stopped, using unmodified telemetry. It does not
+establish persistent application failure.
+The operator control records response uncertainty and confirms stopped state,
+retaining the reported remaining-user count. An HTTP timeout alone does not
+establish that the swarm stopped.
 
 ## Diagnosis, evidence and injection boundaries
 

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "id": "action_log:1231",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T17:12:13.754025+00:00",
+    "event": "ui_approval",
+    "report_id": "runs/20261023T171108.246095Z-f4afce0d",
+    "actor": "Integration acceptance",
+    "ui_decision": {
+      "id": "payment-failure-loop-r9",
+      "report_id": "payment-failure-loop-r9",
+      "tier": 2,
+      "action": "toggle_flag",
+      "target": "payment",
+      "predicted_effect": "Restore normal application behavior and verify the original alert signals.",
+      "expiry": "2026-10-23T17:22:01.243437+00:00",
+      "revision": "d55e84cb585386b245815c264de8ff8e505fed565fde624d3ba0a519a896b62f",
+      "report_revision": "75c941deb4a82d88fd767c4217d8505f53caa545f9690da8a8766b5797fafa3e",
+      "status": "approved",
+      "action_index": 0,
+      "operator": "Integration acceptance",
+      "note": "Authorized browser acceptance through the real approval gate.",
+      "reason": "",
+      "decided_at": "2026-10-23T17:12:06.333117+00:00",
+      "mode": "real"
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T17:15:25.544309+00:00",
+  "checksum": "0347274434203a761bca9d01a36451dd978652df23b28edb81faf53cef08df9c"
+}
