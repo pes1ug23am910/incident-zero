@@ -55,6 +55,8 @@ def test_payment_remediation_cites_category_and_contains_structured_action(index
     hits = index.search("application_flag payment", section="remediation")["runbook_refs"]
     assert hits[0]["id"] == "kb:application-fault#remediation"
     assert hits[0]["action_types"] == ["toggle_flag"]
+    assert hits[0]["category"] == "application_flag"
+    assert "payment" in hits[0]["applies_to"]
     assert all(hit["section"] == "remediation" for hit in hits)
 
 
