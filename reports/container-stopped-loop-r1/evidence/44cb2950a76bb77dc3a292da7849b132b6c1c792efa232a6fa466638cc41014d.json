@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "id": "action_log:21",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T15:24:11.261107+00:00",
+    "event": "dry_run",
+    "report_id": "runs/20261023T114143.041886Z-68a917d4",
+    "result": {
+      "decision": "BLOCK",
+      "reason_codes": [
+        "DIAGNOSIS_EXPIRED"
+      ],
+      "detail": "A timezone-aware diagnosis from the last ten minutes is required; run diagnosis again."
+    }
+  },
+  "captured_at": "2026-10-23T16:04:18.700245+00:00",
+  "checksum": "07c769b0470d0d58effc2b51215aab062fc6c8afb826970cd565b7309e50e486"
+}
