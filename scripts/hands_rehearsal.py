@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import statistics
 import subprocess
 import sys
 import threading
@@ -16,13 +17,14 @@ import time
 import requests
 
 from scripts.checkpoint2 import command, check_demo_unchanged, timed
-from detect.core import Detector, write_alert
+from detect.core import Detector, write_alert, finite
 from detect.watch import wait_for_alert
 from detect.recovery import clean_sample, wait_for_clean
 from tools import health_table
 from tools.evidence import run_path
 from agent.respond import resume, save_bundle
-from action_api.service import ActionService
+from action_api.service import ActionService, canonical_plan
+from action_api.safety import digest
 from action_api.verify import LiveSampler, evaluate
 from schema.validate import validate_report
 
@@ -40,8 +42,10 @@ def require_clean(directory, timeout):
         table = health_table(**kwargs)
         measured = sampler(alert, directory)
         available, qualified = evaluate(alert, measured)
+        frontend = next((row for row in table.get("data", []) if row.get("service") == "frontend"), {})
         latest.update(requests_observed=measured.get("requests_observed", 0),
                       load_running=measured.get("load_running") is True,
+                      frontend_rps=frontend.get("rps"),
                       qualified_traffic=available and qualified)
         result = {**table, "evidence_ids": table.get("evidence_ids", []) + measured.get("evidence_ids", [])}
         if not qualified:
@@ -56,6 +60,23 @@ def require_clean(directory, timeout):
     if not result["verified"]:
         raise RuntimeError("Reset returned, but traffic-qualified recovery was not verified")
     return result
+
+
+def prepare_load_baseline(detector, window):
+    """Baseline the deliberately changed workload from observed clean traffic."""
+    samples = window.get("samples", [])[-2:]
+    if (window.get("verified") is not True or window.get("elapsed_s", 0) < 180
+            or len(samples) != 2 or not all(point.get("clean") and point.get("qualified_traffic")
+                and finite(point.get("frontend_rps")) and point["frontend_rps"] > 0 for point in samples)):
+        raise RuntimeError("Operator load needs two measured frontend rates in a complete qualified baseline window")
+    measured = statistics.median(point["frontend_rps"] for point in samples)
+    record = {"source": "qualified_preinjection_window", "frontend_rps": measured,
+              "previous_frontend_rps": detector.baseline.get("frontend"),
+              "sample_elapsed_s": [point["elapsed_s"] for point in samples],
+              "evidence_ids": list(dict.fromkeys(identifier for point in samples for identifier in point.get("evidence_ids", [])
+                  if 'service_name="frontend"' in identifier and "rps" in identifier))}
+    detector.baseline["frontend"] = measured
+    return record
 
 
 def next_report_id(incident, root=ROOT):
@@ -73,6 +94,14 @@ def set_operator_load(executor, values):
     response.raise_for_status()
     if response.json().get("success") is not True:
         raise RuntimeError("Locust did not confirm the operator load setting")
+
+
+def rejection_world_hash(service, proposal):
+    """Retain equality evidence without exporting settings or blocking rejection."""
+    try:
+        return {"hash": digest(service.world(canonical_plan(proposal))), "available": True}
+    except Exception as exc:
+        return {"hash": None, "available": False, "error": getattr(exc, "code", type(exc).__name__)}
 
 
 def ensure_control_room(root=ROOT):
@@ -214,6 +243,8 @@ def main(argv=None):
         parser.error("STOP delay must be >0 and <=180 seconds")
     if args.load_users is not None and not 1 <= args.load_users <= 100:
         parser.error("Operator load must be 1..100 users")
+    if args.load_users is not None and args.prepared_stack:
+        parser.error("A changed operator workload needs its own complete baseline window; omit --prepared-stack")
     if args.auto_approve_for_tests != (os.environ.get("INCIDENT_ZERO_TEST") == "1"):
         parser.error("Test approval requires BOTH INCIDENT_ZERO_TEST=1 and --auto-approve-for-tests; unset both for the demo")
     if args.force_nonrecovery and (not args.auto_approve_for_tests or args.stop_after_seconds is not None):
@@ -257,8 +288,14 @@ def main(argv=None):
                 verification["before"] = require_clean(directory, 360)
         detector = Detector()
         detector.prime_baseline(run_dir=directory)
-        if detector.poll(run_dir=directory, debounce=False) is not None:
-            raise RuntimeError("Preexisting baseline anomaly; injection refused")
+        if args.load_users is not None:
+            outcome["operator_load"]["detector_baseline"] = prepare_load_baseline(detector, verification["before"])
+        existing = detector.poll(run_dir=directory, debounce=False)
+        if existing is not None:
+            (bundle / "baseline-alert.json").write_text(json.dumps(existing, indent=2) + "\n", encoding="utf-8")
+            crossings = ", ".join(f"{item.get('service', 'unknown')}:{item.get('signal', 'unknown')}"
+                                  for item in existing.get("anomalies") or [existing])
+            raise RuntimeError("Preexisting baseline anomaly; injection refused: " + crossings)
         started = time.monotonic()
         injection = ["faultctl", "inject", args.incident]
         if args.svc:
@@ -278,6 +315,8 @@ def main(argv=None):
         final = report
         if report.get("proposed_actions"):
             service = ActionService(ROOT)
+            if args.reject:
+                outcome["rejection_immutability"] = {"before": rejection_world_hash(service, report["proposed_actions"][0])}
             control = RunControl(service, report["run_id"], stop_delay=args.stop_after_seconds, force_nonrecovery=args.force_nonrecovery)
             control.start()
             with timed("approval_execute_verify", timings):
@@ -288,6 +327,11 @@ def main(argv=None):
                         root=ROOT, service=service, operator=args.operator,
                         auto_approve_for_tests=args.auto_approve_for_tests, report_path=bundle / "report.json")
                     save_bundle(final, bundle / "report.json", service)
+            if args.reject:
+                comparison = outcome["rejection_immutability"]
+                comparison["after"] = rejection_world_hash(service, report["proposed_actions"][0])
+                comparison["unchanged"] = (comparison["before"]["hash"] == comparison["after"]["hash"]
+                    if comparison["before"]["available"] and comparison["after"]["available"] else None)
             if control.error:
                 raise RuntimeError("Operator control failed: " + control.error)
         else:
@@ -351,6 +395,7 @@ def main(argv=None):
         encoded = json.dumps(outcome, indent=2) + "\n"
         (directory / "hands-rehearsal.json").write_text(encoded, encoding="utf-8")
         (bundle / "hands-rehearsal.json").write_text(encoded, encoding="utf-8")
+        (bundle / "action-log.jsonl").touch(exist_ok=True)
         (bundle / "verification-before-after.json").write_text(json.dumps(verification, indent=2) + "\n", encoding="utf-8")
         evidence = directory / "evidence"
         if evidence.is_dir():
