@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772406.893=1104.0920076673058",
+  "source": "prometheus",
+  "data": {
+    "metric": {},
+    "timestamp": 1792772406.893,
+    "value": 1104.0920076673058,
+    "query": "sum(increase(traces_span_metrics_calls_total{service_name=\"frontend\",span_kind=\"SPAN_KIND_SERVER\"}[2m]))"
+  },
+  "captured_at": "2026-10-23T16:20:36.898999+00:00",
+  "checksum": "2605b822ecb7652361789a14bedbf4e7658451041cb38b535cec79bf5ec8d338"
+}

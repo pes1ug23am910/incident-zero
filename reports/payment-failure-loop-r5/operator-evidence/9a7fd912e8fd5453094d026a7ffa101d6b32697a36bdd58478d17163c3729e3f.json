@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792772402.065=0.05063291139240506",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "checkout"
+    },
+    "timestamp": 1792772402.065,
+    "value": 0.05063291139240506,
+    "query": "named:error_rate_by_service"
+  },
+  "captured_at": "2026-10-23T16:20:02.118824+00:00",
+  "checksum": "66700e29fe5dbe4541ff7fcac84c685136e9ebc3cbb40df289f871f36482c8d9"
+}

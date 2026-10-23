@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "dlog:payment:0dbb9925aa303266b4d52e430573143ab162fba83216a3f5df3f1860f4d729f6",
+  "source": "docker",
+  "data": {
+    "timestamp": "2026-10-23T16:17:40.397642675Z",
+    "severity": "WARN",
+    "body": "Payment request failed. Invalid token. app.loyalty.level=gold",
+    "trace_id": "797ba723d8ef068dc8a2468da1c9ae1a",
+    "evidence_id": "dlog:payment:0dbb9925aa303266b4d52e430573143ab162fba83216a3f5df3f1860f4d729f6",
+    "original_line": "2026-10-23T16:17:40.397642675Z {\"level\":\"warn\",\"time\":1792772260397,\"pid\":16,\"hostname\":\"c4595978b15c\",\"trace_id\":\"797ba723d8ef068dc8a2468da1c9ae1a\",\"span_id\":\"922b7ceedf70c375\",\"trace_flags\":\"01\",\"service.name\":\"payment\",\"err\":{\"type\":\"Error\",\"message\":\"Payment request failed. Invalid token. app.loyalty.level=gold\",\"stack\":\"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.chargeServiceHandler [as charge] (/usr/src/app/index.js:21:22)\"},\"msg\":\"Payment request failed. Invalid token. app.loyalty.level=gold\"}"
+  },
+  "captured_at": "2026-10-23T16:18:30.966411+00:00",
+  "checksum": "e5bdc460776216f62184602effcdee2b0ea0909ce914c3d776f1b0b18d87c180"
+}

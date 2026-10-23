@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "id": "action_log:42",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T16:19:25.692457+00:00",
+    "event": "verification",
+    "report_id": "runs/20261023T161808.661278Z-149073c4",
+    "result": {
+      "checked_at": "2026-10-23T16:19:25.669059+00:00",
+      "signal": "error_rate",
+      "before": 0.10526315789473685,
+      "after": null,
+      "recovered": false,
+      "rolled_back": false,
+      "outcome": "blocked",
+      "requests_observed": 0,
+      "samples": [],
+      "rollback_note": "STOP_LATCHED"
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T16:19:25.791876+00:00",
+  "checksum": "fce492fd56676c880e18e13d5fe7ebb96ee3f0da735df4a55af4c37e86742372"
+}
