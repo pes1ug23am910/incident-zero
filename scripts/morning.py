@@ -20,7 +20,7 @@ def main(argv=None):
         code = run_module("scripts.operator", "checkpoint2", "payment-failure")
         rows.append(("payment smoke", "PASS" if code == 0 else "FAIL", "diagnosis, injection/reset owned by operator"))
     for label, module, arguments in (
-        ("schema sweep", "schema.validate", ["reports/*/report.json"]),
+        ("schema sweep", "scripts.validate_reports", []),
         ("Linux portability", "scripts.crossplatform_check", [])):
         code = run_module(module, *arguments)
         rows.append((label, "PASS" if code == 0 else "FAIL", f"exit {code}"))

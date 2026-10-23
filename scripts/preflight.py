@@ -85,6 +85,7 @@ def main(argv=None):
         return payload["data"]["result"]
 
     config = json.loads((ROOT / "faultctl/config.yaml").read_text())
+    operator_checks = json.loads((ROOT / "scripts/preflight_checks.json").read_text())
     containers = {}
 
     def stack_ready():
@@ -104,6 +105,19 @@ def main(argv=None):
         return record["Running"] and age > 120, f"collector uptime {age:.0f}s; needs >120s"
 
     check("collector", collector)
+
+    def official_checkout():
+        demo = Path(os.environ.get("INCIDENT_ZERO_DEMO_DIR", config["demo_dir"]))
+        if not demo.is_absolute():
+            demo = (stack / demo).resolve()
+        result = subprocess.run(["git", "-c", "safe.directory=" + str(demo.resolve()),
+                                 "-C", str(demo), "status", "--porcelain"],
+                                capture_output=True, text=True, timeout=15)
+        if result.returncode:
+            return False, "official demo Git state not verified (git exit " + str(result.returncode) + ")"
+        return not result.stdout.strip(), "official demo Git working tree must be unchanged"
+
+    check("official demo unchanged", official_checkout)
     calls = 'traces_span_metrics_calls_total{service_name="frontend",span_kind="SPAN_KIND_SERVER"}'
     check("application metrics", lambda: (bool(prom(calls)), "frontend SERVER application series must exist"))
 
@@ -176,15 +190,17 @@ def main(argv=None):
     check("evidence resolver", resolve_one)
 
     def flags():
-        active = stack / "faultctl/.state/flags/demo.flagd.json"
-        pristine = stack / "faultctl/.pristine/demo.flagd.json"
-        hashes = [hashlib.sha256(path.read_bytes()).hexdigest() for path in (active, pristine)]
+        # Only hashes leave this operator-only check. Diagnostic packages never
+        # import this module or receive the operator configuration/byte contents.
+        paths = [stack / path for path in operator_checks["byte_comparison"]]
+        hashes = [hashlib.sha256(path.read_bytes()).hexdigest() for path in paths]
         return hashes[0] == hashes[1], "operator-only byte comparison; settings never enter diagnosis"
 
     check("pristine overlay", flags)
-    check("flagd overlay mount", lambda: (any(
-        m["Destination"] == "/etc/flagd" and "faultctl" in m["Source"] and "/.state/flags" in m["Source"].replace("\\", "/")
-        for m in containers["flagd"].get("Mounts", [])), "repository-owned overlay mounted at /etc/flagd"))
+    overlay = operator_checks["overlay"]
+    check("control overlay mount", lambda: (any(
+        m["Destination"] == overlay["destination"] and m["Source"].replace("\\", "/").endswith(overlay["source_suffix"])
+        for m in containers[overlay["container"]].get("Mounts", [])), "repository-owned control overlay is mounted"))
     check("STOP absent", lambda: (not (stack / "STOP").exists(), "checked stack owner's STOP file"))
     check("test mode absent", lambda: (os.environ.get("INCIDENT_ZERO_TEST") != "1", "INCIDENT_ZERO_TEST must not be 1"))
 

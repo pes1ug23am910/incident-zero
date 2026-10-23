@@ -84,7 +84,9 @@ def main(argv=None):
     parser.add_argument("--combo", help="Comma-separated operator incidents applied together before observation")
     parser.add_argument("--svc")
     parser.add_argument("--thresholds")
-    parser.add_argument("--alert-timeout", type=float, default=150)
+    # Preserve the direct module's recorded 90s contract. Both operator wrappers
+    # explicitly request the new 150s budget; detect.watch support lands in fold.
+    parser.add_argument("--alert-timeout", type=float, default=90)
     parser.add_argument("--clean-timeout", type=float, default=360)
     parser.add_argument("--report-id", help="Optional unique report bundle name; existing bundles are never replaced")
     args = parser.parse_args(argv)

@@ -1,5 +1,7 @@
-param([Alias('h','-help')][switch]$Help, [switch]$Live, [string]$Incident='payment-failure', [Alias('svc')][string]$Service, [string]$ReportId, [string]$Operator='Yash Verma', [int]$LoadUsers=20, [string]$RejectedReport, [switch]$BrowserApproval)
-if ($Help) { Write-Output 'Usage: demo.ps1 [-Live] [-Incident name] [-Service name] [-ReportId id] [-Operator name] [-LoadUsers 20] [-RejectedReport path] [-BrowserApproval]; default preview; -Help / --help / -h'; exit 0 }
+[CmdletBinding(PositionalBinding=$false)]
+param([Alias('h','-help')][switch]$Help, [switch]$Live, [string]$Incident='payment-failure', [Alias('svc')][string]$Service, [string]$ReportId, [string]$Operator='Yash Verma', [int]$LoadUsers=20, [string]$RejectedReport, [switch]$BrowserApproval, [Parameter(ValueFromRemainingArguments=$true)][string[]]$Remaining)
+if ($Help -or ($Remaining -contains '--help')) { Write-Output 'Usage: demo.ps1 [-Live] [-Incident name] [-Service name] [-ReportId id] [-Operator name] [-LoadUsers 20] [-RejectedReport path] [-BrowserApproval]; default preview; -Help / --help / -h'; exit 0 }
+if ($Remaining) { throw ('Unrecognized arguments: ' + ($Remaining -join ' ')) }
 . "$PSScriptRoot/_shell.ps1"
 $a = @('-m', 'scripts.operator', 'demo')
 if ($Live) { $a += '--live' }
