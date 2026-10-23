@@ -95,3 +95,11 @@ and clean 184.781/184.656-second before/after windows. The two final action
 samples had 892.045/1220.081 measured requests, a running load generator and a
 running recommendation container. The Control Room was restarted after this
 run to load the reviewed approval/STOP fixes before the remaining cases.
+
+`payment-failure-loop-r5` passed the mid-verification STOP path: `aborted`,
+137.438 seconds after injection. STOP was observed about 0.43 seconds after
+latching, prevented rollback, and remained set during the 184.719-second clean
+reset window. Its action-log export was refreshed from the unchanged canonical
+final checkpoint after fixing export to include global safety events within a
+run's action interval. The partial-sample loss in the original cancellation
+handler is recorded honestly in BUILD_05; no samples were fabricated.
