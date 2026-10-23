@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Incident Zero · Control Room</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <aside class="sidebar">
+    <a class="brand" href="#war-room"><span class="brand-mark">IZ</span><span>INCIDENT ZERO<small>CONTROL ROOM</small></span></a>
+    <div class="nav-label">OPERATIONS</div>
+    <nav aria-label="Main navigation">
+      <a href="#war-room" data-view="war-room"><span>01</span> War Room</a>
+      <a href="#incidents" data-view="incidents"><span>02</span> Incidents <b id="incident-count">0</b></a>
+      <a href="#services" data-view="services"><span>03</span> Services</a>
+      <a href="#approvals" data-view="approvals"><span>04</span> Approvals <b id="approval-count">0</b></a>
+      <a href="#safety" data-view="safety"><span>05</span> Safety</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="pulse-dot"></div> HUMAN IN CONTROL<p>Evidence first.<br>Every change approved.</p><button id="quick-stop" class="danger-outline">Latch STOP</button></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div><span class="eyebrow">ON-CALL WORKSPACE</span><span id="connection" role="status">Connecting…</span></div><div class="top-meta"><span id="mode" class="chip">CONNECTING</span><time id="clock"></time></div></header>
+    <div id="mode-banner" class="mode-banner">Connecting to the Control Room API…</div>
+    <div id="stop-banner" class="stop-banner" hidden>STOP IS LATCHED <span id="stop-scope"></span><a href="#safety">Review safety controls →</a></div>
+    <div id="notice" class="notice" role="alert" hidden></div>
+    <main id="main" tabindex="-1">
+      <section id="war-room" class="view" aria-labelledby="war-title">
+        <div class="page-heading"><div><p class="eyebrow">DETECT → INVESTIGATE → RESOLVE</p><h1 id="war-title">War Room<span class="title-dot">.</span></h1><p>From the first signal to an evidenced decision.</p></div><button id="latest-incident" class="secondary">Open latest incident ↗</button></div>
+        <div class="stage-strip" aria-label="Incident stages"><span>01 Detect</span><span>02 Investigate</span><span>03 Diagnose</span><span>04 Propose</span><span>05 Approve</span><span>06 Verify</span><span>07 Report</span></div>
+        <article id="active-investigation" class="panel active-investigation" hidden><div class="panel-heading"><h2>Investigation in progress</h2><span class="chip diagnosed">LIVE JOURNAL</span></div><p id="active-run" class="muted"></p><div id="active-steps" aria-live="polite"></div></article>
+        <div id="war-content"><div class="empty">Waiting for the first report. New bundles appear automatically.</div></div>
+      </section>
+      <section id="incidents" class="view" hidden aria-labelledby="incidents-title"><div class="page-heading"><div><p class="eyebrow">INCIDENT REGISTER</p><h1 id="incidents-title">Incidents<span class="title-dot">.</span></h1><p>Every diagnosis, decision and outcome.</p></div><button class="secondary refresh">Refresh</button></div><div id="incident-list"></div></section>
+      <section id="services" class="view" hidden aria-labelledby="services-title"><div class="page-heading"><div><p class="eyebrow">SERVICE TELEMETRY</p><h1 id="services-title">Services<span class="title-dot">.</span></h1><p>Health refreshes every 10 seconds. Missing data stays unknown.</p></div><button class="secondary refresh">Refresh</button></div><p id="health-meta" class="muted"></p><div id="health-table"></div><p class="legend">Red: error rate ≥ 5% · p95 ≥ 1,500 ms · CPU ≥ 90% · container not running. Restart totals are shown for context; they are not restart deltas.</p></section>
+      <section id="approvals" class="view" hidden aria-labelledby="approvals-title"><div class="page-heading"><div><p class="eyebrow">HUMAN APPROVAL GATE</p><h1 id="approvals-title">Approvals<span class="title-dot">.</span></h1><p>A decision authorizes a plan. Recovery still needs evidence.</p></div></div><h2>Pending review</h2><div id="approval-queue"></div><h2 class="section-space">Decision history</h2><div id="approval-history"></div></section>
+      <section id="safety" class="view" hidden aria-labelledby="safety-title"><div class="page-heading"><div><p class="eyebrow">OPERATOR OVERRIDE</p><h1 id="safety-title">Safety<span class="title-dot">.</span></h1><p>The operator has the final word.</p></div><span id="safety-state" class="chip">UNKNOWN</span></div><div class="safety-grid"><article class="panel stop-panel"><span class="eyebrow">EMERGENCY CONTROL</span><h2>Stop the response</h2><p id="stop-description">Loading safety state…</p><button id="stop-button" class="big-stop">STOP<span>Latch the kill switch</span></button><p class="muted">The latch stays set until an operator clears it.</p></article><article class="panel"><h2>Clear the latch</h2><p>Type the confirmation phrase exactly:</p><p class="phrase">I confirm the incident is over</p><form id="clear-stop-form"><label for="clear-phrase">Confirmation phrase</label><input id="clear-phrase" name="phrase" autocomplete="off" required placeholder="Type the phrase above"><button id="clear-stop-button" class="secondary" type="submit">Clear STOP</button></form></article></div><article class="panel section-space"><div class="panel-heading"><h2>Action log</h2><span class="eyebrow">LATEST 50 ENTRIES</span></div><pre id="action-log">Loading…</pre></article></section>
+    </main>
+    <footer><span>INCIDENT ZERO / CONTROL ROOM</span><span>Observations → evidence → human decision</span></footer>
+  </div>
+  <dialog id="evidence-drawer" aria-labelledby="evidence-title"><div class="drawer-heading"><div><p class="eyebrow">INSPECT THE SOURCE</p><h2 id="evidence-title">Evidence payload</h2></div><button id="close-evidence" class="secondary" aria-label="Close evidence drawer">Close ✕</button></div><p id="evidence-origin" class="muted"></p><pre id="evidence-payload"></pre></dialog>
+</body>
+</html>
