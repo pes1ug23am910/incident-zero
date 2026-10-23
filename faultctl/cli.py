@@ -387,7 +387,9 @@ class Controller:
         def traffic():
             url = "http://localhost:8080/jaeger/ui/api/traces"
             def recent():
-                response = requests.get(url, params={"service": "frontend", "lookback": "2m", "limit": 100}, timeout=3)
+                end = int(time.time() * 1_000_000)
+                response = requests.get(url, params={"service": "frontend", "start": end - 120_000_000,
+                                                    "end": end, "limit": 100}, timeout=3)
                 response.raise_for_status()
                 return {trace["traceID"] for trace in response.json()["data"]}
             before = recent()

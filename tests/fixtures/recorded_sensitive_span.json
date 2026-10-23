@@ -1,0 +1,266 @@
+{
+  "provenance": {
+    "recorded_at": "2026-10-23T09:16:03.864508+00:00",
+    "source": "Jaeger HTTP trace search",
+    "service": "checkout",
+    "trace_id": "fff48cbc0b7d80de803d79ba0f69bf08",
+    "synthetic": false
+  },
+  "trace": {
+    "traceID": "fff48cbc0b7d80de803d79ba0f69bf08",
+    "spans": [
+      {
+        "traceID": "fff48cbc0b7d80de803d79ba0f69bf08",
+        "spanID": "37a95510ba1b787f",
+        "operationName": "oteldemo.CheckoutService/PlaceOrder",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "fff48cbc0b7d80de803d79ba0f69bf08",
+            "spanID": "21e65100467f6607"
+          }
+        ],
+        "startTime": 1792746614639828,
+        "duration": 36818,
+        "tags": [
+          {
+            "key": "app.order.amount",
+            "type": "float64",
+            "value": 843
+          },
+          {
+            "key": "app.order.id",
+            "type": "string",
+            "value": "8ee24c75-cec1-11f1-a157-ce9ca711c705"
+          },
+          {
+            "key": "app.order.items.count",
+            "type": "int64",
+            "value": 2
+          },
+          {
+            "key": "app.shipping.amount",
+            "type": "float64",
+            "value": 436
+          },
+          {
+            "key": "app.shipping.tracking.id",
+            "type": "string",
+            "value": "b73f9119-2f18-4235-9d3d-b9f6e7856f71"
+          },
+          {
+            "key": "app.user.currency",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "key": "app.user.id",
+            "type": "string",
+            "value": "8ed8687a-cec1-11f1-b855-4a77265a94bd"
+          },
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.14"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 59144
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "PlaceOrder"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CheckoutService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792746614661246,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "prepared"
+              }
+            ]
+          },
+          {
+            "timestamp": 1792746614661275,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "feature_flag"
+              },
+              {
+                "key": "feature_flag.key",
+                "type": "string",
+                "value": "paymentUnreachable"
+              },
+              {
+                "key": "feature_flag.provider_name",
+                "type": "string",
+                "value": "flagd"
+              },
+              {
+                "key": "feature_flag.variant",
+                "type": "string",
+                "value": "off"
+              }
+            ]
+          },
+          {
+            "timestamp": 1792746614666205,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "charged"
+              },
+              {
+                "key": "app.payment.transaction.id",
+                "type": "string",
+                "value": "6d821770-8ff3-4ce3-9d43-cb0fa0790fa7"
+              }
+            ]
+          },
+          {
+            "timestamp": 1792746614667105,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "shipped"
+              },
+              {
+                "key": "app.shipping.tracking.id",
+                "type": "string",
+                "value": "b73f9119-2f18-4235-9d3d-b9f6e7856f71"
+              }
+            ]
+          }
+        ],
+        "processID": "p4",
+        "warnings": null
+      }
+    ],
+    "processes": {
+      "p4": {
+        "serviceName": "checkout",
+        "tags": [
+          {
+            "key": "host.name",
+            "type": "string",
+            "value": "2fa7a693831b"
+          },
+          {
+            "key": "os.description",
+            "type": "string",
+            "value": "Alpine Linux 3.21.3 (Linux 2fa7a693831b 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64)"
+          },
+          {
+            "key": "os.type",
+            "type": "string",
+            "value": "linux"
+          },
+          {
+            "key": "process.command_args",
+            "type": "string",
+            "value": "[\"./checkout\"]"
+          },
+          {
+            "key": "process.executable.name",
+            "type": "string",
+            "value": "checkout"
+          },
+          {
+            "key": "process.executable.path",
+            "type": "string",
+            "value": "/usr/src/app/checkout"
+          },
+          {
+            "key": "process.owner",
+            "type": "string",
+            "value": "root"
+          },
+          {
+            "key": "process.pid",
+            "type": "int64",
+            "value": 1
+          },
+          {
+            "key": "process.runtime.description",
+            "type": "string",
+            "value": "go version go1.22.12 linux/amd64"
+          },
+          {
+            "key": "process.runtime.name",
+            "type": "string",
+            "value": "go"
+          },
+          {
+            "key": "process.runtime.version",
+            "type": "string",
+            "value": "go1.22.12"
+          },
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "go"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.35.0"
+          }
+        ]
+      }
+    }
+  }
+}
