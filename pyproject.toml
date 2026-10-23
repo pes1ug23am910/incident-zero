@@ -7,7 +7,7 @@ name = "incident-zero"
 version = "0.1.0"
 description = "Telemetry tools and incident rehearsal utilities for the OpenTelemetry Demo"
 requires-python = ">=3.11"
-dependencies = ["requests>=2.32,<3", "jsonschema>=4.23,<5", "langgraph>=1,<2", "langgraph-checkpoint-sqlite>=3,<4", "PyYAML>=6,<7", "fastapi>=0.115,<1", "uvicorn>=0.30,<1"]
+dependencies = ["requests>=2.32,<3", "jsonschema>=4.23,<5", "langgraph>=1,<2", "langgraph-checkpoint-sqlite>=3,<4", "PyYAML>=6,<7", "fastapi>=0.115,<1", "uvicorn>=0.30,<1", "rank-bm25>=0.2.2,<0.3"]
 
 [project.optional-dependencies]
 test = ["pytest>=8,<10", "httpx>=0.27,<1"]
@@ -17,7 +17,7 @@ faultctl = "faultctl.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["faultctl*", "tools*", "schema*", "reports*", "agent*", "detect*", "action_api*", "eval*", "ui*", "scripts*"]
+include = ["faultctl*", "tools*", "schema*", "reports*", "agent*", "detect*", "action_api*", "eval*", "ui*", "scripts*", "knowledge*", "memory*"]
 
 [tool.setuptools.package-data]
 faultctl = ["config.yaml", "netem/Dockerfile"]
@@ -26,6 +26,7 @@ action_api = ["policy.yaml"]
 detect = ["thresholds.yaml"]
 eval = ["cases.jsonl"]
 ui = ["static/*", "API.md", "requirements.txt"]
+knowledge = ["runbooks/*.md", "services.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
