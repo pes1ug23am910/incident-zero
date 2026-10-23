@@ -10,15 +10,18 @@ from .platform_support import ROOT, environment, stamp
 def docker_command(root=ROOT):
     # No Docker socket, model keys, .env, host state or live network reaches pytest.
     # Include uncommitted source edits; exclude machine-local build/runtime state.
-    command = r'''set -eu
+    command = r'''set -euo pipefail
+echo 'Copying repository from read-only mount (including retained evidence)...'
 mkdir /work
-tar -C /repo --exclude=.git --exclude=.venv --exclude=.env --exclude='.env.*' --exclude=.build --exclude=runs --exclude=STOP --exclude='faultctl/.state' --exclude='faultctl/.pristine' --exclude='action_api/log.jsonl' --exclude='memory/store' --exclude='knowledge/index.sqlite' --exclude=__pycache__ --exclude=.pytest_cache -cf - . | tar -C /work -xf -
+tar -C /repo --exclude=.git --exclude=.venv --exclude=.env --exclude='.env.*' --exclude=.build --exclude=runs --exclude=STOP --exclude='*/.state' --exclude='*/.pristine' --exclude='action_api/log.jsonl' --exclude='memory/store' --exclude='knowledge/index.sqlite' --exclude=__pycache__ --exclude=.pytest_cache -cf - . | tar -C /work -xf -
 cd /work
+echo 'Installing offline test dependencies...'
 python -m pip install -e '.[test]' -q
+echo 'Running pytest with live endpoints disabled...'
 export DOCKER_HOST=tcp://127.0.0.1:1 HTTP_PROXY=http://127.0.0.1:9 HTTPS_PROXY=http://127.0.0.1:9 ALL_PROXY=http://127.0.0.1:9 NO_PROXY=
 python -m pytest -q -m 'not live' --basetemp=/tmp/incident-zero-pytest
 '''
-    return ["docker", "run", "--rm", "--mount", f"type=bind,source={Path(root).resolve()},target=/repo,readonly",
+    return ["docker", "run", "--rm", "--memory", "768m", "--cpus", "1", "--mount", f"type=bind,source={Path(root).resolve()},target=/repo,readonly",
             "-w", "/tmp", "python:3.11", "bash", "-c", command]
 
 

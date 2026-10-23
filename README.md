@@ -90,11 +90,12 @@ test container. Every entry point accepts `-Help`, `--help` and `-h` with exit 0
 For organiser-injected incidents run `python -m detect.watch --interval 10`;
 duplicate-investigation handling still needs the fold regression fix.
 
-**Last complete preflight PASS: not verified.** Read-only runs on 2026-10-23 at
-17:49 and 17:51 UTC passed 21/25 checks. Failures: inherited test mode, missing H8
-state-check command, unverified fresh Control Room, and RAM below 2 GiB. Clean
-detection, five tool timings and model access passed. Records are in ignored
-`.build/preflight/`; no partial result is promoted to a complete PASS.
+**Last complete preflight PASS: not verified.** The read-only morning run at
+18:24 UTC on 2026-10-23 passed 24/26 checks. Failures: unverified fresh Control
+Room and available RAM of 0.60 GiB, below 2 GiB. The fold's H8 state command
+now passes (earlier checks failed before it landed). Clean detection, five tool
+timings and model access passed. Records are in ignored `.build/preflight/`;
+no partial result is promoted to a complete PASS.
 
 ## Approval gate and kill switch
 

@@ -1,0 +1,12 @@
+{
+  "operator_only": true,
+  "byte_comparison": [
+    "faultctl/.state/flags/demo.flagd.json",
+    "faultctl/.pristine/demo.flagd.json"
+  ],
+  "overlay": {
+    "container": "flagd",
+    "destination": "/etc/flagd",
+    "source_suffix": "/faultctl/.state/flags"
+  }
+}

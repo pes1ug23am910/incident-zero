@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
@@ -44,7 +45,9 @@ def main(argv=None):
     environment()
     if args.command == "up":
         os.environ["INCIDENT_ZERO_DEMO_DIR"] = args.demo_dir
-        if subprocess.call([sys.executable, "-m", "pip", "install", "-e", ".[test]"], cwd=ROOT):
+        install = ([shutil.which("uv"), "pip", "install", "--python", sys.executable, "-e", ".[test]"]
+                   if shutil.which("uv") else [sys.executable, "-m", "pip", "install", "-e", ".[test]"])
+        if subprocess.call(install, cwd=ROOT):
             return 1
         for operation in ("up", "build-netem", "status"):
             if run_module("faultctl", operation):

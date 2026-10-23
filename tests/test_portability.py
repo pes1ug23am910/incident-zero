@@ -29,6 +29,18 @@ def test_linux_gate_mount_is_read_only_and_does_not_forward_credentials(tmp_path
     assert "not live" in command[-1] and "--basetemp=/tmp/" in command[-1]
 
 
+def test_operator_readiness_checks_are_outside_diagnostic_imports():
+    import ast
+    for directory in ("agent", "detect", "tools"):
+        for path in (ROOT / directory).glob("*.py"):
+            for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
+                if isinstance(node, ast.ImportFrom):
+                    assert node.module not in {"scripts.preflight", "scripts.operator"}
+                if isinstance(node, ast.Import):
+                    assert not any(n.name in {"scripts.preflight", "scripts.operator"} for n in node.names)
+            assert "preflight_checks.json" not in path.read_text(encoding="utf-8")
+
+
 @pytest.mark.parametrize("name", NAMES)
 def test_bash_help_from_other_directory_needs_no_environment(name, tmp_path):
     bash = shutil.which("bash")
@@ -59,7 +71,7 @@ def test_morning_no_smoke_does_not_dispatch_checkpoint(monkeypatch, tmp_path):
     monkeypatch.setattr(morning, "ROOT", tmp_path)
     monkeypatch.setattr(morning, "run_module", lambda *a: calls.append(a) or 0)
     assert morning.main(["--no-smoke"]) == 0
-    assert [a[0] for a in calls] == ["scripts.preflight", "schema.validate", "scripts.crossplatform_check"]
+    assert [a[0] for a in calls] == ["scripts.preflight", "scripts.validate_reports", "scripts.crossplatform_check"]
 
 
 def test_failed_preflight_refuses_smoke_but_runs_read_only_gates(monkeypatch, tmp_path):
