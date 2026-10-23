@@ -104,6 +104,21 @@ def rejection_world_hash(service, proposal):
         return {"hash": None, "available": False, "error": getattr(exc, "code", type(exc).__name__)}
 
 
+def recorded_approval_path(log_path, run_id, requested_path):
+    """Identify a browser decision from this run's retained audit, not its waiter."""
+    path = Path(log_path)
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            entry = json.loads(line)
+            if (entry.get("report_id") == run_id
+                    and entry.get("event") in {"ui_approval", "approval_rejected"}
+                    and isinstance(entry.get("ui_decision"), dict)):
+                return "browser"
+    return requested_path
+
+
 def action_log_excerpt(path):
     """Keep the terminal readable; the exact full audit remains in the bundle."""
     entries = [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
@@ -206,15 +221,7 @@ class RunControl:
             while not self.cancelled.wait(.2):
                 attempts = [item for item in self.service.attempts() if item["report_id"] == self.run_id]
                 if self.force_nonrecovery and any(item["phase"] == "verifying" for item in attempts):
-                    # Stop only the swarm after the executor captured its world.
-                    self.load_stopped = True
-                    response = requests.get(self.service.executor.load_url + "/stop", timeout=10)
-                    response.raise_for_status()
-                    if response.json().get("success") is not True:
-                        raise RuntimeError("Locust did not confirm the operator swarm stop")
-                    self.interventions.append({"at": datetime.now(timezone.utc).isoformat(),
-                        "operation": "stop_locust_swarm", "purpose": "Test refusal to claim recovery without measured traffic",
-                        "verifier_overridden": False})
+                    self._stop_swarm()
                     return
                 if self.stop_delay is not None and any(item["phase"] in ("executing", "verifying") for item in attempts):
                     if not self.cancelled.wait(self.stop_delay):
@@ -225,10 +232,48 @@ class RunControl:
         except Exception as exc:
             self.error = str(exc)
 
+    def _stop_swarm(self):
+        # The HTTP response may time out after Locust has accepted the stop.
+        self.load_stopped = True
+        record = {"at": datetime.now(timezone.utc).isoformat(),
+                  "operation": "stop_locust_swarm", "purpose": "Test refusal to claim recovery without measured traffic",
+                  "verifier_overridden": False, "request_timeout_s": 45,
+                  "response_confirmed": False, "observed_stopped": False, "observations": []}
+        self.interventions.append(record)
+        try:
+            response = requests.get(self.service.executor.load_url + "/stop", timeout=45)
+            response.raise_for_status()
+            record["response_confirmed"] = response.json().get("success") is True
+            if not record["response_confirmed"]:
+                record["response_uncertainty"] = "Stop response did not confirm success"
+        except (requests.RequestException, ValueError) as exc:
+            record["response_uncertainty"] = type(exc).__name__ + ": " + str(exc)
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            if self.cancelled.is_set():
+                raise RuntimeError("Operator swarm-stop observation was cancelled; stop outcome remains uncertain")
+            observation = {"at": datetime.now(timezone.utc).isoformat()}
+            try:
+                response = requests.get(self.service.executor.load_url + "/stats/requests", timeout=10)
+                response.raise_for_status()
+                value = response.json()
+                observation.update(state=value.get("state"), users=value.get("user_count"))
+                record["observations"].append(observation)
+                if observation["state"] == "stopped" and observation["users"] == 0:
+                    record["observed_stopped"] = True
+                    return
+            except (requests.RequestException, ValueError) as exc:
+                observation["error"] = type(exc).__name__ + ": " + str(exc)
+                record["observations"].append(observation)
+            self.cancelled.wait(min(2, max(0, deadline - time.monotonic())))
+        raise RuntimeError("Locust did not reach observed stopped state with zero users within 45 seconds")
+
     def finish(self):
         self.cancelled.set()
         if self.thread:
-            self.thread.join(12)
+            self.thread.join(55)
+            if self.thread.is_alive():
+                raise RuntimeError("Operator swarm-stop request still running; restoration requires operator review")
         if self.load_stopped:
             # This is operator cleanup, like reset, even when STOP is latched.
             response = requests.post(self.service.executor.load_url + "/swarm", data={
@@ -288,6 +333,7 @@ def main(argv=None):
     bundle.mkdir(parents=True)
     timings, verification = {}, {}
     outcome = {"incident_id": args.report_id, "approval_path": "test_auto" if args.auto_approve_for_tests else args.approval_mode,
+               "approval_waiter": args.approval_mode,
                "test_auto_approval": args.auto_approve_for_tests, "forced_traffic_loss": args.force_nonrecovery,
                "operator_run_id": directory.name}
     failed, interrupted = False, False
@@ -360,6 +406,8 @@ def main(argv=None):
                         root=ROOT, service=service, operator=args.operator,
                         auto_approve_for_tests=args.auto_approve_for_tests, report_path=bundle / "report.json")
                     save_bundle(final, bundle / "report.json", service)
+            outcome["approval_path"] = recorded_approval_path(
+                bundle / "action-log.jsonl", report["run_id"], outcome["approval_path"])
             if args.reject:
                 comparison = outcome["rejection_immutability"]
                 comparison["after"] = rejection_world_hash(service, report["proposed_actions"][0])
