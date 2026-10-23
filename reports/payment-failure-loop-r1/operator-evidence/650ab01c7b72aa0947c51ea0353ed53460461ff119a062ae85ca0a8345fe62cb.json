@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792768813.793=43.999999999999986",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "load-generator"
+    },
+    "timestamp": 1792768813.793,
+    "value": 43.999999999999986,
+    "query": "named:p95_latency_by_service"
+  },
+  "captured_at": "2026-10-23T15:20:13.888218+00:00",
+  "checksum": "89d76b8f5c80a1687aca538f4c4dc266618a0bf997444d8f85609ded016303a7"
+}

@@ -1,5 +1,9 @@
 # Build 05 — Approval-gated hands
 
+The branch record below is historical. The integration round owns the stack;
+its real acceptance ledger is appended at the end and in BUILD_06.md. Earlier
+"deferred" statements describe the branch session, not the integrated build.
+
 2026-10-23, branch `hands`, based on `3d32a78`. Initial `git status` was clean
 and `git diff` empty; the earlier brain implementation was retained. No live
 injection, reset, execution, restart, toggle or throttle was performed. The
@@ -173,3 +177,33 @@ Read-only image inventory, approval/STOP instructions, injection mechanism,
 five-minute timing limits and remaining limitations are in README and
 `docs/DEMO_IMAGES.md`. No new model calls or live hands acceptance claims were
 added. Commits remain on `hands`; nothing was pushed.
+
+## Integration live ledger
+
+The integration session merged the branch into `main` and owns the real stack.
+Automated approval runs explicitly use BOTH `INCIDENT_ZERO_TEST=1` and
+`--auto-approve-for-tests`. They exercise the real prompt entry point and token
+gate, but the printed banner states that **no human approval was collected**.
+The mentor/demo wrappers reject the test environment and collect the real
+terminal or browser decision.
+
+| Bundle | Outcome | Approval | Injection to verified report | Verification | Before / after reset windows |
+| --- | --- | --- | ---: | ---: | --- |
+| payment-failure-loop-r1 | No alert in 90s; no diagnosis/action | Not reached | — | — | 244.781 / 183.953 s |
+| payment-failure-loop-r2 | Planned workload exceeded old baseline; injection refused | Not reached | — | — | 184.391 / 184.500 s |
+| payment-failure-loop-r3 | fixed, payment toggle | Explicit test auto | 346.016 s | 182.359 s | 184.562 / 184.375 s |
+
+The successful payment run is `runs/20261023T153512.976354Z-13778fd2`.
+It diagnosed `payment` / `application_flag` at 0.90 confidence with three tool
+calls in 55.95 seconds. At verification 152.343 and 182.359 seconds all four
+original alert signals were 0, measured frontend requests were 984.049, and load
+was running. The report became `fixed` before operator reset; cleanup is not
+being counted as action-caused recovery. Full action-log and before/after samples
+are retained in `reports/payment-failure-loop-r3/`.
+
+The first attempt used five users. Failed payment calls arrived too late for a
+90-second metric alert; the failure is retained. Subsequent explicit workload
+preparation uses 20 users/spawn 5 and a measured clean workload baseline without
+changing thresholds. The second refusal is also retained. The mentor command
+captures and restores its previous swarm settings. The five-minute presentation
+starts after live diagnosis preparation; it never shortens verification.
