@@ -10,6 +10,7 @@ from agent.graph import Investigation
 from agent.llm_router import ModelUnavailable
 from agent.policy import propose
 from agent.reporting import build_report
+from schema.validate import validate_report
 
 
 class FailedRouter:
@@ -64,3 +65,42 @@ def test_model_failure_keeps_evidence_and_never_proposes_even_with_prior_confide
     schema = json.loads((Path(__file__).resolve().parents[1] / 'schema' / 'incident_report.schema.json').read_text())
     validate(report, schema)
     assert state == original
+
+
+def test_later_cart_failure_is_cited_as_investigation_context_without_rewriting_alert():
+    state = investigation_state(False)
+    container_id = 'container:valkey-cart:Status=exited'
+    log_id = 'log:otel/later-cart-connection-error'
+    state['alert']['service'] = 'valkey-cart'
+    original_alert = deepcopy(state['alert'])
+    state['health'] = {'data': [{'service': 'valkey-cart', 'status': 'exited'},
+                               {'service': 'cart', 'status': 'running', 'error_rate': 0}],
+                       'evidence_ids': [container_id]}
+    state['evidence'] = {
+        container_id: {'id': container_id, 'source': 'docker', 'services': ['valkey-cart'], 'strength': 1,
+                       'data': {'name': 'valkey-cart', 'field': 'Status', 'value': 'exited'}},
+        log_id: {'id': log_id, 'source': 'opensearch', 'services': ['cart', 'valkey-cart'], 'strength': .9,
+                 'data': {'resource': {'service.name': 'cart'}, 'body': "Wasn't able to connect to redis"}},
+    }
+    state['findings'][0]['result'] = state['health']
+    state['findings'].append({'step': 2, 'tool': 'get_logs', 'arguments': {'service': 'cart'},
+        'why': 'Check whether caller failures have arrived.',
+        'result': {'data': [state['evidence'][log_id]['data']], 'evidence_ids': [log_id]}})
+    state.update(symptom_services=['valkey-cart', 'cart'], tool_calls_used=2, unexplained=[],
+        stopped_because='confident', hypotheses=[{'component': 'valkey-cart',
+        'cause': 'The stopped cache is unavailable to cart requests.', 'category': 'dependency_unavailable',
+        'confidence_model': .9, 'confidence_evidence': .9, 'confidence': .9,
+        'evidence_ids': [container_id, log_id], 'explains_symptoms': ['cart', 'valkey-cart'],
+        'alternatives_considered': []}])
+    model = {'model': 'fixture-model', 'models_used': ['fixture-model'], 'llm_calls': 2,
+             'tokens_input': 0, 'tokens_output': 0, 'estimated_cost_usd': 0}
+    report = propose(build_report(state, model, 1))
+    cart = next(symptom for symptom in report['symptoms'] if symptom['service'] == 'cart')
+    assert cart['signal'] == 'investigation_context'
+    assert cart['evidence_ids'] == [log_id]
+    assert 'after the initial health overview' in cart['observed']
+    assert report['alert']['service'] == 'valkey-cart'
+    assert report['detected_at'] == original_alert['detected_at']
+    assert state['alert'] == original_alert
+    assert report['root_cause']['explains_symptoms'] == ['cart', 'valkey-cart']
+    assert validate_report(report, resolver=lambda identity: state['evidence'][identity]) == []

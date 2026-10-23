@@ -1,0 +1,115 @@
+{
+  "incident_id": "payment-failure-r1",
+  "injection_run_id": "20261023T102923.418653Z-c07302",
+  "error": "D:\\incident-zero\\reports\\payment-failure-r1\\report.json: $.approval: an unapproved request cannot carry an approval time or token\n",
+  "ok": false,
+  "stage_seconds": {
+    "reset_before": 2.078,
+    "clear_before": 182.359,
+    "baseline": 2.125,
+    "inject": 5.516,
+    "wait_for_alert": 14.437,
+    "agent": 4.141,
+    "validate": 0.484,
+    "reset_after": 3.61,
+    "clear_after": 181.75
+  },
+  "recovery_verification": {
+    "before": {
+      "verified": true,
+      "elapsed_s": 182.359,
+      "samples": [
+        {
+          "elapsed_s": 2.25,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 32.515,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 62.734,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 92.39,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 122.375,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 152.406,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 182.359,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        }
+      ]
+    },
+    "after": {
+      "verified": true,
+      "elapsed_s": 181.75,
+      "samples": [
+        {
+          "elapsed_s": 1.797,
+          "clean": false,
+          "reason": "ad error rate 0.0714; cart error rate 0.0156; checkout error rate 0.0253; frontend error rate 0.0074; frontend-proxy error rate 0.0114; load-generator error rate 0.0215; payment error rate 0.2222; recommendation error rate 0.0323",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 31.765,
+          "clean": false,
+          "reason": "ad error rate 0.0714; cart error rate 0.0156; checkout error rate 0.0253; frontend error rate 0.0074; frontend-proxy error rate 0.0114; load-generator error rate 0.0215; payment error rate 0.2222; recommendation error rate 0.0323",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 61.781,
+          "clean": false,
+          "reason": "ad error rate 0.0714; cart error rate 0.0159; checkout error rate 0.0333; frontend error rate 0.0086; frontend-proxy error rate 0.0106; load-generator error rate 0.0122; payment error rate 0.2500; recommendation error rate 0.0526",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 91.593,
+          "clean": false,
+          "reason": "ad error rate 0.0714; cart error rate 0.0159; checkout error rate 0.0333; frontend error rate 0.0086; frontend-proxy error rate 0.0106; load-generator error rate 0.0122; payment error rate 0.2500; recommendation error rate 0.0526",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 121.734,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 151.734,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        },
+        {
+          "elapsed_s": 181.75,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 165
+        }
+      ]
+    }
+  }
+}

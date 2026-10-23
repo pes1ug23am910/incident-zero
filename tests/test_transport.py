@@ -97,7 +97,7 @@ def test_tool_remains_observable_after_three_second_target(monkeypatch):
 
 def test_faultctl_status_uses_direct_jaeger_for_services_and_traffic(monkeypatch):
     controller = Controller.__new__(Controller)
-    controller.services = lambda: {"frontend": {"container_name": "frontend"}}
+    controller.services = lambda **kwargs: {"frontend": {"container_name": "frontend"}}
 
     def docker_read(command, **kwargs):
         if command[1] == "inspect":
@@ -129,3 +129,41 @@ def test_faultctl_status_uses_direct_jaeger_for_services_and_traffic(monkeypatch
     assert all(url.startswith("http://localhost:52684/") for url, _ in jaeger_reads)
     assert all(kwargs["timeout"] == 8 for _, kwargs in seen)
     assert all("elapsed_s" in check for check in result["checks"])
+
+
+def test_faultctl_status_retries_read_commands_without_changing_mutation_defaults(monkeypatch):
+    controller = Controller.__new__(Controller)
+    controller.services = Mock(side_effect=[subprocess.TimeoutExpired("compose config", 8),
+        {"frontend": {"container_name": "frontend"}}])
+    calls = []
+    attempts = {"inspect": 0, "port": 0, "exec": 0}
+
+    def docker_read(command, **kwargs):
+        calls.append((command, kwargs))
+        operation = command[1]
+        attempts[operation] += 1
+        if operation == "inspect":
+            if attempts[operation] == 1:
+                raise subprocess.TimeoutExpired(command, 8)
+            output = json.dumps([{"Name": "/frontend", "State": {"Status": "running"}}])
+        elif operation == "port":
+            from faultctl.cli import FaultError
+            raise FaultError("No published port")
+        else:
+            if attempts[operation] == 1:
+                raise subprocess.TimeoutExpired(command, 8)
+            output = json.dumps({"status": "green"})
+        return subprocess.CompletedProcess(command, 0, output, "")
+
+    controller.run = docker_read
+    monkeypatch.setattr(common.time, "sleep", lambda seconds: None)
+    monkeypatch.setattr(common, "jaeger_json", lambda *args, **kwargs: {"data": ["frontend", "checkout", "payment"]})
+    monkeypatch.setattr(common.requests, "get", lambda *args, **kwargs: response())
+    result = controller.status()
+    assert result["ok"]
+    assert attempts == {"inspect": 2, "port": 2, "exec": 2}
+    assert all(kwargs["timeout"] == 8 for _, kwargs in calls)
+    assert all(call.kwargs == {"timeout": 8} for call in controller.services.call_args_list)
+    exec_command = next(command for command, _ in calls if command[1] == "exec")
+    assert exec_command[exec_command.index("--max-time") + 1] == "8"
+    assert Controller.run.__defaults__[0] == 90

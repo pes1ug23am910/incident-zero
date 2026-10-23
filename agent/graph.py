@@ -5,6 +5,7 @@ import time
 from pathlib import Path
 from langgraph.graph import StateGraph, START, END
 from langgraph.types import interrupt
+from jsonschema import validate
 from jsonschema.exceptions import ValidationError as JSONValidationError
 import tools
 from detect.core import anomalies
@@ -12,7 +13,7 @@ from .state import IncidentState
 from .policy import SERVICES, propose
 from .risk import assess
 from .contracts import FUNCTIONS
-from .evidence import registry, validate_causes, uncovered, data_projection, PlantedEvidence
+from .evidence import registry, validate_causes, uncovered, data_projection, observed_in_window, PlantedEvidence
 from .llm_router import now, ModelUnavailable
 from .prompts import SYSTEM, PROMPT_SHA256
 
@@ -77,7 +78,7 @@ class Investigation:
             return {'stop_signal': True, 'stopped_because': 'stop_signal'}
         if state['tool_calls_used'] >= self.max_tools:
             return {'stopped_because': 'budget'}
-        safe_alert = {key: state['alert'].get(key) for key in ('signal', 'service', 'observed', 'threshold', 'window_s', 'baseline')}
+        safe_alert = {key: state['alert'].get(key) for key in ('detected_at', 'signal', 'service', 'observed', 'threshold', 'window_s', 'baseline')}
         context = {'alert': safe_alert, 'findings': state['findings'], 'current_hypotheses': state.get('hypotheses', []),
                    'unexplained_services': state['unexplained'], 'tool_calls_left': self.max_tools-state['tool_calls_used'],
                    'last_validation_error': state.get('validation_error', '')}
@@ -86,6 +87,10 @@ class Investigation:
         try:
             functions = [f for f in FUNCTIONS if not state.get('finish_blocked') or f['function']['name'] != 'finish']
             decision = self.router.complete(messages, functions)
+            offered = {function['function']['name']: function['function']['parameters'] for function in functions}
+            if decision['name'] not in offered:
+                raise ValueError('Model selected a function that was not offered')
+            validate(decision['arguments'], offered[decision['name']])
             name, args = decision['name'], dict(decision['arguments'])
             why = args.pop('reason')
             raw_causes = args.pop('hypotheses')
@@ -94,21 +99,34 @@ class Investigation:
                 all_symptoms = {state['alert'].get('service', 'frontend')}
             causes = validate_causes(raw_causes, state['evidence'], all_symptoms)
             unexplained = uncovered(causes, all_symptoms)
-            update = {'hypotheses': causes, 'unexplained': unexplained, 'validation_error': '',
+            update = {'hypotheses': causes, 'unexplained': unexplained, 'validation_error': '', 'decision_repair_used': False,
                       'audit': [{'node': 'investigate', 'ts': now(), 'choice': name, 'why': why}]}
             if name == 'finish':
                 clean = bool(args.get('no_incident')) and state['clean'] and any(f['tool']=='get_traces' and f['result']['data'] and not any(t.get('first_error_span') for t in f['result']['data']) for f in state['findings'])
                 if not clean and (not causes or unexplained or any(c['confidence'] < .75 for c in causes)):
-                    return {**update, 'done': False, 'finish_blocked': True,
-                            'validation_error': 'Finish refused: gather another independent positive source for each cause and investigate uncovered services: ' + ', '.join(unexplained)}
+                    claimed = {service for cause in causes for service in cause['explains_symptoms']}
+                    unaddressed = sorted(set(unexplained) - claimed)
+                    needs_evidence = not causes or bool(unaddressed) or any(c['confidence_evidence'] < .75 for c in causes)
+                    reasons = []
+                    if not causes:
+                        reasons.append('No supported cause established; collect diagnostic evidence or corroborate clean traffic.')
+                    for cause in causes:
+                        if cause['confidence_evidence'] < .75:
+                            reasons.append(f"{cause['component']}: evidence confidence {cause['confidence_evidence']:.2f} is below 0.75; seek independent positive support.")
+                        elif cause['confidence_model'] < .75:
+                            reasons.append(f"{cause['component']}: model confidence {cause['confidence_model']:.2f} is below 0.75 while evidence confidence is {cause['confidence_evidence']:.2f}. Reassess all observations and state any remaining uncertainty; do not raise confidence merely to pass.")
+                    if unaddressed:
+                        reasons.append('Symptoms without a proposed explanation: ' + ', '.join(unaddressed))
+                    # A confidence reassessment can use already collected evidence.
+                    # Repeating the same low-confidence finish requires another read.
+                    return {**update, 'done': False,
+                            'finish_blocked': needs_evidence or state.get('confidence_reassessment', False),
+                            'confidence_reassessment': True,
+                            'validation_error': 'Finish refused: ' + ' '.join(reasons)}
                 update.update(done=True, clean=clean, stopped_because='confident' if (clean or causes and not unexplained) else 'budget')
                 return update
             if name not in self.toolset or name == 'health_table':
                 raise ValueError('Unknown investigation tool')
-            # Only declared arguments are ever dispatched to a read tool.
-            schema = next(f['function']['parameters'] for f in FUNCTIONS if f['function']['name']==name)
-            from jsonschema import validate
-            validate(decision['arguments'], schema)
             if name in ('get_traces', 'get_logs'):
                 args.setdefault('lookback_s', 120)
             if name == 'get_traces':
@@ -117,14 +135,26 @@ class Investigation:
             if identity in state.get('seen_calls', []):
                 return {**update, 'done': True, 'stopped_because': 'budget', 'validation_error': 'Repeated identical read stopped for lack of progress.'}
             finding, evidence, result = self.read(name, args, why, state['tool_calls_used'] + 1)
-            update.update(findings=[finding], evidence=evidence, tool_calls_used=state['tool_calls_used'] + 1, finish_blocked=False,
+            # Completed failures can arrive after the initial health overview.
+            # Admit their observed owners/callees, never every healthy participant
+            # or an ordinary CPU/memory sample, as new symptoms to explain.
+            if name in ('get_traces', 'get_logs'):
+                discovered = {service for record in evidence.values() if record['strength'] >= .5
+                              and observed_in_window(record, state['alert'])
+                              for service in record.get('positive_services', []) if service in SERVICES}
+                observed = set(all_symptoms) | discovered
+                update.update(symptom_services=sorted(observed), unexplained=uncovered(causes, observed))
+                if discovered:
+                    update['clean'] = False
+            update.update(findings=[finding], evidence=evidence, tool_calls_used=state['tool_calls_used'] + 1, finish_blocked=False, confidence_reassessment=False,
                           seen_calls=state.get('seen_calls', []) + [identity], last_call=identity)
             return update
         except (PlantedEvidence, ValueError, TypeError, KeyError, JSONValidationError) as exc:
             # One repair request, then abstain without admitting fabricated claims.
-            if state.get('validation_error'):
+            if state.get('decision_repair_used'):
                 return {'done': True, 'stopped_because': 'error', 'validation_error': str(exc)[:300]}
-            return {'validation_error': str(exc)[:300], 'audit': [{'node': 'validation_repair', 'ts': now()}]}
+            return {'validation_error': str(exc)[:300], 'decision_repair_used': True,
+                    'audit': [{'node': 'validation_repair', 'ts': now()}]}
         except ModelUnavailable as exc:
             return {'done': True, 'stopped_because': 'error', 'validation_error': str(exc)}
 

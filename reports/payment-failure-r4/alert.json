@@ -1,0 +1,104 @@
+{
+  "detected_at": "2026-10-23T11:25:47.954780+00:00",
+  "signal": "error_rate",
+  "service": "checkout",
+  "observed": 0.17142857142857143,
+  "threshold": 0.05,
+  "window_s": 120,
+  "baseline": null,
+  "evidence_ids": [
+    "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792754746.033=0.17142857142857143",
+    "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792754746.034=35.999999999999986",
+    "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792754746.038=0.5833722248149877",
+    "container:checkout:Status=running",
+    "container:checkout:RestartCount=0",
+    "container:checkout:OOMKilled=false",
+    "container:checkout:StartedAt=2026-10-23T08:26:28.35551033Z",
+    "container:checkout:NanoCpus=0",
+    "container:checkout:Memory=20971520",
+    "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792754746.033=0.05128205128205129",
+    "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792754746.034=42.451612903225794",
+    "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792754746.038=1.9501300086672446",
+    "container:frontend-proxy:Status=running",
+    "container:frontend-proxy:RestartCount=0",
+    "container:frontend-proxy:OOMKilled=false",
+    "container:frontend-proxy:StartedAt=2026-10-23T08:26:29.349062306Z",
+    "container:frontend-proxy:NanoCpus=0",
+    "container:frontend-proxy:Memory=68157440",
+    "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792754746.033=0.3333333333333333",
+    "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792754746.034=5.550000000000001",
+    "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792754746.038=0.15001000066671114",
+    "container:payment:Status=running",
+    "container:payment:RestartCount=0",
+    "container:payment:OOMKilled=false",
+    "container:payment:StartedAt=2026-10-23T08:26:28.499506526Z",
+    "container:payment:NanoCpus=0",
+    "container:payment:Memory=125829120"
+  ],
+  "details": {
+    "signal": "error_rate",
+    "observed": 0.17142857142857143
+  },
+  "anomalies": [
+    {
+      "signal": "error_rate",
+      "service": "checkout",
+      "observed": 0.17142857142857143,
+      "threshold": 0.05,
+      "window_s": 120,
+      "baseline": null,
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792754746.033=0.17142857142857143",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792754746.034=35.999999999999986",
+        "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792754746.038=0.5833722248149877",
+        "container:checkout:Status=running",
+        "container:checkout:RestartCount=0",
+        "container:checkout:OOMKilled=false",
+        "container:checkout:StartedAt=2026-10-23T08:26:28.35551033Z",
+        "container:checkout:NanoCpus=0",
+        "container:checkout:Memory=20971520"
+      ]
+    },
+    {
+      "signal": "error_rate",
+      "service": "frontend-proxy",
+      "observed": 0.05128205128205129,
+      "threshold": 0.05,
+      "window_s": 120,
+      "baseline": null,
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792754746.033=0.05128205128205129",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792754746.034=42.451612903225794",
+        "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792754746.038=1.9501300086672446",
+        "container:frontend-proxy:Status=running",
+        "container:frontend-proxy:RestartCount=0",
+        "container:frontend-proxy:OOMKilled=false",
+        "container:frontend-proxy:StartedAt=2026-10-23T08:26:29.349062306Z",
+        "container:frontend-proxy:NanoCpus=0",
+        "container:frontend-proxy:Memory=68157440"
+      ]
+    },
+    {
+      "signal": "error_rate",
+      "service": "payment",
+      "observed": 0.3333333333333333,
+      "threshold": 0.05,
+      "window_s": 120,
+      "baseline": null,
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792754746.033=0.3333333333333333",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792754746.034=5.550000000000001",
+        "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792754746.038=0.15001000066671114",
+        "container:payment:Status=running",
+        "container:payment:RestartCount=0",
+        "container:payment:OOMKilled=false",
+        "container:payment:StartedAt=2026-10-23T08:26:28.499506526Z",
+        "container:payment:NanoCpus=0",
+        "container:payment:Memory=125829120"
+      ]
+    }
+  ],
+  "telemetry_available": true,
+  "warnings": [],
+  "run_id": "20261023T112454.114056Z-e574ae"
+}

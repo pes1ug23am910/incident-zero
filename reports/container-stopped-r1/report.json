@@ -1,0 +1,206 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "container-stopped-r1",
+  "run_id": "runs/20261023T114929.814263Z-8fd5a8fd",
+  "detected_at": "2026-10-23T11:49:28.923237+00:00",
+  "diagnosed_at": "2026-10-23T11:50:26.781110+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "container_health",
+    "service": "recommendation",
+    "observed": 1,
+    "threshold": 0,
+    "window_s": 120,
+    "baseline": null
+  },
+  "symptoms": [
+    {
+      "service": "recommendation",
+      "signal": "container_status",
+      "observed": "exited",
+      "evidence_ids": [
+        "container:recommendation:Status=exited"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "health_table",
+      "query": "{\"lookback_s\": 120}",
+      "why": "Locate every service anomaly before selecting a focused read.",
+      "finding": "Observed 20 service rows; 1 symptom entries.",
+      "evidence_ids": [
+        "container:recommendation:Status=exited"
+      ]
+    },
+    {
+      "step": 2,
+      "tool": "get_traces",
+      "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"errors_only\": true, \"limit\": 5}",
+      "why": "Identify caller error spans to the exited recommendation service to corroborate container_down with request-level failures or fallbacks.",
+      "finding": "[{\"trace_id\": \"b9e462e662e2dd7a9bcd62b4b15deca2\", \"duration_ms\": 3971.351, \"root_span\": {\"span_id\": \"23e1a57d17ee0b08\", \"service\": \"frontend\", \"operation\": \"dns.lookup\", \"duration_ms\": 3971.351, \"status_message\": \"getaddrinfo ENOTFOUND recommendation\", \"exception\": {}}, \"first_error_span\": {\"span_id\": \"23e1a57d17ee0b08\", \"service\": \"frontend\", \"operation\": \"dns.lookup\", \"duration_ms\": 3971.351, \"status_message\": \"getaddrinfo ENOTFOUND recommendation\", \"exception\": {}}, \"origin_error_spans\": [{\"span_id\": \"23e1a57d17ee0b08\", \"service\": \"frontend\", \"operation\": \"dns.lookup\", \"duration_ms\": 3971.351, \"status_message\": \"getaddrinfo ENOTFOUND recommendation\", \"exception\": {}}], \"error_spans\": [{\"span_id\": \"23e1a57d17ee0b08\", \"service\": \"frontend\", \"operation\": \"dns.lookup\", \"duration_ms\": 3971.351, \"status_message\": \"getaddrinfo ENOTFOUND recommendation\", \"exception\": {}}], \"services\": [\"frontend\"]}]",
+      "evidence_ids": [
+        "trace:b9e462e662e2dd7a9bcd62b4b15deca2",
+        "span:b9e462e662e2dd7a9bcd62b4b15deca2/23e1a57d17ee0b08"
+      ]
+    },
+    {
+      "step": 3,
+      "tool": "get_logs",
+      "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
+      "why": "Corroborate the exited recommendation container with caller-side error logs indicating failed lookups/calls to recommendation.",
+      "finding": "[]",
+      "evidence_ids": []
+    }
+  ],
+  "root_cause": {
+    "component": "recommendation",
+    "cause": "Recommendation service container is exited; frontend calls fail on DNS lookup to recommendation.",
+    "category": "container_down",
+    "confidence_model": 0.85,
+    "evidence_ids": [
+      "container:recommendation:Status=exited",
+      "trace:b9e462e662e2dd7a9bcd62b4b15deca2",
+      "span:b9e462e662e2dd7a9bcd62b4b15deca2/23e1a57d17ee0b08"
+    ],
+    "explains_symptoms": [
+      "recommendation"
+    ],
+    "alternatives_considered": [
+      "Transient DNS resolution failure in frontend unrelated to container exit",
+      "Caller-side fallback hiding user-visible errors despite dependency outage"
+    ],
+    "confidence_evidence": 0.9,
+    "confidence": 0.85
+  },
+  "root_causes": [
+    {
+      "component": "recommendation",
+      "cause": "Recommendation service container is exited; frontend calls fail on DNS lookup to recommendation.",
+      "category": "container_down",
+      "confidence_model": 0.85,
+      "evidence_ids": [
+        "container:recommendation:Status=exited",
+        "trace:b9e462e662e2dd7a9bcd62b4b15deca2",
+        "span:b9e462e662e2dd7a9bcd62b4b15deca2/23e1a57d17ee0b08"
+      ],
+      "explains_symptoms": [
+        "recommendation"
+      ],
+      "alternatives_considered": [
+        "Transient DNS resolution failure in frontend unrelated to container exit",
+        "Caller-side fallback hiding user-visible errors despite dependency outage"
+      ],
+      "confidence_evidence": 0.9,
+      "confidence": 0.85
+    }
+  ],
+  "evidence": [
+    {
+      "id": "container:recommendation:Status=exited",
+      "source": "docker",
+      "summary": "{\"name\": \"recommendation\", \"field\": \"Status\", \"value\": \"exited\"}",
+      "raw_ref": "python -m tools.resolve 'container:recommendation:Status=exited' --run-dir 'runs/20261023T114929.814263Z-8fd5a8fd'"
+    },
+    {
+      "id": "span:b9e462e662e2dd7a9bcd62b4b15deca2/23e1a57d17ee0b08",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"b9e462e662e2dd7a9bcd62b4b15deca2\", \"spanID\": \"23e1a57d17ee0b08\", \"operationName\": \"dns.lookup\", \"references\": [], \"startTime\": 1792756171213000, \"duration\": 3971351, \"tags\": [{\"key\": \"dns.error_message\", \"type\": \"string\", \"value\": \"getaddrinfo ENOTFOUND recommendation\"}, {\"key\": \"dns.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-dns\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.43.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"otel.status_description\", \"type\": \"string\", \"value\": \"getaddrinfo ENOTFOUND recommendation\"}, {\"key\": \"span.kind\", \"type\": \"string\", \"value\": \"client\"}], \"logs\": [], \"processID\": \"p1\", \"warnings\": [\"invalid parent span IDs=6d5fbc352d1d9b21; skipping clock skew adjustm",
+      "raw_ref": "python -m tools.resolve 'span:b9e462e662e2dd7a9bcd62b4b15deca2/23e1a57d17ee0b08' --run-dir 'runs/20261023T114929.814263Z-8fd5a8fd'"
+    },
+    {
+      "id": "trace:b9e462e662e2dd7a9bcd62b4b15deca2",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"b9e462e662e2dd7a9bcd62b4b15deca2\", \"warnings\": null, \"spans\": [{\"traceID\": \"b9e462e662e2dd7a9bcd62b4b15deca2\", \"spanID\": \"23e1a57d17ee0b08\", \"operationName\": \"dns.lookup\", \"references\": [], \"startTime\": 1792756171213000, \"duration\": 3971351, \"tags\": [{\"key\": \"dns.error_message\", \"type\": \"string\", \"value\": \"getaddrinfo ENOTFOUND recommendation\"}, {\"key\": \"dns.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-dns\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.43.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"otel.status_description\", \"type\": \"string\", \"value\": \"getaddrinfo ENOTFOUND recommendation\"}, {\"key\": \"span.kind\", \"type\": \"string\", \"value\": \"client\"}], \"logs\": [], \"processID\": \"p1\", \"warnin",
+      "raw_ref": "python -m tools.resolve 'trace:b9e462e662e2dd7a9bcd62b4b15deca2' --run-dir 'runs/20261023T114929.814263Z-8fd5a8fd'"
+    }
+  ],
+  "proposed_action": {
+    "type": "restart_service",
+    "target": "recommendation",
+    "parameters": {
+      "service": "recommendation"
+    },
+    "reason": "Restore the diagnosed unavailable component recommendation.",
+    "risk": "Restart may interrupt in-flight work; review state and evidence before approval.",
+    "dry_run": {
+      "performed": false,
+      "predicted_effect": "Start a fresh recommendation process and restore its availability to callers."
+    }
+  },
+  "proposed_actions": [
+    {
+      "type": "restart_service",
+      "target": "recommendation",
+      "parameters": {
+        "service": "recommendation"
+      },
+      "reason": "Restore the diagnosed unavailable component recommendation.",
+      "risk": "Restart may interrupt in-flight work; review state and evidence before approval.",
+      "dry_run": {
+        "performed": false,
+        "predicted_effect": "Start a fresh recommendation process and restore its availability to callers."
+      }
+    }
+  ],
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "container_health",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "diagnosed",
+  "escalation_note": null,
+  "prevention": "Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.",
+  "limitations": [
+    "Actions are proposals only. No approval, execution or recovery was performed.",
+    "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
+    "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs."
+  ],
+  "agent": {
+    "model": "openai/gpt-5",
+    "models_used": [
+      "openai/gpt-5"
+    ],
+    "llm_calls": 3,
+    "tokens_input": 26926,
+    "tokens_output": 3882,
+    "estimated_cost_usd": 0.072478,
+    "tool_calls": 3,
+    "elapsed_s": 56.969,
+    "stopped_because": "confident",
+    "prompt_sha256": "1b8ed98156c66f6775f94a4ae31d85efee45b7f1a0d5edcd12d846184d207652",
+    "framework": "LangGraph StateGraph + SqliteSaver"
+  },
+  "impact": {
+    "business": "auxiliary",
+    "journeys_affected": [
+      "recommendations"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "self_healing",
+    "data_risk": "none",
+    "confidence": 0.85,
+    "tier": 2,
+    "score": 45,
+    "rationale": "A critical service or process restart requires the full evidence table, a reviewer or the independent-source check, and explicit typed yes."
+  }
+}

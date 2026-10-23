@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.018=0.07142857142857142",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "ad"
+    },
+    "timestamp": 1792751384.018,
+    "value": 0.07142857142857142,
+    "query": "(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\"STATUS_CODE_ERROR\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))"
+  },
+  "captured_at": "2026-10-23T10:29:44.064259+00:00",
+  "checksum": "2ee6ff1e91961b6072f6da783f15cd9b7d892af0652c15c8be58696480229b93"
+}

@@ -1,0 +1,329 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "cache-unavailable-r1",
+  "run_id": "runs/20261023T121227.303255Z-dc304b61",
+  "detected_at": "2026-10-23T12:12:26.221274+00:00",
+  "diagnosed_at": "2026-10-23T12:21:00.296888+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "container_health",
+    "service": "valkey-cart",
+    "observed": 1,
+    "threshold": 0,
+    "window_s": 120,
+    "baseline": null
+  },
+  "symptoms": [
+    {
+      "service": "valkey-cart",
+      "signal": "container_status",
+      "observed": "exited",
+      "evidence_ids": [
+        "container:valkey-cart:Status=exited"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "health_table",
+      "query": "{\"lookback_s\": 120}",
+      "why": "Locate every service anomaly before selecting a focused read.",
+      "finding": "Observed 20 service rows; 1 symptom entries.",
+      "evidence_ids": [
+        "container:valkey-cart:Status=exited",
+        "container:valkey-cart:RestartCount=0"
+      ]
+    },
+    {
+      "step": 2,
+      "tool": "get_traces",
+      "query": "{\"service\": \"cart\", \"lookback_s\": 120, \"errors_only\": true, \"limit\": 10}",
+      "why": "Valkey-cart container is exited; inspect cart error traces to see if calls to its dependency are failing and capture error text.",
+      "finding": "[]",
+      "evidence_ids": []
+    },
+    {
+      "step": 3,
+      "tool": "get_logs",
+      "query": "{\"service\": \"cart\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
+      "why": "Valkey-cart container is exited; check cart WARN/ERROR logs for Redis/Valkey connection failures to corroborate dependency_unavailable and capture error text.",
+      "finding": "[]",
+      "evidence_ids": []
+    },
+    {
+      "step": 4,
+      "tool": "get_logs",
+      "query": "{\"service\": \"valkey-cart\", \"lookback_s\": 120, \"severity_min\": \"TRACE\"}",
+      "why": "Valkey-cart is the only anomalous service (container exited); inspect its own recent logs to corroborate the container_down hypothesis and capture any exit/error message.",
+      "finding": "[{\"timestamp\": \"2026-10-23T12:12:23.234226715Z\", \"severity\": \"UNKNOWN\", \"body\": \"7:M 23 Oct 2026 12:12:23.234 # Valkey is now ready to exit, bye bye...\", \"trace_id\": null, \"evidence_id\": \"dlog:valkey-cart:b64cf366a564f42c2aef607c92236e3943ab4485b3631a95d70ab075a7fcf08f\"}, {\"timestamp\": \"2026-10-23T12:12:23.232886438Z\", \"severity\": \"UNKNOWN\", \"body\": \"7:M 23 Oct 2026 12:12:23.232 * DB saved on disk\", \"trace_id\": null, \"evidence_id\": \"dlog:valkey-cart:6b83f20c2e14fa07eb177481e81611a2773a44c5fc41115aded461c2286bb7a6\"}, {\"timestamp\": \"2026-10-23T12:12:23.216125250Z\", \"severity\": \"UNKNOWN\", \"body\": \"7:M 23 Oct 2026 12:12:23.215 * Saving the final RDB snapshot before exiting.\", \"trace_id\": null, \"evidence_id\": \"dlog:valkey-cart:be938a345d4f177cd48d24ea4c110e5e879fab8ed24a006ed712ff57a13aeb38\"}, {\"timestamp\": \"2026-10-23T12:12:23.216085390Z\", \"severity\": \"UNKNOWN\", \"body\": \"7:M 23 Oct 2026 12:12:23.215 * User requested shutdown...\", \"trace_id\": null, \"evidence_id\": \"dlog:valkey-cart:b9cffcd418f5809ce08670b574cd39414ea6cefa36bba34b402be6cbb1b8989a\"}, {\"timestamp\": \"2026-10-23T12:12:23.133509900Z\", \"severity\": \"UNKNOWN\", \"body\": \"7:signal-handler (1792757543) Received SIGTERM scheduling shutdown...\", \"trace_id\": null, \"evidence_id\": \"dlog:valkey-cart:fb8eb1b6525e3c296f9a9624eefb1e4039c9ac2842eba400049c9b727e45d7ae\"}]",
+      "evidence_ids": [
+        "dlog:valkey-cart:b64cf366a564f42c2aef607c92236e3943ab4485b3631a95d70ab075a7fcf08f",
+        "dlog:valkey-cart:b9cffcd418f5809ce08670b574cd39414ea6cefa36bba34b402be6cbb1b8989a",
+        "dlog:valkey-cart:fb8eb1b6525e3c296f9a9624eefb1e4039c9ac2842eba400049c9b727e45d7ae"
+      ]
+    },
+    {
+      "step": 5,
+      "tool": "get_container_health",
+      "query": "{\"names\": [\"valkey-cart\"]}",
+      "why": "Confirm the valkey-cart container is actually stopped to independently corroborate the container_down hypothesis and raise confidence beyond logs alone.",
+      "finding": "[{\"name\": \"valkey-cart\", \"Status\": \"exited\", \"RestartCount\": 0, \"OOMKilled\": false, \"StartedAt\": \"2026-10-23T09:24:11.286875556Z\", \"Created\": \"2026-10-23T09:24:10.966228096Z\", \"NanoCpus\": 0, \"Memory\": 20971520, \"health\": null, \"cpu_percent\": 0.0, \"memory_mb\": 0.0}]",
+      "evidence_ids": [
+        "container:valkey-cart:Status=exited",
+        "container:valkey-cart:RestartCount=0"
+      ]
+    },
+    {
+      "step": 6,
+      "tool": "get_deploy_history",
+      "query": "{}",
+      "why": "Corroborate valkey-cart graceful shutdown via lifecycle events to independently confirm container_down and raise confidence beyond logs and status alone; also rule out restart loops.",
+      "finding": "[{\"timestamp\": \"2026-10-23T12:05:36.283275407Z\", \"kind\": \"StartedAt\", \"container\": \"recommendation\", \"evidence_id\": \"container:recommendation:StartedAt=2026-10-23T12:05:36.283275407Z\"}, {\"timestamp\": \"2026-10-23T12:05:35.920657266Z\", \"kind\": \"Created\", \"container\": \"recommendation\", \"evidence_id\": \"container:recommendation:Created=2026-10-23T12:05:35.920657266Z\"}]",
+      "evidence_ids": [
+        "container:recommendation:StartedAt=2026-10-23T12:05:36.283275407Z"
+      ]
+    },
+    {
+      "step": 7,
+      "tool": "get_logs",
+      "query": "{\"service\": \"cart\", \"lookback_s\": 120, \"severity_min\": \"TRACE\"}",
+      "why": "Cart may have hidden connection failures to the stopped valkey-cart; TRACE logs can reveal Redis/Valkey errors even when WARN logs and error traces are empty, proving caller failures or confirming lack of impact.",
+      "finding": "[{\"timestamp\": \"2026-10-23T12:15:14.4796035Z\", \"severity\": \"Information\", \"body\": \"AddItemAsync called with userId={userId}, productId={productId}, quantity={quantity}\", \"trace_id\": \"c672d049124f54d8c508983f3caca127\", \"evidence_id\": \"log:otel/yFqvaKEBUZiyFLby2MwC\"}, {\"timestamp\": \"2026-10-23T12:15:09.351042Z\", \"severity\": \"Information\", \"body\": \"GetCartAsync called with userId={userId}\", \"trace_id\": \"d240cbd8afe3b8b2de5b66735e387bc1\", \"evidence_id\": \"log:otel/xlqvaKEBUZiyFLbyw8x3\"}, {\"timestamp\": \"2026-10-23T12:15:05.6705481Z\", \"severity\": \"Information\", \"body\": \"GetCartAsync called with userId={userId}\", \"trace_id\": \"afe5bca4c49cedd2844acecc6c511c5f\", \"evidence_id\": \"log:otel/xFqvaKEBUZiyFLbyr8y_\"}, {\"timestamp\": \"2026-10-23T12:15:04.9101834Z\", \"severity\": \"Information\", \"body\": \"AddItemAsync called with userId={userId}, productId={productId}, quantity={quantity}\", \"trace_id\": \"c9a30a626c22e45cb23d98f3aef0cbff\", \"evidence_id\": \"log:otel/w1qvaKEBUZiyFLbyr8y_\"}, {\"timestamp\": \"2026-10-23T12:14:54.3067724Z\", \"severity\": \"Information\", \"body\": \"GetCartAsync called with userId={userId}\", \"trace_id\": \"aa7c434e6a81343e0b52901292141185\", \"evidence_id\": \"log:otel/ulqvaKEBUZiyFLbyiMwP\"}, {\"timestamp\": \"2026-10-23T12:14:50.6637727Z\", \"severity\": \"Information\", \"body\": \"AddItemAsync called with userId={userId}, productId={productId}, quantity={quantity}\", \"trace_id\": \"c2a438dffdc0227bf2c1166bc949afbc\", \"evidence_id\": \"log:otel/t1qvaKEBUZiyFLbydcwM\"}, {\"timestamp\": \"2026-10-23T12:14:45.4",
+      "evidence_ids": [
+        "log:otel/sVqvaKEBUZiyFLbyYcxR"
+      ]
+    },
+    {
+      "step": 8,
+      "tool": "get_traces",
+      "query": "{\"service\": \"cart\", \"lookback_s\": 120, \"errors_only\": false, \"limit\": 10}",
+      "why": "Cart reported “Wasn't able to connect to redis” with trace_id=8fb967da8f1a470d0a0c95c58de47e73; fetch recent cart traces (not only errors) to corroborate dependency failures to the exited valkey-cart and capture concrete failing operation details.",
+      "finding": "[]",
+      "evidence_ids": []
+    },
+    {
+      "step": 9,
+      "tool": "get_traces",
+      "query": "{\"service\": \"cart\", \"lookback_s\": 600, \"errors_only\": true, \"limit\": 10}",
+      "why": "Cart logged “Wasn't able to connect to redis” while valkey-cart is exited; expand to a longer window to find cart error traces that show failed calls to the down dependency and capture the failing operation to raise confidence.",
+      "finding": "[{\"trace_id\": \"ff4c74c49f288ef4438161d0911a9ad9\", \"duration_ms\": 255949.921, \"root_span\": {\"span_id\": \"898e8d866b5c30ac\", \"service\": \"load-generator\", \"operation\": \"GET\", \"duration_ms\": 15002.569, \"status_message\": \"\", \"exception\": {}}, \"first_error_span\": {\"span_id\": \"d8e8151e3426ecf3\", \"service\": \"cart\", \"operation\": \"POST /oteldemo.CartService/GetCart\", \"duration_ms\": 255919.958, \"status_message\": \"Status(StatusCode=\\\"FailedPrecondition\\\", Detail=\\\"Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\\n   at cart.cartstore.ValkeyCartStore.EnsureRedisConnected() in /usr/src/app/src/cartstore/ValkeyCartStore.cs:line 95\\n   at cart.cartstore.ValkeyCartStore.GetCartAsy\", \"exception\": {\"exception.message\": \"Status(StatusCode=\\\"FailedPrecondition\\\", Detail=\\\"Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\\n   at cart.cartstore.ValkeyCartStore.EnsureRedisConnected() in /usr/src/app/src/cartstore/ValkeyCartStore.cs:line 95\\n   at cart.cartstore.ValkeyCartStore.GetCartAsy\", \"exception.stacktrace\": \"Grpc.Core.RpcException: Status(StatusCode=\\\"FailedPrecondition\\\", Detail=\\\"Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\\n   at cart.cartstore.ValkeyCartStore.EnsureRedisConnected() in /usr/src/app/src/cartstore/ValkeyCartStore.cs:line 95\\n   at cart.cartstore.Va\", \"exception.type\": \"Grpc.Core.RpcException\"}}, \"origin_error_spans\": [{\"span_id\": \"d8e8151e3426ecf3\", \"service\"",
+      "evidence_ids": [
+        "span:ff4c74c49f288ef4438161d0911a9ad9/d8e8151e3426ecf3",
+        "span:8fb967da8f1a470d0a0c95c58de47e73/965d493810afbb93"
+      ]
+    },
+    {
+      "step": 10,
+      "tool": "get_traces",
+      "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"errors_only\": true, \"limit\": 10}",
+      "why": "Confirm active user-facing errors within the last 2 minutes that propagate from the down valkey-cart by checking frontend error traces referencing cart/redis failures; this adds a fresh, independent source to raise confidence.",
+      "finding": "[]",
+      "evidence_ids": []
+    },
+    {
+      "step": 11,
+      "tool": "get_logs",
+      "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
+      "why": "Find fresh user-facing errors in frontend logs that reference cart/redis failures to add an independent corroborating source for valkey-cart container_down and raise confidence.",
+      "finding": "[{\"timestamp\": \"2026-10-23T12:18:46.443687611Z\", \"severity\": \"ERROR\", \"body\": \" ⨯ Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de\"}, {\"timestamp\": \"2026-10-23T12:18:46.443326924Z\", \"severity\": \"ERROR\", \"body\": \"Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014\"}]",
+      "evidence_ids": [
+        "dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de",
+        "dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014"
+      ]
+    },
+    {
+      "step": 12,
+      "tool": "get_metrics",
+      "query": "{\"promql\": \"named:error_rate_by_service{service_name=\\\"cart\\\"}\", \"lookback_s\": 600}",
+      "why": "Add a third, independent source by verifying cart’s error rate via metrics over the last 10 minutes. This corroborates that callers are failing while valkey-cart is exited, separating container_down from unrelated app errors or transient logs.",
+      "finding": "[]",
+      "evidence_ids": []
+    }
+  ],
+  "root_cause": {
+    "component": "valkey-cart",
+    "cause": "Container exited after receiving SIGTERM; while down, cart requests to the cart store fail with \"Wasn't able to connect to redis\" causing FAILED_PRECONDITION errors that propagate to frontend.",
+    "category": "container_down",
+    "confidence_model": 0.9,
+    "evidence_ids": [
+      "container:valkey-cart:Status=exited",
+      "container:valkey-cart:RestartCount=0",
+      "dlog:valkey-cart:fb8eb1b6525e3c296f9a9624eefb1e4039c9ac2842eba400049c9b727e45d7ae",
+      "dlog:valkey-cart:b9cffcd418f5809ce08670b574cd39414ea6cefa36bba34b402be6cbb1b8989a",
+      "dlog:valkey-cart:b64cf366a564f42c2aef607c92236e3943ab4485b3631a95d70ab075a7fcf08f",
+      "span:ff4c74c49f288ef4438161d0911a9ad9/d8e8151e3426ecf3",
+      "span:8fb967da8f1a470d0a0c95c58de47e73/965d493810afbb93",
+      "log:otel/sVqvaKEBUZiyFLbyYcxR",
+      "dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014",
+      "dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de"
+    ],
+    "explains_symptoms": [],
+    "alternatives_considered": [
+      "Cart application exception unrelated to Redis",
+      "Network issue between cart and valkey-cart",
+      "Restart loop of valkey-cart rather than a clean stop"
+    ],
+    "confidence_evidence": 0.55,
+    "confidence": 0.55
+  },
+  "root_causes": [
+    {
+      "component": "valkey-cart",
+      "cause": "Container exited after receiving SIGTERM; while down, cart requests to the cart store fail with \"Wasn't able to connect to redis\" causing FAILED_PRECONDITION errors that propagate to frontend.",
+      "category": "container_down",
+      "confidence_model": 0.9,
+      "evidence_ids": [
+        "container:valkey-cart:Status=exited",
+        "container:valkey-cart:RestartCount=0",
+        "dlog:valkey-cart:fb8eb1b6525e3c296f9a9624eefb1e4039c9ac2842eba400049c9b727e45d7ae",
+        "dlog:valkey-cart:b9cffcd418f5809ce08670b574cd39414ea6cefa36bba34b402be6cbb1b8989a",
+        "dlog:valkey-cart:b64cf366a564f42c2aef607c92236e3943ab4485b3631a95d70ab075a7fcf08f",
+        "span:ff4c74c49f288ef4438161d0911a9ad9/d8e8151e3426ecf3",
+        "span:8fb967da8f1a470d0a0c95c58de47e73/965d493810afbb93",
+        "log:otel/sVqvaKEBUZiyFLbyYcxR",
+        "dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014",
+        "dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de"
+      ],
+      "explains_symptoms": [],
+      "alternatives_considered": [
+        "Cart application exception unrelated to Redis",
+        "Network issue between cart and valkey-cart",
+        "Restart loop of valkey-cart rather than a clean stop"
+      ],
+      "confidence_evidence": 0.55,
+      "confidence": 0.55
+    }
+  ],
+  "evidence": [
+    {
+      "id": "container:recommendation:StartedAt=2026-10-23T12:05:36.283275407Z",
+      "source": "docker",
+      "summary": "{\"name\": \"recommendation\", \"field\": \"StartedAt\", \"value\": \"2026-10-23T12:05:36.283275407Z\"}",
+      "raw_ref": "python -m tools.resolve 'container:recommendation:StartedAt=2026-10-23T12:05:36.283275407Z' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "container:valkey-cart:RestartCount=0",
+      "source": "docker",
+      "summary": "{\"name\": \"valkey-cart\", \"field\": \"RestartCount\", \"value\": 0}",
+      "raw_ref": "python -m tools.resolve 'container:valkey-cart:RestartCount=0' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "container:valkey-cart:Status=exited",
+      "source": "docker",
+      "summary": "{\"name\": \"valkey-cart\", \"field\": \"Status\", \"value\": \"exited\"}",
+      "raw_ref": "python -m tools.resolve 'container:valkey-cart:Status=exited' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-23T12:18:46.443687611Z\", \"severity\": \"ERROR\", \"body\": \" ⨯ Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de\", \"original_line\": \"2026-10-23T12:18:46.443687611Z  ⨯ Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\"}",
+      "raw_ref": "python -m tools.resolve 'dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-23T12:18:46.443326924Z\", \"severity\": \"ERROR\", \"body\": \"Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014\", \"original_line\": \"2026-10-23T12:18:46.443326924Z Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\"}",
+      "raw_ref": "python -m tools.resolve 'dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "dlog:valkey-cart:b64cf366a564f42c2aef607c92236e3943ab4485b3631a95d70ab075a7fcf08f",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-23T12:12:23.234226715Z\", \"severity\": \"UNKNOWN\", \"body\": \"7:M 23 Oct 2026 12:12:23.234 # Valkey is now ready to exit, bye bye...\", \"trace_id\": null, \"evidence_id\": \"dlog:valkey-cart:b64cf366a564f42c2aef607c92236e3943ab4485b3631a95d70ab075a7fcf08f\", \"original_line\": \"2026-10-23T12:12:23.234226715Z 7:M 23 Oct 2026 12:12:23.234 # Valkey is now ready to exit, bye bye...\"}",
+      "raw_ref": "python -m tools.resolve 'dlog:valkey-cart:b64cf366a564f42c2aef607c92236e3943ab4485b3631a95d70ab075a7fcf08f' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "dlog:valkey-cart:b9cffcd418f5809ce08670b574cd39414ea6cefa36bba34b402be6cbb1b8989a",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-23T12:12:23.216085390Z\", \"severity\": \"UNKNOWN\", \"body\": \"7:M 23 Oct 2026 12:12:23.215 * User requested shutdown...\", \"trace_id\": null, \"evidence_id\": \"dlog:valkey-cart:b9cffcd418f5809ce08670b574cd39414ea6cefa36bba34b402be6cbb1b8989a\", \"original_line\": \"2026-10-23T12:12:23.216085390Z 7:M 23 Oct 2026 12:12:23.215 * User requested shutdown...\"}",
+      "raw_ref": "python -m tools.resolve 'dlog:valkey-cart:b9cffcd418f5809ce08670b574cd39414ea6cefa36bba34b402be6cbb1b8989a' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "dlog:valkey-cart:fb8eb1b6525e3c296f9a9624eefb1e4039c9ac2842eba400049c9b727e45d7ae",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-23T12:12:23.133509900Z\", \"severity\": \"UNKNOWN\", \"body\": \"7:signal-handler (1792757543) Received SIGTERM scheduling shutdown...\", \"trace_id\": null, \"evidence_id\": \"dlog:valkey-cart:fb8eb1b6525e3c296f9a9624eefb1e4039c9ac2842eba400049c9b727e45d7ae\", \"original_line\": \"2026-10-23T12:12:23.133509900Z 7:signal-handler (1792757543) Received SIGTERM scheduling shutdown...\"}",
+      "raw_ref": "python -m tools.resolve 'dlog:valkey-cart:fb8eb1b6525e3c296f9a9624eefb1e4039c9ac2842eba400049c9b727e45d7ae' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "log:otel/sVqvaKEBUZiyFLbyYcxR",
+      "source": "opensearch",
+      "summary": "{\"attributes\": {\"data_stream\": {\"dataset\": \"default\", \"namespace\": \"namespace\", \"type\": \"record\"}}, \"body\": \"Wasn't able to connect to redis\", \"instrumentationScope\": {\"name\": \"cart.cartstore.ValkeyCartStore\"}, \"observedTimestamp\": \"2026-10-23T12:14:46.608317654Z\", \"resource\": {\"container.id\": \"897bfeb378fdf4ef681fa0748d3109e75c630cddd80ac9906f874bfcae56228f\", \"host.name\": \"897bfeb378fd\", \"service.name\": \"cart\", \"service.namespace\": \"opentelemetry-demo\", \"service.version\": \"2.0.2\", \"telemetry.sdk.language\": \"dotnet\", \"telemetry.sdk.name\": \"opentelemetry\", \"telemetry.sdk.version\": \"1.11.2\"}, \"severity\": {\"text\": \"Error\", \"number\": 17}, \"spanId\": \"965d493810afbb93\", \"@timestamp\": \"2026-10-23T12:14:43.3536294Z\", \"traceId\": \"8fb967da8f1a470d0a0c95c58de47e73\"}",
+      "raw_ref": "python -m tools.resolve 'log:otel/sVqvaKEBUZiyFLbyYcxR' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "span:8fb967da8f1a470d0a0c95c58de47e73/965d493810afbb93",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"8fb967da8f1a470d0a0c95c58de47e73\", \"spanID\": \"965d493810afbb93\", \"operationName\": \"POST /oteldemo.CartService/AddItem\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"8fb967da8f1a470d0a0c95c58de47e73\", \"spanID\": \"86b6ef232bd9cacb\"}], \"startTime\": 1792757546662272, \"duration\": 136944258, \"tags\": [{\"key\": \"app.product.id\", \"type\": \"string\", \"value\": \"66VCHSJNUP\"}, {\"key\": \"app.product.quantity\", \"type\": \"int64\", \"value\": 2}, {\"key\": \"app.user.id\", \"type\": \"string\", \"value\": \"02dedbb4-cedb-11f1-b855-4a77265a94bd\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.method\", \"type\": \"string\", \"value\": \"/oteldemo.CartService/AddItem\"}, {\"key\": \"grpc.status_code\", \"type\": \"string\", \"value\": \"9\"}, {\"key\": \"http.request.method\", \"type\": \"string\", \"value\": \"POST\"}, {\"key\": \"http.response.status_code\", \"type\": \"int64\", \"value\": 200}, {\"key\": \"http.route\", \"type\": \"stri",
+      "raw_ref": "python -m tools.resolve 'span:8fb967da8f1a470d0a0c95c58de47e73/965d493810afbb93' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    },
+    {
+      "id": "span:ff4c74c49f288ef4438161d0911a9ad9/d8e8151e3426ecf3",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"ff4c74c49f288ef4438161d0911a9ad9\", \"spanID\": \"d8e8151e3426ecf3\", \"operationName\": \"POST /oteldemo.CartService/GetCart\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"ff4c74c49f288ef4438161d0911a9ad9\", \"spanID\": \"b6b865e2f5d91804\"}], \"startTime\": 1792757548767462, \"duration\": 255919958, \"tags\": [{\"key\": \"app.user.id\", \"type\": \"string\", \"value\": \"\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.method\", \"type\": \"string\", \"value\": \"/oteldemo.CartService/GetCart\"}, {\"key\": \"grpc.status_code\", \"type\": \"string\", \"value\": \"9\"}, {\"key\": \"http.request.method\", \"type\": \"string\", \"value\": \"POST\"}, {\"key\": \"http.response.status_code\", \"type\": \"int64\", \"value\": 200}, {\"key\": \"http.route\", \"type\": \"string\", \"value\": \"/oteldemo.CartService/GetCart\"}, {\"key\": \"network.protocol.version\", \"type\": \"string\", \"value\": \"2\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"val",
+      "raw_ref": "python -m tools.resolve 'span:ff4c74c49f288ef4438161d0911a9ad9/d8e8151e3426ecf3' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
+    }
+  ],
+  "proposed_action": null,
+  "proposed_actions": [],
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "container_health",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "needs_human",
+  "escalation_note": "Inspect the unresolved observations and collect fresh component/dependency evidence. No action proposed. Evidence-limited confidence is below 0.60. Escalate with evidence; no action may be proposed. Runbook: collect fresh component and dependency traces, logs and container state; review persistence and rollback before selecting a change.",
+  "prevention": "Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.",
+  "limitations": [
+    "Actions are proposals only. No approval, execution or recovery was performed.",
+    "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
+    "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs.",
+    "Unexplained symptom services: valkey-cart"
+  ],
+  "agent": {
+    "model": "openai/gpt-5",
+    "models_used": [
+      "openai/gpt-5"
+    ],
+    "llm_calls": 18,
+    "tokens_input": 224745,
+    "tokens_output": 37247,
+    "estimated_cost_usd": 0.653401,
+    "tool_calls": 12,
+    "elapsed_s": 512.984,
+    "stopped_because": "budget",
+    "prompt_sha256": "1b8ed98156c66f6775f94a4ae31d85efee45b7f1a0d5edcd12d846184d207652",
+    "framework": "LangGraph StateGraph + SqliteSaver"
+  },
+  "impact": {
+    "business": "critical",
+    "journeys_affected": [
+      "cart",
+      "checkout"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "self_healing",
+    "data_risk": "none",
+    "confidence": 0.55,
+    "tier": 3,
+    "score": 70,
+    "rationale": "Evidence-limited confidence is below 0.60. Escalate with evidence; no action may be proposed."
+  }
+}

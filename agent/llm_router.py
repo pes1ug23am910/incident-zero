@@ -112,7 +112,8 @@ class Router:
                     entry.update(ok=False, error=type(exc).__name__, error_detail=scrub(str(exc), self.secrets)[:500], http_status=status,
                                  latency_s=round(time.monotonic() - started, 3))
                     self._log(entry)
-                    retryable = status in (429, 500, 502, 503, 504) or isinstance(exc, (requests.ConnectionError, requests.Timeout))
+                    retryable = status in (429, 500, 502, 503, 504) or isinstance(exc, (
+                        requests.ConnectionError, requests.Timeout, requests.exceptions.ChunkedEncodingError))
                     if not retryable or attempt:
                         break
                     time.sleep(1)
