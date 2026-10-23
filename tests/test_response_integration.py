@@ -9,7 +9,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 import pytest
 
 from action_api.app import create_app
-from agent.respond import config_for, pending_checkpoint, resume
+from agent.respond import abort_pending, config_for, pending_checkpoint, resume
 from agent.reporting import write_bundle
 from schema.validate import validate_report
 from test_action_api import env, pause_brain, synthetic_report
@@ -43,6 +43,17 @@ def bundle(api, monkeypatch, incident='integration-payment'):
     path = api.root / 'reports' / incident / 'report.json'
     write_bundle(report, report['alert'], run.path, path)
     return report, path
+
+
+def prepare_real_preview(api, report):
+    """Upgrade a retained brain fixture exactly as the live response graph does."""
+    from agent.respond import build_graph
+    with SqliteSaver.from_conn_string(str(api.root / 'runs/checkpoints.sqlite')) as saver:
+        graph = build_graph(None, saver, api)
+        config = config_for(report['run_id'])
+        graph.update_state(config, {'action_index': 0, 'action_results': []}, as_node='propose')
+        graph.invoke(None, config)
+        return graph.get_state(config).values['dry_run']
 
 
 @pytest.mark.parametrize('approved,status', [(True, 'fixed'), (False, 'needs_human')])
@@ -175,6 +186,82 @@ def test_terminal_joins_browser_already_verifying_before_terminal_entry(env, mon
     assert results[0]['status'] == 'fixed'
     assert json.loads(path.read_text(encoding='utf-8'))['status'] == 'fixed'
     assert len(executor.mutations) == 1 and len(api.attempts()) == 1
+
+
+@pytest.mark.parametrize('after_listing', [False, True])
+def test_browser_cannot_rebind_checkpoint_diagnosis_to_changed_world(env, monkeypatch, after_listing):
+    api, executor, _, _ = env
+    report, _ = bundle(api, monkeypatch, 'integration-world-change')
+    original = prepare_real_preview(api, report)
+    app = create_app(api, reports_dir=api.root / 'reports')
+    with TestClient(app) as client:
+        if after_listing:
+            pending = client.get('/api/approvals').json()['pending'][0]
+            for field in ('plan_digest', 'report_digest', 'world_state_hash'):
+                assert pending['preview'][field] == original[field]
+        executor.world['switch'] = 'operator reset after diagnosis'
+        if after_listing:
+            response = client.post('/api/approvals/' + pending['id'] + '/approve', json={
+                'operator': 'Browser reviewer', 'confirmation': 'yes', 'revision': pending['revision']})
+            assert response.status_code == 409
+        queue = client.get('/api/approvals').json()
+        assert not queue['pending']
+        assert any(item.get('reason') == 'WORLD_OR_PLAN_CHANGED' for item in queue['history'])
+        assert not executor.mutations and not api.attempts()
+    app.state.control_room.backend().pool.shutdown(wait=True)
+
+
+@pytest.mark.parametrize('stop_url', ['/api/stop', '/stop'])
+def test_stop_closes_pending_approval_and_persists_aborted_without_execution(env, monkeypatch, stop_url):
+    api, executor, _, _ = env
+    report, path = bundle(api, monkeypatch, 'integration-pending-stop')
+    prepare_real_preview(api, report)
+    with pytest.raises(ValueError, match='STOP must be latched'):
+        abort_pending(report, root=api.root, service=api, report_path=path)
+    app = create_app(api, reports_dir=api.root / 'reports')
+    with TestClient(app) as client:
+        assert client.get('/api/approvals').json()['pending']
+        stopped = client.post(stop_url, json={'operator': 'Test operator'})
+        assert stopped.status_code == 200 and stopped.json()['stopped']
+        saved = json.loads(path.read_text(encoding='utf-8'))
+        assert saved['status'] == 'aborted' and not saved['action']['executed']
+        assert saved['approval']['approved'] is None
+        assert 'approval_aborted' in (path.parent / 'action-log.jsonl').read_text(encoding='utf-8')
+        assert not executor.mutations and not api.attempts()
+        assert not client.get('/api/approvals').json()['pending']
+        # A terminal arriving just after STOP joins this same canonical result.
+        assert resume(report, root=api.root, service=api)['status'] == 'aborted'
+    app.state.control_room.backend().pool.shutdown(wait=True)
+
+
+def test_terminal_poll_notices_cli_stop_and_aborts_pending_checkpoint(env, monkeypatch):
+    import agent.respond as response
+    api, executor, _, _ = env
+    report, path = bundle(api, monkeypatch, 'integration-terminal-stop')
+    prepare_real_preview(api, report)
+    entered, stopped = threading.Event(), threading.Event()
+    def polling_input(prompt, changed):
+        entered.set()
+        assert stopped.wait(10)
+        assert changed()
+        raise response._ResponseElsewhere()
+    monkeypatch.setattr(response, '_terminal_input', polling_input)
+    results, errors = [], []
+    def terminal():
+        try:
+            results.append(resume(report, root=api.root, service=api, report_path=path))
+        except Exception as exc:
+            errors.append(exc)
+    thread = threading.Thread(target=terminal)
+    thread.start()
+    assert entered.wait(10)
+    api.stop('Test terminal operator')
+    stopped.set()
+    thread.join(10)
+    assert not errors and not thread.is_alive()
+    assert results[0]['status'] == 'aborted'
+    assert not executor.mutations and not api.attempts()
+    assert json.loads(path.read_text(encoding='utf-8'))['status'] == 'aborted'
 
 
 def test_run_graph_pauses_after_real_dry_run_without_mutating(env):
