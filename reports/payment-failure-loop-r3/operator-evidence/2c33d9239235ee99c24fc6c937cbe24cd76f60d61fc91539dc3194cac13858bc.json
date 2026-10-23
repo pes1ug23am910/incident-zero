@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792770160.635=0.333350000833375",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "payment"
+    },
+    "timestamp": 1792770160.635,
+    "value": 0.333350000833375,
+    "query": "named:rps_by_service"
+  },
+  "captured_at": "2026-10-23T15:42:40.706536+00:00",
+  "checksum": "69416dd5fdd418e2af6e7ab403ac96d35e50ac28ff846199370e1a75fc52005d"
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792768500.2=0.0",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "email"
+    },
+    "timestamp": 1792768500.2,
+    "value": 0.0,
+    "query": "named:error_rate_by_service"
+  },
+  "captured_at": "2026-10-23T15:15:00.273559+00:00",
+  "checksum": "ea1574d5635d9c67b521b8697ea65b60bc1026a84a6f5616998db440fde906fe"
+}
