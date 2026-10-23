@@ -13,13 +13,14 @@ $root = Split-Path -Parent $PSScriptRoot
 $py = Join-Path $root '.venv/Scripts/python.exe'
 if (-not $Live) {
     Write-Host 'Preview. Run scripts/demo.ps1 -Live for the real demonstration; add -BrowserApproval to approve in the Control Room.'
-    Write-Host 'Before presentation: reset and measure >=180s of clean, traffic-qualified telemetry.'
-    Write-Host '0:00-1:15 inject, alert, investigation, evidence and human approval in terminal or browser.'
-    Write-Host '1:15-4:30 execute and verify >=180s; show the final report and action log.'
+    Write-Host 'Before presentation: reset, measure >=180s clean traffic, inject a real incident, detect and diagnose it.'
+    Write-Host 'Start the five-minute clock only at PRESENTATION READY, when the real diagnosis is awaiting approval.'
+    Write-Host '0:00-0:45 review the retained live alert, investigation and evidence; approve in terminal or browser.'
+    Write-Host '0:45-4:30 execute and verify >=180s; show the updated report and action log.'
     Write-Host '4:30-5:00 BLOCK forbidden operation (403/reason code), STOP, and a stopped allowed action (423).'
     Write-Host 'Optional -RejectedReport shows rejection of an existing real tier-2 checkpoint without executing it.'
     Write-Host 'After presentation: reset, measure >=180s of clean traffic, and explicitly clear STOP.'
-    Write-Host 'Five minutes is a target. Model/alert latency can exceed it; verification is never shortened.'
+    Write-Host 'Injection, alert and diagnosis happen during preparation, not during the timed five minutes. Verification is never shortened.'
     exit 0
 }
 if ($env:INCIDENT_ZERO_TEST -eq '1') { throw 'Unset INCIDENT_ZERO_TEST before the demo; only real human approval is accepted.' }
@@ -41,8 +42,8 @@ try {
         if ($rejected.impact.tier -ne 2) { throw 'The optional rejection report must be tier 2.' }
     }
     $ownsStack = $true
-    Write-Host 'Control Room: http://127.0.0.1:8787. Initial reset and clearance are preflight; begin the five-minute clock at injection.'
-    $arguments = @('-m', 'scripts.hands_rehearsal', $Incident, '--live', '--report-id', $ReportId, '--operator', $Operator, '--ensure-control-room', '--defer-cleanup', '--load-users', $LoadUsers)
+    Write-Host 'Control Room: http://127.0.0.1:8787. Reset, injection, alert and diagnosis are preparation; start the clock only at PRESENTATION READY.'
+    $arguments = @('-m', 'scripts.hands_rehearsal', $Incident, '--live', '--report-id', $ReportId, '--operator', $Operator, '--ensure-control-room', '--defer-cleanup', '--load-users', $LoadUsers, '--presentation-ready')
     if ($Service) { $arguments += @('--svc', $Service) }
     if ($BrowserApproval) { $arguments += @('--approval-mode', 'browser') }
     Invoke-CheckedPython @arguments

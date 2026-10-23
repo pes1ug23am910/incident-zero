@@ -104,6 +104,30 @@ def rejection_world_hash(service, proposal):
         return {"hash": None, "available": False, "error": getattr(exc, "code", type(exc).__name__)}
 
 
+def action_log_excerpt(path):
+    """Keep the terminal readable; the exact full audit remains in the bundle."""
+    entries = [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
+    if not entries:
+        return "No action attempt was recorded."
+    rendered = []
+    if len(entries) > 12:
+        rendered.append(f"Last 12 of {len(entries)} entries; complete log: {path}")
+    for entry in entries[-12:]:
+        summary = {key: entry[key] for key in ("line_no", "ts", "event", "action", "target", "actor", "mode", "duration_ms") if key in entry}
+        result = entry.get("result")
+        if isinstance(result, dict):
+            concise = {key: result[key] for key in ("decision", "reason_codes", "outcome", "recovered", "rolled_back", "before", "after", "requests_observed") if key in result}
+            samples = result.get("samples", [])
+            if samples:
+                concise.update(window_s=samples[-1].get("elapsed_s"), sample_count=len(samples),
+                    last_two=[{key: point[key] for key in ("elapsed_s", "qualified_recovery", "requests_observed", "load_running", "values") if key in point} for point in samples[-2:]])
+            summary["result"] = concise
+        elif result is not None:
+            summary["result"] = result
+        rendered.append(json.dumps(summary, ensure_ascii=False))
+    return "\n".join(rendered)
+
+
 def ensure_control_room(root=ROOT):
     """Reuse a real local API, or start one hidden and leave it available."""
     def probe():
@@ -225,6 +249,7 @@ def main(argv=None):
     parser.add_argument("--stop-after-seconds", type=float)
     parser.add_argument("--approval-mode", choices=("terminal", "browser"), default="terminal")
     parser.add_argument("--ensure-control-room", action="store_true")
+    parser.add_argument("--presentation-ready", action="store_true", help="Mark the five-minute presentation boundary after live diagnosis and before approval")
     parser.add_argument("--load-users", type=int, help="Operator setup: capture the swarm, use this many users/spawn 5, restore it during cleanup")
     parser.add_argument("--prepared-stack", action="store_true", help="Outer demo driver already verified a complete clean window")
     parser.add_argument("--defer-cleanup", action="store_true", help="Outer demo driver owns reset and clean verification in finally")
@@ -312,6 +337,9 @@ def main(argv=None):
         report = json.loads((bundle / "report.json").read_text(encoding="utf-8"))
         print((bundle / "report.md").read_text(encoding="utf-8"), flush=True)
         timings["inject_to_report_s"] = round(time.monotonic() - started, 3)
+        if args.presentation_ready:
+            print("PRESENTATION READY: start the five-minute clock now. Reset, live injection, alert and diagnosis above were preparation.", flush=True)
+            print("Review the retained alert and evidence, approve the live plan, then observe the full >=180-second verification.", flush=True)
         final = report
         if report.get("proposed_actions"):
             service = ActionService(ROOT)
@@ -349,7 +377,7 @@ def main(argv=None):
         log = bundle / "action-log.jsonl"
         if not log.exists():
             log.write_text("", encoding="utf-8")
-        print("Action-log excerpt:\n" + (log.read_text(encoding="utf-8") or "No action attempt was recorded."), flush=True)
+        print("Action-log excerpt:\n" + action_log_excerpt(log), flush=True)
     except Exception as exc:
         failed = True
         outcome["error"] = str(exc)
