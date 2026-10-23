@@ -335,3 +335,31 @@ def test_run_graph_pauses_after_real_dry_run_without_mutating(env):
     assert canonical['report'] == report
     final = resume(report, root=api.root, service=api, input_fn=lambda _: 'yes')
     assert final['status'] == 'fixed' and len(executor.mutations) == 1
+
+
+@pytest.mark.parametrize('state,users,status', [('running', 21, 'fixed'), ('stopped', 0, 'rolled_back'), ('running', 0, 'rolled_back')])
+def test_response_persists_swarm_observations_and_rejects_residual_traffic_recovery(env, monkeypatch, state, users, status):
+    from tools.evidence import find_bundle_snapshot
+    api, executor, _, sample = env
+    report, path = bundle(api, monkeypatch, 'integration-active-swarm')
+    sample.update(load_state='running', load_user_count=21, load_observed_at=datetime.now(timezone.utc).isoformat(),
+                  load_available=True, load_container_running=True, requests_observed=70)
+    original_execute = executor.execute
+    def execute_then_observe_swarm(plan, before):
+        original_execute(plan, before)
+        sample.update(load_state=state, load_user_count=users, load_running=state == 'running' and users > 0)
+    monkeypatch.setattr(executor, 'execute', execute_then_observe_swarm)
+    final = resume(report, root=api.root, service=api, report_path=path, input_fn=lambda _: 'yes')
+    assert final['status'] == status
+    saved = json.loads(path.read_text(encoding='utf-8'))
+    assert validate_report(saved, resolver=lambda identifier: find_bundle_snapshot(identifier, path.parent)) == []
+    assert saved['verification']['samples'][-1]['elapsed_s'] == 180
+    assert saved['verification']['recovered'] is (status == 'fixed')
+    assert saved['verification']['rolled_back'] is (status == 'rolled_back')
+    for point in saved['verification']['samples']:
+        assert point['requests_observed'] == 70 and point['load_container_running']
+        assert point['load_state'] == state and point['load_user_count'] == users
+        snapshot = find_bundle_snapshot(point['evidence_ids'][-1], path.parent)
+        assert snapshot['source'] == 'action_log' and snapshot['data']['event'] == 'load_observed'
+        assert snapshot['data']['load_state'] == state and snapshot['data']['load_user_count'] == users
+        assert snapshot['data']['complete'] is True
