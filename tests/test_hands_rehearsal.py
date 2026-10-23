@@ -210,9 +210,10 @@ def test_control_waits_for_verifying_and_restores_captured_swarm(monkeypatch):
     assert control.interventions[0]["observed_stopped"] is True
 
 
-def test_swarm_stop_timeout_accepts_only_observed_stopped_zero_users(monkeypatch):
+@pytest.mark.parametrize("users", [0, 1, 7])
+def test_swarm_stop_timeout_accepts_observed_stopped_state_and_retains_users(monkeypatch, users):
     stopped = Mock()
-    stopped.json.return_value = {"state": "stopped", "user_count": 0}
+    stopped.json.return_value = {"state": "stopped", "user_count": users}
     monkeypatch.setattr(driver.requests, "get", Mock(side_effect=[driver.requests.Timeout("read timed out"), stopped]))
     service = SimpleNamespace(executor=SimpleNamespace(load_url="http://localhost/loadgen"))
     control = driver.RunControl(service, "r", force_nonrecovery=True)
@@ -221,15 +222,16 @@ def test_swarm_stop_timeout_accepts_only_observed_stopped_zero_users(monkeypatch
     assert record["observed_stopped"] is True
     assert record["response_confirmed"] is False
     assert "Timeout" in record["response_uncertainty"]
-    assert record["observations"][-1]["users"] == 0
+    assert record["observations"][-1]["users"] == users
     assert control.load_stopped is True
 
 
-def test_swarm_stop_acknowledgement_without_stopped_state_fails(monkeypatch):
+@pytest.mark.parametrize("state,users", [("running", 4), ("running", 0), ("stopped", -1), ("stopped", True)])
+def test_swarm_stop_acknowledgement_without_valid_stopped_state_fails(monkeypatch, state, users):
     acknowledged = Mock()
     acknowledged.json.return_value = {"success": True}
     running = Mock()
-    running.json.return_value = {"state": "running", "user_count": 4}
+    running.json.return_value = {"state": state, "user_count": users}
     monkeypatch.setattr(driver.requests, "get", Mock(side_effect=lambda url, **kw: acknowledged if url.endswith("/stop") else running))
     elapsed = [0]
     monkeypatch.setattr(driver.time, "monotonic", lambda: elapsed[0])
@@ -241,7 +243,7 @@ def test_swarm_stop_acknowledgement_without_stopped_state_fails(monkeypatch):
     record = control.interventions[0]
     assert record["response_confirmed"] is True
     assert record["observed_stopped"] is False
-    assert all(item["state"] == "running" and item["users"] == 4 for item in record["observations"])
+    assert all(item["state"] == state and item["users"] == users for item in record["observations"])
 
 
 def test_browser_wait_requires_saved_decision_not_initial_diagnosis(tmp_path, monkeypatch):
