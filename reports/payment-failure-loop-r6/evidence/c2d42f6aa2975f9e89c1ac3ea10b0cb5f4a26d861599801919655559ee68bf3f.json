@@ -1,0 +1,1991 @@
+{
+  "version": 1,
+  "id": "trace:97e7ef729206b0d5265e2274d006852d",
+  "source": "jaeger",
+  "data": {
+    "traceID": "97e7ef729206b0d5265e2274d006852d",
+    "warnings": null,
+    "spans": [
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "b4e4c530e5b38a65",
+        "operationName": "Currency/Convert",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "2e5dceb6bc6aa550"
+          }
+        ],
+        "startTime": 1792772836764067,
+        "duration": 531,
+        "tags": [
+          {
+            "key": "app.currency.conversion.from",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "key": "app.currency.conversion.to",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "currency"
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "OK"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "Convert"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CurrencyService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792772836764070,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Processing currency conversion request"
+              }
+            ]
+          },
+          {
+            "timestamp": 1792772836764083,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Conversion successful, response sent back"
+              }
+            ]
+          }
+        ],
+        "processID": "p1",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "49bad897d8d1b18e",
+        "operationName": "POST",
+        "references": [],
+        "startTime": 1792772836753245,
+        "duration": 16163,
+        "tags": [
+          {
+            "key": "error",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "key": "http.method",
+            "type": "string",
+            "value": "POST"
+          },
+          {
+            "key": "http.status_code",
+            "type": "int64",
+            "value": 500
+          },
+          {
+            "key": "http.url",
+            "type": "string",
+            "value": "http://frontend-proxy:8080/api/checkout"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "opentelemetry.instrumentation.requests"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.51b0"
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "ERROR"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p2",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "b509aad9324d0d84",
+        "operationName": "oteldemo.CurrencyService/Convert",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "8b9168cb14843ea4"
+          }
+        ],
+        "startTime": 1792772836759882,
+        "duration": 1411,
+        "tags": [
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.16"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 7001
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "Convert"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CurrencyService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "a0e8eaa9a3bb007d",
+        "operationName": "Currency/Convert",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "e0c12c02a3772a06"
+          }
+        ],
+        "startTime": 1792772836757687,
+        "duration": 733,
+        "tags": [
+          {
+            "key": "app.currency.conversion.from",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "key": "app.currency.conversion.to",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "currency"
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "OK"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "Convert"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CurrencyService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792772836757690,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Processing currency conversion request"
+              }
+            ]
+          },
+          {
+            "timestamp": 1792772836757706,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Conversion successful, response sent back"
+              }
+            ]
+          }
+        ],
+        "processID": "p1",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "244472169e667254",
+        "operationName": "Currency/Convert",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "b509aad9324d0d84"
+          }
+        ],
+        "startTime": 1792772836760124,
+        "duration": 499,
+        "tags": [
+          {
+            "key": "app.currency.conversion.from",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "key": "app.currency.conversion.to",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "currency"
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "OK"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "Convert"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CurrencyService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792772836760127,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Processing currency conversion request"
+              }
+            ]
+          },
+          {
+            "timestamp": 1792772836760138,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Conversion successful, response sent back"
+              }
+            ]
+          }
+        ],
+        "processID": "p1",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "e95a80743f226021",
+        "operationName": "oteldemo.ProductCatalogService/GetProduct",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "d71fd15e9b09966d"
+          }
+        ],
+        "startTime": 1792772836757017,
+        "duration": 88,
+        "tags": [
+          {
+            "key": "app.product.id",
+            "type": "string",
+            "value": "LS4PSXUNUM"
+          },
+          {
+            "key": "app.product.name",
+            "type": "string",
+            "value": "Red Flashlight"
+          },
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.2"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 56752
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "GetProduct"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.ProductCatalogService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792772836757068,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Product Found - ID: LS4PSXUNUM, Name: Red Flashlight"
+              }
+            ]
+          }
+        ],
+        "processID": "p4",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "c760deea71b7bde7",
+        "operationName": "oteldemo.ProductCatalogService/GetProduct",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "e8eee88aef625394"
+          }
+        ],
+        "startTime": 1792772836759648,
+        "duration": 57,
+        "tags": [
+          {
+            "key": "app.product.id",
+            "type": "string",
+            "value": "66VCHSJNUP"
+          },
+          {
+            "key": "app.product.name",
+            "type": "string",
+            "value": "Starsense Explorer Refractor Telescope"
+          },
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.2"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 56752
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "GetProduct"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.ProductCatalogService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792772836759686,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Product Found - ID: 66VCHSJNUP, Name: Starsense Explorer Refractor Telescope"
+              }
+            ]
+          }
+        ],
+        "processID": "p4",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "cf5bdc92541b8128",
+        "operationName": "oteldemo.CartService/GetCart",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "8b9168cb14843ea4"
+          }
+        ],
+        "startTime": 1792772836755616,
+        "duration": 1154,
+        "tags": [
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.5"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 7070
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "GetCart"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CartService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "d71fd15e9b09966d",
+        "operationName": "oteldemo.ProductCatalogService/GetProduct",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "8b9168cb14843ea4"
+          }
+        ],
+        "startTime": 1792772836756794,
+        "duration": 497,
+        "tags": [
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.8"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 3550
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "GetProduct"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.ProductCatalogService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "e8eee88aef625394",
+        "operationName": "oteldemo.ProductCatalogService/GetProduct",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "8b9168cb14843ea4"
+          }
+        ],
+        "startTime": 1792772836759412,
+        "duration": 453,
+        "tags": [
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.8"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 3550
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "GetProduct"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.ProductCatalogService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "698c7687d39df13e",
+        "operationName": "oteldemo.ShippingService/GetQuote",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "8b9168cb14843ea4"
+          }
+        ],
+        "startTime": 1792772836761309,
+        "duration": 2492,
+        "tags": [
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.3"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 50050
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "GetQuote"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.ShippingService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "2e5dceb6bc6aa550",
+        "operationName": "oteldemo.CurrencyService/Convert",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "8b9168cb14843ea4"
+          }
+        ],
+        "startTime": 1792772836763818,
+        "duration": 1424,
+        "tags": [
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.16"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 7001
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "Convert"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CurrencyService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "992592ba123ad9bc",
+        "operationName": "oteldemo.PaymentService/Charge",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "c0bfee28c6bb5334"
+          }
+        ],
+        "startTime": 1792772836765279,
+        "duration": 1585,
+        "tags": [
+          {
+            "key": "error",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.6"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 50051
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "ERROR"
+          },
+          {
+            "key": "otel.status_description",
+            "type": "string",
+            "value": "Payment request failed. Invalid token. app.loyalty.level=gold"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 2
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "Charge"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.PaymentService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "ff3e68330d1d4bf6",
+        "operationName": "charge",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "ef9c0d590931c69f"
+          }
+        ],
+        "startTime": 1792772836766000,
+        "duration": 155,
+        "tags": [
+          {
+            "key": "app.loyalty.level",
+            "type": "string",
+            "value": "gold"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "payment"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "internal"
+          }
+        ],
+        "logs": [],
+        "processID": "p5",
+        "warnings": [
+          "clock skew adjustment disabled; not applying calculated delta of -780.941µs"
+        ]
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "cbc8ac66f3bc988a",
+        "operationName": "ingress",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "49bad897d8d1b18e"
+          }
+        ],
+        "startTime": 1792772836753739,
+        "duration": 14973,
+        "tags": [
+          {
+            "key": "component",
+            "type": "string",
+            "value": "proxy"
+          },
+          {
+            "key": "downstream_cluster",
+            "type": "string",
+            "value": "-"
+          },
+          {
+            "key": "error",
+            "type": "string",
+            "value": "true"
+          },
+          {
+            "key": "error",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "key": "guid:x-request-id",
+            "type": "string",
+            "value": "fb9f9f3c-ae26-9860-ba9e-3da4004c7732"
+          },
+          {
+            "key": "http.method",
+            "type": "string",
+            "value": "POST"
+          },
+          {
+            "key": "http.protocol",
+            "type": "string",
+            "value": "HTTP/1.1"
+          },
+          {
+            "key": "http.status_code",
+            "type": "string",
+            "value": "500"
+          },
+          {
+            "key": "http.url",
+            "type": "string",
+            "value": "http://frontend-proxy:8080/api/checkout"
+          },
+          {
+            "key": "node_id",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "ERROR"
+          },
+          {
+            "key": "peer.address",
+            "type": "string",
+            "value": "172.23.0.15"
+          },
+          {
+            "key": "request_size",
+            "type": "string",
+            "value": "395"
+          },
+          {
+            "key": "response_flags",
+            "type": "string",
+            "value": "-"
+          },
+          {
+            "key": "response_size",
+            "type": "string",
+            "value": "21"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          },
+          {
+            "key": "upstream_cluster",
+            "type": "string",
+            "value": "frontend"
+          },
+          {
+            "key": "upstream_cluster.name",
+            "type": "string",
+            "value": "frontend"
+          },
+          {
+            "key": "user_agent",
+            "type": "string",
+            "value": "python-requests/2.32.3"
+          },
+          {
+            "key": "zone",
+            "type": "string",
+            "value": ""
+          }
+        ],
+        "logs": [],
+        "processID": "p6",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "e0c12c02a3772a06",
+        "operationName": "oteldemo.CurrencyService/Convert",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "8b9168cb14843ea4"
+          }
+        ],
+        "startTime": 1792772836757326,
+        "duration": 2069,
+        "tags": [
+          {
+            "key": "net.sock.peer.addr",
+            "type": "string",
+            "value": "172.23.0.16"
+          },
+          {
+            "key": "net.sock.peer.port",
+            "type": "int64",
+            "value": 7001
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "Convert"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CurrencyService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "8b9168cb14843ea4",
+        "operationName": "prepareOrderItemsAndShippingQuoteFromCart",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "c0bfee28c6bb5334"
+          }
+        ],
+        "startTime": 1792772836755604,
+        "duration": 9652,
+        "tags": [
+          {
+            "key": "app.cart.items.count",
+            "type": "int64",
+            "value": 12
+          },
+          {
+            "key": "app.order.items.count",
+            "type": "int64",
+            "value": 2
+          },
+          {
+            "key": "app.shipping.amount",
+            "type": "float64",
+            "value": 522
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "checkout"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "internal"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "ef9c0d590931c69f",
+        "operationName": "grpc.oteldemo.PaymentService/Charge",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "992592ba123ad9bc"
+          }
+        ],
+        "startTime": 1792772836765000,
+        "duration": 593,
+        "tags": [
+          {
+            "key": "app.payment.amount",
+            "type": "string",
+            "value": "4138.00"
+          },
+          {
+            "key": "error",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "key": "grpc.error_message",
+            "type": "string",
+            "value": "Payment request failed. Invalid token. app.loyalty.level=gold"
+          },
+          {
+            "key": "grpc.error_name",
+            "type": "string",
+            "value": "Error"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "@opentelemetry/instrumentation-grpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.57.1"
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "ERROR"
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "Charge"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.PaymentService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792772836765586,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "exception"
+              },
+              {
+                "key": "exception.message",
+                "type": "string",
+                "value": "Payment request failed. Invalid token. app.loyalty.level=gold"
+              },
+              {
+                "key": "exception.stacktrace",
+                "type": "string",
+                "value": "Error: Payment request failed. Invalid token. app.loyalty.level=gold\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Object.chargeServiceHandler [as charge] (/usr/src/app/index.js:21:22)"
+              },
+              {
+                "key": "exception.type",
+                "type": "string",
+                "value": "Error"
+              }
+            ]
+          }
+        ],
+        "processID": "p5",
+        "warnings": [
+          "clock skew adjustment disabled; not applying calculated delta of 775.229µs"
+        ]
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "924e650d60fee941",
+        "operationName": "router frontend egress",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "cbc8ac66f3bc988a"
+          }
+        ],
+        "startTime": 1792772836753849,
+        "duration": 14828,
+        "tags": [
+          {
+            "key": "component",
+            "type": "string",
+            "value": "proxy"
+          },
+          {
+            "key": "error",
+            "type": "string",
+            "value": "true"
+          },
+          {
+            "key": "error",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "key": "http.protocol",
+            "type": "string",
+            "value": "HTTP/1.1"
+          },
+          {
+            "key": "http.status_code",
+            "type": "string",
+            "value": "500"
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "ERROR"
+          },
+          {
+            "key": "peer.address",
+            "type": "string",
+            "value": "172.23.0.14:8080"
+          },
+          {
+            "key": "response_flags",
+            "type": "string",
+            "value": "-"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          },
+          {
+            "key": "upstream_address",
+            "type": "string",
+            "value": "172.23.0.14:8080"
+          },
+          {
+            "key": "upstream_cluster",
+            "type": "string",
+            "value": "frontend"
+          },
+          {
+            "key": "upstream_cluster.name",
+            "type": "string",
+            "value": "frontend"
+          }
+        ],
+        "logs": [],
+        "processID": "p6",
+        "warnings": null
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "c0bfee28c6bb5334",
+        "operationName": "oteldemo.CheckoutService/PlaceOrder",
+        "references": [],
+        "startTime": 1792772836755507,
+        "duration": 11428,
+        "tags": [
+          {
+            "key": "app.user.currency",
+            "type": "string",
+            "value": "USD"
+          },
+          {
+            "key": "app.user.id",
+            "type": "string",
+            "value": "9c744098-cefe-11f1-b855-4a77265a94bd"
+          },
+          {
+            "key": "error",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.60.0"
+          },
+          {
+            "key": "otel.status_code",
+            "type": "string",
+            "value": "ERROR"
+          },
+          {
+            "key": "otel.status_description",
+            "type": "string",
+            "value": "failed to charge card: could not charge the card: rpc error: code = Unknown desc = Payment request failed. Invalid token. app.loyalty.level=gold"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 13
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "PlaceOrder"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CheckoutService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792772836765258,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "prepared"
+              }
+            ]
+          },
+          {
+            "timestamp": 1792772836766918,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "error"
+              },
+              {
+                "key": "exception.message",
+                "type": "string",
+                "value": "could not charge the card: rpc error: code = Unknown desc = Payment request failed. Invalid token. app.loyalty.level=gold"
+              }
+            ]
+          }
+        ],
+        "processID": "p3",
+        "warnings": [
+          "invalid parent span IDs=593b861f0c6537c3; skipping clock skew adjustment"
+        ]
+      },
+      {
+        "traceID": "97e7ef729206b0d5265e2274d006852d",
+        "spanID": "c260c94873885db6",
+        "operationName": "POST /oteldemo.CartService/GetCart",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "97e7ef729206b0d5265e2274d006852d",
+            "spanID": "cf5bdc92541b8128"
+          }
+        ],
+        "startTime": 1792772836756010,
+        "duration": 553,
+        "tags": [
+          {
+            "key": "app.cart.items.count",
+            "type": "int64",
+            "value": 12
+          },
+          {
+            "key": "app.user.id",
+            "type": "string",
+            "value": "9c744098-cefe-11f1-b855-4a77265a94bd"
+          },
+          {
+            "key": "grpc.method",
+            "type": "string",
+            "value": "/oteldemo.CartService/GetCart"
+          },
+          {
+            "key": "grpc.status_code",
+            "type": "string",
+            "value": "0"
+          },
+          {
+            "key": "http.request.method",
+            "type": "string",
+            "value": "POST"
+          },
+          {
+            "key": "http.response.status_code",
+            "type": "int64",
+            "value": 200
+          },
+          {
+            "key": "http.route",
+            "type": "string",
+            "value": "/oteldemo.CartService/GetCart"
+          },
+          {
+            "key": "network.protocol.version",
+            "type": "string",
+            "value": "2"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "Microsoft.AspNetCore"
+          },
+          {
+            "key": "server.address",
+            "type": "string",
+            "value": "cart"
+          },
+          {
+            "key": "server.port",
+            "type": "int64",
+            "value": 7070
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          },
+          {
+            "key": "url.path",
+            "type": "string",
+            "value": "/oteldemo.CartService/GetCart"
+          },
+          {
+            "key": "url.scheme",
+            "type": "string",
+            "value": "http"
+          },
+          {
+            "key": "user_agent.original",
+            "type": "string",
+            "value": "grpc-go/1.71.0"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792772836756093,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Fetch cart"
+              }
+            ]
+          }
+        ],
+        "processID": "p7",
+        "warnings": null
+      }
+    ],
+    "processes": {
+      "p1": {
+        "serviceName": "currency",
+        "tags": [
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "cpp"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.19.0"
+          }
+        ]
+      },
+      "p2": {
+        "serviceName": "load-generator",
+        "tags": [
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "python"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.30.0"
+          }
+        ]
+      },
+      "p3": {
+        "serviceName": "checkout",
+        "tags": [
+          {
+            "key": "host.name",
+            "type": "string",
+            "value": "2fa7a693831b"
+          },
+          {
+            "key": "os.description",
+            "type": "string",
+            "value": "Alpine Linux 3.21.3 (Linux 2fa7a693831b 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64)"
+          },
+          {
+            "key": "os.type",
+            "type": "string",
+            "value": "linux"
+          },
+          {
+            "key": "process.command_args",
+            "type": "string",
+            "value": "[\"./checkout\"]"
+          },
+          {
+            "key": "process.executable.name",
+            "type": "string",
+            "value": "checkout"
+          },
+          {
+            "key": "process.executable.path",
+            "type": "string",
+            "value": "/usr/src/app/checkout"
+          },
+          {
+            "key": "process.owner",
+            "type": "string",
+            "value": "root"
+          },
+          {
+            "key": "process.pid",
+            "type": "int64",
+            "value": 1
+          },
+          {
+            "key": "process.runtime.description",
+            "type": "string",
+            "value": "go version go1.22.12 linux/amd64"
+          },
+          {
+            "key": "process.runtime.name",
+            "type": "string",
+            "value": "go"
+          },
+          {
+            "key": "process.runtime.version",
+            "type": "string",
+            "value": "go1.22.12"
+          },
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "go"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.35.0"
+          }
+        ]
+      },
+      "p4": {
+        "serviceName": "product-catalog",
+        "tags": [
+          {
+            "key": "host.name",
+            "type": "string",
+            "value": "9d3beb6ca9f0"
+          },
+          {
+            "key": "os.description",
+            "type": "string",
+            "value": "Alpine Linux 3.21.3 (Linux 9d3beb6ca9f0 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64)"
+          },
+          {
+            "key": "os.type",
+            "type": "string",
+            "value": "linux"
+          },
+          {
+            "key": "process.command_args",
+            "type": "string",
+            "value": "[\"./product-catalog\"]"
+          },
+          {
+            "key": "process.executable.name",
+            "type": "string",
+            "value": "product-catalog"
+          },
+          {
+            "key": "process.executable.path",
+            "type": "string",
+            "value": "/usr/src/app/product-catalog"
+          },
+          {
+            "key": "process.owner",
+            "type": "string",
+            "value": "root"
+          },
+          {
+            "key": "process.pid",
+            "type": "int64",
+            "value": 1
+          },
+          {
+            "key": "process.runtime.description",
+            "type": "string",
+            "value": "go version go1.22.12 linux/amd64"
+          },
+          {
+            "key": "process.runtime.name",
+            "type": "string",
+            "value": "go"
+          },
+          {
+            "key": "process.runtime.version",
+            "type": "string",
+            "value": "go1.22.12"
+          },
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "go"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.35.0"
+          }
+        ]
+      },
+      "p5": {
+        "serviceName": "payment",
+        "tags": [
+          {
+            "key": "container.id",
+            "type": "string",
+            "value": "c4595978b15c825b28e15f11c66fea8f812cf335eb5e306b814b2a3e54b07e9a"
+          },
+          {
+            "key": "host.arch",
+            "type": "string",
+            "value": "amd64"
+          },
+          {
+            "key": "host.name",
+            "type": "string",
+            "value": "c4595978b15c"
+          },
+          {
+            "key": "os.type",
+            "type": "string",
+            "value": "linux"
+          },
+          {
+            "key": "os.version",
+            "type": "string",
+            "value": "6.6.87.2-microsoft-standard-WSL2"
+          },
+          {
+            "key": "process.command",
+            "type": "string",
+            "value": "/usr/src/app/index.js"
+          },
+          {
+            "key": "process.command_args",
+            "type": "string",
+            "value": "[\"/usr/local/bin/node\",\"--require\",\"./opentelemetry.js\",\"/usr/src/app/index.js\"]"
+          },
+          {
+            "key": "process.executable.name",
+            "type": "string",
+            "value": "node"
+          },
+          {
+            "key": "process.executable.path",
+            "type": "string",
+            "value": "/usr/local/bin/node"
+          },
+          {
+            "key": "process.owner",
+            "type": "string",
+            "value": "node"
+          },
+          {
+            "key": "process.pid",
+            "type": "int64",
+            "value": 16
+          },
+          {
+            "key": "process.runtime.description",
+            "type": "string",
+            "value": "Node.js"
+          },
+          {
+            "key": "process.runtime.name",
+            "type": "string",
+            "value": "nodejs"
+          },
+          {
+            "key": "process.runtime.version",
+            "type": "string",
+            "value": "22.14.0"
+          },
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "nodejs"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.30.1"
+          }
+        ]
+      },
+      "p6": {
+        "serviceName": "frontend-proxy",
+        "tags": [
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          }
+        ]
+      },
+      "p7": {
+        "serviceName": "cart",
+        "tags": [
+          {
+            "key": "container.id",
+            "type": "string",
+            "value": "897bfeb378fdf4ef681fa0748d3109e75c630cddd80ac9906f874bfcae56228f"
+          },
+          {
+            "key": "host.name",
+            "type": "string",
+            "value": "897bfeb378fd"
+          },
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "dotnet"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.11.2"
+          }
+        ]
+      }
+    }
+  },
+  "captured_at": "2026-10-23T16:27:19.724923+00:00",
+  "checksum": "b8abccd2b584a709596a3ed214dde43fafafeb04eb9c60a09a82924da2194c0d"
+}

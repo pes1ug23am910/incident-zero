@@ -195,6 +195,7 @@ terminal or browser decision.
 | payment-failure-loop-r4 | needs_human; rejection, no mutation | CLI reject; test mode off | — | Not executed | 184.640 / 185.031 s |
 | container-stopped-loop-r1 | fixed, recommendation restart | Explicit test auto | 609.922 s | 182.000 s | 184.781 / 184.656 s |
 | payment-failure-loop-r5 | aborted by STOP during verification | Explicit test auto | — | Interrupted; no recovery claim | 184.281 / 184.719 s |
+| payment-failure-loop-r6 | Failed forced-non-recovery acceptance; report fixed | Explicit test auto | Not claimed for this failed test | 181.969 s | 184.782 / 184.718 s |
 
 The successful payment run is `runs/20261023T153512.976354Z-13778fd2`.
 It diagnosed `payment` / `application_flag` at 0.90 confidence with three tool
@@ -239,3 +240,14 @@ The cancellation handler at the time discarded partial verifier samples; the
 empty sample list/zero request field does not mean traffic was absent. Console
 progress recorded an initial failing sample at 1.938 seconds, but its values
 were not reconstructed into the report. Before/after clean samples remain intact.
+
+The first forced non-recovery attempt (`payment-failure-loop-r6`) failed its
+operator control: `/loadgen/stop` exceeded the 10-second HTTP deadline. The
+response still finished as `fixed`, with final request counts 56.005/70.005 and
+a running load container; the runner correctly returned failure. This is not
+rollback acceptance. Its 199.703-second response and clean reset windows are
+retained. The run exposed that container liveness alone cannot establish an
+actively running Locust swarm; residual/probe traffic can exceed 20 requests.
+The subsequent verifier requires an observed running swarm with positive users
+as well as container liveness, and the operator stop must be read back. The
+retry is retained separately rather than replacing this result.
