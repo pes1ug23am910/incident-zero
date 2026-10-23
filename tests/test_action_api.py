@@ -341,6 +341,7 @@ def test_mock_acceptance_bundles(env, monkeypatch, case, component, category, an
     save_bundle(final, output, api)
     assert validate_report(final, resolver=lambda i:find_bundle_snapshot(i, output.parent)) == []
     actual = json.loads(output.read_text(encoding='utf-8'))
+    assert validate_report(actual, resolver=lambda i:find_bundle_snapshot(i, output.parent)) == []
     assert actual['status'] == expected
     assert (output.parent/'action-log.jsonl').read_text(encoding='utf-8').strip()
     if final['action']['executed']:
@@ -477,3 +478,24 @@ def test_policy_approval_banner_when_explicitly_configured(env):
     assert decision['token']
     assert 'policy approval, outside the event rules' in messages
     assert api.policy['auto_approve_tiers'] == []
+
+
+def test_resume_accepts_exact_sanitized_brain_bundle(env):
+    from agent.llm_router import scrub
+    api, executor, _, _ = env
+    report = synthetic_report()
+    pause_brain(api,report)
+    saved = scrub(report)
+    assert saved['approval']['token'] == '[redacted]'
+    final = resume(saved, root=api.root, service=api, input_fn=lambda _:'yes')
+    assert final['status'] == 'fixed' and len(executor.mutations) == 1
+
+
+def test_explicit_rejection_needs_no_live_preconditions(env):
+    api, executor, _, sample = env
+    report=synthetic_report()
+    pause_brain(api,report)
+    sample['available']=False
+    final=resume(report, {'decision':'reject'}, root=api.root, service=api)
+    assert final['status']=='needs_human' and final['approval']['approved'] is False
+    assert executor.mutations==[]

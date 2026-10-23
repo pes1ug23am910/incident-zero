@@ -10,13 +10,13 @@ Run: `runs/mock-stop-mid-run` · schema 1.0
 
 | Event | Timestamp |
 | --- | --- |
-| Detected | 2026-10-23T11:05:07.741411+00:00 |
-| Diagnosed | 2026-10-23T11:05:07.745915+00:00 |
-| Approval requested | 2026-10-23T11:05:07.867395+00:00 |
-| Approved | 2026-10-23T11:05:07.867395+00:00 |
-| Action started | 2026-10-23T11:05:07.896588+00:00 |
-| Action finished | 2026-10-23T11:05:07.906109+00:00 |
-| Verified | 2026-10-23T11:05:07.917684+00:00 |
+| Detected | 2026-10-23T11:13:46.699888+00:00 |
+| Diagnosed | 2026-10-23T11:13:46.707885+00:00 |
+| Approval requested | 2026-10-23T11:13:46.843814+00:00 |
+| Approved | 2026-10-23T11:13:46.843814+00:00 |
+| Action started | 2026-10-23T11:13:46.872090+00:00 |
+| Action finished | 2026-10-23T11:13:46.881983+00:00 |
+| Verified | 2026-10-23T11:13:46.899078+00:00 |
 | Resolved | — |
 
 ## Symptoms
@@ -85,7 +85,7 @@ Dry run performed: yes. Restore normal application behavior in payment; confirm 
 | Required | yes |
 | Approved | yes |
 | Approved by | Mock operator |
-| Approved at | 2026-10-23T11:05:07.867395+00:00 |
+| Approved at | 2026-10-23T11:13:46.843814+00:00 |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:5 |

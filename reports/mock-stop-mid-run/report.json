@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "incident_id": "mock-stop-mid-run",
   "run_id": "runs/mock-stop-mid-run",
-  "detected_at": "2026-10-23T11:05:07.741411+00:00",
-  "diagnosed_at": "2026-10-23T11:05:07.745915+00:00",
+  "detected_at": "2026-10-23T11:13:46.699888+00:00",
+  "diagnosed_at": "2026-10-23T11:13:46.707885+00:00",
   "resolved_at": null,
   "alert": {
     "signal": "error_rate",
@@ -82,20 +82,20 @@
   },
   "approval": {
     "required": true,
-    "requested_at": "2026-10-23T11:05:07.867395+00:00",
+    "requested_at": "2026-10-23T11:13:46.843814+00:00",
     "approved": true,
     "approved_by": "Mock operator",
-    "approved_at": "2026-10-23T11:05:07.867395+00:00",
+    "approved_at": "2026-10-23T11:13:46.843814+00:00",
     "token": "[redacted]"
   },
   "action": {
     "executed": true,
-    "started_at": "2026-10-23T11:05:07.896588+00:00",
-    "finished_at": "2026-10-23T11:05:07.906109+00:00",
+    "started_at": "2026-10-23T11:13:46.872090+00:00",
+    "finished_at": "2026-10-23T11:13:46.881983+00:00",
     "action_log_ref": "action_log:5"
   },
   "verification": {
-    "checked_at": "2026-10-23T11:05:07.917684+00:00",
+    "checked_at": "2026-10-23T11:13:46.899078+00:00",
     "signal": "error_rate",
     "before": 0.9,
     "after": null,
@@ -182,19 +182,19 @@
         "decision": "approve",
         "token": "[redacted]",
         "approved_by": "Mock operator",
-        "approved_at": "2026-10-23T11:05:07.867395+00:00",
-        "requested_at": "2026-10-23T11:05:07.867395+00:00",
+        "approved_at": "2026-10-23T11:13:46.843814+00:00",
+        "requested_at": "2026-10-23T11:13:46.843814+00:00",
         "expires_at": 1600.0
       },
       "execution": {
         "executed": true,
-        "started_at": "2026-10-23T11:05:07.896588+00:00",
-        "finished_at": "2026-10-23T11:05:07.906109+00:00",
+        "started_at": "2026-10-23T11:13:46.872090+00:00",
+        "finished_at": "2026-10-23T11:13:46.881983+00:00",
         "action_log_ref": "action_log:5",
-        "idempotency_key": "runs/mock-stop-mid-run:0:eba61a0f71f3cdff"
+        "idempotency_key": "runs/mock-stop-mid-run:0:0a3c5169ebe05806"
       },
       "verification": {
-        "checked_at": "2026-10-23T11:05:07.917684+00:00",
+        "checked_at": "2026-10-23T11:13:46.899078+00:00",
         "signal": "error_rate",
         "before": 0.9,
         "after": null,

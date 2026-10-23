@@ -10,9 +10,9 @@ Run: `runs/mock-payment-rejected` · schema 1.0
 
 | Event | Timestamp |
 | --- | --- |
-| Detected | 2026-10-23T11:05:06.841602+00:00 |
-| Diagnosed | 2026-10-23T11:05:06.845609+00:00 |
-| Approval requested | 2026-10-23T11:05:06.990545+00:00 |
+| Detected | 2026-10-23T11:13:45.728411+00:00 |
+| Diagnosed | 2026-10-23T11:13:45.735421+00:00 |
+| Approval requested | 2026-10-23T11:13:45.863727+00:00 |
 | Approved | — |
 | Action started | — |
 | Action finished | — |
@@ -86,7 +86,7 @@ Dry run performed: yes. Restore normal application behavior in payment; confirm 
 | Approved | no |
 | Approved by | Mock operator |
 | Approved at | — |
-| Token | present (redacted) |
+| Token | absent |
 | Executed | no |
 | Action log | — |
 

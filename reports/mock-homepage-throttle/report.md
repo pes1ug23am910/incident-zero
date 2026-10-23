@@ -10,14 +10,14 @@ Run: `runs/mock-homepage-throttle` · schema 1.0
 
 | Event | Timestamp |
 | --- | --- |
-| Detected | 2026-10-23T11:05:07.426679+00:00 |
-| Diagnosed | 2026-10-23T11:05:07.431727+00:00 |
-| Approval requested | 2026-10-23T11:05:07.564106+00:00 |
-| Approved | 2026-10-23T11:05:07.564106+00:00 |
-| Action started | 2026-10-23T11:05:07.592912+00:00 |
-| Action finished | 2026-10-23T11:05:07.602526+00:00 |
-| Verified | 2026-10-23T11:05:07.624791+00:00 |
-| Resolved | 2026-10-23T11:05:07.636810+00:00 |
+| Detected | 2026-10-23T11:13:46.339139+00:00 |
+| Diagnosed | 2026-10-23T11:13:46.347652+00:00 |
+| Approval requested | 2026-10-23T11:13:46.485395+00:00 |
+| Approved | 2026-10-23T11:13:46.485395+00:00 |
+| Action started | 2026-10-23T11:13:46.515404+00:00 |
+| Action finished | 2026-10-23T11:13:46.528407+00:00 |
+| Verified | 2026-10-23T11:13:46.551931+00:00 |
+| Resolved | 2026-10-23T11:13:46.568052+00:00 |
 
 ## Symptoms
 
@@ -87,7 +87,7 @@ Quick approval: throttle_load on load-generator; predicted effect: Reduce the lo
 | Required | yes |
 | Approved | yes |
 | Approved by | Mock operator |
-| Approved at | 2026-10-23T11:05:07.564106+00:00 |
+| Approved at | 2026-10-23T11:13:46.485395+00:00 |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:5 |

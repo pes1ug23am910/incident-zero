@@ -3,12 +3,12 @@
   "id": "action_log:4",
   "source": "action_log",
   "data": {
-    "ts": "2026-10-23T11:05:07.904602+00:00",
+    "ts": "2026-10-23T11:13:46.881983+00:00",
     "event": "execute_started",
     "report_id": "runs/mock-stop-mid-run",
     "actor": "Mock operator",
-    "idempotency_key": "runs/mock-stop-mid-run:0:eba61a0f71f3cdff",
-    "token_digest": "eba61a0f71f3cdff712e1f121a3c7d2cf6042f80c8bd6163af96cb303aea59d7",
+    "idempotency_key": "runs/mock-stop-mid-run:0:0a3c5169ebe05806",
+    "token_digest": "0a3c5169ebe05806a24f2dbaa3d27580d3eb7ab75bc9c096a2048bd30fb2edde",
     "action": "toggle_flag",
     "target": "payment",
     "parameters": {
@@ -16,6 +16,6 @@
     },
     "complete": true
   },
-  "captured_at": "2026-10-23T11:05:07.966360+00:00",
-  "checksum": "525e327506d12a437ee03cb96162f0f6ec55bb29d56ba4b54d78f1497ed3134f"
+  "captured_at": "2026-10-23T11:13:46.950386+00:00",
+  "checksum": "a6363eed3cff3dce261891a9a355e1b6aa546665ee6364021ffbb376b8cc41a0"
 }

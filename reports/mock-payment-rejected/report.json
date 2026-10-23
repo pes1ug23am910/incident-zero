@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "incident_id": "mock-payment-rejected",
   "run_id": "runs/mock-payment-rejected",
-  "detected_at": "2026-10-23T11:05:06.841602+00:00",
-  "diagnosed_at": "2026-10-23T11:05:06.845609+00:00",
+  "detected_at": "2026-10-23T11:13:45.728411+00:00",
+  "diagnosed_at": "2026-10-23T11:13:45.735421+00:00",
   "resolved_at": null,
   "alert": {
     "signal": "error_rate",
@@ -82,11 +82,11 @@
   },
   "approval": {
     "required": true,
-    "requested_at": "2026-10-23T11:05:06.990545+00:00",
+    "requested_at": "2026-10-23T11:13:45.863727+00:00",
     "approved": false,
     "approved_by": "Mock operator",
     "approved_at": null,
-    "token": "[redacted]"
+    "token": null
   },
   "action": {
     "executed": false,
@@ -177,7 +177,7 @@
       "decision": {
         "decision": "reject",
         "approved_by": "Mock operator",
-        "requested_at": "2026-10-23T11:05:06.990545+00:00",
+        "requested_at": "2026-10-23T11:13:45.863727+00:00",
         "action_log_ref": "action_log:3"
       },
       "execution": {
