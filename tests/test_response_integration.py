@@ -15,6 +15,16 @@ from schema.validate import validate_report
 from test_action_api import env, pause_brain, synthetic_report
 
 
+@pytest.fixture(autouse=True)
+def no_live_io(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError('Integration wiring fixtures must not read the live stack')
+    monkeypatch.setattr('requests.sessions.Session.request', forbidden)
+    monkeypatch.setattr('subprocess.Popen', forbidden)
+    monkeypatch.setattr('subprocess.run', forbidden)
+    monkeypatch.setattr('socket.create_connection', forbidden)
+
+
 def bundle(api, monkeypatch, incident='integration-payment'):
     from tools import evidence
     monkeypatch.setattr(evidence, 'ROOT', api.root)
@@ -57,7 +67,8 @@ def test_browser_resumes_checkpoint_and_saves_verified_bundle(env, monkeypatch, 
         assert len(executor.mutations) == int(approved)
         assert saved['action_history']
         assert (path.parent / 'action-log.jsonl').read_text(encoding='utf-8').strip()
-        assert validate_report(saved, bundle_dir=path.parent) == []
+        from tools.evidence import find_bundle_snapshot
+        assert validate_report(saved, resolver=lambda identifier: find_bundle_snapshot(identifier, path.parent)) == []
         with SqliteSaver.from_conn_string(str(api.root / 'runs/checkpoints.sqlite')) as saver:
             from agent.respond import build_graph
             state = build_graph(None, saver, api).get_state(config_for(report['run_id']))
