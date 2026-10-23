@@ -1,24 +1,29 @@
 param(
     [switch]$Live,
     [string]$Operator = 'Yash Verma',
+    [string]$Incident = 'payment-failure',
+    [Alias('svc')][string]$Service,
     [string]$RejectedReport,
-    [string]$Incident = 'catalog-one-product',
+    [switch]$BrowserApproval,
     [string]$ReportId = ('demo-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $py = Join-Path $root '.venv/Scripts/python.exe'
 if (-not $Live) {
-    Write-Host 'Preview only. After exclusive stack handoff: scripts/demo.ps1 -Live -RejectedReport reports/<paused-tier2>/report.json'
-    Write-Host 'Preflight outside presentation: reset, wait >=180s for clean metrics, retain a paused tier-2 report.'
-    Write-Host '0:00-0:45 inject and wait for alert; 0:45-1:30 report and tier-1 human approval.'
-    Write-Host '1:30-4:30 verification (>=180s); 4:30-4:45 reject the prepared tier-2 proposal.'
-    Write-Host '4:45-5:00 forbidden-operation 403 and STOP; cleanup and metric clearance follow.'
-    Write-Host 'Actual alert/model latency can exceed this target. Never shorten verification to fit the clock.'
+    Write-Host 'Preview. Run scripts/demo.ps1 -Live for the real demonstration; add -BrowserApproval to approve in the Control Room.'
+    Write-Host 'Before presentation: reset and measure >=180s of clean, traffic-qualified telemetry.'
+    Write-Host '0:00-1:15 inject, alert, investigation, evidence and human approval in terminal or browser.'
+    Write-Host '1:15-4:30 execute and verify >=180s; show the final report and action log.'
+    Write-Host '4:30-5:00 BLOCK forbidden operation (403/reason code), STOP, and a stopped allowed action (423).'
+    Write-Host 'Optional -RejectedReport shows rejection of an existing real tier-2 checkpoint without executing it.'
+    Write-Host 'After presentation: reset, measure >=180s of clean traffic, and explicitly clear STOP.'
+    Write-Host 'Five minutes is a target. Model/alert latency can exceed it; verification is never shortened.'
     exit 0
 }
-if (-not $RejectedReport) { throw 'Pass a real paused tier-2 report with -RejectedReport.' }
-if ($env:INCIDENT_ZERO_TEST -eq '1') { throw 'Unset INCIDENT_ZERO_TEST before the demo.' }
+if ($env:INCIDENT_ZERO_TEST -eq '1') { throw 'Unset INCIDENT_ZERO_TEST before the demo; only real human approval is accepted.' }
+if (-not (Test-Path -LiteralPath $py)) { throw 'Create the local Python environment using README setup.' }
+if ($ReportId -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]{0,159}$') { throw 'ReportId must be a safe metadata slug.' }
 $env:DOCKER_HOST = 'tcp://localhost:2375'
 $env:DEMO_VERSION = '2.0.2'
 function Invoke-CheckedPython {
@@ -30,31 +35,32 @@ Push-Location $root
 $ownsStack = $false
 try {
     if (Test-Path STOP) { throw 'STOP is latched; review and clear it explicitly before starting.' }
-    $rejected = Get-Content -Raw -LiteralPath $RejectedReport | ConvertFrom-Json
-    if ($rejected.impact.tier -ne 2) { throw 'The prepared rejection report must be tier 2.' }
+    if ($RejectedReport) {
+        $rejected = Get-Content -Raw -LiteralPath $RejectedReport | ConvertFrom-Json
+        if ($rejected.impact.tier -ne 2) { throw 'The optional rejection report must be tier 2.' }
+    }
     $ownsStack = $true
-    Write-Host 'Preflight, outside the five-minute presentation.'
-    Invoke-CheckedPython -m faultctl reset
-    Invoke-CheckedPython -m detect.recovery --timeout 360
-    Write-Host 'Presentation begins. Approve only if the evidence and tier are appropriate.'
-    Invoke-CheckedPython -m scripts.hands_rehearsal $Incident --live --report-id $ReportId --operator $Operator --prepared-stack --defer-cleanup
-    Write-Host 'Tier-2 rejection: no action executes.'
-    Invoke-CheckedPython -m agent.respond --report $RejectedReport --operator $Operator --reject
-    Write-Host 'BLOCK path, through an in-process HTTP client: require status 403, then STOP.'
+    Write-Host 'Control Room: http://127.0.0.1:8787. Initial reset and clearance are preflight; begin the five-minute clock at injection.'
+    $arguments = @('-m', 'scripts.hands_rehearsal', $Incident, '--live', '--report-id', $ReportId, '--operator', $Operator, '--ensure-control-room', '--defer-cleanup')
+    if ($Service) { $arguments += @('--svc', $Service) }
+    if ($BrowserApproval) { $arguments += @('--approval-mode', 'browser') }
+    Invoke-CheckedPython @arguments
+    if ($RejectedReport) {
+        Write-Host 'Reject the prepared tier-2 proposal: no action executes.'
+        Invoke-CheckedPython -m agent.respond --report $RejectedReport --operator $Operator --reject
+    }
+    Write-Host 'BLOCK and STOP through the running real Action API.'
     Invoke-CheckedPython -m scripts.show_block --operator $Operator
+    Write-Host 'Presentation ends. STOP stays latched until the operator reviews recovery and types the clear phrase.'
 }
 finally {
     try {
-      if ($ownsStack) {
-        Write-Host 'Operator cleanup, outside the timed presentation.'
-        Invoke-CheckedPython -m faultctl reset
-        Invoke-CheckedPython -m detect.recovery --timeout 360
-        $demoChanges = git -C D:/opentelemetry-demo status --porcelain
-        if ($LASTEXITCODE -ne 0 -or $demoChanges) { throw 'Demo checkout is not confirmed clean.' }
-        if (Test-Path STOP) {
-            Invoke-CheckedPython -m action_api clear-stop --operator $Operator
+        if ($ownsStack) {
+            Write-Host 'Operator cleanup, outside the five-minute presentation.'
+            Invoke-CheckedPython -m faultctl reset --timeout 90
+            $cleanup = Join-Path $root ('reports/' + $ReportId + '/demo-cleanup.json')
+            Invoke-CheckedPython -c 'import json,sys; from pathlib import Path; from scripts.hands_rehearsal import require_clean,check_demo_unchanged; from tools.evidence import run_path; check_demo_unchanged(); result=require_clean(run_path(create=True),360); path=Path(sys.argv[1]); path.parent.mkdir(parents=True,exist_ok=True); path.write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")' $cleanup
+            if (Test-Path STOP) { Invoke-CheckedPython -m action_api clear-stop --operator $Operator }
         }
-      }
-    }
-    finally { Pop-Location }
+    } finally { Pop-Location }
 }

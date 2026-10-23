@@ -22,13 +22,17 @@ def report():
     cause = {"component": "recommendation", "cause": "The recorded process is stopped.",
              "category": "container_down", "confidence_model": 0.95,
              "confidence_evidence": 0.9, "confidence": 0.9,
-             "evidence_ids": ["container:recommendation:Status=exited"],
+             "evidence_ids": ["container:recommendation:Status=exited", 'trace:' + 'a' * 32],
              "explains_symptoms": ["recommendation"]}
     return {
         "run_id": RUN_ID, "incident_id": "synthetic-offline-persistence",
+        "alert": {"signal": "container_health", "service": "recommendation", "observed": 1,
+                  "threshold": 0, "window_s": 120},
+        "limitations": ["Synthetic offline checkpoint; no live measurements."],
         "root_cause": deepcopy(cause), "root_causes": [cause], "status": "diagnosed",
-        "evidence": [{"id": cause["evidence_ids"][0], "source": "docker",
-                      "summary": "Synthetic stopped process record", "raw_ref": "synthetic fixture"}],
+        "evidence": [{"id": identifier, "source": source,
+                      "summary": "Synthetic stopped process and caller failure", "raw_ref": "synthetic fixture"}
+                     for identifier, source in zip(cause['evidence_ids'], ['docker', 'jaeger'])],
         "proposed_action": None, "proposed_actions": [], "escalation_note": None,
         "approval": {"required": True, "requested_at": None, "approved": None,
                      "approved_by": None, "approved_at": None, "token": None},
@@ -121,50 +125,55 @@ def test_sqlite_reopens_same_thread_and_resumes_without_repeating_preview(tmp_pa
     assert not (tmp_path / "action_api" / "log.jsonl").exists()
 
 
-def install_offline_responder(monkeypatch, tmp_path, report):
-    monkeypatch.setattr(respond_module, "ROOT", tmp_path)
-    monkeypatch.setattr(respond_module, "Router", lambda _: object())
-    monkeypatch.setattr(respond_module, "Investigation", lambda *_: OfflineInvestigation(report))
-
-
-def test_responder_rejects_unknown_checkpoint_without_starting_new_investigation(tmp_path, report, monkeypatch):
+def test_responder_rejects_unknown_checkpoint_without_starting_new_investigation(tmp_path, report, offline_action_service):
     pause_at_approval(tmp_path / "runs" / "checkpoints.sqlite", report)
-    install_offline_responder(monkeypatch, tmp_path, report)
     wrong = {**report, "run_id": "runs/different-thread"}
     with pytest.raises(ValueError, match="mismatched resume"):
-        respond_module.resume(wrong, {"decision": "reject"})
+        respond_module.resume(wrong, {"decision": "reject"}, root=tmp_path, service=offline_action_service)
     with SqliteSaver.from_conn_string(str(tmp_path / "runs" / "checkpoints.sqlite")) as saver:
         graph = build_graph(OfflineInvestigation(report), saver)
         assert graph.get_state(config_for(wrong["run_id"])).values == {}
         assert graph.get_state(config_for(RUN_ID)).next == ("approval",)
 
 
-def test_responder_rejects_completed_checkpoint(tmp_path, report, monkeypatch):
-    pause_at_approval(tmp_path / "runs" / "checkpoints.sqlite", report)
-    install_offline_responder(monkeypatch, tmp_path, report)
-    result = respond_module.resume(report, {"decision": "reject", "reason": "Operator declined"})
+def test_responder_rejects_completed_checkpoint(tmp_path, report, offline_action_service):
+    paused = pause_at_approval(tmp_path / "runs" / "checkpoints.sqlite", report)
+    result = respond_module.resume(paused['report'], {"decision": "reject", "reason": "Operator declined"},
+                                  root=tmp_path, service=offline_action_service)
     assert result["action"]["executed"] is False
+    assert result['status'] == 'needs_human'
+    assert result['approval']['approved'] is False
     with pytest.raises(ValueError, match="mismatched resume"):
-        respond_module.resume(report, {"decision": "reject"})
+        respond_module.resume(result, {"decision": "reject"}, root=tmp_path, service=offline_action_service)
+    assert offline_action_service.executor.mutations == []
 
 
-def test_responder_refuses_approval_and_keeps_checkpoint_paused(tmp_path, report, monkeypatch):
+def test_responder_refuses_unissued_approval_token_without_execution(tmp_path, report, offline_action_service):
     database = tmp_path / "runs" / "checkpoints.sqlite"
-    pause_at_approval(database, report)
-    install_offline_responder(monkeypatch, tmp_path, report)
-    with pytest.raises(ValueError, match="unavailable in this brain-only build"):
-        respond_module.resume(report, {"decision": "approve", "token": "synthetic-test-value"})
+    paused = pause_at_approval(database, report)
+    result = respond_module.resume(paused['report'], {"decision": "approve", "token": "unissued-test-value"},
+                                  root=tmp_path, service=offline_action_service)
+    assert result['status'] == 'needs_human'
+    assert result['action_history'][0]['error']['reason_codes'] == ['APPROVAL_REQUIRED']
     with SqliteSaver.from_conn_string(str(database)) as saver:
         graph = build_graph(OfflineInvestigation(report), saver)
         snapshot = graph.get_state(config_for(RUN_ID))
-        assert snapshot.next == ("approval",)
+        assert snapshot.next == ()
         assert snapshot.values["report"]["action"]["executed"] is False
+    assert offline_action_service.executor.mutations == []
 
 
-def test_responder_refuses_while_stop_is_latched(tmp_path, report, monkeypatch):
+def test_responder_refuses_issued_approval_while_stop_is_latched(tmp_path, report, offline_action_service):
     database = tmp_path / "runs" / "checkpoints.sqlite"
-    pause_at_approval(database, report)
-    install_offline_responder(monkeypatch, tmp_path, report)
+    paused = pause_at_approval(database, report)
+    current = paused['report']
+    service = offline_action_service
+    plan = current['proposed_action']
+    decision = service.approve(plan, current, service.dry_run(plan, current), 'Test operator',
+                               input_fn=lambda _: 'yes', output=lambda _: None)
     (tmp_path / "STOP").touch()
-    with pytest.raises(ValueError, match="STOP is latched"):
-        respond_module.resume(report, {"decision": "reject"})
+    result = respond_module.resume(current, decision, root=tmp_path, service=service)
+    assert result['status'] == 'aborted'
+    assert result['action']['executed'] is False
+    assert 'STOP_LATCHED' in result['escalation_note']
+    assert service.executor.mutations == []
