@@ -12,7 +12,8 @@ from tools.evidence import run_path
 from schema.validate import SENSITIVE_TEXT_ERROR, validate_report
 from .contracts import FUNCTIONS
 from .evidence import data_projection, uncovered, validate_causes
-from .graph import Investigation, build_graph
+from .graph import Investigation
+from .respond import build_graph
 from .llm_router import ModelUnavailable, Router, now
 from .prompts import SYSTEM
 from .reporting import write_bundle

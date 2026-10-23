@@ -7,15 +7,18 @@ from __future__ import annotations
 import argparse
 from copy import deepcopy
 import json
+import os
 from pathlib import Path
 import shutil
+import sys
+import time
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import StateGraph, START, END
 from langgraph.types import Command, interrupt
 from .state import IncidentState
 from .graph import route_investigate, route_proposal
 from action_api.service import ActionService
-from action_api.safety import Blocked, digest, now
+from action_api.safety import Blocked, digest, exclusive, now
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -151,46 +154,165 @@ def build_graph(investigation, checkpointer, service=None):
     return graph.compile(checkpointer=checkpointer)
 
 
-def resume(report, decision=None, *, root=ROOT, service=None, operator='local operator', input_fn=input,
-           auto_approve_for_tests=False):
+def _matches_report(stored, report):
+    from .llm_router import scrub
+    if stored == report or scrub(stored) == report:
+        return True
+    # Bundle writing preserves nullable token semantics after secret scrubbing.
+    safe = scrub(stored)
+    if stored and stored.get('approval', {}).get('token') is None:
+        safe['approval']['token'] = None
+    return safe == report
+
+
+def pending_checkpoint(report, *, root=ROOT, service=None):
+    """Return the private canonical plan; callers must never serialize tokens.
+
+    The saved bundle is a sanitized presentation. Tokens must bind to the exact
+    report retained by LangGraph, including nulls and the full detector alert.
+    """
     root = Path(root)
     service = service or ActionService(root)
+    with SqliteSaver.from_conn_string(str(root / 'runs' / 'checkpoints.sqlite')) as saver:
+        snapshot = build_graph(None, saver, service).get_state(config_for(report['run_id']))
+        if snapshot.next != ('approval',):
+            raise ValueError('Checkpoint is not waiting at approval; refusing a mismatched resume')
+        if not _matches_report(snapshot.values.get('report'), report):
+            raise ValueError('Report differs from the paused checkpoint; refusing an edited plan')
+        state = snapshot.values
+        service.bind_alert(state['report'], state.get('alert'))
+        return state
+
+
+class _ResponseElsewhere(Exception):
+    """Another operator has consumed the displayed approval."""
+
+
+def _signature(snapshot):
+    return (snapshot.next, snapshot.values.get('action_index', 0),
+            len(snapshot.values.get('action_results', [])))
+
+
+def _terminal_input(prompt, changed):
+    """Keep the terminal prompt responsive to an explicit browser decision."""
+    if os.name != 'nt' or not sys.stdin.isatty():
+        if changed():
+            raise _ResponseElsewhere()
+        answer = input(prompt)
+        if changed():
+            raise _ResponseElsewhere()
+        return answer
+    import msvcrt
+    print(prompt, end='', flush=True)
+    answer = []
+    while True:
+        if changed():
+            print('\nApproval continued in the Control Room; waiting for its result.', flush=True)
+            raise _ResponseElsewhere()
+        if msvcrt.kbhit():
+            char = msvcrt.getwch()
+            if char == '\x03':
+                raise KeyboardInterrupt
+            if char in ('\r', '\n'):
+                print('', flush=True)
+                return ''.join(answer)
+            if char == '\b':
+                if answer:
+                    answer.pop()
+                    print('\b \b', end='', flush=True)
+            elif char in ('\x00', '\xe0'):
+                msvcrt.getwch()
+            else:
+                answer.append(char)
+                print(char, end='', flush=True)
+        time.sleep(.2)
+
+
+def resume(report, decision=None, *, root=ROOT, service=None, operator='local operator', input_fn=input,
+           auto_approve_for_tests=False, single_step=False, report_path=None):
+    """Resume one durable checkpoint, with a shared terminal/browser boundary.
+
+    Human input never holds the response lock. The winner rechecks the paused
+    checkpoint under a cross-process lock before executing. A terminal waiting
+    for input observes a browser continuation and returns the same final report.
+    """
+    root = Path(root)
+    service = service or ActionService(root)
+    lock_path = service.private / ('response-' + digest(report['run_id']) + '.lock')
     with SqliteSaver.from_conn_string(str(root / 'runs' / 'checkpoints.sqlite')) as saver:
         graph = build_graph(None, saver, service)
         config = config_for(report['run_id'])
         snapshot = graph.get_state(config)
         if snapshot.next != ('approval',):
             raise ValueError('Checkpoint is not waiting at approval; refusing a mismatched resume')
-        from .llm_router import scrub
-        stored = snapshot.values.get('report')
-        if stored != report and scrub(stored) != report:
+        if not _matches_report(snapshot.values.get('report'), report):
             raise ValueError('Report differs from the paused checkpoint; refusing an edited plan')
-        # The brain bundle sanitizer replaces even a null token with a redaction
-        # marker. Trust the checkpoint after exact sanitized equality, not that
-        # marker. Every substantive report/plan field still has to match.
-        report = stored
-        if not (decision and decision.get('decision') == 'reject') and not snapshot.values.get('dry_run', {}).get('preconditions_ok'):
-            graph.update_state(config, {'action_index': 0, 'action_results': []}, as_node='propose')
-            graph.invoke(None, config)
-        while graph.get_state(config).next == ('approval',):
-            state = graph.get_state(config).values
-            if decision and decision.get('decision') == 'reject':
-                answer = {'decision': 'reject', 'approved_by': operator, 'requested_at': now()}
-                service.log('approval_rejected', report_id=report['run_id'], actor=operator)
-            elif decision and decision.get('token'):
-                answer = decision
-            else:
+        report = snapshot.values['report']
+
+        def wait_for_other():
+            deadline = time.monotonic() + 900
+            while time.monotonic() < deadline:
                 try:
-                    answer = service.approve(state['report']['proposed_actions'][state.get('action_index', 0)],
-                                             state['report'], state['dry_run'], operator, input_fn=input_fn,
-                                             auto_approve_for_tests=auto_approve_for_tests)
+                    with exclusive(lock_path):
+                        return graph.get_state(config)
                 except Blocked as exc:
+                    if exc.code != 'MUTATION_IN_FLIGHT':
+                        raise
+                    time.sleep(.2)
+            raise ValueError('Response is still running; inspect the Control Room and action log')
+
+        if not (decision and decision.get('decision') == 'reject') and not snapshot.values.get('dry_run', {}).get('preconditions_ok'):
+            with exclusive(lock_path):
+                graph.update_state(config, {'action_index': 0, 'action_results': []}, as_node='propose')
+                graph.invoke(None, config)
+        while (snapshot := graph.get_state(config)).next == ('approval',):
+            state, expected = snapshot.values, _signature(snapshot)
+            changed = lambda: _signature(graph.get_state(config)) != expected
+            try:
+                if decision and decision.get('decision') == 'reject':
+                    answer = {'decision': 'reject', 'approved_by': operator, 'requested_at': now()}
+                elif decision and decision.get('token'):
+                    answer = decision
+                else:
+                    human_input = (lambda prompt: _terminal_input(prompt, changed)) if input_fn is input else input_fn
+                    answer = service.approve(state['report']['proposed_actions'][state.get('action_index', 0)],
+                                             state['report'], state['dry_run'], operator, input_fn=human_input,
+                                             auto_approve_for_tests=auto_approve_for_tests)
+                with exclusive(lock_path):
+                    if changed():
+                        raise _ResponseElsewhere()
+                    if answer.get('decision') == 'reject' and decision:
+                        service.log('approval_rejected', report_id=report['run_id'], actor=operator)
+                    graph.invoke(Command(resume=answer), config)
+                    current = graph.get_state(config)
+                    if report_path and not current.next:
+                        save_bundle(current.values['report'], report_path, service)
+                decision = None
+                if single_step:
+                    break
+            except _ResponseElsewhere:
+                wait_for_other()
+                decision = None
+                if single_step:
+                    break
+            except Blocked as exc:
+                if exc.code == 'MUTATION_IN_FLIGHT':
+                    wait_for_other()
+                    if changed():
+                        decision = None
+                        continue
+                with exclusive(lock_path):
+                    if changed():
+                        continue
                     graph.update_state(config, {'response_error': exc.payload()}, as_node='dry_run')
                     graph.invoke(None, config)
-                    break
-            graph.invoke(Command(resume=answer), config)
-            decision = None
-        return graph.get_state(config).values['report']
+                    if report_path:
+                        save_bundle(graph.get_state(config).values['report'], report_path, service)
+                break
+        final = graph.get_state(config)
+        if report_path and not final.next:
+            save_bundle(final.values['report'], report_path, service)
+        return final.values['report']
 
 
 def save_bundle(report, output, service, external_schema=None):
