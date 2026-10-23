@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "id": "span:6b047f4a72fc155ec6911e307f82446f/7b0533e332b26493",
+  "source": "jaeger",
+  "data": {
+    "traceID": "6b047f4a72fc155ec6911e307f82446f",
+    "spanID": "7b0533e332b26493",
+    "operationName": "POST",
+    "references": [],
+    "startTime": 1792770447329575,
+    "duration": 17012,
+    "tags": [
+      {
+        "key": "error",
+        "type": "bool",
+        "value": true
+      },
+      {
+        "key": "http.method",
+        "type": "string",
+        "value": "POST"
+      },
+      {
+        "key": "http.status_code",
+        "type": "int64",
+        "value": 500
+      },
+      {
+        "key": "http.url",
+        "type": "string",
+        "value": "http://frontend-proxy:8080/api/checkout"
+      },
+      {
+        "key": "otel.scope.name",
+        "type": "string",
+        "value": "opentelemetry.instrumentation.requests"
+      },
+      {
+        "key": "otel.scope.version",
+        "type": "string",
+        "value": "0.51b0"
+      },
+      {
+        "key": "otel.status_code",
+        "type": "string",
+        "value": "ERROR"
+      },
+      {
+        "key": "span.kind",
+        "type": "string",
+        "value": "client"
+      }
+    ],
+    "logs": [],
+    "processID": "p6",
+    "warnings": null,
+    "process": {
+      "serviceName": "load-generator",
+      "tags": [
+        {
+          "key": "service.namespace",
+          "type": "string",
+          "value": "opentelemetry-demo"
+        },
+        {
+          "key": "service.version",
+          "type": "string",
+          "value": "2.0.2"
+        },
+        {
+          "key": "telemetry.sdk.language",
+          "type": "string",
+          "value": "python"
+        },
+        {
+          "key": "telemetry.sdk.name",
+          "type": "string",
+          "value": "opentelemetry"
+        },
+        {
+          "key": "telemetry.sdk.version",
+          "type": "string",
+          "value": "1.30.0"
+        }
+      ]
+    }
+  },
+  "captured_at": "2026-10-23T15:47:34.782370+00:00",
+  "checksum": "c33c386be33feecc705e837b61342049655e954f50087a942538fcf08dbffd9d"
+}
