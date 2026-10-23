@@ -1,0 +1,68 @@
+{
+  "audited_at": "2026-10-23T17:37:57.269402+00:00",
+  "scope": [
+    "reports/integration-final-state",
+    "reports/safety-loop-r1"
+  ],
+  "method": "Read-only artifact fields and immutable snapshot checksum/identity validation; no live-state claim from this audit",
+  "bundle_count": 2,
+  "file_count": 1173,
+  "snapshot_count": 1169,
+  "reference_count": 680,
+  "missing_reference_count": 0,
+  "invalid_snapshot_count": 0,
+  "secret_hit_file_count": 0,
+  "configured_secret_value_count": 4,
+  "forbidden_io_attempt_count": 0,
+  "checks": {
+    "reset_succeeded": true,
+    "reset_21_running": true,
+    "final_21_running": true,
+    "exactly_five_load_users": true,
+    "stop_cleared": true,
+    "official_demo_unchanged": true,
+    "clean_window_184_859_seconds": true,
+    "final_two_samples_qualified": true,
+    "safety_probe_passed": true,
+    "safety_log_records_both_blocks_and_clear": true,
+    "safety_log_no_actual_execution": true
+  },
+  "final_two_samples": [
+    {
+      "elapsed_s": 154.843,
+      "clean": true,
+      "requests_observed": 286.00953365112167,
+      "load_running": true,
+      "qualified_traffic": true
+    },
+    {
+      "elapsed_s": 184.859,
+      "clean": true,
+      "requests_observed": 286.0095336511217,
+      "load_running": true,
+      "qualified_traffic": true
+    }
+  ],
+  "bundles": [
+    {
+      "id": "integration-final-state",
+      "file_count": 1170,
+      "snapshot_count": 1169,
+      "valid_snapshot_count": 1169,
+      "invalid_snapshots": [],
+      "reference_count": 680,
+      "missing_references": [],
+      "secret_hit_files": []
+    },
+    {
+      "id": "safety-loop-r1",
+      "file_count": 3,
+      "snapshot_count": 0,
+      "valid_snapshot_count": 0,
+      "invalid_snapshots": [],
+      "reference_count": 0,
+      "missing_references": [],
+      "secret_hit_files": []
+    }
+  ]
+}
