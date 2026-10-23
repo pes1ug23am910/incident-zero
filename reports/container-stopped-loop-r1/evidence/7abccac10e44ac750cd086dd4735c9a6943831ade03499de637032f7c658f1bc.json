@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "id": "span:cb9a79ce9211ccbde2b97c60260316eb/86f8d163ad3b61bd",
+  "source": "jaeger",
+  "data": {
+    "traceID": "cb9a79ce9211ccbde2b97c60260316eb",
+    "spanID": "86f8d163ad3b61bd",
+    "operationName": "router frontend egress",
+    "references": [
+      {
+        "refType": "CHILD_OF",
+        "traceID": "cb9a79ce9211ccbde2b97c60260316eb",
+        "spanID": "de85f41183a285da"
+      }
+    ],
+    "startTime": 1792771201626381,
+    "duration": 14996040,
+    "tags": [
+      {
+        "key": "canceled",
+        "type": "string",
+        "value": "true"
+      },
+      {
+        "key": "component",
+        "type": "string",
+        "value": "proxy"
+      },
+      {
+        "key": "error",
+        "type": "string",
+        "value": "true"
+      },
+      {
+        "key": "http.protocol",
+        "type": "string",
+        "value": "HTTP/1.1"
+      },
+      {
+        "key": "http.status_code",
+        "type": "string",
+        "value": "0"
+      },
+      {
+        "key": "peer.address",
+        "type": "string",
+        "value": "172.23.0.14:8080"
+      },
+      {
+        "key": "response_flags",
+        "type": "string",
+        "value": "-"
+      },
+      {
+        "key": "span.kind",
+        "type": "string",
+        "value": "client"
+      },
+      {
+        "key": "upstream_address",
+        "type": "string",
+        "value": "172.23.0.14:8080"
+      },
+      {
+        "key": "upstream_cluster",
+        "type": "string",
+        "value": "frontend"
+      },
+      {
+        "key": "upstream_cluster.name",
+        "type": "string",
+        "value": "frontend"
+      }
+    ],
+    "logs": [],
+    "processID": "p1",
+    "warnings": null,
+    "process": {
+      "serviceName": "frontend-proxy",
+      "tags": [
+        {
+          "key": "service.namespace",
+          "type": "string",
+          "value": "opentelemetry-demo"
+        },
+        {
+          "key": "service.version",
+          "type": "string",
+          "value": "2.0.2"
+        }
+      ]
+    }
+  },
+  "captured_at": "2026-10-23T16:00:33.106035+00:00",
+  "checksum": "c76542c5f1d5d51583ca892a9447a6fce07c28f16bc8836eed4ce3c2e4cfb712"
+}

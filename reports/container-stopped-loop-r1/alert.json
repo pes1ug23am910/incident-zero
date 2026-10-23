@@ -1,0 +1,48 @@
+{
+  "detected_at": "2026-10-23T16:00:03.792958+00:00",
+  "signal": "container_health",
+  "service": "recommendation",
+  "observed": 1,
+  "threshold": 0,
+  "window_s": 120,
+  "baseline": null,
+  "evidence_ids": [
+    "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792771201.255=0.0",
+    "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792771201.257=3.788235294117647",
+    "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792771201.259=1.200100008334028",
+    "container:recommendation:Status=exited",
+    "container:recommendation:RestartCount=0",
+    "container:recommendation:OOMKilled=false",
+    "container:recommendation:StartedAt=2026-10-23T12:05:36.283275407Z",
+    "container:recommendation:NanoCpus=0",
+    "container:recommendation:Memory=52428800"
+  ],
+  "details": {
+    "signal": "container_status",
+    "observed": "exited"
+  },
+  "anomalies": [
+    {
+      "signal": "container_status",
+      "service": "recommendation",
+      "observed": "exited",
+      "threshold": "running",
+      "window_s": 120,
+      "baseline": null,
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792771201.255=0.0",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792771201.257=3.788235294117647",
+        "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792771201.259=1.200100008334028",
+        "container:recommendation:Status=exited",
+        "container:recommendation:RestartCount=0",
+        "container:recommendation:OOMKilled=false",
+        "container:recommendation:StartedAt=2026-10-23T12:05:36.283275407Z",
+        "container:recommendation:NanoCpus=0",
+        "container:recommendation:Memory=52428800"
+      ]
+    }
+  ],
+  "telemetry_available": true,
+  "warnings": [],
+  "run_id": "20261023T155647.506123Z-cdfe564e"
+}

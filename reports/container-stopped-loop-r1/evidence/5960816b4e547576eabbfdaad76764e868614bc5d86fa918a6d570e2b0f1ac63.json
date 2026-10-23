@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "id": "log:otel/IVt7aaEBUZiyFLbymCpj",
+  "source": "opensearch",
+  "data": {
+    "attributes": {
+      "code.filepath": "/usr/src/app/recommendation_server.py",
+      "code.function": "ListRecommendations",
+      "code.lineno": 47,
+      "data_stream": {
+        "dataset": "default",
+        "namespace": "namespace",
+        "type": "record"
+      },
+      "otelServiceName": "recommendation",
+      "otelSpanID": "a5a68cf22b5c95a1",
+      "otelTraceID": "38b218b5abdb0978ec9d3515e15003d8",
+      "otelTraceSampled": true
+    },
+    "body": "Receive ListRecommendations for product ids:['6E92ZMYYFZ', 'OLJCESPC7Z', 'L9ECAV7KIM', '0PUK6V6EV0', '9SIQT8TOJO']",
+    "instrumentationScope": {
+      "name": "main"
+    },
+    "observedTimestamp": "2026-10-23T15:57:50.049950277Z",
+    "resource": {
+      "service.name": "recommendation",
+      "service.namespace": "opentelemetry-demo",
+      "service.version": "2.0.2",
+      "telemetry.sdk.language": "python",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.30.0"
+    },
+    "severity": {
+      "text": "INFO",
+      "number": 9
+    },
+    "spanId": "a5a68cf22b5c95a1",
+    "@timestamp": "2026-10-23T15:57:48.791926528Z",
+    "traceId": "38b218b5abdb0978ec9d3515e15003d8"
+  },
+  "captured_at": "2026-10-23T16:03:35.276073+00:00",
+  "checksum": "a0777b1e1f8589d2a953272025657f703a84139cd5182f8836c696011b8e367b"
+}

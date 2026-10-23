@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792771012.029=1.906168831168831",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "product-catalog"
+    },
+    "timestamp": 1792771012.029,
+    "value": 1.906168831168831,
+    "query": "named:p95_latency_by_service"
+  },
+  "captured_at": "2026-10-23T15:56:52.252597+00:00",
+  "checksum": "ac6dc51e7592649fb15153bb22e6b23fc498629dc775d6b39539b03cccabd87a"
+}
