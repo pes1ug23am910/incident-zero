@@ -1,0 +1,16 @@
+{
+  "started_at": "2026-10-23T17:31:20.060036+00:00",
+  "finished_at": "2026-10-23T17:31:22.000473+00:00",
+  "live": true,
+  "command": "python -m scripts.show_block --operator \"Yash Verma\"",
+  "checks": {
+    "forbidden_operation": true,
+    "stop_blocks_allowed_operation": true,
+    "stop_latched": true,
+    "stop_explicitly_cleared": true,
+    "zero_execute_events": true
+  },
+  "probe_exit_code": 0,
+  "clear_exit_code": 0,
+  "failed": false
+}

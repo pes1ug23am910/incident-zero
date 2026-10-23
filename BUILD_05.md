@@ -274,3 +274,12 @@ restored by rollback; then operator cleanup restored load and reset the incident
 The response took 205.125 seconds, with the rolled-back report at 322.844 seconds
 after injection. This proves refusal to claim recovery without an active swarm;
 it does not prove rollback after a persistent application-error signal.
+
+The final real-gate browser acceptance is `payment-failure-loop-r9`
+(`runs/20261023T171108.246095Z-f4afce0d`): `fixed` at 313.078 seconds after
+injection, 183.500 seconds of action verification, and qualified
+184.047/183.922-second reset windows. Test mode was unset. An automated browser
+driver typed the real tier-2 confirmation as `Integration acceptance` while
+the mentor wrapper's terminal prompt waited; both joined one response and one
+execution. Final request counts were 1260.084/1188.079 with a running, 21-user
+Locust swarm and cleared signals. See BUILD_06 and the retained browser bundle.
