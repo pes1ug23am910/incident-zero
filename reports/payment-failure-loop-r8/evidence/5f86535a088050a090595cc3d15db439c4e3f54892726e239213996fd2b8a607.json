@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "id": "span:bb910f3d3ca4672b4d7cb6f01c6652a3/501085e66bb8c600",
+  "source": "jaeger",
+  "data": {
+    "traceID": "bb910f3d3ca4672b4d7cb6f01c6652a3",
+    "spanID": "501085e66bb8c600",
+    "operationName": "router frontend egress",
+    "references": [
+      {
+        "refType": "CHILD_OF",
+        "traceID": "bb910f3d3ca4672b4d7cb6f01c6652a3",
+        "spanID": "4fb9067a626de569"
+      }
+    ],
+    "startTime": 1792774757305364,
+    "duration": 13192,
+    "tags": [
+      {
+        "key": "component",
+        "type": "string",
+        "value": "proxy"
+      },
+      {
+        "key": "error",
+        "type": "string",
+        "value": "true"
+      },
+      {
+        "key": "error",
+        "type": "bool",
+        "value": true
+      },
+      {
+        "key": "http.protocol",
+        "type": "string",
+        "value": "HTTP/1.1"
+      },
+      {
+        "key": "http.status_code",
+        "type": "string",
+        "value": "500"
+      },
+      {
+        "key": "otel.status_code",
+        "type": "string",
+        "value": "ERROR"
+      },
+      {
+        "key": "peer.address",
+        "type": "string",
+        "value": "172.23.0.14:8080"
+      },
+      {
+        "key": "response_flags",
+        "type": "string",
+        "value": "-"
+      },
+      {
+        "key": "span.kind",
+        "type": "string",
+        "value": "client"
+      },
+      {
+        "key": "upstream_address",
+        "type": "string",
+        "value": "172.23.0.14:8080"
+      },
+      {
+        "key": "upstream_cluster",
+        "type": "string",
+        "value": "frontend"
+      },
+      {
+        "key": "upstream_cluster.name",
+        "type": "string",
+        "value": "frontend"
+      }
+    ],
+    "logs": [],
+    "processID": "p2",
+    "warnings": null,
+    "process": {
+      "serviceName": "frontend-proxy",
+      "tags": [
+        {
+          "key": "service.namespace",
+          "type": "string",
+          "value": "opentelemetry-demo"
+        },
+        {
+          "key": "service.version",
+          "type": "string",
+          "value": "2.0.2"
+        }
+      ]
+    }
+  },
+  "captured_at": "2026-10-23T16:59:21.258752+00:00",
+  "checksum": "c0698b023c97756a9e675375c410223bb4586654da3780868534e594df74928a"
+}

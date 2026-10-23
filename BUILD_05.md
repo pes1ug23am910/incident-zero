@@ -197,6 +197,7 @@ terminal or browser decision.
 | payment-failure-loop-r5 | aborted by STOP during verification | Explicit test auto | — | Interrupted; no recovery claim | 184.281 / 184.719 s |
 | payment-failure-loop-r6 | Failed forced-non-recovery acceptance; report fixed | Explicit test auto | Not claimed for this failed test | 181.969 s | 184.782 / 184.718 s |
 | payment-failure-loop-r7 | rolled_back; runner failed an overstrict stop assertion | Explicit test auto | — | 182.625 s | 184.844 / 183.938 s |
+| payment-failure-loop-r8 | rolled_back; complete acceptance passed | Explicit test auto | — | 182.750 s | 184.984 / 184.093 s |
 
 The successful payment run is `runs/20261023T153512.976354Z-13778fd2`.
 It diagnosed `payment` / `application_flag` at 0.90 confidence with three tool
@@ -263,3 +264,13 @@ The generic readback now accepts observed `stopped` with a valid nonnegative
 integer count, retaining that count exactly; running-with-zero still fails.
 Thirty-four isolated runner tests passed. R7 remains unchanged, and r8 repeats
 acceptance with that corrected assertion. R7 response duration was 206.188 seconds.
+
+R8 (`runs/20261023T165913.243864Z-df3099ba`) completed without runner failure.
+The operator stop returned success and readback observed `stopped`, one remaining
+user; that count is retained. All seven real verification samples refused
+recovery. Final samples at 152.750/182.750 seconds had 80.005/72.005 requests,
+cleared alert values, and `load_running=false`. The prior payment settings were
+restored by rollback; then operator cleanup restored load and reset the incident.
+The response took 205.125 seconds, with the rolled-back report at 322.844 seconds
+after injection. This proves refusal to claim recovery without an active swarm;
+it does not prove rollback after a persistent application-error signal.
