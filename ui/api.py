@@ -212,16 +212,15 @@ class ControlRoom:
         item = next((item for item in report.get("evidence", []) if item.get("id") == evidence_id), None)
         if item is None:
             raise HTTPException(404, "Evidence is not cited by this incident")
-        if self.real:
-            try:
-                from tools.resolve import resolve
-                # Only a confined run in this repository can be passed to the tools resolver.
-                run = report.get("run_id")
-                if not run or not inside(ROOT / run, ROOT / "runs"):
-                    raise ValueError("No local run for live resolution")
-                return resolve(evidence_id, run_dir=run)
-            except Exception:
-                pass
+        try:
+            from tools.resolve import resolve
+            # Only a confined run in this repository can be passed to the tools resolver.
+            run = report.get("run_id")
+            if not run or not inside(ROOT / run, ROOT / "runs"):
+                raise ValueError("No local run for live resolution")
+            return resolve(evidence_id, run_dir=run)
+        except Exception:
+            pass
         return self.snapshot(path, item)
 
     def emit(self, kind, data, key=None):
