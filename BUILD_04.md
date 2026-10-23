@@ -73,6 +73,20 @@ runs reproducible in inputs, not outputs.
   OpenSearch override, recommendation returned three Docker log records in
   4.437 s. Transport/operator tests: 28 passed; trace/log/resolver regressions:
   43 passed. No service was stopped for these checks.
+- Model failure investigation: historical `payment-failure-r1` used run
+  `runs/20261023T102943.979795Z-a1fcd705`. Both configured OpenRouter routes
+  failed with `SSLError` before an HTTP response (0.296 s and 0.110 s). The old
+  log omitted exception detail, so the exact TLS cause cannot be recovered.
+  Successful probes bracketed the failure. Its `ad` / unknown / 0.30 was an
+  alert-owner placeholder, not an LLM diagnosis. Terminal failures now identify
+  attempted provider/model routes, retain sanitized error detail, force
+  `needs_human` with no proposal, and give an unestablished cause zero model
+  confidence. TLS verification remains enabled; transport failures retry once.
+  A new live structured probe succeeded on `openai/gpt-5`: 125 input tokens,
+  254 output tokens, reference estimate $0.002696, one call with no fallback.
+  Router/report/graph/replay/disclosure tests: 63 passed, two pending live-fixture
+  skips. Retained graph/state/replay changes were reviewed and kept; a separate
+  graph/replay regression run passed 56 tests with the same two skips.
 
 ## Scope and unresolved acceptance
 
