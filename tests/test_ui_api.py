@@ -252,6 +252,7 @@ def test_disk_acceptance_bundle():
 class FakeService:
     """No executor imports and no network; only a temporary-directory journal."""
     def __init__(self, root):
+        self.root = root
         self.stop_path = root / "STOP"
         self.log_path = root / "log.jsonl"
         self.executions = []
@@ -294,13 +295,33 @@ class FakeService:
         return {"stopped": False}
 
 
+class FakeResponseDriver:
+    """Isolate the browser contract; real SQLite integration is tested separately."""
+    @staticmethod
+    def pending_checkpoint(report, **kwargs):
+        return {'report': report, 'action_index': 0}
+
+    @staticmethod
+    def resume(report, answer, *, service, report_path, **kwargs):
+        final = deepcopy(report)
+        if answer['decision'] == 'approve':
+            action = final['proposed_actions'][0]
+            final['action'] = service.execute(action, report, answer['token'], 'fixture-response')
+            final['verification'] = service.verify('fixture-response')
+            final['status'] = 'fixed'
+        else:
+            final['status'] = 'needs_human'
+        report_path.write_text(json.dumps(final), encoding='utf-8')
+        return final
+
+
 def test_native_adapter_approval_execution_verification_and_no_token_leak(tmp_path):
     from ui.action_backend import ActionBackend
     report = sample()
     write_report(tmp_path / "reports", report)
     service = FakeService(tmp_path)
     room = ControlRoom(tmp_path / "reports", real=True)
-    backend = ActionBackend(room, lambda: service)
+    backend = ActionBackend(room, lambda: service, response_driver=FakeResponseDriver)
     room._backend = backend
     app = FastAPI()
     app.include_router(make_router(room))
@@ -321,7 +342,7 @@ def test_native_adapter_approval_execution_verification_and_no_token_leak(tmp_pa
     assert client.post(url, json={**decision, "confirmation": "yes"}).status_code == 409
     assert client.post("/api/stop").json()["stopped"] is True
     assert client.request("DELETE", "/api/stop", json={"phrase": CLEAR_PHRASE}).json()["stopped"] is False
-    assert json.loads((tmp_path / "reports/test-incident/report.json").read_text())["action"]["executed"] is False
+    assert json.loads((tmp_path / "reports/test-incident/report.json").read_text())["action"]["executed"] is True
     assert not any("private-test-token" in client.get(path).text for path in ("/api/incidents", "/api/approvals", "/api/log", "/api/events"))
 
 
@@ -330,7 +351,7 @@ def test_native_preview_revision_binds_the_reviewed_world(tmp_path):
     write_report(tmp_path / "reports", sample())
     service = FakeService(tmp_path)
     room = ControlRoom(tmp_path / "reports", real=True)
-    backend = ActionBackend(room, lambda: service)
+    backend = ActionBackend(room, lambda: service, response_driver=FakeResponseDriver)
     room._backend = backend
     original = backend.list_approvals()["pending"][0]
     preview = next(iter(backend.previews.values()))["preview"]

@@ -10,16 +10,30 @@ from ui.api import action_of, fingerprint, lines, now, tier_of
 
 
 class ActionBackend:
-    def __init__(self, room, service_factory):
+    def __init__(self, room, service_factory, response_driver=None):
         self.room = room
         self.factory = service_factory
         self._service = None
+        self._response_driver = response_driver
         self.lock = threading.RLock()
         self.previews = {}
         self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="control-room-response")
 
     @property
+    def response_driver(self):
+        if self._response_driver is None:
+            from agent import respond
+            self._response_driver = respond
+        return self._response_driver
+
+    def pending(self, report):
+        return self.response_driver.pending_checkpoint(report, root=self.service.root, service=self.service)
+
+    @property
     def service(self):
+        # STOP must never wait behind slow preview or approval telemetry reads.
+        if self._service is not None:
+            return self._service
         with self.lock:
             if self._service is None:
                 self._service = self.factory()
@@ -54,11 +68,18 @@ class ActionBackend:
             for identity, (_, report) in self.room.records().items():
                 if tier_of(report) not in (1, 2) or report["status"] != "diagnosed" or (report.get("approval") or {}).get("approved") is not None:
                     continue
-                if (report.get("action") or {}).get("executed"):
+                try:
+                    state = self.pending(report)
+                except ValueError:
+                    # Historical reports without a matching paused checkpoint
+                    # remain inspectable but can never authorize execution.
                     continue
                 revision = fingerprint(report)
-                actions = report.get("proposed_actions") or [action_of(report)]
+                canonical = state['report']
+                actions = canonical.get("proposed_actions") or [action_of(canonical)]
                 for index, action in enumerate(actions):
+                    if index != state.get('action_index', 0):
+                        continue
                     if action.get("type") in (None, "none"):
                         continue
                     approval_id = identity if len(actions) == 1 else f"{identity}~{index + 1}"
@@ -71,7 +92,7 @@ class ActionBackend:
                     cached = self.previews.get(key)
                     if cached is None and not stopped:
                         try:
-                            preview = self.service.dry_run(action, report)
+                            preview = self.service.dry_run(action, canonical)
                             cached = {"preview": preview, "expiry": (datetime.now(timezone.utc) + timedelta(minutes=10)).isoformat()}
                             self.previews[key] = cached
                         except Exception as exc:
@@ -111,20 +132,25 @@ class ActionBackend:
                 raise HTTPException(422, "Tier 2 requires typing exactly yes")
             if item["tier"] not in (1, 2):
                 raise HTTPException(403, "Tier 3 cannot be approved")
-            _, report = self.room.record(item["report_id"])
+            path, report = self.room.record(item["report_id"])
             if fingerprint(report) != item["report_revision"]:
                 raise HTTPException(409, "Report changed; review the current report")
+            state = self.pending(report)
+            if state.get('action_index', 0) != item['action_index']:
+                raise HTTPException(409, "This action has already been decided")
+            canonical = state['report']
             result = {key: value for key, value in item.items() if key != "preview"}
             result.update(operator=operator, note=note, reason=reason, status="approved" if approved else "rejected", decided_at=now(), mode="real")
             if not approved:
                 self.service.log("approval_rejected", report_id=report["run_id"], actor=operator, ui_decision=result)
+                answer = {'decision': 'reject', 'approved_by': operator, 'requested_at': now()}
             else:
-                actions = report.get("proposed_actions") or [action_of(report)]
+                actions = canonical.get("proposed_actions") or [action_of(canonical)]
                 action = actions[item["action_index"]]
                 # This answer originates in the explicit HTTP button/typed confirmation.
                 # The native gate still rechecks report, world state, tier and STOP.
                 try:
-                    answer = self.service.approve(action, report, item["preview"], operator,
+                    answer = self.service.approve(action, canonical, item["preview"], operator,
                                                   input_fn=lambda _: "y" if item["tier"] == 1 else confirmation,
                                                   output=lambda _: None)
                 except Exception as exc:
@@ -134,18 +160,19 @@ class ActionBackend:
                 if answer.get("decision") != "approve":
                     raise HTTPException(409, "Action service did not approve this plan")
                 self.service.log("ui_approval", report_id=report["run_id"], actor=operator, ui_decision=result)
-                key = "ui:" + fingerprint({"run": report["run_id"], "approval": approval_id, "revision": revision})
-                self.pool.submit(self.execute_and_verify, deepcopy(report), action, answer["token"], key)
+            self.pool.submit(self.continue_response, deepcopy(report), answer, path, operator)
             self.room.emit("approval_decided", {"incident_id": item["report_id"], "decision": result})
             return result
 
-    def execute_and_verify(self, report, action, token, key):
+    def continue_response(self, report, answer, path, operator):
         identity = report["incident_id"]
         try:
-            execution = self.service.execute(action, report, token, key)
-            self.room.emit("action_executed", {"incident_id": identity, "action": execution})
-            verification = self.service.verify(key)
-            self.room.emit("verification_result", {"incident_id": identity, "verification": verification})
+            final = self.response_driver.resume(report, answer, root=self.service.root, service=self.service,
+                                                operator=operator, single_step=True, report_path=path)
+            if final.get('action', {}).get('executed'):
+                self.room.emit("action_executed", {"incident_id": identity, "action": final['action']})
+            if final.get('verification', {}).get('checked_at'):
+                self.room.emit("verification_result", {"incident_id": identity, "verification": final['verification']})
         except Exception as exc:
             code = getattr(exc, "code", "RESPONSE_REQUIRES_OPERATOR_REVIEW")
             self.service.log("ui_response_blocked", report_id=report["run_id"], reason=code)

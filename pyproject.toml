@@ -17,7 +17,7 @@ faultctl = "faultctl.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["faultctl*", "tools*", "schema*", "reports*", "agent*", "detect*", "action_api*", "eval*"]
+include = ["faultctl*", "tools*", "schema*", "reports*", "agent*", "detect*", "action_api*", "eval*", "ui*", "scripts*"]
 
 [tool.setuptools.package-data]
 faultctl = ["config.yaml", "netem/Dockerfile"]
@@ -25,6 +25,7 @@ schema = ["*.json", "*.md", "examples/*.json"]
 action_api = ["policy.yaml"]
 detect = ["thresholds.yaml"]
 eval = ["cases.jsonl"]
+ui = ["static/*", "API.md", "requirements.txt"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

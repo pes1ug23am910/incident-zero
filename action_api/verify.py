@@ -27,13 +27,15 @@ class LiveSampler:
         from tools.queries import named_query
         rate_query = named_query("rps_by_service")
         import re
-        match = re.search(r"rate\(([A-Za-z_:][A-Za-z0-9_:]*)\[2m\]\)", rate_query)
+        match = re.search(r"rate\(\s*([A-Za-z_:][A-Za-z0-9_:]*)\s*(?:\{[^{}]*\})?\s*\[2m\]\s*\)", rate_query)
         if not match:
             raise Blocked("VERIFICATION_UNAVAILABLE", 409)
         query = 'sum(increase(' + match[1] + '{service_name="frontend",span_kind="SPAN_KIND_SERVER"}[2m]))'
         counts = get_metrics(query, lookback_s=120, run_dir=run_id)
         points = [row["values"][-1] for row in counts.get("data", []) if row.get("values")]
-        fresh = bool(points) and all(time.time() - point[0] <= 45 and finite(point[1]) for point in points)
+        observed_at = time.time()
+        fresh = bool(points) and all(finite(point[0]) and 0 <= observed_at - point[0] <= 45
+                                     and finite(point[1]) for point in points)
         rows = {row["service"]: row for row in table.get("data", [])}
         values = []
         for signal in signals(alert):
@@ -98,6 +100,9 @@ class Verifier:
             samples.append(point)
             if progress:
                 progress(point)
+            # STOP may arrive during a telemetry request or progress callback,
+            # including the final sample. Never publish recovery past that latch.
+            check_stop()
             if elapsed >= self.window_s:
                 outcome = "recovered" if consecutive >= 2 else "unresolved" if available else "blocked"
                 return {"checked_at": now(), "signal": alert["signal"], "before": alert.get("observed"),

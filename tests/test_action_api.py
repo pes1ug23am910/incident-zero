@@ -486,7 +486,7 @@ def test_resume_accepts_exact_sanitized_brain_bundle(env):
     report = synthetic_report()
     pause_brain(api,report)
     saved = scrub(report)
-    assert saved['approval']['token'] == '[redacted]'
+    assert saved['approval']['token'] is None
     final = resume(saved, root=api.root, service=api, input_fn=lambda _:'yes')
     assert final['status'] == 'fixed' and len(executor.mutations) == 1
 
@@ -499,3 +499,43 @@ def test_explicit_rejection_needs_no_live_preconditions(env):
     final=resume(report, {'decision':'reject'}, root=api.root, service=api)
     assert final['status']=='needs_human' and final['approval']['approved'] is False
     assert executor.mutations==[]
+
+
+def test_stopped_dependency_and_caller_stdout_pass_independent_source_gate(env):
+    api, _, _, _ = env
+    report = synthetic_report('valkey-cart', 'container_down')
+    identifiers = ['container:valkey-cart:Status=exited', 'dlog:cart:' + 'a' * 64]
+    report['root_causes'][0]['evidence_ids'] = identifiers
+    report['root_causes'][0]['explains_symptoms'] = ['cart']
+    report['evidence'] = [{'id': identifier, 'source': 'docker'} for identifier in identifiers]
+    # Reassess with a proven exited cache; this is no longer a state-risk restart.
+    report['impact']['data_risk'] = 'none'
+    report['status'] = 'diagnosed'
+    report = propose(report)
+    preview = api.dry_run(report['proposed_action'], report)
+    assert preview['second_source_check'] == 'application_logs, container_state'
+
+
+def test_stdout_and_opensearch_copy_do_not_pass_independent_source_gate(env):
+    api, executor, _, _ = env
+    report = synthetic_report()
+    identifiers = ['dlog:payment:' + 'a' * 64, 'log:otel/duplicate']
+    report['root_causes'][0]['evidence_ids'] = identifiers
+    report['evidence'] = [{'id': identifier, 'source': source}
+                          for identifier, source in zip(identifiers, ['docker', 'opensearch'])]
+    with pytest.raises(Blocked, match='SECOND_SOURCE_REQUIRED'):
+        api.dry_run(report['proposed_action'], report)
+    assert executor.mutations == []
+
+
+def test_stop_during_final_telemetry_read_prevents_recovered_result(env):
+    api, _, clock, sample = env
+    execute(api, synthetic_report())
+    def sampler(alert, run_id):
+        if clock.value >= 1180:
+            api.stop_path.touch()
+        return deepcopy(sample)
+    api.verifier.sampler = sampler
+    result = api.verify('attempt-1')
+    assert result['outcome'] == 'blocked' and not result['recovered']
+    assert result['rollback_note'] == 'STOP_LATCHED'
