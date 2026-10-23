@@ -5,6 +5,7 @@ from contextvars import copy_context
 from .common import bounded, envelope, window
 from .metrics import get_metrics
 from .containers import get_container_health
+from .redact import is_sensitive
 
 
 @bounded("prometheus")
@@ -20,6 +21,8 @@ def health_table(lookback_s=120):
     rows = {}
     ids, warnings = [], []
     for item in health["data"]:
+        if is_sensitive(item["name"]):
+            continue
         rows[item["name"]] = {"service": item["name"], "error_rate": None, "p95_ms": None, "rps": None,
                               "restarts": item["RestartCount"], "status": item["Status"],
                               "cpu_percent": item["cpu_percent"], "memory_mb": item["memory_mb"],
@@ -28,20 +31,20 @@ def health_table(lookback_s=120):
     for field, result in results.items():
         for series in result["data"]:
             name = series["metric"].get("service_name", series["metric"].get("service"))
-            if not name:
+            if not name or is_sensitive(name):
                 continue
             row = rows.setdefault(name, {"service": name, "error_rate": None, "p95_ms": None, "rps": None,
                                          "restarts": None, "status": "unknown", "cpu_percent": None, "memory_mb": None})
             values = series["values"]
             row[field] = values[-1][1] if values else None
             # Health reports the final point, whose proof must match that point.
-            if series.get("latest_evidence_id"):
+            if series.get("latest_evidence_id") and not is_sensitive(series["latest_evidence_id"]):
                 ids.append(series["latest_evidence_id"])
         if result.get("error"):
             warnings.append(f"{field}: {result['error']['message']}")
         elif result.get("warning"):
             warnings.append(f"{field}: {result['warning']}")
-    ids.extend(health["evidence_ids"])
+    ids.extend(identifier for identifier in health["evidence_ids"] if not is_sensitive(identifier))
     if health.get("error"):
         warnings.append("containers: " + health["error"]["message"])
     warnings.extend(health.get("warnings", []))

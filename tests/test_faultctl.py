@@ -86,8 +86,9 @@ def test_failed_mutation_is_journaled_before_command(controller, monkeypatch):
 
 def test_flag_mutation_is_repo_local(controller, monkeypatch):
     before = controller.source.read_bytes()
-    controller.ensure_pristine()
+    controller.prepare_overlay()
     monkeypatch.setattr(controller, "run", lambda *args, **kwargs: subprocess.CompletedProcess(args, 0, "reload received", ""))
+    monkeypatch.setattr(controller, "compose", lambda *args, **kwargs: pytest.fail("Flag update must not invoke Compose"))
     monkeypatch.setattr("faultctl.cli.time.sleep", lambda _: None)
     monkeypatch.setattr(controller, "inspect", lambda target: {"Mounts": [{"Source": str(controller.active.parent), "Destination": "/etc/flagd"}]})
     controller.set_flag("paymentFailure", "100%")
@@ -96,6 +97,74 @@ def test_flag_mutation_is_repo_local(controller, monkeypatch):
     assert json.loads(controller.active.read_text())["flags"]["paymentFailure"]["defaultVariant"] == "100%"
     override = json.loads(controller.override.read_text())
     assert Path(override["services"]["flagd"]["volumes"][0]["source"]).is_relative_to(controller.root)
+
+
+def test_up_prepares_persistent_mount_with_exact_pristine_bytes(controller, monkeypatch):
+    before = controller.source.read_bytes()
+    calls = []
+    monkeypatch.setattr(controller, "compose", lambda *args, **kwargs:
+        calls.append((args, kwargs)) or subprocess.CompletedProcess(args, 0, "started", ""))
+    monkeypatch.setattr(controller, "inspect", lambda target: {"Mounts": [{
+        "Source": str(controller.active.parent), "Destination": "/etc/flagd"}]})
+    assert controller.up()["ok"]
+    assert controller.active.read_bytes() == controller.pristine.read_bytes() == before
+    assert controller.source.read_bytes() == before
+    assert calls == [(("up", "-d"), {})]
+
+
+def test_flag_injection_requires_prepared_mount_before_journaling(controller):
+    with pytest.raises(FaultError, match="run faultctl up"):
+        controller.inject("payment-failure", options())
+    assert not controller.state_path.exists()
+    controller.prepare_overlay()
+    with pytest.raises(FaultError, match="not mounted"):
+        controller.inject("payment-failure", options())
+    assert not controller.state_path.exists()
+    assert controller.active.read_bytes() == controller.pristine.read_bytes()
+
+
+def test_sequential_flag_updates_preserve_both_without_compose(controller, monkeypatch):
+    controller.prepare_overlay()
+    monkeypatch.setattr(controller, "inspect", lambda target: {"Mounts": [{
+        "Source": str(controller.active.parent), "Destination": "/etc/flagd"}]})
+    monkeypatch.setattr(controller, "compose", lambda *args, **kwargs: pytest.fail("Flag update must not invoke Compose"))
+    monkeypatch.setattr(controller, "run", lambda *args, **kwargs: subprocess.CompletedProcess(args, 0, "reload received", ""))
+    monkeypatch.setattr("faultctl.cli.time.sleep", lambda _: None)
+    controller.set_flag("paymentFailure", "100%")
+    controller.set_flag("cartFailure", "on")
+    flags = json.loads(controller.active.read_text())["flags"]
+    assert flags["paymentFailure"]["defaultVariant"] == "100%"
+    assert flags["cartFailure"]["defaultVariant"] == "on"
+
+
+def test_reset_keeps_overlay_and_never_recreates_control_service(controller, monkeypatch):
+    controller.prepare_overlay()
+    override = controller.override.read_bytes()
+    controller.active.write_text("{}", encoding="utf-8")
+    write_json(controller.state_path, {"incidents": [{"run_id": "sample", "incident_id": "payment-failure", "target": "payment"}], "flag_override": True})
+    monkeypatch.setattr(controller, "inspect", lambda target: {"Mounts": [{
+        "Source": str(controller.active.parent), "Destination": "/etc/flagd"}]})
+    calls = []
+    monkeypatch.setattr(controller, "compose", lambda *args, **kwargs:
+        calls.append((args, kwargs)) or subprocess.CompletedProcess(args, 0, "", ""))
+    result = controller.reset(timeout_s=0)
+    assert result["ok"]
+    assert controller.active.read_bytes() == controller.pristine.read_bytes() == controller.source.read_bytes()
+    assert controller.override.read_bytes() == override
+    assert controller.state()["incidents"] == []
+    assert calls == [(("up", "-d", "--no-recreate"), {})]
+    assert any(row["check"] == "persistent-injection-mount" for row in result["checks"])
+
+
+def test_reset_refuses_mount_drift_without_recreating(controller, monkeypatch):
+    controller.prepare_overlay()
+    write_json(controller.state_path, {"incidents": [], "flag_override": True})
+    monkeypatch.setattr(controller, "compose", lambda *args, **kwargs: pytest.fail("Mount drift must not trigger recreation"))
+    result = controller.reset(timeout_s=0)
+    assert not result["ok"]
+    assert not result["fault_state_clean"]
+    assert controller.override.exists()
+    assert any("not mounted" in error for error in result["errors"])
 
 
 def test_reset_allowed_with_stop_and_cancels_worker(controller):
@@ -123,14 +192,16 @@ def test_reset_failure_keeps_recovery_journal(controller, monkeypatch):
 
 
 def test_readiness_failure_is_not_a_success(controller, monkeypatch):
+    controller.prepare_overlay()
+    monkeypatch.setattr(controller, "inspect", lambda target: {"Mounts": [{
+        "Source": str(controller.active.parent), "Destination": "/etc/flagd"}]})
     write_json(controller.state_path, {"incidents": [], "flag_override": True})
-    write_json(controller.override, {"unused": True})
     monkeypatch.setattr(controller, "status", lambda **kwargs: {"ok": False, "checks": [{"check": "telemetry", "ok": False}]})
     result = controller.reset(timeout_s=0)
     assert result["fault_state_clean"] is True
     assert result["stack_ready"] is False
     assert result["ok"] is False
-    assert not controller.override.exists()
+    assert controller.override.exists()
     assert controller.state()["flag_override"] is False
 
 
@@ -166,3 +237,8 @@ def test_compose_version_override_and_cwd(controller, monkeypatch):
     assert seen["env"]["DEMO_VERSION"] == "2.0.2"
     assert seen["cwd"] == controller.root
     assert str(controller.demo / "docker-compose.minimal.yml") in seen["command"]
+    controller.prepare_overlay()
+    controller.compose("up", "-d")
+    assert str(controller.override) in seen["command"]
+    controller.compose("config", "--format", "json", override=False)
+    assert str(controller.override) not in seen["command"]
