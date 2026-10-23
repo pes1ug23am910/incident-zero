@@ -670,6 +670,23 @@
               "load_running": {
                 "type": "boolean"
               },
+              "load_state": {
+                "type": ["string", "null"]
+              },
+              "load_user_count": {
+                "type": ["integer", "null"],
+                "minimum": 0
+              },
+              "load_observed_at": {
+                "type": ["string", "null"],
+                "format": "date-time"
+              },
+              "load_available": {
+                "type": "boolean"
+              },
+              "load_container_running": {
+                "type": "boolean"
+              },
               "evidence_ids": {
                 "type": "array",
                 "items": {
@@ -1309,6 +1326,23 @@
                       "type": "number"
                     },
                     "load_running": {
+                      "type": "boolean"
+                    },
+                    "load_state": {
+                      "type": ["string", "null"]
+                    },
+                    "load_user_count": {
+                      "type": ["integer", "null"],
+                      "minimum": 0
+                    },
+                    "load_observed_at": {
+                      "type": ["string", "null"],
+                      "format": "date-time"
+                    },
+                    "load_available": {
+                      "type": "boolean"
+                    },
+                    "load_container_running": {
                       "type": "boolean"
                     },
                     "evidence_ids": {

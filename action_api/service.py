@@ -299,6 +299,12 @@ class ActionService:
                 raise Blocked("ATTEMPT_REQUIRES_REVIEW", 409)
             observed_samples = []
             def retain_progress(point):
+                if 'load_observed_at' in point:
+                    ref = self.log('load_observed', report_id=attempt['report_id'],
+                                   endpoint='http://localhost:8080/loadgen/stats/requests',
+                                   **{field: point.get(field) for field in ('load_observed_at', 'load_state',
+                                       'load_user_count', 'load_available', 'load_container_running', 'load_running')})
+                    point['evidence_ids'] = [*point.get('evidence_ids', []), ref]
                 # Keep observations even when STOP or a later callback/rollback
                 # interrupts the verifier before it returns its complete window.
                 observed_samples.append(deepcopy(point))

@@ -118,3 +118,13 @@ rules, but the runner failed and no rollback is claimed. Its clean windows were
 the verifier and confirmed stop readback for the retry. Earlier live successes
 used container liveness per sample and separately recorded operator load setup;
 they are not being relabelled as runs of the stronger check.
+
+The stronger check passed 43 isolated sampler/integration tests. Every live
+sample now reads actual Locust state and user count; recovery requires
+`state=running`, a positive integer user count and a running container. Unknown
+or unavailable load state fails closed. Action samples retain the observation
+time/state/count and an immutable `load_observed` action-log snapshot. The
+180-second and 20-request requirements are unchanged. The forced operator stop
+now confirms `stopped` with zero users, recording any HTTP response uncertainty;
+29 isolated runner tests cover this and actual browser-vs-terminal approval
+metadata. The retry uses this implementation.

@@ -1,6 +1,7 @@
 """Fresh, traffic-qualified verification of every signal in the original alert."""
 import math
 import time
+import requests
 from .safety import Blocked, now
 
 FIELDS = {"error_rate": "error_rate", "latency_p95": "p95_ms", "p95_ms": "p95_ms",
@@ -19,6 +20,27 @@ def signals(alert):
 
 
 class LiveSampler:
+    def load_snapshot(self):
+        observation = {"load_state": None, "load_user_count": None,
+                       "load_observed_at": None, "load_available": False}
+        try:
+            response = requests.get("http://localhost:8080/loadgen/stats/requests",
+                                    timeout=10, headers={"Cache-Control": "no-cache"})
+            response.raise_for_status()
+            payload = response.json()
+            if not isinstance(payload, dict):
+                return observation
+            state, users = payload.get("state"), payload.get("user_count")
+            if not isinstance(state, str) or not state or len(state) > 40:
+                return observation
+            if type(users) is not int or users < 0:
+                return observation
+            observation.update(load_state=state, load_user_count=users,
+                               load_observed_at=now(), load_available=state in {"running", "stopped"})
+        except (requests.RequestException, ValueError, TypeError):
+            pass
+        return observation
+
     def __call__(self, alert, run_id):
         from tools import health_table, get_metrics
         table = health_table(lookback_s=120, run_dir=run_id)
@@ -33,6 +55,7 @@ class LiveSampler:
         query = 'sum(increase(' + match[1] + '{service_name="frontend",span_kind="SPAN_KIND_SERVER"}[2m]))'
         counts = get_metrics(query, lookback_s=120, run_dir=run_id)
         points = [row["values"][-1] for row in counts.get("data", []) if row.get("values")]
+        load = self.load_snapshot()
         observed_at = time.time()
         fresh = bool(points) and all(finite(point[0]) and 0 <= observed_at - point[0] <= 45
                                      and finite(point[1]) for point in points)
@@ -43,9 +66,11 @@ class LiveSampler:
             if field is None:
                 raise Blocked("VERIFICATION_UNAVAILABLE", 409, "Unsupported alert signal; operator verification required")
             values.append(rows.get(signal["service"], {}).get(field))
-        return {"available": bool(table.get("telemetry_available")) and fresh and not table.get("error"),
+        container_running = rows.get("load-generator", {}).get("status") == "running"
+        return {"available": bool(table.get("telemetry_available")) and fresh and not table.get("error") and load['load_available'],
                 "values": values, "requests_observed": sum(p[1] for p in points) if fresh else 0,
-                "load_running": rows.get("load-generator", {}).get("status") == "running",
+                **load, "load_container_running": container_running,
+                "load_running": container_running and load['load_available'] and load['load_state'] == 'running' and load['load_user_count'] > 0,
                 "evidence_ids": table.get("evidence_ids", []) + counts.get("evidence_ids", [])}
 
 
