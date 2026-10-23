@@ -9,7 +9,8 @@ from urllib.parse import quote
 from .common import get_json, jaeger, prometheus, search_json
 from .containers import inspect_rows, health_row, evidence_value
 from .deploy import action_entries
-from .redact import sanitize, scrub_trace, is_sensitive, is_sensitive_evidence
+from . import evidence as snapshots
+from .redact import sanitize, scrub_trace, is_sensitive
 
 
 class EvidenceNotFound(ValueError):
@@ -32,6 +33,8 @@ def parse_metric(identifier):
     if query is None:
         selector = ",".join(f"{k}={json.dumps(v)}" for k, v in sorted(labels.items()))
         query = name + "{" + selector + "}"
+    if is_sensitive(name) or is_sensitive(labels) or is_sensitive(query):
+        raise EvidenceNotFound("Decoded metric identifier contains excluded telemetry")
     return name, labels, float(timestamp), float(value), query
 
 
@@ -101,31 +104,44 @@ def _resolve(evidence_id):
     raise EvidenceNotFound("Evidence was not found or its value no longer matches")
 
 
-def resolve(evidence_id):
-    if not isinstance(evidence_id, str) or len(evidence_id) > 16384:
-        raise EvidenceNotFound("Evidence identifier must be a string of at most 16384 characters")
-    if is_sensitive_evidence(evidence_id):
-        raise EvidenceNotFound("Evidence identifier is excluded from diagnostic reads")
+def resolve(evidence_id, *, run_dir=None):
+    try:
+        source = snapshots.expected_source(evidence_id)
+        if evidence_id.startswith("metric:"):
+            _, _, timestamp, value, _ = parse_metric(evidence_id)
+            if not math.isfinite(timestamp) or not math.isfinite(value):
+                raise ValueError("Metric evidence values must be finite")
+        if run_dir is not None:
+            run_dir = snapshots.run_path(run_dir)
+    except (ValueError, TypeError, OSError) as exc:
+        raise EvidenceNotFound(str(exc)) from exc
     try:
         result = _resolve(evidence_id)
-        if is_sensitive(result.get("data")) and evidence_id.startswith(("log:", "dlog:")):
+        if is_sensitive(result.get("data")) and evidence_id.startswith(("log:", "dlog:", "action_log:")):
             raise EvidenceNotFound("Evidence is excluded from diagnostic reads")
-        return sanitize(result)
-    except EvidenceNotFound:
-        raise
+        result = sanitize(result)
+        if result is None or result.get("data") is None or result.get("source") != source:
+            raise EvidenceNotFound("Live evidence returned no matching safe payload")
+        return {**result, "resolved_from": "live"}
     except Exception as exc:
-        raise EvidenceNotFound(f"Could not re-fetch evidence: {exc}") from exc
+        live_error = sanitize(str(exc)) or "[redacted]"
+    try:
+        result = snapshots.find_snapshot(evidence_id, run_dir=run_dir)
+        return {**result, "live_error": live_error}
+    except (ValueError, OSError) as exc:
+        raise EvidenceNotFound(f"Could not re-fetch evidence: {live_error}; snapshot: {exc}") from exc
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("evidence_id")
-    args = parser.parse_args()
+    parser.add_argument("--run-dir", help="restrict snapshot fallback to this run under runs")
+    args = parser.parse_args(argv)
     try:
-        print(json.dumps(resolve(args.evidence_id), indent=2))
+        print(json.dumps(resolve(args.evidence_id, run_dir=args.run_dir), indent=2))
         return 0
     except EvidenceNotFound as exc:
-        print(json.dumps({"id": args.evidence_id, "error": str(exc)}))
+        print(json.dumps(sanitize({"id": args.evidence_id, "error": str(exc)})))
         return 1
 
 

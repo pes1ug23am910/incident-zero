@@ -1,0 +1,13 @@
+"""Keep diagnostic unit-test snapshots separate from recorded acceptance runs."""
+
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def isolated_evidence_runs(tmp_path, monkeypatch):
+    from tools import evidence
+
+    monkeypatch.setattr(evidence, "ROOT", tmp_path)
+    token = evidence.CURRENT_RUN.set(None)
+    yield
+    evidence.CURRENT_RUN.reset(token)

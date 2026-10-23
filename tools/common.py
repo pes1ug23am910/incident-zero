@@ -49,17 +49,26 @@ def bounded(source):
     def decorate(func):
         @functools.wraps(func)
         def wrapped(*args, **kwargs):
+            from .evidence import begin_run, end_run, persist_envelope
+            from .redact import sanitize
+
             token = DEADLINE.set(time.monotonic() + 2.8)
             started = time.monotonic()
+            run_token = None
+            current = None
             try:
-                result = func(*args, **kwargs)
+                current, run_token = begin_run(kwargs.pop("run_dir", None))
+                result = sanitize(func(*args, **kwargs))
+                result = persist_envelope(result, current)
             except (ValueError, OSError, subprocess.SubprocessError, requests.RequestException) as exc:
                 result = envelope(func.__name__, source, json.dumps({"args": args, "kwargs": kwargs}, default=str)[:8192], window(), [],
                                   error={"type": type(exc).__name__, "message": str(exc)[:500]})
+                if current is not None:
+                    result = persist_envelope(result, current)
             finally:
+                end_run(run_token)
                 DEADLINE.reset(token)
             result["elapsed_s"] = round(time.monotonic() - started, 4)
-            from .redact import sanitize
             return sanitize(result)
         return wrapped
     return decorate

@@ -57,3 +57,12 @@ def test_action_journal_actual_line_number(monkeypatch):
 def test_invalid_identifiers_fail(identity):
     with pytest.raises(resolver.EvidenceNotFound):
         resolver.resolve(identity)
+
+
+def test_encoded_sensitive_metric_query_is_blocked_before_backend(monkeypatch):
+    calls = []
+    monkeypatch.setattr(resolver, "get_json", lambda *a, **kw: calls.append(kw))
+    identity = r'metric:query{__query__="\u0066eature_flag_total"}@100=5'
+    with pytest.raises(resolver.EvidenceNotFound):
+        resolver.resolve(identity)
+    assert calls == []

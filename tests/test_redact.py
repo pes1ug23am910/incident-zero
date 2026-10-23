@@ -28,6 +28,7 @@ def test_recorded_log_is_preserved_and_disclosure_variants_are_removed():
     assert sanitize(source) == source
     # Synthetic variants exercise enabled-state text absent from the clean run.
     for text in ('Feature Flag adManualGc enabled, performing a manual gc now',
+                 'High CPU-Load problempattern enabled',
                  '{"feature_flag.key":"anything","value":true}',
                  'evaluation of paymentFailure returned enabled'):
         assert redact_text(text) is None
@@ -64,3 +65,20 @@ def test_envelope_preserves_nulls_structure_and_container_metadata():
     assert result["values"] == [[1, None]]
     assert not is_sensitive_evidence(evidence)
     assert is_sensitive_evidence("metric:feature_flag_calls_total{}@1=1")
+
+
+def test_all_container_evidence_paths_survive_envelope_redaction():
+    names = ["flagd"] + ["service-" + str(number) for number in range(20)]
+    ids = [f"container:{name}:Status=running" for name in names]
+    paths = {identifier: "runs/example/evidence/" + str(i) + ".json" for i, identifier in enumerate(ids)}
+    result = sanitize({"data": [{"name": name, "Status": "running"} for name in names],
+                       "evidence_ids": ids, "evidence_paths": paths})
+    assert len(result["data"]) == 21
+    assert set(result["evidence_ids"]) == set(result["evidence_paths"]) == set(ids)
+
+
+def test_application_cache_state_attribute_is_removed():
+    record = {"tags": [{"key": "app.recommendation.cache_enabled", "value": True},
+                       {"key": "demo.recommendation.cache_enabled", "value": False},
+                       {"key": "app.products.count", "value": 10}]}
+    assert sanitize(record) == {"tags": [{"key": "app.products.count", "value": 10}]}
