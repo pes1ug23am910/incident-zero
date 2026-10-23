@@ -68,6 +68,10 @@ Resolve an ID with `python -m tools.resolve '<evidence-id>' --run-dir 'runs/2026
 | Data risk | none |
 | Confidence | 55% |
 | Rationale | Evidence-limited confidence is below 0.60. Escalate with evidence; no action may be proposed. |
+| Decision | — |
+| Reason codes |  |
+| Uncertainty | — |
+| Observability gap | — |
 
 ## Proposed action
 
@@ -75,12 +79,18 @@ No action proposed.
 
 ## Approval record
 
+No approval recorded
+
 | Field | Value |
 | --- | --- |
 | Required | yes |
 | Approved | — |
-| Approved by | — |
+| Recorded actor | — |
+| Surface | — |
+| Mode | — |
+| Requested at | — |
 | Approved at | — |
+| Token id | absent |
 | Token | absent |
 | Executed | no |
 | Action log | — |
@@ -90,6 +100,8 @@ No action proposed.
 | Signal | Before | After | Recovered | Rolled back |
 | --- | --- | --- | --- | --- |
 | container_health | — | — | — | no |
+
+Outcome: —; requests observed: —.
 
 ## Alternatives and escalation
 

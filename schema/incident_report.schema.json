@@ -346,6 +346,19 @@
                 "predicted_effect"
               ],
               "additionalProperties": false
+            },
+            "risk_tier": {
+              "type": "integer",
+              "enum": [
+                1,
+                2
+              ]
+            },
+            "risk_reason_codes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "required": [
@@ -404,6 +417,19 @@
                 "predicted_effect"
               ],
               "additionalProperties": false
+            },
+            "risk_tier": {
+              "type": "integer",
+              "enum": [
+                1,
+                2
+              ]
+            },
+            "risk_reason_codes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "required": [
@@ -467,6 +493,19 @@
                 "predicted_effect"
               ],
               "additionalProperties": false
+            },
+            "risk_tier": {
+              "type": "integer",
+              "enum": [
+                1,
+                2
+              ]
+            },
+            "risk_reason_codes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "required": [
@@ -518,6 +557,19 @@
                 "predicted_effect"
               ],
               "additionalProperties": false
+            },
+            "risk_tier": {
+              "type": "integer",
+              "enum": [
+                1,
+                2
+              ]
+            },
+            "risk_reason_codes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           "required": [
@@ -571,6 +623,28 @@
             "string",
             "null"
           ]
+        },
+        "surface": {
+          "enum": [
+            "cli",
+            "browser",
+            "test",
+            null
+          ]
+        },
+        "mode": {
+          "enum": [
+            "live",
+            "test",
+            null
+          ]
+        },
+        "token_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[a-f0-9]{64}$"
         }
       },
       "required": [
@@ -693,14 +767,23 @@
                 "type": "boolean"
               },
               "load_state": {
-                "type": ["string", "null"]
+                "type": [
+                  "string",
+                  "null"
+                ]
               },
               "load_user_count": {
-                "type": ["integer", "null"],
+                "type": [
+                  "integer",
+                  "null"
+                ],
                 "minimum": 0
               },
               "load_observed_at": {
-                "type": ["string", "null"],
+                "type": [
+                  "string",
+                  "null"
+                ],
                 "format": "date-time"
               },
               "load_available": {
@@ -967,6 +1050,19 @@
                   "predicted_effect"
                 ],
                 "additionalProperties": false
+              },
+              "risk_tier": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2
+                ]
+              },
+              "risk_reason_codes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "required": [
@@ -1025,6 +1121,19 @@
                   "predicted_effect"
                 ],
                 "additionalProperties": false
+              },
+              "risk_tier": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2
+                ]
+              },
+              "risk_reason_codes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "required": [
@@ -1088,6 +1197,19 @@
                   "predicted_effect"
                 ],
                 "additionalProperties": false
+              },
+              "risk_tier": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2
+                ]
+              },
+              "risk_reason_codes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "required": [
@@ -1237,6 +1359,28 @@
               },
               "expires_at": {
                 "type": "number"
+              },
+              "surface": {
+                "enum": [
+                  "cli",
+                  "browser",
+                  "test",
+                  null
+                ]
+              },
+              "mode": {
+                "enum": [
+                  "live",
+                  "test",
+                  null
+                ]
+              },
+              "token_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^sha256:[a-f0-9]{64}$"
               }
             },
             "additionalProperties": false
@@ -1351,14 +1495,23 @@
                       "type": "boolean"
                     },
                     "load_state": {
-                      "type": ["string", "null"]
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     },
                     "load_user_count": {
-                      "type": ["integer", "null"],
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
                       "minimum": 0
                     },
                     "load_observed_at": {
-                      "type": ["string", "null"],
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "format": "date-time"
                     },
                     "load_available": {

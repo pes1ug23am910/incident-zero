@@ -167,7 +167,8 @@ class ControlRoom:
         decision = self.decisions.get((identity, fingerprint(original)))
         if decision:
             report["approval"] = {**report.get("approval", {}), "approved": decision["status"] == "approved",
-                                  "approved_by": decision["operator"], "approved_at": decision["decided_at"]}
+                                  "approved_by": 'test harness', "approved_at": decision["decided_at"],
+                                  "surface": 'browser', "mode": 'test', "token_id": None}
             report["ui_decision"] = decision
             if decision["status"] == "rejected":
                 report["status"] = "needs_human"
@@ -284,7 +285,9 @@ class ControlRoom:
                 raise HTTPException(409, "Report changed or revision missing; review the current report")
             if approved and tier_of(report) == 2 and decision.confirmation != "yes":
                 raise HTTPException(422, "Tier 2 requires typing exactly yes")
-            result = {**item, **decision.model_dump(), "status": "approved" if approved else "rejected", "decided_at": now(), "mode": self.mode()}
+            result = {**item, **decision.model_dump(), "status": "approved" if approved else "rejected",
+                      "decided_at": now(), "mode": 'test', "surface": 'browser', 'token_id': None,
+                      'approved_by': 'test harness', 'requested_at': now()}
             self.decisions[(identity, item["revision"])] = result
             self.log(result["status"], incident_id=identity, operator=decision.operator, note=decision.note, reason=decision.reason)
             self.emit("approval_decided", {"incident_id": identity, "decision": result})

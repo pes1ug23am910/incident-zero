@@ -84,9 +84,12 @@
     "required": true,
     "requested_at": "2026-10-23T11:13:45.863727+00:00",
     "approved": false,
-    "approved_by": "Mock operator",
+    "approved_by": "test harness",
     "approved_at": null,
-    "token": null
+    "token": null,
+    "mode": "test",
+    "surface": "test",
+    "token_id": null
   },
   "action": {
     "executed": false,
@@ -107,7 +110,8 @@
   "prevention": null,
   "limitations": [
     "SYNTHETIC MOCK ACCEPTANCE: no incident was injected; no model or live stack was used.",
-    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored."
+    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored.",
+    "Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value."
   ],
   "agent": {
     "model": "none (mock fixtures)",
@@ -176,9 +180,12 @@
       "index": 0,
       "decision": {
         "decision": "reject",
-        "approved_by": "Mock operator",
+        "approved_by": "test harness",
         "requested_at": "2026-10-23T11:13:45.863727+00:00",
-        "action_log_ref": "action_log:3"
+        "action_log_ref": "action_log:3",
+        "mode": "test",
+        "surface": "test",
+        "token_id": null
       },
       "execution": {
         "rejected": true

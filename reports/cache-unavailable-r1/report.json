@@ -98,7 +98,7 @@
       "step": 8,
       "tool": "get_traces",
       "query": "{\"service\": \"cart\", \"lookback_s\": 120, \"errors_only\": false, \"limit\": 10}",
-      "why": "Cart reported “Wasn't able to connect to redis” with trace_id=8fb967da8f1a470d0a0c95c58de47e73; fetch recent cart traces (not only errors) to corroborate dependency failures to the exited valkey-cart and capture concrete failing operation details.",
+      "why": "Cart reported \u201cWasn't able to connect to redis\u201d with trace_id=8fb967da8f1a470d0a0c95c58de47e73; fetch recent cart traces (not only errors) to corroborate dependency failures to the exited valkey-cart and capture concrete failing operation details.",
       "finding": "[]",
       "evidence_ids": []
     },
@@ -106,7 +106,7 @@
       "step": 9,
       "tool": "get_traces",
       "query": "{\"service\": \"cart\", \"lookback_s\": 600, \"errors_only\": true, \"limit\": 10}",
-      "why": "Cart logged “Wasn't able to connect to redis” while valkey-cart is exited; expand to a longer window to find cart error traces that show failed calls to the down dependency and capture the failing operation to raise confidence.",
+      "why": "Cart logged \u201cWasn't able to connect to redis\u201d while valkey-cart is exited; expand to a longer window to find cart error traces that show failed calls to the down dependency and capture the failing operation to raise confidence.",
       "finding": "[{\"trace_id\": \"ff4c74c49f288ef4438161d0911a9ad9\", \"duration_ms\": 255949.921, \"root_span\": {\"span_id\": \"898e8d866b5c30ac\", \"service\": \"load-generator\", \"operation\": \"GET\", \"duration_ms\": 15002.569, \"status_message\": \"\", \"exception\": {}}, \"first_error_span\": {\"span_id\": \"d8e8151e3426ecf3\", \"service\": \"cart\", \"operation\": \"POST /oteldemo.CartService/GetCart\", \"duration_ms\": 255919.958, \"status_message\": \"Status(StatusCode=\\\"FailedPrecondition\\\", Detail=\\\"Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\\n   at cart.cartstore.ValkeyCartStore.EnsureRedisConnected() in /usr/src/app/src/cartstore/ValkeyCartStore.cs:line 95\\n   at cart.cartstore.ValkeyCartStore.GetCartAsy\", \"exception\": {\"exception.message\": \"Status(StatusCode=\\\"FailedPrecondition\\\", Detail=\\\"Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\\n   at cart.cartstore.ValkeyCartStore.EnsureRedisConnected() in /usr/src/app/src/cartstore/ValkeyCartStore.cs:line 95\\n   at cart.cartstore.ValkeyCartStore.GetCartAsy\", \"exception.stacktrace\": \"Grpc.Core.RpcException: Status(StatusCode=\\\"FailedPrecondition\\\", Detail=\\\"Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\\n   at cart.cartstore.ValkeyCartStore.EnsureRedisConnected() in /usr/src/app/src/cartstore/ValkeyCartStore.cs:line 95\\n   at cart.cartstore.Va\", \"exception.type\": \"Grpc.Core.RpcException\"}}, \"origin_error_spans\": [{\"span_id\": \"d8e8151e3426ecf3\", \"service\"",
       "evidence_ids": [
         "span:ff4c74c49f288ef4438161d0911a9ad9/d8e8151e3426ecf3",
@@ -126,7 +126,7 @@
       "tool": "get_logs",
       "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
       "why": "Find fresh user-facing errors in frontend logs that reference cart/redis failures to add an independent corroborating source for valkey-cart container_down and raise confidence.",
-      "finding": "[{\"timestamp\": \"2026-10-23T12:18:46.443687611Z\", \"severity\": \"ERROR\", \"body\": \" ⨯ Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de\"}, {\"timestamp\": \"2026-10-23T12:18:46.443326924Z\", \"severity\": \"ERROR\", \"body\": \"Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014\"}]",
+      "finding": "[{\"timestamp\": \"2026-10-23T12:18:46.443687611Z\", \"severity\": \"ERROR\", \"body\": \" \u2a2f Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de\"}, {\"timestamp\": \"2026-10-23T12:18:46.443326924Z\", \"severity\": \"ERROR\", \"body\": \"Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014\"}]",
       "evidence_ids": [
         "dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de",
         "dlog:frontend:67c903530b4a6b763e21b93b719d3b28b947562260b16072c9f5a1c24bfb5014"
@@ -136,7 +136,7 @@
       "step": 12,
       "tool": "get_metrics",
       "query": "{\"promql\": \"named:error_rate_by_service{service_name=\\\"cart\\\"}\", \"lookback_s\": 600}",
-      "why": "Add a third, independent source by verifying cart’s error rate via metrics over the last 10 minutes. This corroborates that callers are failing while valkey-cart is exited, separating container_down from unrelated app errors or transient logs.",
+      "why": "Add a third, independent source by verifying cart\u2019s error rate via metrics over the last 10 minutes. This corroborates that callers are failing while valkey-cart is exited, separating container_down from unrelated app errors or transient logs.",
       "finding": "[]",
       "evidence_ids": []
     }
@@ -217,7 +217,7 @@
     {
       "id": "dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de",
       "source": "docker",
-      "summary": "{\"timestamp\": \"2026-10-23T12:18:46.443687611Z\", \"severity\": \"ERROR\", \"body\": \" ⨯ Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de\", \"original_line\": \"2026-10-23T12:18:46.443687611Z  ⨯ Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\"}",
+      "summary": "{\"timestamp\": \"2026-10-23T12:18:46.443687611Z\", \"severity\": \"ERROR\", \"body\": \" \u2a2f Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de\", \"original_line\": \"2026-10-23T12:18:46.443687611Z  \u2a2f Error: 9 FAILED_PRECONDITION: Can't access cart storage. System.ApplicationException: Wasn't able to connect to redis\"}",
       "raw_ref": "python -m tools.resolve 'dlog:frontend:1940162aedf087ad5e0aa43970f5c53960cf80144af144a7fe6b95b17c2968de' --run-dir 'runs/20261023T121227.303255Z-dc304b61'"
     },
     {
@@ -271,7 +271,10 @@
     "approved": null,
     "approved_by": null,
     "approved_at": null,
-    "token": null
+    "token": null,
+    "surface": null,
+    "mode": null,
+    "token_id": null
   },
   "action": {
     "executed": false,

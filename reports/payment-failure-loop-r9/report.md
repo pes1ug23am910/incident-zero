@@ -99,12 +99,18 @@ Dry run performed: yes. Restore normal application behavior in payment; confirm 
 
 ## Approval record
 
+Approved in TEST mode by the test harness (not a human)
+
 | Field | Value |
 | --- | --- |
 | Required | yes |
 | Approved | yes |
-| Approved by | Integration acceptance |
+| Recorded actor | test harness |
+| Surface | browser |
+| Mode | test |
+| Requested at | 2026-10-23T17:12:13.739104+00:00 |
 | Approved at | 2026-10-23T17:12:13.739104+00:00 |
+| Token id | sha256:29aa6e754631541d46e2801ee20469b206cd1e6043f017d7b16f7f3b8e9de12d |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:1268 |
@@ -141,6 +147,7 @@ Monitor component error rate, latency and container lifecycle; alert on sustaine
 - Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.
 - Temperature 0 and logged prompts make runs reproducible in inputs, not outputs.
 - Recovery verifies observed signals and request counts; interrupted requests cannot be restored.
+- Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value. This browser approval was driven by an automated acceptance driver, not a human operator.
 
 ## Investigation budget
 
