@@ -1,108 +1,142 @@
 # Evaluation note
 
-Which practice incidents our agent got right and wrong in our own testing, and why. Every number here comes from a report in `reports/`; nothing is estimated. Rows still showing `<...>` were not run.
+This ledger separates historical diagnosis runs, live integrated response runs,
+and synthetic safety fixtures. Reports are the evidence; unrun cases do not have
+estimated results. Practice cases are tuning data and do not establish the
+organisers' unseen-incident score.
 
-## How we tested
+## Historical diagnosis runs
 
-- One run per incident, from a clean stack: `faultctl reset` (exit 0), `faultctl inject <id>`, `detect/` raises the alert, `agent.run` writes the report.
-- The agent never saw the incident id. Correctness was scored after the run by comparing the report with `runs/<ts>/injected.json`.
-- **Correct**: right component and right cause category. **Partial**: right component, wrong category. **Escalated**: `needs_human` with findings (the brief counts this above a confident wrong fix). **Wrong**: a confident diagnosis of the wrong component.
-- **Seconds**: `diagnosed_at` minus `detected_at`. Alert delay (inject to alert) goes in notes.
-- Model: `<model id>`. Tool budget: 12 calls. Laptop: `<RAM, CPU>`. Runs done on `<date, time range>`.
+These runs reset, inject, detect and investigate, then reset again. They did not
+execute proposals. The incident identifier was report metadata, excluded from
+the model prompt. Seconds below are `diagnosed_at - detected_at` from each report;
+the checkpoint brief also records the slightly shorter subprocess duration.
 
-## Practice incidents
+| Report | Component / category | Confidence | Tools | Alert to diagnosis, s | Status | Interpretation |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| [payment-failure-r1](../reports/payment-failure-r1/report.json) | ad / unknown | 0.30 | 1 | 3.812 | needs_human | Provider TLS failure; alert-owner placeholder, no model diagnosis |
+| [payment-failure-r2](../reports/payment-failure-r2/report.json) | payment / application_flag | 0.70 | 4 | 117.247 | needs_human | Correct cause named; insufficient confidence for action |
+| [payment-failure-r3](../reports/payment-failure-r3/report.json) | payment / application_flag | 0.90 | 3 | 89.499 | diagnosed | Correct diagnosis and tier-2 proposal |
+| [payment-failure-r4](../reports/payment-failure-r4/report.json) | payment / application_flag | 0.90 | 3 | 58.422 | diagnosed | First of three consecutive complete accepted rehearsals |
+| [payment-failure-r5](../reports/payment-failure-r5/report.json) | payment / application_flag | 0.90 | 3 | 59.456 | diagnosed | Correct diagnosis and both cleanup windows |
+| [payment-failure-r6](../reports/payment-failure-r6/report.json) | payment / application_flag | 0.90 | 3 | 59.140 | diagnosed | Correct diagnosis and both cleanup windows |
+| [container-stopped-r1](../reports/container-stopped-r1/report.json) | recommendation / container_down | 0.85 | 3 | 57.858 | diagnosed | Correct diagnosis and tier-2 restart proposal |
+| [container-stopped-r2](../reports/container-stopped-r2/report.json) | recommendation / container_down | 0.90 | 2 | 43.636 | diagnosed | Correct diagnosis and tier-2 restart proposal |
+| [container-stopped-r3](../reports/container-stopped-r3/report.json) | recommendation / container_down | 0.90 | 3 | 94.914 | diagnosed | Correct diagnosis; missed 90-second target |
+| [cache-unavailable-r1](../reports/cache-unavailable-r1/report.json) | valkey-cart / container_down | 0.55 | 12 | 514.076 | needs_human | Correct cause component; exhausted budget, no approved recovery |
+| [cache-unavailable-r2](../reports/cache-unavailable-r2/report.json) | valkey-cart / container_down | 0.55 | 6 | 209.544 | needs_human | Provider routes failed; missing positive caller-error corroboration |
 
-| # | Incident (`faultctl` id) | Expected component | Diagnosed component | Category | Correct? | Confidence | Seconds | Status | Report | Notes |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | `payment-failure` | payment | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 2 | `cart-intermittent` | cart | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 3 | `catalog-one-product` | product-catalog | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 4 | `recommendation-leak` | recommendation | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 5 | `ad-high-cpu` | ad | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 6 | `homepage-flood` | load-generator or frontend, category `load` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 7 | `container-stopped --svc recommendation` | recommendation | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 8 | `cache-unavailable` | valkey-cart | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 9 | `network-latency --svc product-catalog` | product-catalog | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
-| 10 | `cpu-starve --svc recommendation` | recommendation | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<file>` | `<...>` |
+Successful historical model calls used `openai/gpt-5`; the report identifies
+failed fallback attempts separately. Runtime model IDs now come only from `.env`
+or process configuration. The cache reports remain unchanged after scoring fixes.
+A stopped dependency is `container_down`: `valkey-cart` is the cause and `cart`
+is the symptom owner. The two cache runs did **not** meet the required confident
+diagnosis/three-consecutive-run acceptance, despite naming the correct component.
 
-Variants of the same slide incidents (run if time allows):
+The historical set has 11 retained runs across only three incident families.
+Seven have confident correct diagnoses and proposals; the remaining four
+escalate, including the provider failure. This is repeated tuning, not a 10-case
+practice sweep or a held-out accuracy estimate. New independent observations and
+scoring changes have not retroactively changed any report's measured confidence.
 
-| Incident | Expected component | Diagnosed | Correct? | Confidence | Seconds | Notes |
-|---|---|---|---|---|---|---|
-| `payment-unreachable` | payment | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| `ad-gc` | ad | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| `restart-loop --svc <svc>` | `<svc>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| `memory-starve --svc <svc>` | `<svc>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
+## Live full-loop acceptance
 
-**Totals:** `<n>`/10 correct, `<p>` partial, `<e>` escalated, `<w>` wrong. Median seconds to diagnosis: `<s>`.
+Each integrated bundle records the actual approval path, stage timings,
+action-log excerpt, original alert, action samples and before/after cleanup
+measurements. `fixed` requires every original alert signal to recover on two
+consecutive samples over >=180 seconds, >=20 measured requests, and a running
+load generator. Rejection and STOP do not claim recovery caused by an action.
+Recovery seconds use the runner's injection-to-finished measurement after final
+bundle validation; the underlying action samples retain their own elapsed times.
 
-## Unseen-style rehearsal (combinations we invented, and no fault)
+Automated developer acceptance explicitly enables `INCIDENT_ZERO_TEST=1` with
+`--auto-approve-for-tests`; it does not collect a human decision. The mentor/demo
+wrappers reject that environment. Browser acceptance uses the real confirmation.
 
-| # | Injected | Expected | Primary cause found | Alternative listed | Correct? | Status | Notes |
-|---|---|---|---|---|---|---|---|
-| C1 | `<a>,<b>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| C2 | `<a>,<b>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| C3 | `<a>,<b>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| C4 | `<a>,<b>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| C5 | `<a>,<b>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| C6 | `<a>,<b>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
-| N0 | nothing | no alert, or `needs_human` | `<...>` | `<...>` | `<...>` | `<...>` | `<...>` |
+| Incident / bundle | Final status | Approval path | Action | Injection to verified recovery, s | Measured outcome |
+| --- | --- | --- | --- | ---: | --- |
+| [payment-failure-loop-r1](../reports/payment-failure-loop-r1/hands-rehearsal.json) | Run failed before diagnosis | Test auto configured; no decision reached | None | — | No detector alert in 90s at five users; clean before 244.781s and after 183.953s |
+| [payment-failure-loop-r2](../reports/payment-failure-loop-r2/hands-rehearsal.json) | Run refused before injection | Test auto configured; no decision reached | None | — | New 20-user traffic exceeded the historical five-user baseline; clean before 184.391s and after 184.500s |
+| [payment-failure-loop-r3](../reports/payment-failure-loop-r3/report.json) | fixed | Explicit developer test auto-approval | toggle_flag payment | 346.016 | All four alert signals zero in final two samples; 984.049 measured requests; load running; 182.359s verification |
+| [payment-failure-loop-r4](../reports/payment-failure-loop-r4/report.json), rejection | needs_human | CLI explicit reject; test mode off | None executed | — | Before/after authoritative world hashes match; response finished 145.453s after injection; action log contains preview and rejection only |
+| [container-stopped-loop-r1](../reports/container-stopped-loop-r1/report.json), recommendation | fixed | Explicit developer test auto-approval | restart_service recommendation | 609.922 | Container running on final two samples; 892.045/1220.081 measured requests; load running; 182.000s verification |
+| [payment-failure-loop-r5](../reports/payment-failure-loop-r5/report.json), STOP during response | aborted | Explicit developer test auto-approval, then STOP | toggle_flag executed; verification interrupted | — | STOP 15s after execution began; no recovery or rollback claimed; response finished 137.438s after injection |
+| payment-failure, forced traffic loss | Pending live acceptance | — | — | — | Must refuse false recovery and restore prior settings |
+| Real Control Room approval | Pending live acceptance | — | — | — | Must resume checkpoint and persist final report |
 
-## Full loop runs (approve, act, verify)
+The successful payment run used
+`runs/20261023T153512.976354Z-13778fd2`. Its clean before/after windows were
+184.562/184.375 seconds; approval, execution and verification together took
+201.391 seconds. The [action log](../reports/payment-failure-loop-r3/action-log.jsonl)
+records lines 22–27, including the explicit test approval and actual setting
+change. The operator-prepared traffic baseline and retained measurements are in
+the [runner record](../reports/payment-failure-loop-r3/hands-rehearsal.json).
+The 346.016-second injection-to-finish result exceeds five minutes: the timed
+presentation therefore prepares the real alert and diagnosis before its clock.
 
-The hands session ran **mock integration acceptance only** while another session
-owned the sole live stack. The six bundles below exercise the real SQLite
-checkpoint/approval/response path with fake executors and telemetry. No row
-counts toward live diagnosis accuracy or confidence calibration. Confidence
-0.90 is an input fixture; model = none; the 180-second windows use virtual time.
+The rejection run retained an unchanged executor-world fingerprint before and
+after the decision, observed before operator cleanup. Its clean windows were
+184.640/185.031 seconds. The [action log](../reports/payment-failure-loop-r4/action-log.jsonl)
+contains lines 28–29 (dry run, rejection), with no execute entry; the report says
+`approval.approved = false` and `action.executed = false`. No remediation recovery
+time is claimed for rejection; reset recovery belongs to the operator.
 
-| Bundle | Action | Approval fixture | Before | After | Recovered in mock? | Final status | Action log |
-|---|---|---|---|---|---|---|---|
-| [payment approved](../reports/mock-payment-approved/report.md) | toggle_flag payment | Mock operator: yes | 0.9 | 0 | yes, 40 requests | fixed | [excerpt](../reports/mock-payment-approved/action-log.jsonl) |
-| [payment rejected](../reports/mock-payment-rejected/report.md) | none executed | Mock operator: no | 0.9 | n/a | not checked | needs_human | [excerpt](../reports/mock-payment-rejected/action-log.jsonl) |
-| [recommendation restart](../reports/mock-recommendation-restart/report.md) | restart_service recommendation | Mock operator: yes | 0.9 | 0 | yes, 40 requests | fixed | [excerpt](../reports/mock-recommendation-restart/action-log.jsonl) |
-| [homepage throttle](../reports/mock-homepage-throttle/report.md) | throttle_load load-generator | Mock operator: y | 0.9 | 0 | yes, 40 requests | fixed | [excerpt](../reports/mock-homepage-throttle/action-log.jsonl) |
-| [STOP mid-run](../reports/mock-stop-mid-run/report.md) | toggle_flag payment, then STOP | Mock operator: yes | 0.9 | unavailable | no | aborted | [excerpt](../reports/mock-stop-mid-run/action-log.jsonl) |
-| [forced non-recovery](../reports/mock-non-recovery/report.md) | toggle_flag payment, then rollback | Mock operator: yes | 0.9 | 0.8 | no; original settings restored | rolled_back | [excerpt](../reports/mock-non-recovery/action-log.jsonl) |
+The stopped-recommendation run used
+`runs/20261023T160004.705486Z-ad2f6cb4`. It diagnosed `container_down` at 0.90
+confidence with nine tool calls; the investigation itself took 394.157 seconds,
+well beyond the 90-second presentation target. Approval, execution and
+verification took 200.141 seconds. The [action log](../reports/container-stopped-loop-r1/action-log.jsonl)
+contains lines 30–35, including the approved restart and measured recovery.
+Qualified clean windows before/after were 184.781/184.656 seconds. This establishes
+the live restart path, without claiming that diagnosis latency is demo-ready.
 
-The mock signals intentionally use one scalar error-rate fixture across action
-types; they do not reproduce the actual stopped-container or flood signatures.
-All live rows remain unverified. Exact follow-up commands are in
-[BUILD_05.md](../BUILD_05.md#live-acceptance-deferred).
+The STOP run used `runs/20261023T161808.661278Z-149073c4`. The toggle completed,
+then STOP interrupted verification and prevented rollback. The
+[action log](../reports/payment-failure-loop-r5/action-log.jsonl) includes the
+STOP event between execution and `STOP_LATCHED` verification. Response time was
+30.985 seconds; before/after operator-cleanup windows were 184.281/184.719 seconds.
+Its empty aborted-verification sample list and zero request field are cancellation
+placeholders, not a measurement that no traffic ran. No 180-second action
+verification completed and no remediation recovery time is claimed. The current
+handler retains observed partial samples on cancellation; historical r5 was not
+reconstructed or rewritten to claim those observations.
 
-## Confidence calibration
+The forced non-recovery case stops the **Locust swarm** after real execution,
+leaving its container running. It uses actual unchanged telemetry, then restores
+the captured users/spawn rate during operator cleanup. This checks traffic-loss
+qualification and rollback; it does not demonstrate an application signal that
+remains above threshold despite remediation. Commands and detailed timings are
+in [BUILD_05](../BUILD_05.md); browser observations are in
+[BUILD_06](../BUILD_06.md).
 
-Stated confidence against how often it was right, over every run above (practice, variants, combinations).
+## Synthetic acceptance retained separately
 
-| Stated confidence | Runs | Correct | Hit rate | Mean stated |
-|---|---|---|---|---|
-| below 0.60 (escalated) | `<...>` | `<...>` | `<...>` | `<...>` |
-| 0.60 to 0.74 | `<...>` | `<...>` | `<...>` | `<...>` |
-| 0.75 to 0.89 | `<...>` | `<...>` | `<...>` | `<...>` |
-| 0.90 to 1.00 | `<...>` | `<...>` | `<...>` | `<...>` |
+The hands branch retained six bundles exercising real checkpoint/response code
+with fake executors, fake telemetry and virtual 180-second windows. Confidence
+0.90 is fixture input; no model runs. These are not live accuracy or latency data.
 
-Reading: `<one honest sentence, e.g. "stated 0.8, right 7 of 8"; say plainly if the sample is too small to mean much>`.
+| Bundle | Fixture choice | Result |
+| --- | --- | --- |
+| [mock-payment-approved](../reports/mock-payment-approved/report.json) | toggle_flag, yes | fixed |
+| [mock-payment-rejected](../reports/mock-payment-rejected/report.json) | reject | needs_human |
+| [mock-recommendation-restart](../reports/mock-recommendation-restart/report.json) | restart_service, yes | fixed |
+| [mock-homepage-throttle](../reports/mock-homepage-throttle/report.json) | throttle_load, y | fixed |
+| [mock-stop-mid-run](../reports/mock-stop-mid-run/report.json) | STOP after execution | aborted |
+| [mock-non-recovery](../reports/mock-non-recovery/report.json) | persistent failing samples | rolled_back |
 
-## What does not work
+## Coverage, calibration and remaining work
 
-Known by design:
-- No `scale_service` on Docker Compose; the API answers `not_available_on_compose`.
-- Network and resource-starvation faults have no allowlisted fix. We diagnose and escalate.
-- `restart_service` cannot be undone. If verification fails after a restart, we escalate.
-- Independent multi-service causes escalate at tier 3. Eligible proposal queues
-  are approved individually, and rejection does not cancel later proposals.
-- Live evidence can age out. Tools retain sanitized snapshots per run, and resolution reports when it used a snapshot; retained historical evidence does not establish current recovery.
+The other practice families (`cart-intermittent`, `catalog-one-product`,
+`recommendation-leak`, `ad-high-cpu`, `homepage-flood`, network latency and CPU
+starvation), optional variants, held-out combinations and no-fault run have not
+been measured in the retained diagnosis set. The offline utility
+`python -m eval.calibration --results <explicit-manifest.json>` supports
+case-based scoring, Brier scores and Wilson intervals with source/model grouping.
+No aggregate calibration number is asserted from synthetic data or this narrow,
+repeated tuning set. Complete the held-out fold after freezing tuning changes.
 
-Found in testing (one line each: what failed, why we think it failed, which report shows it):
-- A concurrent caller initially attempted to read a Windows byte-locked file;
-  the lock now inspects file size without reading the locked byte. The threaded
-  exclusion regression test passes.
-- No live hands failure or success has been measured. Missing or insufficient
-  traffic, unavailable telemetry and concurrent world changes all block a
-  recovery claim in mocked tests.
-
-## What we would do next
-
-- `<the miss we would fix first, and how>`
-- `<...>`
-- `<...>`
+Known limits: no Compose scaling or network/resource repair, irreversible restart
+side effects, finite telemetry retention, same-user localhost trust, and no
+reviewer-model invocation. Independent multi-service causes escalate at tier 3.
+Historical source snapshots do not prove live recovery. A successful real action
+on a tuning case does not guarantee the same behavior on an unseen incident.
