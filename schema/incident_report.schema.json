@@ -632,6 +632,62 @@
         },
         "rolled_back": {
           "type": "boolean"
+        },
+        "outcome": {
+          "enum": [
+            "recovered",
+            "mitigated",
+            "escalated",
+            "blocked",
+            "unresolved"
+          ]
+        },
+        "requests_observed": {
+          "type": "number",
+          "minimum": 0
+        },
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "available": {
+                "type": "boolean"
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": [
+                    "number",
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "requests_observed": {
+                "type": "number"
+              },
+              "load_running": {
+                "type": "boolean"
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "elapsed_s": {
+                "type": "number"
+              },
+              "qualified_recovery": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "rollback_note": {
+          "type": "string"
         }
       },
       "required": [
@@ -1072,6 +1128,29 @@
         "rationale": {
           "type": "string",
           "minLength": 1
+        },
+        "uncertainty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "observability_gap": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "decision": {
+          "enum": [
+            "REQUIRE_HUMAN",
+            "ESCALATE",
+            "BLOCK"
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
@@ -1087,6 +1166,194 @@
         "rationale"
       ],
       "additionalProperties": false
+    },
+    "action_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer"
+          },
+          "decision": {
+            "type": "object",
+            "properties": {
+              "decision": {
+                "type": "string"
+              },
+              "token": {
+                "type": "string"
+              },
+              "approved_by": {
+                "type": "string"
+              },
+              "approved_at": {
+                "type": "string"
+              },
+              "requested_at": {
+                "type": "string"
+              },
+              "action_log_ref": {
+                "type": "string"
+              },
+              "expires_at": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false
+          },
+          "execution": {
+            "type": "object",
+            "properties": {
+              "executed": {
+                "type": "boolean"
+              },
+              "started_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+              },
+              "finished_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+              },
+              "action_log_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "idempotency_key": {
+                "type": "string"
+              },
+              "rejected": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "verification": {
+            "type": "object",
+            "properties": {
+              "checked_at": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+              },
+              "signal": {
+                "type": "string"
+              },
+              "before": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "after": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "recovered": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "rolled_back": {
+                "type": "boolean"
+              },
+              "outcome": {
+                "enum": [
+                  "recovered",
+                  "mitigated",
+                  "escalated",
+                  "blocked",
+                  "unresolved"
+                ]
+              },
+              "requests_observed": {
+                "type": "number",
+                "minimum": 0
+              },
+              "samples": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "available": {
+                      "type": "boolean"
+                    },
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "type": [
+                          "number",
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "requests_observed": {
+                      "type": "number"
+                    },
+                    "load_running": {
+                      "type": "boolean"
+                    },
+                    "evidence_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "elapsed_s": {
+                      "type": "number"
+                    },
+                    "qualified_recovery": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "rollback_note": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "decision": {
+                "type": "string"
+              },
+              "reason_codes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "detail": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "required": [

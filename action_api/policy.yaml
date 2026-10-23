@@ -1,6 +1,13 @@
 # A diagnosis can suggest an action, but only a human can approve it.
 # Untrusted telemetry plus internal access and future writes requires this gate.
 auto_approve_tiers: []
+# Starting heuristic weights; these are not calibrated probabilities.
+score_weights:
+  uncertainty: 20
+  observability_gap: 20
+approval_ttl_s: 600
+target_cooldown_s: 300
+verification_window_s: 180
 service_criticality:
   frontend: critical
   frontend-proxy: critical
