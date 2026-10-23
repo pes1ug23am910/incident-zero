@@ -80,3 +80,11 @@ exited container. The model eventually corrected the omission: nine tool calls,
 cause as explaining its own observed component. Caller/sibling coverage and the
 0.75 confidence gate remain unchanged; 133 focused tests passed. The live run
 used the prior rules, so no latency improvement is claimed from that change.
+
+Integration review also tightened shared approval behavior: terminal entry joins
+an already-owned browser response; browser previews remain bound to the original
+checkpoint's plan/report/world hashes; STOP cancels a waiting approval as well as
+blocking execution and interrupting verification. Ten isolated integration tests
+exercise these paths with network and subprocess access denied. The waiting-STOP
+browser runner test also passed. These tests do not substitute for the live
+mid-verification STOP and browser acceptance recorded below.
