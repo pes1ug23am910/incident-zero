@@ -6,7 +6,7 @@ import math
 import re
 from urllib.parse import quote
 
-from .common import get_json, jaeger, prometheus, search_json
+from .common import get_json, jaeger_json, prometheus, search_json
 from .containers import inspect_rows, health_row, evidence_value
 from .deploy import action_entries
 from . import evidence as snapshots
@@ -47,7 +47,7 @@ def _resolve(evidence_id):
         trace_id, _, span_id = identity.partition("/")
         if not re.fullmatch(r"[a-fA-F0-9]{16,32}", trace_id) or (kind == "span" and not re.fullmatch(r"[a-fA-F0-9]{16}", span_id)):
             raise EvidenceNotFound("Malformed trace/span identifier")
-        raw = get_json(jaeger() + "/traces/" + trace_id)
+        raw = jaeger_json("/traces/" + trace_id, fetch=get_json)
         trace = next((t for t in raw.get("data", []) if t.get("traceID") == trace_id), None)
         trace = scrub_trace(trace) if trace else None
         if trace:
@@ -55,7 +55,8 @@ def _resolve(evidence_id):
                 return {"id": evidence_id, "source": "jaeger", "data": trace}
             item = next((s for s in trace.get("spans", []) if s.get("spanID") == span_id), None)
             if item:
-                return {"id": evidence_id, "source": "jaeger", "data": item}
+                return {"id": evidence_id, "source": "jaeger", "data": {
+                    **item, "process": trace.get("processes", {}).get(item.get("processID"), {})}}
     elif evidence_id.startswith("log:"):
         index, separator, document = evidence_id[4:].partition("/")
         if not separator or not index or not document or not re.fullmatch(r"[a-zA-Z0-9_-]+", index):

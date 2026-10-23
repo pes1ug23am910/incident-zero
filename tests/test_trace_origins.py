@@ -4,7 +4,7 @@ from pathlib import Path
 from tools import traces
 
 
-def test_recorded_payment_origin_is_not_dropped_by_eight_span_cap(monkeypatch):
+def test_recorded_payment_origin_is_not_dropped_by_eight_span_cap(monkeypatch, local_jaeger_endpoint):
     trace = json.loads((Path(__file__).parent / "fixtures/payment_failure_trace.json").read_text())
     summary = traces.trace_summary(trace)
     origin = summary["origin_error_spans"][0]
@@ -18,7 +18,7 @@ def test_recorded_payment_origin_is_not_dropped_by_eight_span_cap(monkeypatch):
     assert f'span:{trace["traceID"]}/{origin["span_id"]}' in result["evidence_ids"]
 
 
-def test_origins_two_hops_down_and_independent_branch_are_deepest_first(monkeypatch):
+def test_origins_two_hops_down_and_independent_branch_are_deepest_first(monkeypatch, local_jaeger_endpoint):
     trace = {"traceID": "a" * 32, "processes": {}, "spans": []}
     for index, parent, service in [(1, None, "frontend"), (2, 1, "checkout"),
                                   (3, 2, "payment"), (4, 1, "recommendation")]:

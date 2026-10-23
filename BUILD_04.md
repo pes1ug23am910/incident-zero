@@ -64,6 +64,15 @@ runs reproducible in inputs, not outputs.
   `reports/verification-m1/observations.json`. The official demo checkout remained
   clean. Targeted operator/filter/query/disclosure checks: 61 passed; query and
   evidence-isolation checks: 72 passed.
+- M3/M4/M5: trace reads and resolution, plus operator status, use the published
+  Jaeger port before the proxy. Backend reads have an eight-second timeout and
+  one retry; tools report elapsed time without the former 2.5-second kill.
+  OpenSearch errors and zero usable records fall back to Docker stdout/stderr
+  for any demo service. Live with an intentionally unreachable proxy override,
+  direct Jaeger returned a frontend trace in 0.219 s. With an unreachable
+  OpenSearch override, recommendation returned three Docker log records in
+  4.437 s. Transport/operator tests: 28 passed; trace/log/resolver regressions:
+  43 passed. No service was stopped for these checks.
 
 ## Scope and unresolved acceptance
 

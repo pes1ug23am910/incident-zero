@@ -63,7 +63,7 @@ def test_health_traffic_measurements_have_current_proofs(monkeypatch):
     }
 
 
-def test_jaeger_search_uses_explicit_microsecond_window(monkeypatch):
+def test_jaeger_search_uses_explicit_microsecond_window(monkeypatch, local_jaeger_endpoint):
     calls = []
 
     def fetch(url, params=None):
