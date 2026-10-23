@@ -1,103 +1,136 @@
 # Architecture
 
-One page: the parts, how an alert becomes a report, how the agent picks its next step, and what stops it from doing harm. Anything marked (planned) does not exist yet. The status table at the end is the source of truth.
+The brain, hands and Control Room run in one checkout. Live verification is
+recorded separately from implementation status below.
 
-## The picture
-
-```
-            OpenTelemetry Demo 2.0.2, minimal mode, unmodified, Docker Compose
-  traces -> Jaeger | metrics -> Prometheus | logs -> OpenSearch | docker inspect / stats
-                                   |
-                                   v  read only, capped, every result carries evidence ids
-  +-------------------------------- tools/ ---------------------------------------+
-  | health_table  get_metrics  get_traces  get_logs  get_container_health          |
-  | get_deploy_history  resolve                                                    |
-  +---------------------------------------------------------------------------------+
-       ^ thresholds              ^ one tool per step             ^ re-check the alert signal
-       |                         |                               |
-  detect/ --alert.json--> agent/run --draft--> schema/validate --> reports/<id>.json + .md
-                                                     |
-                                                     v
-        agent/respond: dry run -> human says yes (token) -> action_api execute -> verify
-                                                     |                            |
-                                         action_api/log.jsonl          not recovered: rollback,
-                                                                        status rolled_back
-  STOP (file or POST /stop): detect, agent, action_api and faultctl all refuse while it exists.
-  faultctl/ injects and resets incidents. Nothing above imports it or reads runs/*/injected.json.
+```mermaid
+flowchart TD
+  Demo[Unmodified OpenTelemetry Demo] --> Tools[Read-only telemetry tools]
+  Tools --> Detect[Threshold detector]
+  Detect --> Brain[LangGraph investigation]
+  Brain --> Bundle[Report and evidence bundle]
+  Brain --> Checkpoint[SQLite approval checkpoint]
+  Checkpoint --> DryRun[Action API dry run]
+  DryRun --> Human[Terminal or Control Room approval]
+  Human --> Action[Allowlisted execution]
+  Action --> Verify[Traffic-qualified verification]
+  Verify --> Final[Checkpoint and report update]
+  Verify --> Rollback[Conditional settings rollback or escalation]
+  Action --> Audit[Append-only action log]
+  Final --> UI[Control Room]
 ```
 
-## Components
+## Components and boundaries
 
-| Part | What it does |
-|---|---|
-| `faultctl/` | Injects the practice incidents (demo failure flags and Docker faults), `--combo` for two at once, `reset` with read-back, `status` ready check. Ground truth goes to `runs/<ts>/injected.json`. |
-| `tools/` | Read-only eyes. Every tool returns `{tool, source, query, window, data, evidence_ids, truncated}`. Caps: 50 traces, 100 log lines, 20 series of 200 points. A wider question means a narrower second call, never a dump. |
-| `detect/` | Polls every 10 s. Fires on error rate >= 5 % over 1 min, p95 >= 1500 ms, a container not running, +2 restarts in 5 min, OOMKilled, or frontend rps >= 3x its 10-min baseline. One alert per service per 3 min. |
-| `agent/` | `run`: the investigation loop and the report. `respond`: dry run, approval, execute, verify, update the report. |
-| `action_api/` | FastAPI on `localhost:8787`. The only path by which the agent changes the system. |
-| `schema/`, `reports/` | JSON Schema (draft 2020-12, `additionalProperties: false`), a validator with cross-field rules, a Markdown renderer. |
+| Component | Responsibility |
+| --- | --- |
+| `faultctl/` | Operator-only injection/reset, scoped Docker changes and repository-owned overlay; official demo source stays unmodified |
+| `tools/` | Capped metrics, traces, logs, container state and action history; redaction, evidence IDs, immutable snapshots and resolution |
+| `detect/` | Telemetry thresholds, debounce, alert persistence and investigation startup; no injection-state reads |
+| `agent/run.py`, `graph.py` | Health first, one structured tool per step, diagnosis, evidence confidence, symptom coverage and risk assessment |
+| `agent/respond.py` | Shared LangGraph response tail, canonical checkpoint checks, terminal/browser arbitration, approval, execute, verify and saved report update |
+| `action_api/` | Localhost write boundary: allowlist, authoritative preview, durable tokens/idempotency, STOP, cooldown, executors, verification and rollback |
+| `ui/`, `action_api/ui_routes.py` | Static Control Room and same-origin API; real mode mounts in the Action API, mock mode keeps decisions in memory |
+| `schema/`, `reports/` | Closed schema and cross-field validation; JSON/Markdown bundles, evidence manifest and action-log excerpts |
+| `scripts/checkpoint3.ps1` | Complete operator rehearsal with qualified before/after windows, terminal/browser decision, final report and cleanup |
+| `eval/` | Explicit offline case scoring and calibration summaries; never imported by the investigator |
 
-## From alert to report
+## One incident
 
-1. A fault happens. In practice runs `faultctl` injects it; in the hidden test the organisers do. Nothing downstream knows how.
-2. `detect/` sees a threshold crossed in telemetry, writes `runs/<ts>/alert.json` (signal, service, observed, threshold, window, baseline) and starts `python -m agent.run`.
-3. The agent investigates (next section) and writes the report: symptoms, every investigation step with its reason, root cause with category and confidence, the evidence list, and a proposed action that is not executed.
-4. `schema/validate` checks the report; `reports/render` writes the Markdown next to it.
-5. `python -m agent.respond --report <file>`: dry run, then the diagnosis and plan go to a human. Only a "yes" yields a token. Execute, verify, and the same report gets `approval`, `action`, `verification` and its final `status` (`fixed`, `rolled_back`, `needs_human`, `aborted`).
-6. Every Action API call is appended to `action_api/log.jsonl`. `get_deploy_history` reads it, so the next investigation sees what we changed.
+1. The detector observes a threshold crossing and writes an alert. Organiser
+   incidents enter through exactly this telemetry path; the injector is optional.
+2. The investigation starts with all-service health, then chooses one read per
+   model step. Twelve calls bound the investigation. Tools reject control-setting
+   disclosure and retain sanitized observations.
+3. Code checks evidence provenance, component support and source independence;
+   final confidence is `min(model, evidence)`. The dependency graph explains caller
+   symptoms without turning one dependency failure into unrelated causes.
+4. Risk assessment runs before proposal. Code derives allowlisted actions from
+   causes. Low confidence, independent multi-service faults, data risk and
+   unsupported fixes escalate with no action.
+5. The response graph performs a real dry run, then persists an `approval`
+   interrupt in `runs/checkpoints.sqlite`, keyed by `run_id`. The saved report is
+   a sanitized presentation; the private canonical checkpoint binds tokens.
+6. A terminal `y`/typed `yes` or a browser decision resumes that checkpoint.
+   Both surfaces recheck the current world and compete for the same response
+   lock. The winner executes once; the other observes the result. Human reading
+   time does not hold the execution lock. Each action needs its own decision.
+   A browser continuation that begins before the terminal enters the responder
+   is joined under the same lock, so terminal cleanup waits for verification.
+7. Verification samples every 30 seconds for at least 180 seconds. Every original
+   alert signal must satisfy its recovery predicate on two consecutive samples,
+   with at least 20 measured frontend requests and a running load generator.
+   Final JSON, Markdown, evidence and the action-log excerpt are saved together.
 
-## How the agent decides what to call next
+The mentor/demo wrappers capture the operator's initial swarm, use 20 Locust
+users/spawn 5 for the run, and restore the prior swarm before final reset and
+clearance. The standalone runner changes load only with explicit `--load-users`.
+This setup avoids a measured five-user alert timeout and is retained in bundle
+metadata; it supplies no diagnosis or synthetic recovery observation.
+After an explicit workload change, only the detector's frontend traffic baseline
+is replaced using the final two measured qualified clean samples. Its historical
+value, new value, sample times and metric evidence are saved. Other anomalies
+and thresholds continue to refuse an unhealthy baseline.
 
-- State: the alert, findings so far, evidence ids seen, up to two hypotheses (category, confidence, supporting and contradicting ids), calls used.
-- The first call is always `health_table`: one row per service with error rate, p95, rps, restarts, status, CPU and memory.
-- After that the model returns exactly one structured tool call and a one-sentence reason. The result is compacted under the caps and appended to the findings. The model updates its hypotheses and must quote evidence ids for every claim.
-- The prompt teaches eight cause categories as telemetry patterns: `application_flag`, `container_down`, `restart_loop`, `dependency_unavailable`, `network`, `resource_starvation`, `load`, `unknown`. It knows the service names and the allowlist. It never sees an incident id, a flag name, or the word faultctl.
-- It stops when a hypothesis reaches 0.75 backed by two independent sources (traces and logs, or metrics and container health), when 12 calls are spent, or when STOP appears.
-- Confidence below 0.6 means `status = needs_human` with an escalation note: what we found, what is uncertain, what a person should check.
-- Cause to action: `toggle_flag` for application causes, `restart_service` for container down, restart loop or OOM, `throttle_load` for load, `none` plus escalation for network and resource starvation (nothing on the allowlist fixes those).
-- Model: OpenRouter first, Gemini as fallback, temperature 0. Every request and response goes to `runs/<ts>/llm.jsonl` without keys. Model used in our runs: `<fill>`.
+## Cause taxonomy and evidence
 
-## Evidence ids
+Categories are `application_flag`, `container_down`, `restart_loop`,
+`dependency_unavailable`, `network`, `resource_starvation`, `load`, and `unknown`.
+An exited dependency is a `container_down` cause: `valkey-cart` is the component,
+`cart` is the symptom owner. Dependency wording describes that relationship;
+it does not require a second cause. Connection errors and exited state provide
+independent application/runtime observations. Repeated Docker lifecycle fields
+and duplicated OpenSearch/stdout logs do not create independent sources.
 
-| Id | Names |
-|---|---|
-| `trace:<trace_id>` | one Jaeger trace |
-| `span:<trace_id>/<span_id>` | the error span inside it |
-| `log:otel/<doc_id>` | one OpenSearch log document |
-| `metric:<name>{<labels>}@<ts>=<value>` | the peak point of one series |
-| `container:<name>:<field>=<value>` | one `docker inspect` or `docker stats` field |
-| `action_log:<line_no>` | one line of our action log |
+Evidence IDs name traces/spans, metric points, OpenSearch/Docker logs, container
+fields and action-log lines. The resolver checks live data first, then retained
+run/bundle snapshots with checksums and explicit source labels. Snapshot evidence
+does not establish current recovery. Model identifiers come from `.env`; the
+report records the model actually used and sanitized usage/cost metadata.
 
-The report builder rejects any id that no tool returned in this run, so the model cannot invent evidence. The validator requires every cited id to appear in `evidence[]`. `python -m tools.resolve "<id>"` fetches it again. Limit: Jaeger keeps 5,000 traces in memory, Prometheus keeps one hour, OpenSearch has no volume. Old ids stop resolving, so each evidence entry also stores a summary and the query that produced it (`raw_ref`).
+## Safety and persistence
 
-## Safety controls
+The allowlist contains `toggle_flag`, `restart_service` and `throttle_load`.
+Unknown operations return `FORBIDDEN_OPERATION`; Compose scaling returns
+`NOT_AVAILABLE_ON_COMPOSE`. Diagnostic modules cannot run executor commands or
+read injection journals. Only the narrow setting adapter reads state for approved
+writes, hashing and rollback.
 
-- **Allowlist.** `restart_service`, `toggle_flag`, `throttle_load`. `scale_service` answers `not_available_on_compose`. Anything else is refused.
-- **Dry run.** `POST /actions/dry-run` returns the plan, the predicted effect, preconditions and a world-state hash. It changes nothing; a test compares container ids and the flag-file hash before and after.
-- **Approval token bound to world state.** Issued only when a human answers yes. It carries the hash of container ids plus the flag file and expires after 10 minutes. Execute without a token: 403. World changed since approval: 409.
-- **STOP kill switch.** `POST /stop` or a `STOP` file in the repo root. While it exists the executor answers 423, the agent stops (`stopped_because = stop_signal`, `status = aborted`), `detect/` starts nothing, `faultctl` injects nothing. Clearing it takes `DELETE /stop` with an operator phrase.
-- **Verify and rollback.** 30 s after acting we re-run the alert's own query. Recovered means below threshold on two samples in a row. Not recovered in 120 s: `toggle_flag` restores the previous variant, `throttle_load` restores the previous user count, `restart_service` has nothing to undo, so we escalate. Status becomes `rolled_back`.
-- **Action log.** Append-only `action_api/log.jsonl`: time, actor, action, target, parameters, token, result, duration.
-- **Test-only approval bypass.** `--auto-approve-for-tests` works only with `INCIDENT_ZERO_TEST=1` and prints a banner. Never used in a demo.
+Approval tokens expire after ten minutes and bind plan, report, operator and
+world-state hashes. Durable attempt records make idempotency survive restarts.
+One action/verification sequence is active at a time, and each target has a
+five-minute cooldown. Changed worlds, interrupted/uncertain attempts and stale
+approvals fail closed.
 
-## What the agent must not read
+STOP is one root file shared by the detector, agent, Action API and injector.
+It blocks new changes and cancels verification waits; rollback also obeys it.
+Pending approvals persist an aborted checkpoint/report without an attempt;
+active responses retain their lock and cancel at the next safe check.
+Operator reset remains available. The clear phrase is exactly
+`I confirm the incident is over`. STOP cannot reverse a command already accepted
+by Docker. Reversible settings roll back only if the relevant world still matches;
+restart non-recovery escalates because prior process state cannot be restored.
 
-- **The flag settings**: flagd files, the flag API (ports 8013, 8016, `ofrep`) and the flag UI (4000). `tests/test_no_flag_reads.py` scans production modules with exact exemptions for `faultctl/`, the filter-only `tools/redact.py`, and future `action_api/flags.py`; it also rejects disclosure keys and known control names. `tests/test_agent_isolation.py` fails if anything outside `faultctl/` imports it or reads `runs/*/injected.json`. The validator rejects any report containing `flagd`, `demo.flagd.json` or `defaultVariant`.
-- **Flag names that leak into telemetry.** `tools/redact.py` removes revealing span tags, events, log lines, backend spans and control metrics before responses or snapshots are produced. `tests/test_redact.py` covers recorded telemetry and explicit disclosure variants. Docker liveness and resource metadata still includes all 21 containers; it does not read their settings.
-- **The one exception.** `action_api/flags.py` writes the flag file for `toggle_flag` and its rollback, the way the flag UI would. It is reached only through the Action API after approval.
+The append-only audit exports token fingerprints, never usable tokens. Private
+SQLite records under ignored `runs/` retain token/rollback state. The API binds
+to loopback. Control Room routes reject cross-origin browser mutations; the
+native API trusts the localhost same-user boundary. It is not a hosted
+multi-user authentication service.
 
-A source scan is a tripwire, not a proof. The operator owns injection; the redactor only filters already-read telemetry; the future Action API's setting adapter remains a separate boundary.
+## Implementation and live status
 
-## Status
-
-<!-- Builder: change a row to "built" or "verified live (run id)" only when its acceptance step has passed. -->
-
-| Part | Status |
-|---|---|
-| faultctl, demo bring-up | Verified live; injections and resets recorded in BUILD_01B.md |
-| tools, health_table, resolve | Verified live; retained snapshots and explicit live/snapshot resolution |
-| schema, validator, renderer | Built; 56 schema tests pass; CLI examples checked |
-| detect, agent run | (planned) |
-| action_api, agent respond, verify, rollback | (planned) |
-| telemetry redaction of flag attributes | Built; recorded span/log fixtures and source-boundary regressions pass |
-| stretch: calibration, memory, reviewer agent, approval web page, prevention | (planned) |
+| Part | Status and evidence |
+| --- | --- |
+| Demo bring-up, injection/reset | Built and exercised live; [BUILD_01B](../BUILD_01B.md) |
+| Telemetry tools, redaction and evidence resolution | Built and exercised in retained diagnostic runs; source/snapshot regressions |
+| Detector, investigator, risk and reports | Built; payment and stopped-recommendation diagnostic runs in [BUILD_04](../BUILD_04.md) |
+| Dependency evidence scoring | Built and regression-tested; historical cache runs remain honest 0.55 escalations |
+| Action API, responder and execution | Built and verified live for [payment toggle/recovery](../reports/payment-failure-loop-r3/report.json) and [recommendation restart/recovery](../reports/container-stopped-loop-r1/report.json), with explicit developer test approval; timings in [BUILD_05](../BUILD_05.md) |
+| Rejection without mutation | Verified live: [payment-failure-loop-r4](../reports/payment-failure-loop-r4/report.json); before/after world hashes match, no execute event |
+| Mid-run STOP | Verified live: [payment-failure-loop-r5](../reports/payment-failure-loop-r5/report.json), aborted after execution; verification and rollback refused, operator cleanup measured separately |
+| Conditional settings rollback | Built and regression-tested; live acceptance tracked in [BUILD_05](../BUILD_05.md) |
+| Real Control Room and checkpoint reconciliation | Built; live browser acceptance tracked in [BUILD_06](../BUILD_06.md) |
+| Mock Control Room | Built with isolated state and no executor/recovery simulation |
+| Full-loop mentor and demo scripts | Built; before/after measurements and run timings retained per bundle |
+| Offline calibration utility | Built; historical tuning data are limited and are not held-out accuracy |
+| Reviewer model, adaptive memory, prevention, Kubernetes scaling | Not implemented |

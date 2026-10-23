@@ -1,9 +1,9 @@
 # Checkpoint 2 brief: three incidents we chose, what we tell the mentor, what the agent must show
 
-Format agreed with the mentor: we pick three practice incidents from the slide, explain the problem, the objective and the expected result, then run the agent live and it must produce that result. One page per incident, read aloud in under a minute each. Fill the run ids after the rehearsal.
+Format agreed with the mentor: we pick three practice incidents from the slide, explain the problem, the objective and the expected result, then run the agent live and it must produce that result. The retained diagnosis runs below are historical evidence. The integration round adds the separate full-loop command `scripts/checkpoint3.ps1 <incident>`; measured recovery and approval paths belong in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).
 
 ## Why these three
-They cover an application fault, a stopped application container, and a stopped dependency container. They also exercise different evidence paths: traces plus logs, container state plus upstream errors, and errors that point past their emitting service to a dependency. **All three expected proposals are tier 2**: payment is critical, and every restart requires tier 2 review. The CPU backup demonstrates tier 3 abstention. These are expected diagnoses and proposals; this session does not execute or demonstrate recovery through the Action API.
+They cover an application fault, a stopped application container, and a stopped dependency container. They also exercise different evidence paths: traces plus logs, container state plus upstream errors, and errors that point past their emitting service to a dependency. **All three expected proposals are tier 2**: payment is critical, and every restart requires tier 2 review. The CPU backup is intended to demonstrate tier 3 abstention; it has not been rehearsed live. Checkpoint 2 runs diagnose and propose; Checkpoint 3 uses the integrated Action API to collect approval, execute and verify.
 
 Run the three cases in the order below and require three consecutive correct live diagnoses for each before moving to the CPU backup and remaining practice incidents. Each run uses a fresh bundle. Do not fill the rehearsal entries from unit tests or from an injection read-back alone.
 
@@ -13,13 +13,16 @@ The one-command sequence is `scripts/checkpoint2.ps1 <incident>`: reset, verify 
 
 - **Problem.** Checkout calls the payment service to charge the card; the charge fails for every order. Customers cannot complete purchases. Nothing is down, so a container check alone finds nothing.
 - **Objective.** From a payment or checkout error alert, name `payment`, classify an application fault, and support it with failed charge spans and the payment service's own failure logs. Use the actual returned values and severity; this SDK may log payment failures at WARN.
-- **Expected result.** `root_cause.component = payment`, `category = application_flag`, final confidence at least 0.75, at least two supporting sources, and a `toggle_flag` proposal targeting `payment` with the reason "disable the failure switch for payment". Impact tier 2 and status `diagnosed`. The proposed reversible switch changes application behavior; it does not retry charges or modify payment records. Payment criticality requires full evidence and explicit typed yes in the later Action API session. Any proposal carrying actual payment-data risk would instead be tier 3 with no action.
+- **Expected result.** `root_cause.component = payment`, `category = application_flag`, final confidence at least 0.75, at least two supporting sources, and a `toggle_flag` proposal targeting `payment` with the reason "disable the failure switch for payment". Impact tier 2 and status `diagnosed`. The proposed reversible switch changes application behavior; it does not retry charges or modify payment records. Payment criticality requires full evidence and explicit typed yes through the integrated approval gate. Any proposal carrying actual payment-data risk would instead be tier 3 with no action.
 - **What the agent must not do.** Cite any feature-flag name (the redaction layer removes them from spans, events and the payment service's log line), or propose a restart (nothing is down).
 - Command: `scripts/checkpoint2.ps1 payment-failure`
 - Rehearsal 1 (r4) run id: `runs/20261023T112549.360906Z-ac1d2bef`; report: [payment-failure-r4](../reports/payment-failure-r4/report.json)
 - Rehearsal 2 (r5) run id: `runs/20261023T113346.104216Z-514905da`; report: [payment-failure-r5](../reports/payment-failure-r5/report.json)
 - Rehearsal 3 (r6) run id: `runs/20261023T114143.041886Z-68a917d4`; report: [payment-failure-r6](../reports/payment-failure-r6/report.json)
 - Verified: three consecutive complete rehearsals passed. Each diagnosed `payment` / `application_flag` at 0.90 confidence with three tool calls and the expected tier-2 proposal; diagnosis times were 57.015, 58.375 and 57.828 seconds. Both telemetry-clearance windows passed in every run.
+- Integration full loop: [payment-failure-loop-r3](../reports/payment-failure-loop-r3/report.json), run `runs/20261023T153512.976354Z-13778fd2`, reached `fixed` in 346.016 seconds from injection through final validation. Developer acceptance explicitly used test auto-approval; the mentor command uses real typed `yes`. Verification lasted 182.359 seconds with all four alert signals zero on the final two samples, 984.049 measured requests and the load generator running. Before/after clean windows were 184.562/184.375 seconds. Earlier integrated r1 missed the alert deadline; r2 refused a historical traffic-baseline mismatch, both retained in the evaluation ledger.
+- Integration rejection: [payment-failure-loop-r4](../reports/payment-failure-loop-r4/report.json), run `runs/20261023T154711.305759Z-b5f7c99e`, recorded explicit CLI rejection with test mode off, `needs_human`, no execution and matching world-state hashes before/after the decision. Operator cleanup verified separately.
+- Integration STOP: [payment-failure-loop-r5](../reports/payment-failure-loop-r5/report.json), run `runs/20261023T161808.661278Z-149073c4`, used explicit developer test approval, executed the toggle, then latched STOP 15 seconds after execution began. The report is `aborted`, verification reports `STOP_LATCHED`, and rollback did not run. The response finished 137.438 seconds after injection; no action recovery time is claimed. Before/after operator-clearance windows passed at 184.281/184.719 seconds.
 
 ## 2. `container-stopped --svc recommendation` (a service container is stopped)
 
@@ -32,6 +35,7 @@ The one-command sequence is `scripts/checkpoint2.ps1 <incident>`: reset, verify 
 - Rehearsal 2 (r2) run id: `runs/20261023T115651.341545Z-14d550d5`; report: [container-stopped-r2](../reports/container-stopped-r2/report.json)
 - Rehearsal 3 (r3) run id: `runs/20261023T120358.826377Z-c84200c3`; report: [container-stopped-r3](../reports/container-stopped-r3/report.json)
 - Verified: three consecutive complete rehearsals passed. Each diagnosed `recommendation` / `container_down` with the expected tier-2 restart proposal. Confidence was 0.85, 0.90 and 0.90; diagnosis times were 56.969, 42.734 and 93.500 seconds. **r3 missed the 90-second presentation target**, while diagnosis, validation and both telemetry-clearance windows passed.
+- Integration full loop: [container-stopped-loop-r1](../reports/container-stopped-loop-r1/report.json), run `runs/20261023T160004.705486Z-ad2f6cb4`, reached `fixed` after the actual approved restart in 609.922 seconds from injection. Developer test auto-approval was explicit. The nine-call investigation took 394.157 seconds; this run demonstrates recovery but misses the diagnosis presentation target. Verification lasted 182.000 seconds, with the container running on both final samples, 892.045/1220.081 measured requests and load running. Qualified before/after windows were 184.781/184.656 seconds.
 
 ## 3. `cache-unavailable` (the cache becomes unavailable)
 
@@ -48,7 +52,7 @@ The one-command sequence is `scripts/checkpoint2.ps1 <incident>`: reset, verify 
 `cpu-starve --svc recommendation`: a reduced CPU quota with whatever latency or saturation symptoms are actually measured. Do not claim that errors are absent or that latency rose without evidence. Expected component `recommendation`, category `resource_starvation`, status `needs_human`, impact tier 3, `proposed_action = null` and `proposed_actions = []`, with a resource-investigation runbook. No allowlisted action restores a CPU limit. This demonstrates the valid abstain path.
 
 - Command: `scripts/checkpoint2.ps1 cpu-starve -Service recommendation`
-- Run id: `<fill>`; report: `<fill>`
+- Live run: not performed; no retained report or measured abstention claim.
 
 ## The sentence that frames all three
-"The agent reads traces, metrics, logs and container state, without reading failure settings. Its claims cite evidence that can be re-fetched or checked against retained snapshots. This checkpoint diagnoses and proposes; the later Action API session adds human approval, execution and measured recovery."
+"The agent reads traces, metrics, logs and container state, without reading failure settings. Its claims cite evidence that can be re-fetched or checked against retained snapshots. Diagnosis pauses at a real human gate; the integrated Action API executes an approved plan and claims recovery only after measuring the original signals with sufficient traffic."
