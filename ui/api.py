@@ -7,7 +7,6 @@ from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import hashlib
 import importlib
-import inspect
 import json
 import os
 from pathlib import Path
@@ -85,6 +84,7 @@ class ControlRoom:
         self.runs = Path(runs_dir or os.getenv("INCIDENT_ZERO_RUNS_DIR", self.reports.parent / "runs")).resolve()
         self.real = real
         self._backend = backend
+        self._native = None
         self.lock = threading.RLock()
         self.stopped = False
         self.decisions = {}
@@ -107,7 +107,17 @@ class ControlRoom:
         except ModuleNotFoundError as exc:
             if exc.name not in ("action_api", "action_api.ui_backend"):
                 raise HTTPException(503, "Action backend dependency is unavailable") from exc
+        try:
+            service_module = importlib.import_module("action_api.service")
+        except ModuleNotFoundError as exc:
+            if exc.name not in ("action_api", "action_api.service"):
+                raise HTTPException(503, "Action backend dependency is unavailable") from exc
             return None
+        with self.lock:
+            if self._native is None:
+                from ui.action_backend import ActionBackend
+                self._native = ActionBackend(self, service_module.ActionService)
+            return self._native
 
     def mode(self):
         return "real" if self.backend() is not None else ("mock_fallback" if self.real else "mock")
@@ -118,7 +128,14 @@ class ControlRoom:
         if function is None:
             raise HTTPException(503, f"Action backend does not provide {name}; operation refused")
         # The documented hook surface is synchronous; FastAPI runs it off the event loop.
-        return function(**kwargs)
+        try:
+            return function(**kwargs)
+        except HTTPException:
+            raise
+        except Exception as exc:
+            if hasattr(exc, "status") and hasattr(exc, "code"):
+                raise HTTPException(exc.status, exc.code) from exc
+            raise HTTPException(503, "Action backend unavailable; operation was not confirmed") from exc
 
     def records(self):
         records = {}
@@ -159,6 +176,9 @@ class ControlRoom:
             report["markdown"] = ""
         report["revision"] = fingerprint(original)
         report["mode"] = self.mode()
+        backend = self.backend()
+        if backend is not None and hasattr(backend, "overlay"):
+            report = backend.overlay(report)
         return report
 
     def incidents(self):
@@ -219,6 +239,9 @@ class ControlRoom:
     def approvals(self):
         if self.backend() is not None:
             return self.delegate("list_approvals")
+        return self.mock_approvals()
+
+    def mock_approvals(self):
         pending, history = [], list(self.decisions.values())
         for identity, (_, report) in self.records().items():
             action = action_of(report)
@@ -323,12 +346,13 @@ class ControlRoom:
         return {"rows": list(rows.values()), "source": "report_snapshot", "observed_at": observed_at, "warnings": ["Recorded symptoms only; missing values are unknown, not healthy."], "mode": self.mode()}
 
     def scan(self):
-        for identity, (_, report) in self.records().items():
+        for identity in self.records():
+            report = self.detail(identity)
             base = {"incident_id": identity, "run_id": report.get("run_id"), "recorded": True}
             self.emit("alert_raised", {**base, "alert": report.get("alert")}, (identity, "alert"))
             for step in report.get("investigation", []):
                 self.emit("investigation_step", {**base, "step": step}, (identity, "step", fingerprint(step)))
-            revision = fingerprint(report)
+            revision = fingerprint({key: value for key, value in report.items() if key != "markdown"})
             self.emit("report_ready", {**base, "status": report["status"]}, (identity, "report", revision))
             if (report.get("action") or {}).get("executed"):
                 self.emit("action_executed", {**base, "action": report["action"]}, (identity, "action", fingerprint(report["action"])))

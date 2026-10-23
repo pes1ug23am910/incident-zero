@@ -64,8 +64,24 @@ from action_api.ui_routes import router as ui_router
 app.include_router(ui_router)
 ```
 
-The shared implementation lazily imports `action_api.ui_backend`. That module
-provides these synchronous functions (called in worker threads):
+The shared implementation lazily imports the hands branch's
+`action_api.service.ActionService` through `ui/action_backend.py`. No changes to
+the hands service or browser are needed. It presents a native dry run before
+approval, forwards the explicit operator answer into the native approval gate,
+then runs execute/verify in a background worker. STOP, token binding, allowlists,
+cooldowns, rollback and verification remain enforced by the native service.
+Compound reports expose a separate approval per action; one click approves only
+the selected action. UI decisions are audited through `ActionService.log`.
+
+The original reports are read-only. Incident JSON overlays durable service audit
+and attempt records; its `markdown` remains the original report. Final report
+export/checkpoint reconciliation remains owned by the brain/hands report writer.
+An interrupted execution is never automatically retried by the UI. The Action
+API's durable attempt state governs whether a later operation is allowed.
+
+For a different hands implementation, an optional `action_api.ui_backend` module
+takes precedence over the native adapter. It provides these synchronous functions
+(called in worker threads):
 
 ```python
 list_approvals()  # return the pending/history envelope above
@@ -81,7 +97,7 @@ The hands adapter owns dry-run preconditions, world-state token binding,
 expiry, allowlists, durable audit, execution and verification. It must validate
 tier/confirmation/revision and STOP again at execution. Approval IDs may differ
 from report IDs; `report_id` connects them. Never return approval tokens to the UI.
-If the module is absent, all control operations use labelled `mock_fallback`
-state. If the module exists but lacks a function, that operation returns 503;
+If both the hook module and native service are absent, all control operations use
+labelled `mock_fallback` state. If the hook module exists but lacks a function, that operation returns 503;
 backend failures never silently become mock successes. The browser contract is
 identical in all modes. No browser endpoint executes an arbitrary action.
