@@ -47,7 +47,7 @@ class ActionBackend:
     def list_approvals(self):
         with self.lock:
             history = self.history()
-            decided = {(item["id"], item["revision"]) for item in history}
+            decided = {(item["id"], item.get("report_revision", item["revision"])) for item in history}
             attempts = self.service.attempts()
             pending = []
             stopped = self.get_stop()["stopped"]
@@ -88,7 +88,8 @@ class ActionBackend:
                     pending.append({"id": approval_id, "report_id": identity, "tier": preview["impact"]["tier"],
                                     "action": preview["plan"]["action"], "target": preview["plan"]["target"],
                                     "predicted_effect": preview["predicted_effect"], "expiry": cached["expiry"],
-                                    "revision": revision, "status": "pending", "preview": preview, "action_index": index})
+                                    "revision": fingerprint({"report": revision, "preview": preview}),
+                                    "report_revision": revision, "status": "pending", "preview": preview, "action_index": index})
             return {"pending": pending, "history": list(reversed(history)), "mode": "real"}
 
     def approve(self, **decision):
@@ -99,6 +100,8 @@ class ActionBackend:
 
     def decide(self, approved, approval_id, operator, note, reason, confirmation, revision):
         with self.lock:
+            if approved and self.get_stop()["stopped"]:
+                raise HTTPException(423, "STOP is latched")
             item = next((item for item in self.list_approvals()["pending"] if item["id"] == approval_id), None)
             if item is None or item["revision"] != revision:
                 raise HTTPException(409, "Approval expired, already decided, blocked, or report changed")
@@ -109,6 +112,8 @@ class ActionBackend:
             if item["tier"] not in (1, 2):
                 raise HTTPException(403, "Tier 3 cannot be approved")
             _, report = self.room.record(item["report_id"])
+            if fingerprint(report) != item["report_revision"]:
+                raise HTTPException(409, "Report changed; review the current report")
             result = {key: value for key, value in item.items() if key != "preview"}
             result.update(operator=operator, note=note, reason=reason, status="approved" if approved else "rejected", decided_at=now(), mode="real")
             if not approved:
@@ -118,9 +123,14 @@ class ActionBackend:
                 action = actions[item["action_index"]]
                 # This answer originates in the explicit HTTP button/typed confirmation.
                 # The native gate still rechecks report, world state, tier and STOP.
-                answer = self.service.approve(action, report, item["preview"], operator,
-                                              input_fn=lambda _: "y" if item["tier"] == 1 else confirmation,
-                                              output=lambda _: None)
+                try:
+                    answer = self.service.approve(action, report, item["preview"], operator,
+                                                  input_fn=lambda _: "y" if item["tier"] == 1 else confirmation,
+                                                  output=lambda _: None)
+                except Exception as exc:
+                    if getattr(exc, "code", "") in ("WORLD_OR_PLAN_CHANGED", "WORLD_STATE_CHANGED"):
+                        self.previews.pop((approval_id, item["report_revision"]), None)
+                    raise
                 if answer.get("decision") != "approve":
                     raise HTTPException(409, "Action service did not approve this plan")
                 self.service.log("ui_approval", report_id=report["run_id"], actor=operator, ui_decision=result)
@@ -143,7 +153,7 @@ class ActionBackend:
 
     def overlay(self, report):
         # The source report remains immutable. Service attempts and audit are durable.
-        history = [item for item in self.history() if item.get("report_id") == report["incident_id"] and item.get("revision") == report["revision"]]
+        history = [item for item in self.history() if item.get("report_id") == report["incident_id"] and item.get("report_revision", item.get("revision")) == report["revision"]]
         if history:
             decision = history[-1]
             approved = decision["status"] == "approved"

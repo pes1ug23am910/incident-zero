@@ -1,7 +1,7 @@
 "use strict";
 
 const $ = (selector, root = document) => root.querySelector(selector);
-const state = { incidents: [], selected: null, report: null, approvals: { pending: [], history: [] }, stopped: null, mode: "unknown", events: [], cursor: 0, epoch: "", warKey: "", refreshing: false, busy: false };
+const state = { incidents: [], selected: null, followLatest: true, report: null, approvals: { pending: [], history: [] }, stopped: null, mode: "unknown", events: [], cursor: 0, epoch: "", warKey: "", refreshing: false, busy: false };
 const esc = value => String(value ?? "—").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 const pretty = value => typeof value === "string" ? value : JSON.stringify(value, null, 2);
 const words = value => String(value ?? "unknown").replaceAll("_", " ");
@@ -89,6 +89,15 @@ function renderWar() {
 }
 
 function renderActivity() {
+  const completed = new Set(state.events.filter(event => event.type === "report_ready").map(event => event.run_id));
+  if (state.report?.run_id) completed.add(state.report.run_id);
+  const active = state.events.filter(event => !event.recorded && event.type === "investigation_step" && !completed.has(event.run_id) && Date.now() - new Date(event.observed_at || event.at).getTime() < 300000);
+  const activeRun = active.at(-1)?.run_id;
+  $("#active-investigation").hidden = !activeRun;
+  if (activeRun) {
+    $("#active-run").textContent = activeRun + " · Read from the agent's investigation journal; awaiting a report.";
+    $("#active-steps").innerHTML = renderSteps(active.filter(event => event.run_id === activeRun).map(event => event.step));
+  }
   const target = $("#live-activity");
   if (!target) return;
   const events = state.events.filter(event => ["alert_raised", "investigation_step", "report_ready", "action_executed", "verification_result", "stop"].includes(event.type)).slice(-8).reverse();
@@ -112,7 +121,8 @@ function renderHealth(health) {
   $("#health-table").innerHTML = health.rows?.length ? `<div class="table-wrap"><table><thead><tr><th>Service</th><th>Error rate</th><th>p95 ms</th><th>RPS</th><th>Restarts</th><th>Status</th><th>CPU %</th><th>Memory MiB</th></tr></thead><tbody>${health.rows.map(row => `<tr><td><strong>${esc(row.service)}</strong></td>${cell(percent(row.error_rate), row.error_rate != null && row.error_rate >= .05)}${cell(number(row.p95_ms), row.p95_ms != null && row.p95_ms >= 1500)}${cell(number(row.rps), false)}${cell(number(row.restarts, 0), false)}${cell(row.status, !!row.status && !["running", "healthy", "unknown"].includes(row.status))}${cell(number(row.cpu), row.cpu != null && row.cpu >= 90)}${cell(number(row.mem), false)}</tr>`).join("")}</tbody></table></div>` : '<div class="empty">No service measurements available.</div>';
 }
 
-async function selectIncident(identity) {
+async function selectIncident(identity, followLatest = false) {
+  state.followLatest = followLatest;
   state.selected = identity;
   const report = await api(`/api/incidents/${encodeURIComponent(identity)}`);
   if (state.selected !== identity) return;
@@ -132,7 +142,7 @@ async function refresh() {
     if (stop.status === "fulfilled") { state.stopped = stop.value.stopped; state.mode = stop.value.mode; } else { state.stopped = null; state.mode = "unknown"; }
     if (health.status === "fulfilled") renderHealth(health.value);
     if (log.status === "fulfilled") $("#action-log").textContent = log.value.lines.length ? log.value.lines.map(pretty).join("\n\n") : "No action log entries.";
-    if (!state.selected && state.incidents.length) state.selected = state.incidents[0].id;
+    if ((!state.selected || state.followLatest) && state.incidents.length) state.selected = state.incidents[0].id;
     if (state.selected) state.report = await api(`/api/incidents/${encodeURIComponent(state.selected)}`);
     renderIncidents(); renderApprovals(); renderWar(); renderMode();
     const failed = results.filter(result => result.status === "rejected");
@@ -182,7 +192,7 @@ document.addEventListener("click", async event => {
 });
 document.addEventListener("submit", event => { if (event.target.id === "decision-form") { event.preventDefault(); decide(true); } });
 $("#close-evidence").addEventListener("click", () => $("#evidence-drawer").close());
-$("#latest-incident").addEventListener("click", () => { if (state.incidents.length) selectIncident(state.incidents[0].id).catch(error => notice(error.message)); });
+$("#latest-incident").addEventListener("click", () => { if (state.incidents.length) selectIncident(state.incidents[0].id, true).catch(error => notice(error.message)); });
 $("#stop-button").addEventListener("click", () => mutate("/api/stop"));
 $("#quick-stop").addEventListener("click", () => mutate("/api/stop"));
 $("#clear-stop-form").addEventListener("submit", event => { event.preventDefault(); const phrase = $("#clear-phrase").value; if (phrase !== "I confirm the incident is over") { notice("The confirmation phrase must match exactly."); return; } mutate("/api/stop", { phrase }, "DELETE"); });
