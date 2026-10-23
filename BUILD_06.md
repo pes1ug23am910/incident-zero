@@ -103,3 +103,9 @@ reset window. Its action-log export was refreshed from the unchanged canonical
 final checkpoint after fixing export to include global safety events within a
 run's action interval. The partial-sample loss in the original cancellation
 handler is recorded honestly in BUILD_05; no samples were fabricated.
+
+Subsequent cancellation handling retains each actual progress sample and its
+last measured request count, while keeping the result blocked/unrecovered and
+leaving `after` unknown. Thirteen isolated integration tests passed, including
+STOP and a callback exception after one sample. This fixes future evidence
+retention; it does not fill in the missing r5 observations retrospectively.
