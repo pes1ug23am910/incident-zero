@@ -36,9 +36,13 @@ def now():
 
 
 def write_json(path, value):
+    write_bytes(path, (json.dumps(value, indent=2) + "\n").encode("utf-8"))
+
+
+def write_bytes(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+    temporary.write_bytes(value)
     temporary.replace(path)
 
 
@@ -69,14 +73,15 @@ class Controller:
             raise FaultError(f"Command failed ({result.returncode}): {' '.join(args)}\n{result.stdout}{result.stderr}")
         return result
 
-    def compose(self, *args, override=False, timeout=180):
+    def compose(self, *args, override=None, timeout=180):
         command = ["docker", "compose", "--project-directory", str(self.demo), "-f", str(self.demo / self.config["compose_file"])]
-        if override:
+        use_override = self.override.exists() if override is None else override
+        if use_override:
             command += ["-f", str(self.override)]
         return self.run(command + list(args), timeout=timeout)
 
     def services(self):
-        return json.loads(self.compose("config", "--format", "json").stdout)["services"]
+        return json.loads(self.compose("config", "--format", "json", override=False).stdout)["services"]
 
     def target(self, name):
         services = self.services()
@@ -140,6 +145,30 @@ class Controller:
     def inspect(self, target):
         return json.loads(self.run(["docker", "inspect", target]).stdout)[0]
 
+    def prepare_overlay(self):
+        """Prepare the persistent directory before Compose establishes its mount."""
+        self.ensure_pristine()
+        write_bytes(self.active, self.pristine.read_bytes())
+        write_json(self.override, {"services": {"flagd": {"volumes": [{
+            "type": "bind", "source": str(self.active.parent),
+            "target": "/etc/flagd", "read_only": True,
+        }]}}})
+
+    def require_injection_mount(self):
+        if not self.override.exists() or not self.active.exists():
+            raise FaultError("Injection directory is not prepared; run faultctl up before injection")
+        if not self.has_injection_mount(self.inspect("flagd")):
+            raise FaultError("Injection directory is not mounted; run faultctl up before injection")
+
+    def up(self):
+        with self.lock():
+            if self.state()["incidents"]:
+                raise FaultError("Active incident state exists; run reset before up")
+            self.prepare_overlay()
+            output = self.compose("up", "-d")
+            self.require_injection_mount()
+            return {"ok": True, "output": output.stdout + output.stderr}
+
     def netem(self, target, *args, check=True):
         return self.run(["docker", "run", "--rm", "--network", f"container:{target}", "--cap-add", "NET_ADMIN", self.config["netem_image"], *args], timeout=45, check=check)
 
@@ -162,6 +191,7 @@ class Controller:
                 baseline = json.loads(self.pristine.read_text(encoding="utf-8"))
                 if variant not in baseline["flags"][key]["variants"]:
                     raise FaultError(f"Unsupported variant for {incident}: {variant}")
+                self.require_injection_mount()
             snapshot = self.inspect(target)
             run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ") + "-" + uuid.uuid4().hex[:6]
             run_dir = self.root / "runs" / run_id
@@ -236,16 +266,10 @@ class Controller:
         return ["Changed application error, latency, resource or traffic metrics", "Correlated traces and logs"]
 
     def set_flag(self, key, variant):
-        self.active.parent.mkdir(parents=True, exist_ok=True)
-        had_override = self.override.exists()
-        if had_override:
-            had_override = self.has_injection_mount(self.inspect("flagd"))
-        current = json.loads((self.active if had_override and self.active.exists() else self.pristine).read_text(encoding="utf-8"))
+        self.require_injection_mount()
+        current = json.loads(self.active.read_text(encoding="utf-8"))
         current["flags"][key]["defaultVariant"] = variant
         write_json(self.active, current)
-        if not had_override:
-            write_json(self.override, {"services": {"flagd": {"volumes": [{"type": "bind", "source": str(self.active.parent), "target": "/etc/flagd", "read_only": True}]}}})
-            self.compose("up", "-d", "--no-deps", "--force-recreate", "flagd", override=True)
         time.sleep(2)
         if json.loads(self.active.read_text(encoding="utf-8"))["flags"][key]["defaultVariant"] != variant:
             raise FaultError("Active injection file failed read-back")
@@ -276,8 +300,8 @@ class Controller:
             self.cancel_loops(state)
             try:
                 baseline_sha = self.ensure_pristine()
-                if self.active.exists():
-                    self.active.write_bytes(self.pristine.read_bytes())
+                if self.active.exists() or self.override.exists():
+                    write_bytes(self.active, self.pristine.read_bytes())
                 checks.append({"check": "pristine-source", "ok": True, "sha256": baseline_sha})
             except Exception as error:
                 errors.append(str(error))
@@ -302,23 +326,25 @@ class Controller:
                 if record["incident_id"] not in FLAGS and record["incident_id"] != "network-latency":
                     touched.add(target)
                     expected_limits.setdefault(target, record["before"])
-            if state["flag_override"] or self.override.exists():
-                touched.add("flagd")
             try:
+                if state["flag_override"] or self.override.exists():
+                    self.require_injection_mount()
+                if "flagd" in touched:
+                    raise FaultError("Reset cannot recreate the control service; restore its infrastructure before retrying")
                 for target in touched:
                     self.target(target)
                 if touched:
                     self.compose("up", "-d", "--no-deps", "--force-recreate", *sorted(touched))
-                self.compose("up", "-d")
+                self.compose("up", "-d", "--no-recreate")
                 for target, expected in expected_limits.items():
                     actual = self.inspect(target)["HostConfig"]
                     for field in ("NanoCpus", "Memory", "MemorySwap"):
                         if actual.get(field, 0) != expected[field]:
                             raise FaultError(f"{target}.{field} is {actual.get(field)}, expected {expected[field]}")
                     checks.append({"check": f"limits:{target}", "ok": True})
-                if "flagd" in touched:
-                    if self.has_injection_mount(self.inspect("flagd")):
-                        raise FaultError("Injection mount remains after reset")
+                if self.override.exists():
+                    self.require_injection_mount()
+                    checks.append({"check": "persistent-injection-mount", "ok": True})
                 for target in sorted(netem_targets):
                     qdisc = self.netem(target, "qdisc", "show", "dev", "eth0").stdout
                     if "netem" in qdisc:
@@ -331,7 +357,6 @@ class Controller:
                 errors.append(str(error))
             fault_state_clean = not errors
             if fault_state_clean:
-                self.override.unlink(missing_ok=True)
                 write_json(self.state_path, {"incidents": [], "flag_override": False, "last_reset": now()})
             deadline = time.monotonic() + timeout_s
             readiness = {"ok": False, "checks": []}
@@ -471,18 +496,13 @@ def main(argv=None):
                 raise FaultError("Traffic observation must be 0..60 seconds")
             result = controller.status(args.traffic_seconds)
         elif args.command == "up":
-            with controller.lock():
-                if controller.state()["incidents"]:
-                    raise FaultError("Active incident state exists; run reset before up")
-                controller.ensure_pristine()
-                output = controller.compose("up", "-d")
-            result = {"ok": True, "output": output.stdout + output.stderr}
+            result = controller.up()
         elif args.command == "down":
             with controller.lock():
                 controller.cancel_loops(controller.state())
                 controller.ensure_pristine()
                 if controller.active.exists():
-                    controller.active.write_bytes(controller.pristine.read_bytes())
+                    write_bytes(controller.active, controller.pristine.read_bytes())
                 output = controller.compose("down")
                 controller.override.unlink(missing_ok=True)
                 write_json(controller.state_path, {"incidents": [], "flag_override": False, "last_down": now()})

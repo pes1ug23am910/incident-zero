@@ -39,6 +39,8 @@ def get_deploy_history(lookback_s=3600):
             return False
     for item in inspect_rows():
         name = item["Name"].lstrip("/")
+        if is_sensitive(name):
+            continue
         for field, timestamp in (("Created", item["Created"]), ("StartedAt", item["State"].get("StartedAt"))):
             if include(timestamp):
                 events.append({"timestamp": timestamp, "kind": field, "container": name,

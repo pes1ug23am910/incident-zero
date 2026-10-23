@@ -11,6 +11,7 @@ from .containers import inspect_rows, health_row, evidence_value
 from .deploy import action_entries
 from . import evidence as snapshots
 from .redact import sanitize, scrub_trace, is_sensitive
+from .queries import QUERIES, named_query
 
 
 class EvidenceNotFound(ValueError):
@@ -35,6 +36,8 @@ def parse_metric(identifier):
         query = name + "{" + selector + "}"
     if is_sensitive(name) or is_sensitive(labels) or is_sensitive(query):
         raise EvidenceNotFound("Decoded metric identifier contains excluded telemetry")
+    if query.startswith("named:") and query[6:] not in QUERIES:
+        raise EvidenceNotFound("Unknown named metric evidence query")
     return name, labels, float(timestamp), float(value), query
 
 
@@ -62,7 +65,8 @@ def _resolve(evidence_id):
             return {"id": evidence_id, "source": "opensearch", "data": item["_source"]}
     elif evidence_id.startswith("metric:"):
         name, labels, timestamp, expected, query = parse_metric(evidence_id)
-        raw = get_json(prometheus() + "/api/v1/query_range", params={"query": query, "start": timestamp, "end": timestamp, "step": 15})
+        expression = named_query(query[6:]) if query.startswith("named:") else query
+        raw = get_json(prometheus() + "/api/v1/query_range", params={"query": expression, "start": timestamp, "end": timestamp, "step": 15})
         for series in raw.get("data", {}).get("result", []):
             actual_labels = {k: str(v) for k, v in series.get("metric", {}).items() if k != "__name__"}
             if actual_labels != labels:

@@ -1,0 +1,164 @@
+[
+  {
+    "stage": "before",
+    "identity": "8d982bfc64a38d22dd2a72844d76e581095830d401ca762d40091a399c82f6e4"
+  },
+  {
+    "stage": "baseline",
+    "elapsed_s": 2.438,
+    "clean": false,
+    "reason": "payment error rate 0.0556"
+  },
+  {
+    "stage": "baseline",
+    "elapsed_s": 32.563,
+    "clean": false,
+    "reason": "payment error rate 0.0556"
+  },
+  {
+    "stage": "baseline",
+    "elapsed_s": 62.484,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "baseline",
+    "elapsed_s": 92.422,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "baseline",
+    "elapsed_s": 122.438,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "baseline",
+    "elapsed_s": 152.391,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "baseline",
+    "elapsed_s": 182.484,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "injected",
+    "same_container": true
+  },
+  {
+    "stage": "injection_sample",
+    "sample": 0,
+    "rates": {
+      "checkout": 0.0,
+      "payment": 0.0,
+      "ad": 0.0,
+      "cart": 0.0,
+      "recommendation": 0.0
+    },
+    "error": null
+  },
+  {
+    "stage": "injection_sample",
+    "sample": 1,
+    "rates": {
+      "checkout": 0.0,
+      "payment": 0.0,
+      "ad": 0.0,
+      "cart": 0.0,
+      "recommendation": 0.0
+    },
+    "error": null
+  },
+  {
+    "stage": "injection_sample",
+    "sample": 2,
+    "rates": {
+      "checkout": 0.15217391304347827,
+      "payment": 0.368421052631579,
+      "ad": 0.0,
+      "cart": 0.0,
+      "recommendation": 0.0
+    },
+    "error": null
+  },
+  {
+    "stage": "injection_sample",
+    "sample": 3,
+    "rates": {
+      "checkout": 0.15217391304347827,
+      "payment": 0.368421052631579,
+      "ad": 0.0,
+      "cart": 0.0,
+      "recommendation": 0.0
+    },
+    "error": null
+  },
+  {
+    "stage": "injection_sample",
+    "sample": 4,
+    "rates": {
+      "checkout": 0.2,
+      "payment": 0.5,
+      "ad": 0.0,
+      "cart": 0.0,
+      "recommendation": 0.0
+    },
+    "error": null
+  },
+  {
+    "stage": "reset",
+    "ok": true,
+    "same_container": true
+  },
+  {
+    "stage": "recovery",
+    "elapsed_s": 2.11,
+    "clean": false,
+    "reason": "checkout error rate 0.2000; frontend error rate 0.0448; frontend-proxy error rate 0.0566; load-generator error rate 0.0575; payment error rate 0.5000"
+  },
+  {
+    "stage": "recovery",
+    "elapsed_s": 32.328,
+    "clean": false,
+    "reason": "checkout error rate 0.1290; frontend error rate 0.0197; frontend-proxy error rate 0.0290; load-generator error rate 0.0250; payment error rate 0.2857"
+  },
+  {
+    "stage": "recovery",
+    "elapsed_s": 62.36,
+    "clean": false,
+    "reason": "checkout error rate 0.1290; frontend error rate 0.0197; frontend-proxy error rate 0.0290; load-generator error rate 0.0250; payment error rate 0.2857"
+  },
+  {
+    "stage": "recovery",
+    "elapsed_s": 92.375,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "recovery",
+    "elapsed_s": 122.203,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "recovery",
+    "elapsed_s": 152.203,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "recovery",
+    "elapsed_s": 182.25,
+    "clean": true,
+    "reason": "live traffic, containers running, observed error rates cleared"
+  },
+  {
+    "stage": "completed",
+    "clean": true,
+    "same_container": true
+  }
+]

@@ -60,18 +60,17 @@ def test_backend_spans_and_control_metrics_are_removed():
     assert redact_metric_series({"metric": {"service_name": "flagd"}}) is None
 
 
-def test_envelope_preserves_nulls_structure_and_container_metadata():
+def test_envelope_preserves_nulls_but_excludes_control_container_metadata():
     evidence = "container:flagd:Status=running"
     envelope = {"tool": "get_container_health", "source": "docker", "query": "flagd diagnostic",
         "data": [{"name": "flagd", "Status": "running", "memory_mb": None}],
         "evidence_ids": [evidence], "values": [[1, None]]}
     result = sanitize(envelope)
     assert result["query"] == "[redacted]"
-    assert result["data"][0]["name"] == "flagd"
-    assert result["data"][0]["memory_mb"] is None
-    assert result["evidence_ids"] == [evidence]
+    assert result["data"] == []
+    assert result["evidence_ids"] == []
     assert result["values"] == [[1, None]]
-    assert not is_sensitive_evidence(evidence)
+    assert is_sensitive_evidence(evidence)
     assert is_sensitive_evidence("metric:feature_flag_calls_total{}@1=1")
 
 
@@ -81,8 +80,8 @@ def test_all_container_evidence_paths_survive_envelope_redaction():
     paths = {identifier: "runs/example/evidence/" + str(i) + ".json" for i, identifier in enumerate(ids)}
     result = sanitize({"data": [{"name": name, "Status": "running"} for name in names],
                        "evidence_ids": ids, "evidence_paths": paths})
-    assert len(result["data"]) == 21
-    assert set(result["evidence_ids"]) == set(result["evidence_paths"]) == set(ids)
+    assert len(result["data"]) == 20
+    assert set(result["evidence_ids"]) == set(result["evidence_paths"]) == set(ids[1:])
 
 
 def test_application_cache_state_attribute_is_removed():
