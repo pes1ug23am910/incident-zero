@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "id": "action_log:6",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:13:46.911044+00:00",
+    "event": "verification",
+    "report_id": "runs/mock-stop-mid-run",
+    "result": {
+      "checked_at": "2026-10-23T11:13:46.899078+00:00",
+      "signal": "error_rate",
+      "before": 0.9,
+      "after": null,
+      "recovered": false,
+      "rolled_back": false,
+      "outcome": "blocked",
+      "requests_observed": 0,
+      "samples": [],
+      "rollback_note": "STOP_LATCHED"
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:13:46.954069+00:00",
+  "checksum": "f02ce9fc8c5ee64b8159791ea5b3a498a20b3d65f853500182088595f6efe4b5"
+}

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "id": "action_log:2",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:13:46.840553+00:00",
+    "event": "dry_run",
+    "report_id": "runs/mock-stop-mid-run",
+    "action": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "result": "preview_only",
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:13:46.945083+00:00",
+  "checksum": "04cd90015c6b33092c68ec793bc476e8e695431e8e471132495110b8de6dc386"
+}

@@ -14,4 +14,11 @@ session. No prior documents, prompts, reports, fixtures or build outputs were
 copied. The graph, evidence confidence rules, policy and detector were written
 for this repository on 2026-10-23.
 
+The hands implementation (`action_api/*.py`, `agent/respond.py`) was written
+for this contract; no additional files from the unpublished template were
+ported. The missing `scripts/checkpoint2.py` helper was recovered from the
+concurrent `D:\incident-zero` checkout to satisfy the existing detector tests;
+it was not executed against the stack. The prior-work table above remains the
+complete list of template ports.
+
 Live fixtures and reports are recorded from this team's local demo runs.
