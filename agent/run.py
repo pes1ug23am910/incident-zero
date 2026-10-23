@@ -71,7 +71,7 @@ def _repair_disclosure(graph, config, state, router, errors):
         'audit': [{'node': 'report_repair', 'ts': now(), 'reason': reason}]}, as_node='investigate')
 
 
-def run(alert, incident_id, output=None, max_tools=12, model=None, run_id=None, external_schema=None, router=None, toolset=None, resolver=None):
+def run(alert, incident_id, output=None, max_tools=12, model=None, run_id=None, external_schema=None, router=None, toolset=None, resolver=None, graph_factory=None):
     if not re.fullmatch(r'[A-Za-z0-9_.-]{1,160}', incident_id) or incident_id in ('.','..'):
         raise ValueError('incident-id must be a safe metadata slug')
     run_dir = run_path(run_id, create=True)
@@ -81,7 +81,7 @@ def run(alert, incident_id, output=None, max_tools=12, model=None, run_id=None, 
     investigation = Investigation(run_dir, router, max_tools, toolset=toolset)
     output = Path(output) if output else ROOT / 'reports' / incident_id / 'report.json'
     with SqliteSaver.from_conn_string(str(ROOT/'runs'/'checkpoints.sqlite')) as saver:
-        graph = build_graph(investigation, saver)
+        graph = (graph_factory or build_graph)(investigation, saver)
         config = config_for(run_id)
         if graph.get_state(config).values:
             raise ValueError('Run id already exists; use a fresh run for a new investigation')

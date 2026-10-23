@@ -20,23 +20,21 @@ LIVE_FIXTURES = [path.parent for path in (ROOT / "tests" / "fixtures").rglob("fi
 
 
 @pytest.fixture
-def offline_graph(tmp_path, monkeypatch, offline_action_service):
+def offline_graph(tmp_path, monkeypatch):
     import agent.graph
     import agent.run
     import agent.reporting
-    from agent.respond import build_graph
     import requests
     import subprocess
     import socket
 
     for module in (agent.graph, agent.run, agent.reporting):
         monkeypatch.setattr(module, "ROOT", tmp_path)
-    # Keep the integrated graph and actual approval boundary. Its read-only
-    # preview receives explicit synthetic dependencies, never the live stack.
-    monkeypatch.setattr(agent.run, 'build_graph',
-                        lambda investigation, saver: build_graph(investigation, saver, service=offline_action_service))
     def forbidden(*args, **kwargs):
         raise AssertionError("Offline graph replay attempted network or a subprocess")
+    # Do not replace the production graph: replay itself must select its offline
+    # response boundary, even when its historical report contains a proposal.
+    monkeypatch.setattr('agent.respond.ActionService', forbidden)
     monkeypatch.setattr(requests.sessions.Session, "request", forbidden)
     monkeypatch.setattr(subprocess, "run", forbidden)
     monkeypatch.setattr(subprocess, "Popen", forbidden)
