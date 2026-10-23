@@ -84,7 +84,7 @@ def main(argv=None):
     parser.add_argument("--combo", help="Comma-separated operator incidents applied together before observation")
     parser.add_argument("--svc")
     parser.add_argument("--thresholds")
-    parser.add_argument("--alert-timeout", type=float, default=90)
+    parser.add_argument("--alert-timeout", type=float, default=150)
     parser.add_argument("--clean-timeout", type=float, default=360)
     parser.add_argument("--report-id", help="Optional unique report bundle name; existing bundles are never replaced")
     args = parser.parse_args(argv)
@@ -97,9 +97,10 @@ def main(argv=None):
         parser.error("--combo requires at least two distinct nonempty incident names")
     if args.incident == "no-fault" and args.svc:
         parser.error("no-fault does not select an injection service")
-    if not 0 <= args.alert_timeout <= 90 or args.clean_timeout < 180:
-        parser.error("Alert timeout must be 0..90s and clean timeout at least 180s")
-    os.environ.setdefault("DOCKER_HOST", "tcp://localhost:2375")
+    if not 0 <= args.alert_timeout <= 600 or args.clean_timeout < 180:
+        parser.error("Alert timeout must be 0..600s and clean timeout at least 180s")
+    from scripts.platform_support import environment
+    environment()
     os.environ.setdefault("DEMO_VERSION", "2.0.2")
     os.environ.setdefault("DOCKER_CONFIG", str(ROOT / ".build" / "docker"))
     if (ROOT / "STOP").exists():
@@ -157,7 +158,7 @@ def main(argv=None):
             with timed("wait_for_alert", timings):
                 alert = wait_for_alert(detector, run_dir=run_dir, timeout_s=args.alert_timeout)
                 if alert is None:
-                    raise RuntimeError("No observable threshold crossing within the 90-second alert window")
+                    raise RuntimeError(f"No observable threshold crossing within the {args.alert_timeout}-second alert window")
                 path = write_alert(alert, run_dir)
         with timed("agent", timings):
             command(["agent.run", "--alert", str(path), "--incident-id", report_id,

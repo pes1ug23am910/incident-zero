@@ -1,34 +1,10 @@
-param(
-    [ValidateSet('mock', 'real')][string]$Mode = 'mock',
-    [string]$ReportsDir = '',
-    [string]$RunsDir = '',
-    [int]$Port = 0,
-    [string]$Python = ''
-)
-$ErrorActionPreference = 'Stop'
-$repoRoot = Split-Path -Parent $PSScriptRoot
-if (-not $Python) {
-    $localPython = Join-Path $repoRoot '.venv/Scripts/python.exe'
-    if (Test-Path -LiteralPath $localPython) {
-        $Python = $localPython
-    } elseif (Get-Command python -ErrorAction SilentlyContinue) {
-        $Python = 'python'
-    } else {
-        throw 'Python is missing. Create .venv and install ui/requirements.txt (see README Control Room).'
-    }
-}
-Push-Location $repoRoot
-try {
-    & $Python -c 'import fastapi, uvicorn'
-    if ($LASTEXITCODE -ne 0) {
-        throw 'Missing UI dependencies. Run: .\.venv\Scripts\python.exe -m pip install -r ui/requirements.txt'
-    }
-    $uiArguments = @('-m', 'ui.serve', '--mode', $Mode)
-    if ($ReportsDir) { $uiArguments += @('--reports-dir', $ReportsDir) }
-    if ($RunsDir) { $uiArguments += @('--runs-dir', $RunsDir) }
-    if ($Port -gt 0) { $uiArguments += @('--port', $Port) }
-    & $Python @uiArguments
-    if ($LASTEXITCODE -ne 0) { throw "Control Room exited with code $LASTEXITCODE" }
-} finally {
-    Pop-Location
-}
+param([Alias('h','-help')][switch]$Help, [ValidateSet('mock','real')][string]$Mode='mock', [string]$ReportsDir, [string]$RunsDir, [int]$Port=0, [string]$Python='')
+if ($Help) { Write-Output 'Usage: ui.ps1 [-Mode mock|real] [-ReportsDir path] [-RunsDir path] [-Port number] [-Python executable]; -Help / --help / -h'; exit 0 }
+. "$PSScriptRoot/_shell.ps1"
+$a = @('-m', 'scripts.operator', 'ui')
+$a += @('--mode', $Mode)
+if ($ReportsDir) { $a += @('--reports-dir', $ReportsDir) }
+if ($RunsDir) { $a += @('--runs-dir', $RunsDir) }
+if ($Port) { $a += @('--port', $Port) }
+Invoke-IncidentPython -Arguments $a -Python $Python
+exit $script:IncidentExit
