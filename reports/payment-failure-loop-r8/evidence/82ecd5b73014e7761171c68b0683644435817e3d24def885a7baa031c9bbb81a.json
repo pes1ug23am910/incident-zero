@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": "action_log:90",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T17:03:19.808322+00:00",
+    "event": "rollback",
+    "report_id": "runs/20261023T165913.243864Z-df3099ba",
+    "action": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "result": {
+      "restored": true
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T17:03:19.926053+00:00",
+  "checksum": "b5ba1658eaacf8c4de8e1d8f1825cfb78b1dd63212b5bd555305c1244cb40c38"
+}
