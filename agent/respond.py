@@ -104,6 +104,8 @@ class Response:
         report['approval'] = {'required': True, 'requested_at': decision.get('requested_at', now()),
                               'approved': approved, 'approved_by': decision.get('approved_by'),
                               'approved_at': decision.get('approved_at') if approved else None,
+                              'surface': decision.get('surface', 'test'), 'mode': decision.get('mode', 'test'),
+                              'token_id': decision.get('token_id') if approved else None,
                               'token': 'sha256:' + digest(decision['token']) if approved else None}
         if executed:
             report['action'] = {k: chosen['execution'][k] for k in ('executed', 'started_at', 'finished_at', 'action_log_ref')}
@@ -328,7 +330,9 @@ def resume(report, decision=None, *, root=ROOT, service=None, operator='local op
             changed = lambda: _signature(graph.get_state(config)) != expected
             try:
                 if decision and decision.get('decision') == 'reject':
-                    answer = {'decision': 'reject', 'approved_by': operator, 'requested_at': now()}
+                    answer = {**decision, 'decision': 'reject', 'approved_by': decision.get('approved_by', operator), 'requested_at': now(),
+                              'surface': decision.get('surface', 'cli'), 'mode': decision.get('mode', 'live'),
+                              'token_id': None}
                 elif decision and decision.get('token'):
                     answer = decision
                 else:
@@ -340,7 +344,9 @@ def resume(report, decision=None, *, root=ROOT, service=None, operator='local op
                     if changed() or service.stop_path.exists():
                         raise _ResponseElsewhere()
                     if answer.get('decision') == 'reject' and decision:
-                        service.log('approval_rejected', report_id=report['run_id'], actor=operator)
+                        service.log('approval_rejected', report_id=report['run_id'], actor=operator,
+                                    surface=answer['surface'], mode=answer['mode'],
+                                    requested_at=answer['requested_at'], token_id=None, decision_source='explicit_reject_flag')
                     graph.invoke(Command(resume=answer), config)
                     current = graph.get_state(config)
                     if report_path and not current.next:

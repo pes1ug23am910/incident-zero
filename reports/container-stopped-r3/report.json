@@ -50,7 +50,7 @@
       "tool": "get_logs",
       "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
       "why": "Corroborate frontend caller errors to the stopped recommendation service with concrete log lines (EHOSTUNREACH/UNAVAILABLE) as a second, independent evidence source for container_down.",
-      "finding": "[{\"timestamp\": \"2026-10-23T12:04:39.369498800Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:8b873ddcc13d3052c248472cd230be33a3b83ad6a803667b4d9b7f8048c8acc0\"}, {\"timestamp\": \"2026-10-23T12:04:39.369436787Z\", \"severity\": \"ERROR\", \"body\": \" ⨯ Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:48e0d8f6d1bb75a6ba63c3c1e9b5c427f8eb67b0679d1c036a927e27616e46da\"}, {\"timestamp\": \"2026-10-23T12:04:39.369292116Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:61ff3fb5af13f32b2000e16991428fe925f97d7a406384705e929e9ebb06e184\"}, {\"timestamp\": \"2026-10-23T12:04:39.369217632Z\", \"severity\": \"ERROR\", \"body\": \"Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa\"}, {\"timestamp\": \"2026-10-23T12:04:33.431608155Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evide",
+      "finding": "[{\"timestamp\": \"2026-10-23T12:04:39.369498800Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:8b873ddcc13d3052c248472cd230be33a3b83ad6a803667b4d9b7f8048c8acc0\"}, {\"timestamp\": \"2026-10-23T12:04:39.369436787Z\", \"severity\": \"ERROR\", \"body\": \" \u2a2f Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:48e0d8f6d1bb75a6ba63c3c1e9b5c427f8eb67b0679d1c036a927e27616e46da\"}, {\"timestamp\": \"2026-10-23T12:04:39.369292116Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:61ff3fb5af13f32b2000e16991428fe925f97d7a406384705e929e9ebb06e184\"}, {\"timestamp\": \"2026-10-23T12:04:39.369217632Z\", \"severity\": \"ERROR\", \"body\": \"Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa\"}, {\"timestamp\": \"2026-10-23T12:04:33.431608155Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evide",
       "evidence_ids": [
         "dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa"
       ]
@@ -158,7 +158,10 @@
     "approved": null,
     "approved_by": null,
     "approved_at": null,
-    "token": null
+    "token": null,
+    "surface": null,
+    "mode": null,
+    "token_id": null
   },
   "action": {
     "executed": false,

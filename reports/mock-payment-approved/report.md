@@ -80,12 +80,18 @@ Dry run performed: yes. Restore normal application behavior in payment; confirm 
 
 ## Approval record
 
+Approved in TEST mode by the test harness (not a human)
+
 | Field | Value |
 | --- | --- |
 | Required | yes |
 | Approved | yes |
-| Approved by | Mock operator |
+| Recorded actor | test harness |
+| Surface | test |
+| Mode | test |
+| Requested at | 2026-10-23T11:13:45.506815+00:00 |
 | Approved at | 2026-10-23T11:13:45.506815+00:00 |
+| Token id | sha256:2bb39b4e04b0325a875c6260ae7da6f16709fc37b56dc798b64a2288e05c42e7 |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:5 |
@@ -118,6 +124,7 @@ Outcome: recovered; requests observed: 40.
 
 - SYNTHETIC MOCK ACCEPTANCE: no incident was injected; no model or live stack was used.
 - Recovery verifies observed signals and request counts; interrupted requests cannot be restored.
+- Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value.
 
 ## Investigation budget
 

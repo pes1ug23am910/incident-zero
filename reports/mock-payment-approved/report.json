@@ -84,9 +84,12 @@
     "required": true,
     "requested_at": "2026-10-23T11:13:45.506815+00:00",
     "approved": true,
-    "approved_by": "Mock operator",
+    "approved_by": "test harness",
     "approved_at": "2026-10-23T11:13:45.506815+00:00",
-    "token": "[redacted]"
+    "token": "sha256:2bb39b4e04b0325a875c6260ae7da6f16709fc37b56dc798b64a2288e05c42e7",
+    "mode": "test",
+    "surface": "test",
+    "token_id": "sha256:2bb39b4e04b0325a875c6260ae7da6f16709fc37b56dc798b64a2288e05c42e7"
   },
   "action": {
     "executed": true,
@@ -188,7 +191,8 @@
   "prevention": null,
   "limitations": [
     "SYNTHETIC MOCK ACCEPTANCE: no incident was injected; no model or live stack was used.",
-    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored."
+    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored.",
+    "Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value."
   ],
   "agent": {
     "model": "none (mock fixtures)",
@@ -257,11 +261,14 @@
       "index": 0,
       "decision": {
         "decision": "approve",
-        "token": "[redacted]",
-        "approved_by": "Mock operator",
+        "token": "sha256:2bb39b4e04b0325a875c6260ae7da6f16709fc37b56dc798b64a2288e05c42e7",
+        "approved_by": "test harness",
         "approved_at": "2026-10-23T11:13:45.506815+00:00",
         "requested_at": "2026-10-23T11:13:45.506815+00:00",
-        "expires_at": 1600.0
+        "expires_at": 1600.0,
+        "mode": "test",
+        "surface": "test",
+        "token_id": "sha256:2bb39b4e04b0325a875c6260ae7da6f16709fc37b56dc798b64a2288e05c42e7"
       },
       "execution": {
         "executed": true,

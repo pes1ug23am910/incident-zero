@@ -189,12 +189,20 @@ class ActionService:
 
     @audited
     def approve(self, value, report, preview, operator, *, input_fn=input, output=print,
-                auto_approve_for_tests=False, policy_approval=False):
+                auto_approve_for_tests=False, policy_approval=False, surface="cli", mode=None):
         if not isinstance(operator, str) or not operator.strip():
             raise Blocked("OPERATOR_REQUIRED")
+        from .executors import LocalExecutor
+        test_mode = auto_approve_for_tests or not isinstance(self.executor, LocalExecutor) or mode == "test"
+        mode = "test" if test_mode else "live"
+        surface = "test" if auto_approve_for_tests else surface
+        if surface not in {"cli", "browser", "test"} or (surface == "test" and mode != "test"):
+            raise Blocked("INVALID_APPROVAL_PROVENANCE")
+        approved_by = "test harness" if test_mode else operator.strip()
         current = self.dry_run(value, report)
         if any(current[k] != preview.get(k) for k in ("plan_digest", "world_state_hash", "report_digest")):
             raise Blocked("WORLD_OR_PLAN_CHANGED", 409)
+        requested_at = now()
         if policy_approval:
             if current["impact"]["tier"] not in self.policy["auto_approve_tiers"]:
                 raise Blocked("POLICY_APPROVAL_DISABLED")
@@ -204,8 +212,11 @@ class ActionService:
             approved = prompt(report, current, operator, auto_approve_for_tests=auto_approve_for_tests,
                               input_fn=input_fn, output=output)
         if not approved:
-            ref = self.log("approval_rejected", report_id=report["run_id"], actor=operator, **current["plan"])
-            return {"decision": "reject", "approved_by": operator, "requested_at": now(), "action_log_ref": ref}
+            ref = self.log("approval_rejected", report_id=report["run_id"], actor=operator,
+                           approved_by=approved_by, surface=surface, mode=mode,
+                           requested_at=requested_at, token_id=None, **current["plan"])
+            return {"decision": "reject", "approved_by": approved_by, "requested_at": requested_at,
+                    "surface": surface, "mode": mode, "token_id": None, "action_log_ref": ref}
         with exclusive(self.private / "mutation.lock"):
             self.constraints(current["plan"], report)
             world = self.world(current["plan"])
@@ -216,12 +227,17 @@ class ActionService:
                       "report_digest": digest(report), "report_id": report["run_id"], "world": world,
                       "world_state_hash": digest(world), "operator": operator, "approved_at": now(),
                       "expires": self.clock() + 600, "used": False,
-                      "mode": "policy" if policy_approval else "test" if auto_approve_for_tests else "human"}
+                      "approved_by": approved_by, "requested_at": requested_at,
+                      "surface": surface, "mode": mode, "token_id": "sha256:" + digest(token),
+                      "policy_approval": policy_approval}
             self.put("approvals", digest(token), record)
         self.log("approval_granted", report_id=report["run_id"], actor=operator,
-                 token_digest=digest(token), mode=record["mode"], **current["plan"])
-        return {"decision": "approve", "token": token, "approved_by": operator,
-                "approved_at": record["approved_at"], "requested_at": record["approved_at"], "expires_at": record["expires"]}
+                 token_digest=digest(token), approved_by=approved_by, surface=surface, mode=mode,
+                 requested_at=requested_at, approved_at=record["approved_at"], token_id=record["token_id"],
+                 policy_approval=policy_approval, **current["plan"])
+        return {"decision": "approve", "token": token, "approved_by": approved_by,
+                "surface": surface, "mode": mode, "token_id": record["token_id"],
+                "approved_at": record["approved_at"], "requested_at": requested_at, "expires_at": record["expires"]}
 
     @audited
     def execute(self, value, report, token, idempotency_key):

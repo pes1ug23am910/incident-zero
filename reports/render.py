@@ -20,6 +20,16 @@ def _table(headers, rows) -> list[str]:
     return ["| " + " | ".join(headers) + " |", "| " + " | ".join("---" for _ in headers) + " |"] + ["| " + " | ".join(_cell(value) for value in row) + " |" for row in rows]
 
 
+def approval_summary(approval: dict) -> str:
+    if approval.get('approved') is not True:
+        return 'Rejected' if approval.get('approved') is False else 'No approval recorded'
+    if approval.get('mode') == 'test':
+        return 'Approved in TEST mode by the test harness (not a human)'
+    if approval.get('mode') == 'live' and approval.get('surface') in {'cli', 'browser'}:
+        return f"Approved by {approval.get('approved_by') or 'unnamed operator'}"
+    return 'Approval provenance unavailable; no human approval can be verified'
+
+
 def render_report(report: dict) -> str:
     root = report["root_cause"]
     approval, action, verification = report["approval"], report["action"], report["verification"]
@@ -80,7 +90,13 @@ def render_report(report: dict) -> str:
         if not any(consulted.get(key) for key in ('runbook_refs', 'memory_refs', 'service_refs')):
             lines += ['No matching knowledge was retrieved.', '']
     lines += ["", "## Approval record", ""]
-    lines += _table(["Field", "Value"], [("Required", approval["required"]), ("Approved", approval["approved"]), ("Approved by", approval["approved_by"]), ("Approved at", approval["approved_at"]), ("Token", "present (redacted)" if approval["token"] else "absent"), ("Executed", action["executed"]), ("Action log", action["action_log_ref"])])
+    lines += [approval_summary(approval), '']
+    lines += _table(["Field", "Value"], [("Required", approval["required"]), ("Approved", approval["approved"]),
+              ("Recorded actor", approval["approved_by"]), ("Surface", approval.get('surface')),
+              ("Mode", approval.get('mode')), ("Requested at", approval["requested_at"]),
+              ("Approved at", approval["approved_at"]), ("Token id", approval.get('token_id') or 'absent'),
+              ("Token", "present (redacted)" if approval.get('token') else 'absent'),
+              ("Executed", action["executed"]), ("Action log", action["action_log_ref"])])
     lines += ["", "## Verification", ""]
     lines += _table(["Signal", "Before", "After", "Recovered", "Rolled back"], [(verification["signal"], verification["before"], verification["after"], verification["recovered"], verification["rolled_back"])])
     lines += ['', f"Outcome: {_cell(verification.get('outcome'))}; requests observed: {_cell(verification.get('requests_observed'))}."]

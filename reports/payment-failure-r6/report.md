@@ -74,6 +74,10 @@ Resolve an ID with `python -m tools.resolve '<evidence-id>' --run-dir 'runs/2026
 | Data risk | none |
 | Confidence | 90% |
 | Rationale | A critical service or process restart requires the full evidence table, a reviewer or the independent-source check, and explicit typed yes. |
+| Decision | — |
+| Reason codes |  |
+| Uncertainty | — |
+| Observability gap | — |
 
 ## Proposed action
 
@@ -90,12 +94,18 @@ Dry run performed: no. Restore normal application behavior in payment; confirm w
 
 ## Approval record
 
+No approval recorded
+
 | Field | Value |
 | --- | --- |
 | Required | yes |
 | Approved | — |
-| Approved by | — |
+| Recorded actor | — |
+| Surface | — |
+| Mode | — |
+| Requested at | — |
 | Approved at | — |
+| Token id | absent |
 | Token | absent |
 | Executed | no |
 | Action log | — |
@@ -105,6 +115,8 @@ Dry run performed: no. Restore normal application behavior in payment; confirm w
 | Signal | Before | After | Recovered | Rolled back |
 | --- | --- | --- | --- | --- |
 | error_rate | — | — | — | no |
+
+Outcome: —; requests observed: —.
 
 ## Alternatives and escalation
 

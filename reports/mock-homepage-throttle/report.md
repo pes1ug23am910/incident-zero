@@ -82,12 +82,18 @@ Quick approval: throttle_load on load-generator; predicted effect: Reduce the lo
 
 ## Approval record
 
+Approved in TEST mode by the test harness (not a human)
+
 | Field | Value |
 | --- | --- |
 | Required | yes |
 | Approved | yes |
-| Approved by | Mock operator |
+| Recorded actor | test harness |
+| Surface | test |
+| Mode | test |
+| Requested at | 2026-10-23T11:13:46.485395+00:00 |
 | Approved at | 2026-10-23T11:13:46.485395+00:00 |
+| Token id | sha256:6dda3168c992aeedd2c91de0d5191964fb326018dfbfbe5f46c876636d9c532f |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:5 |
@@ -120,6 +126,7 @@ Outcome: recovered; requests observed: 40.
 
 - SYNTHETIC MOCK ACCEPTANCE: no incident was injected; no model or live stack was used.
 - Recovery verifies observed signals and request counts; interrupted requests cannot be restored.
+- Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value.
 
 ## Investigation budget
 

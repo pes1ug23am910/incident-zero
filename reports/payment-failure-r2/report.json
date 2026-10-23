@@ -76,7 +76,7 @@
       "step": 3,
       "tool": "get_logs",
       "query": "{\"service\": \"payment\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
-      "why": "Confirm the failing operation and error text seen in traces by checking payment’s own logs for matching application errors in the last 2 minutes.",
+      "why": "Confirm the failing operation and error text seen in traces by checking payment\u2019s own logs for matching application errors in the last 2 minutes.",
       "finding": "[{\"timestamp\": \"2026-10-23T11:07:03.952807665Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"9cf6e0fb4db97001768f5ca813d23ef4\", \"evidence_id\": \"dlog:payment:a74965b97df52679d4b6a7d81a5e877f741a1dd75c5693ffdbf96337687f2a37\"}, {\"timestamp\": \"2026-10-23T11:06:44.113468454Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"a21dddcd62982ecf01f4ae700ce6bccc\", \"evidence_id\": \"dlog:payment:38780d1c2d8d7760a79a0eb7aafc7792772ee154ccc01fbdc5bb2294318909ce\"}, {\"timestamp\": \"2026-10-23T11:06:38.704858195Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"674c20222325f3dc92e49ffc245711f1\", \"evidence_id\": \"dlog:payment:c508175c66368eca06d3b4ae434ac1d67b23f4bd8052e8dea15c8635af3d0ed0\"}, {\"timestamp\": \"2026-10-23T11:06:34.731051777Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"cbeecd51c5a88283b3e3eb9579329348\", \"evidence_id\": \"dlog:payment:d22ca96658f7fc7f3c5e28f51bed66659f4c7b6cf86f5dc9d2768500aacdef3a\"}, {\"timestamp\": \"2026-10-23T11:06:24.142588599Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"d82b386d50e4794ede4397ca30028e3f\", \"evidence_id\": \"dlog:payment:139e31d3aa7131ad372100a0d25f32e9f876889364c6d1b7066d304f7ff8f51b\"}, {\"timestamp\": \"2026-10-23T11:06:10.932212257Z\", \"severity\": \"WARN\", \"",
       "evidence_ids": [
         "dlog:payment:139e31d3aa7131ad372100a0d25f32e9f876889364c6d1b7066d304f7ff8f51b",
@@ -210,7 +210,10 @@
     "approved": null,
     "approved_by": null,
     "approved_at": null,
-    "token": null
+    "token": null,
+    "surface": null,
+    "mode": null,
+    "token_id": null
   },
   "action": {
     "executed": false,

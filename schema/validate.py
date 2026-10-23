@@ -240,9 +240,13 @@ def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir
         if report["resolved_at"] is not None:
             fail("resolved_at", "no_incident has no incident resolution timestamp")
     if approval["approved"] is True:
-        for key in ("requested_at", "approved_at", "approved_by", "token"):
-            if not approval[key]:
+        for key in ("requested_at", "approved_at", "approved_by", "token", "surface", "mode", "token_id"):
+            if not approval.get(key):
                 fail(f"approval.{key}", "explicit approval requires this value")
+        if approval.get('surface') == 'test' and approval.get('mode') != 'test':
+            fail('approval.mode', 'test-surface approval cannot claim live human provenance')
+        if str(approval.get('token', '')).startswith('sha256:') and approval.get('token_id') != approval['token']:
+            fail('approval.token_id', 'token id must match the published token fingerprint')
     elif any(approval[key] is not None for key in ("approved_at", "token")):
         fail("approval", "an unapproved request cannot carry an approval time or token")
     if action["executed"]:
