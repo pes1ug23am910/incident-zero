@@ -3,6 +3,7 @@ param(
     [Alias('svc')][string]$Service,
     [string]$ReportId,
     [string]$Operator = 'Yash Verma',
+    [ValidateRange(1, 100)][int]$LoadUsers = 20,
     [switch]$BrowserApproval
 )
 $ErrorActionPreference = 'Stop'
@@ -14,7 +15,7 @@ if (-not (Test-Path -LiteralPath $python)) {
 if ($env:INCIDENT_ZERO_TEST -eq '1') {
     throw 'Unset INCIDENT_ZERO_TEST for the mentor run. Checkpoint 3 always collects a real human decision.'
 }
-$arguments = @('-m', 'scripts.hands_rehearsal', $Incident, '--live', '--operator', $Operator, '--ensure-control-room')
+$arguments = @('-m', 'scripts.hands_rehearsal', $Incident, '--live', '--operator', $Operator, '--ensure-control-room', '--load-users', $LoadUsers)
 if ($Service) { $arguments += @('--svc', $Service) }
 if ($ReportId) { $arguments += @('--report-id', $ReportId) }
 if ($BrowserApproval) { $arguments += @('--approval-mode', 'browser') }
