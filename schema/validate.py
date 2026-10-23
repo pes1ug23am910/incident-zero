@@ -244,6 +244,10 @@ def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir
     elif any(action[key] is not None for key in ("started_at", "finished_at", "action_log_ref")):
         fail("action", "unexecuted actions must not claim execution metadata")
     if status == "fixed":
+        if verification.get('outcome') != 'recovered':
+            fail('verification.outcome', 'fixed requires outcome=recovered')
+        if verification.get('requests_observed', 0) < 20:
+            fail('verification.requests_observed', 'fixed requires at least 20 observed requests')
         if approval["approved"] is not True:
             fail("approval.approved", "fixed requires explicit approval")
         if not action["executed"]:
@@ -287,6 +291,28 @@ def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir
             if not _resolved(resolved):
                 raise LookupError("resolver did not return existing evidence")
             resolved_evidence[item["id"]] = resolved
+            if isinstance(resolved, dict):
+                # A later action journal entry belongs in action/history, never
+                # as evidence supporting an earlier diagnosis.
+                timestamp = resolved.get('captured_at')
+                data = resolved.get('data', {})
+                if isinstance(data, dict):
+                    timestamp = data.get('timestamp', data.get('startTime', data.get('ts', timestamp)))
+                if item['id'].startswith('metric:'):
+                    match = re.search(r'@([-+\d.eE]+)=', item['id'])
+                    if match:
+                        timestamp = float(match[1])
+                if timestamp is not None:
+                    from datetime import timezone
+                    if isinstance(timestamp, (int, float)):
+                        # Jaeger uses microseconds since epoch.
+                        seconds = timestamp / 1e6 if timestamp > 1e14 else timestamp / 1e3 if timestamp > 1e11 else timestamp
+                        observed = datetime.fromtimestamp(seconds, timezone.utc)
+                    else:
+                        observed = datetime.fromisoformat(str(timestamp).replace('Z', '+00:00'))
+                    diagnosed = datetime.fromisoformat(report['diagnosed_at'].replace('Z', '+00:00'))
+                    if observed > diagnosed:
+                        fail(f'evidence[{index}].id', 'evidence timestamp follows diagnosed_at')
             if isinstance(resolved, dict) and resolved.get("source") not in (None, item["source"]):
                 fail(f"evidence[{index}].source", "source does not match the resolved evidence")
         except Exception as exc:

@@ -54,6 +54,8 @@ def render_report(report: dict) -> str:
             ("Estimated users affected", impact["users_affected_estimate"]), ("Blast radius", impact["blast_radius"]),
             ("Reversibility", impact["reversibility"]), ("Data risk", impact["data_risk"]),
             ("Confidence", f"{impact['confidence']:.0%}"), ("Rationale", impact["rationale"]),
+            ("Decision", impact.get('decision')), ("Reason codes", ', '.join(impact.get('reason_codes', []))),
+            ("Uncertainty", impact.get('uncertainty')), ("Observability gap", impact.get('observability_gap')),
         ])
     lines += ["", "## Proposed action", ""]
     proposals = report.get("proposed_actions", [report["proposed_action"]] if report["proposed_action"] else [])
@@ -70,6 +72,12 @@ def render_report(report: dict) -> str:
     lines += _table(["Field", "Value"], [("Required", approval["required"]), ("Approved", approval["approved"]), ("Approved by", approval["approved_by"]), ("Approved at", approval["approved_at"]), ("Token", "present (redacted)" if approval["token"] else "absent"), ("Executed", action["executed"]), ("Action log", action["action_log_ref"])])
     lines += ["", "## Verification", ""]
     lines += _table(["Signal", "Before", "After", "Recovered", "Rolled back"], [(verification["signal"], verification["before"], verification["after"], verification["recovered"], verification["rolled_back"])])
+    lines += ['', f"Outcome: {_cell(verification.get('outcome'))}; requests observed: {_cell(verification.get('requests_observed'))}."]
+    if report.get('action_history'):
+        lines += ['', '## Action history', '']
+        lines += _table(['Index', 'Decision', 'Executed', 'Outcome', 'Blocked'], [
+            (r['index'], r['decision'].get('decision'), r['execution'].get('executed', False),
+             r['verification'].get('outcome'), ', '.join(r['error'].get('reason_codes', []))) for r in report['action_history']])
     lines += ["", "## Alternatives and escalation", ""]
     lines += [f"- {_cell(item)}" for item in root.get("alternatives_considered", [])] or ["No alternatives recorded."]
     lines += ["", _cell(report["escalation_note"]), "", "## Prevention", "", _cell(report["prevention"]), "", "## Limitations", ""]
