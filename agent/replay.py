@@ -143,8 +143,9 @@ class ReplayTools:
 
 
 def replay(fixture_dir: str | Path, *, run_id: str | None = None, output: str | Path | None = None) -> dict:
-    """Run the complete production graph with recorded I/O and offline validation."""
+    """Replay diagnosis with recorded I/O; never inspect or prepare a live action."""
     from .run import run
+    from .graph import build_graph as diagnosis_graph
 
     fixture_dir = Path(fixture_dir)
     run_dir = snapshots.run_path(run_id, create=True)
@@ -154,7 +155,8 @@ def replay(fixture_dir: str | Path, *, run_id: str | None = None, output: str | 
     # A fresh metadata slug keeps fixture names out of the model context.
     incident = "replay-" + hashlib.sha256(run_dir.name.encode()).hexdigest()[:16]
     result = run(alert, incident, output=output, run_id=run_dir,
-                 router=router, toolset=reads.toolset(), resolver=reads.resolve)
+                 router=router, toolset=reads.toolset(), resolver=reads.resolve,
+                 graph_factory=diagnosis_graph)
     router.assert_complete()
     reads.assert_complete()
     return result
