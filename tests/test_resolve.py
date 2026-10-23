@@ -7,7 +7,7 @@ resolver = importlib.import_module("tools.resolve")
 from tools.metrics import metric_id
 
 
-def test_trace_and_span_requery_backend(monkeypatch):
+def test_trace_and_span_requery_backend(monkeypatch, local_jaeger_endpoint):
     trace_id, span_id = "a" * 32, "b" * 16
     monkeypatch.setattr(resolver, "get_json", lambda url: {"data": [{"traceID": trace_id, "spans": [{"spanID": span_id}]}]})
     assert resolver.resolve(f"trace:{trace_id}")["data"]["traceID"] == trace_id

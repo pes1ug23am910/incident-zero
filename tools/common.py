@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import contextvars
 import functools
 import json
 import os
@@ -14,7 +13,7 @@ from datetime import datetime, timezone
 import requests
 
 ROOT = Path(__file__).resolve().parents[1]
-DEADLINE = contextvars.ContextVar("telemetry_deadline", default=None)
+READ_TIMEOUT_S = 8.0
 
 
 class BackendError(ValueError):
@@ -38,11 +37,19 @@ def envelope(tool, source, query, span, data, ids=(), truncated=False, **extra):
 
 
 def remaining():
-    deadline = DEADLINE.get()
-    seconds = 2.6 if deadline is None else deadline - time.monotonic()
-    if seconds <= 0:
-        raise BackendError("Read deadline exceeded")
-    return max(0.01, min(2.6, seconds))
+    """Compatibility helper: each backend read receives its own timeout."""
+    return READ_TIMEOUT_S
+
+
+def read_with_retry(operation):
+    """Retry a failed read once; never retry a whole diagnostic invocation."""
+    for attempt in range(2):
+        try:
+            return operation()
+        except (ValueError, OSError, subprocess.SubprocessError, requests.RequestException):
+            if attempt:
+                raise
+            time.sleep(0.1)
 
 
 def bounded(source):
@@ -52,9 +59,6 @@ def bounded(source):
             from .evidence import begin_run, end_run, persist_envelope
             from .redact import sanitize
 
-            # Reserve time for filtering and durable evidence writes within the
-            # three-second tool budget, including a slow Docker stats sample.
-            token = DEADLINE.set(time.monotonic() + 2.5)
             started = time.monotonic()
             run_token = None
             current = None
@@ -69,35 +73,67 @@ def bounded(source):
                     result = persist_envelope(result, current)
             finally:
                 end_run(run_token)
-                DEADLINE.reset(token)
             result["elapsed_s"] = round(time.monotonic() - started, 4)
             return sanitize(result)
         return wrapped
     return decorate
 
 
-def docker(*args):
-    result = subprocess.run(["docker", *args], capture_output=True, text=True,
-                            encoding="utf-8", errors="replace", timeout=remaining(), check=False)
-    if result.returncode:
-        raise BackendError(result.stderr.strip()[-500:] or "Docker read failed")
-    return result.stdout
+def docker(*args, include_stderr=False):
+    def read():
+        result = subprocess.run(["docker", *args], capture_output=True, text=True,
+                                encoding="utf-8", errors="replace", timeout=remaining(), check=False)
+        if result.returncode:
+            raise BackendError(result.stderr.strip()[-500:] or "Docker read failed")
+        return result.stdout + "\n" + result.stderr if include_stderr else result.stdout
+    return read_with_retry(read)
 
 
 def get_json(url, params=None, body=None):
     # OpenSearch search supports a GET body, so even searches use GET.
-    response = requests.get(url, params=params, json=body, timeout=remaining())
-    if not response.ok:
-        raise BackendError(f"HTTP {response.status_code} reading {url}: {response.text[:250]}")
-    return response.json()
+    def read():
+        response = requests.get(url, params=params, json=body, timeout=remaining())
+        if not response.ok:
+            raise BackendError(f"HTTP {response.status_code} reading {url}: {response.text[:250]}")
+        return response.json()
+    return read_with_retry(read)
 
 
 def prometheus():
     return os.environ.get("PROMETHEUS_URL", "http://localhost:9090").rstrip("/")
 
 
+def jaeger_endpoints():
+    """Prefer Jaeger's published port so frontend outages cannot blind reads."""
+    endpoints = []
+    try:
+        mappings = docker("port", "jaeger", "16686").splitlines()
+        port = int(mappings[0].rsplit(":", 1)[1])
+        endpoints.append(f"http://localhost:{port}/jaeger/ui/api")
+    except (ValueError, IndexError, OSError, subprocess.SubprocessError):
+        pass
+    endpoints.append(os.environ.get("JAEGER_URL", "http://localhost:8080/jaeger/ui/api").rstrip("/"))
+    return list(dict.fromkeys(endpoints))
+
+
 def jaeger():
-    return os.environ.get("JAEGER_URL", "http://localhost:8080/jaeger/ui/api").rstrip("/")
+    """Return the preferred endpoint; callers needing failover use jaeger_json."""
+    return jaeger_endpoints()[0]
+
+
+def jaeger_json(path, params=None, *, fetch=None):
+    read = fetch or get_json
+    errors = []
+    for base in jaeger_endpoints():
+        try:
+            url = base + "/" + path.lstrip("/")
+            result = read(url) if params is None else read(url, params=params)
+            if result.get("errors"):
+                raise BackendError(str(result["errors"]))
+            return result
+        except (ValueError, OSError, subprocess.SubprocessError, requests.RequestException) as exc:
+            errors.append(f"{base}: {exc}")
+    raise BackendError("Jaeger endpoints failed: " + "; ".join(errors))
 
 
 def search_json(path, body=None):
@@ -107,11 +143,11 @@ def search_json(path, body=None):
             mappings = docker("port", "opensearch", "9200").splitlines()
             port = mappings[0].rsplit(":", 1)[1]
             base = f"http://localhost:{int(port)}"
-        except (ValueError, IndexError, BackendError):
+        except (ValueError, IndexError, OSError, subprocess.SubprocessError):
             base = None
     if base:
         return get_json(base.rstrip("/") + path, body=body)
-    args = ["exec", "opensearch", "curl", "-fsS", "--max-time", "2", "-X", "GET"]
+    args = ["exec", "opensearch", "curl", "-fsS", "--max-time", "8", "-X", "GET"]
     if body is not None:
         args += ["-H", "Content-Type: application/json", "--data-binary", json.dumps(body)]
     args += ["http://localhost:9200" + path]

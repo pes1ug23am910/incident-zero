@@ -5,30 +5,26 @@ import hashlib
 import re
 import subprocess
 from urllib.parse import quote
-from .common import bounded, envelope, search_json, log_index, window, BackendError, remaining
+from requests import RequestException
+from .common import bounded, docker, envelope, search_json, log_index, window, BackendError
 from .containers import container_names
 from .redact import sanitize, is_sensitive
 from .evidence import capture_evidence
 
 SEVERITIES = {"TRACE": 1, "DEBUG": 5, "INFO": 9, "WARN": 13, "ERROR": 17, "FATAL": 21}
-STDOUT_SERVICES = {"checkout", "product-catalog", "shipping", "email", "frontend"}
 
 
 def docker_log_lines(container, since=None, until=None, tail=1000):
     """Read both Docker output streams; diagnostic reads stay in the demo project."""
     if container not in container_names() or is_sensitive(container):
         raise ValueError("Container names must belong to the demo Compose project")
-    args = ["docker", "logs", "--timestamps", "--tail", str(tail)]
+    args = ["logs", "--timestamps", "--tail", str(tail)]
     if since:
         args += ["--since", since]
     if until:
         args += ["--until", until]
     args.append(container)
-    result = subprocess.run(args, capture_output=True, text=True, encoding="utf-8",
-                            errors="replace", timeout=remaining(), check=False)
-    if result.returncode:
-        raise BackendError(result.stderr.strip()[-500:] or "Docker log read failed")
-    return (result.stdout + "\n" + result.stderr).splitlines()
+    return docker(*args, include_stderr=True).splitlines()
 
 
 def parse_docker_line(container, line):
@@ -152,9 +148,24 @@ def get_logs(service, pattern=None, lookback_s=300, severity_min="WARN", limit=5
         raise ValueError("This diagnostic source or pattern is excluded")
     if severity_min.upper() not in SEVERITIES:
         raise ValueError("severity_min must be TRACE, DEBUG, INFO, WARN, ERROR or FATAL")
+    severity_min = severity_min.upper()
     cap = max(1, min(int(limit), 100))
-    if service in STDOUT_SERVICES:
-        return _docker_logs(service, pattern, span, severity_min.upper(), cap, limit)
+    try:
+        result = _opensearch_logs(service, pattern, span, severity_min, cap, limit)
+        if result['data']:
+            return result
+        fallback_reason = 'OpenSearch returned no usable matching log records.'
+    except (ValueError, OSError, subprocess.SubprocessError, RequestException) as exc:
+        fallback_reason = f'OpenSearch read failed ({type(exc).__name__}): {str(exc)[:200]}'
+    try:
+        result = _docker_logs(service, pattern, span, severity_min, cap, limit)
+    except (ValueError, OSError, subprocess.SubprocessError, RequestException) as exc:
+        raise BackendError(f'{fallback_reason} Docker stdout/stderr fallback failed ({type(exc).__name__}): {str(exc)[:200]}') from exc
+    result['warnings'] = [fallback_reason]
+    return result
+
+
+def _opensearch_logs(service, pattern, span, severity_min, cap, limit):
     index = log_index()
     fields = discover_fields(index)
     filters = [{"term": {fields["service_filter"]: service}},
@@ -172,8 +183,6 @@ def get_logs(service, pattern=None, lookback_s=300, severity_min="WARN", limit=5
              "sort": [{fields["time"]: {"order": "desc"}}], "track_total_hits": True}
     raw = search_json(f"/{quote(index, safe='')}/_search", query)
     hits = raw.get("hits", {}).get("hits", [])
-    if not hits and service == "payment":
-        return _docker_logs(service, pattern, span, severity_min.upper(), cap, limit)
     total = raw.get("hits", {}).get("total", {})
     count = total.get("value", 0) if isinstance(total, dict) else total
     data, ids = [], []
