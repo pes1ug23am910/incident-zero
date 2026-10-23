@@ -136,4 +136,35 @@ def test_finish_does_not_hide_unexplained_independent_service(tmp_path, monkeypa
     monkeypatch.setattr(graph, "ROOT", tmp_path)
     value = state()
     value["health"]["data"].append({"service": "recommendation", "status": "exited"})
-   
+    value["unexplained"] = ["payment", "recommendation"]
+    value["evidence"] = {
+        "trace:payment": {"source": "jaeger", "services": ["payment"], "strength": .95},
+        "log:otel/payment": {"source": "opensearch", "services": ["payment"], "strength": .9},
+    }
+    router = Router({"name": "finish", "arguments": {"reason": "Payment failure explained",
+        "hypotheses": [{"component": "payment", "cause": "Payment application error",
+            "category": "application_flag", "confidence_model": .95,
+            "evidence_ids": list(value["evidence"]), "explains_symptoms": ["payment"]}],
+        "no_incident": False, "limitations": []}})
+    update = Investigation(tmp_path, router).investigate(value)
+    assert update["unexplained"] == ["recommendation"]
+    assert not update.get("done", False)
+    assert route_investigate({**value, **update}) == "investigate"
+
+
+def test_finish_cannot_claim_clean_without_successful_trace(tmp_path, monkeypatch):
+    import agent.graph as graph
+    monkeypatch.setattr(graph, "ROOT", tmp_path)
+    value = state()
+    value.update(clean=True, health={"data": [{"service": "frontend", "error_rate": 0, "rps": 4}]},
+                 alert={"signal": "no_alert", "service": "frontend"}, unexplained=[])
+    router = Router({"name": "finish", "arguments": {"reason": "Overview appears clean",
+                    "hypotheses": [], "no_incident": True, "limitations": []}})
+    update = Investigation(tmp_path, router).investigate(value)
+    assert not update.get("clean", False)
+    assert not update.get("done", False)
+
+
+@pytest.mark.parametrize("proposals,expected", [([], "report"), ([{"type": "restart_service"}], "dry_run")])
+def test_only_actionable_reports_enter_preview_and_approval(proposals, expected):
+    assert route_proposal({"report": {"proposed_actions": proposals}}) == expected
