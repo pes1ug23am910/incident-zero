@@ -66,6 +66,15 @@ def next_report_id(incident, root=ROOT):
     raise ValueError("No unused rehearsal report ID")
 
 
+def set_operator_load(executor, values):
+    """Apply explicit rehearsal setup/cleanup, outside agent authorization."""
+    response = requests.post(executor.load_url + "/swarm", data={
+        "user_count": values["users"], "spawn_rate": values["spawn_rate"]}, timeout=10)
+    response.raise_for_status()
+    if response.json().get("success") is not True:
+        raise RuntimeError("Locust did not confirm the operator load setting")
+
+
 def ensure_control_room(root=ROOT):
     """Reuse a real local API, or start one hidden and leave it available."""
     def probe():
@@ -187,6 +196,7 @@ def main(argv=None):
     parser.add_argument("--stop-after-seconds", type=float)
     parser.add_argument("--approval-mode", choices=("terminal", "browser"), default="terminal")
     parser.add_argument("--ensure-control-room", action="store_true")
+    parser.add_argument("--load-users", type=int, help="Operator setup: capture the swarm, use this many users/spawn 5, restore it during cleanup")
     parser.add_argument("--prepared-stack", action="store_true", help="Outer demo driver already verified a complete clean window")
     parser.add_argument("--defer-cleanup", action="store_true", help="Outer demo driver owns reset and clean verification in finally")
     args = parser.parse_args(argv)
@@ -202,6 +212,8 @@ def main(argv=None):
         parser.error("STOP is latched; only an operator may clear it")
     if args.stop_after_seconds is not None and not 0 < args.stop_after_seconds <= 180:
         parser.error("STOP delay must be >0 and <=180 seconds")
+    if args.load_users is not None and not 1 <= args.load_users <= 100:
+        parser.error("Operator load must be 1..100 users")
     if args.auto_approve_for_tests != (os.environ.get("INCIDENT_ZERO_TEST") == "1"):
         parser.error("Test approval requires BOTH INCIDENT_ZERO_TEST=1 and --auto-approve-for-tests; unset both for the demo")
     if args.force_nonrecovery and (not args.auto_approve_for_tests or args.stop_after_seconds is not None):
@@ -219,10 +231,19 @@ def main(argv=None):
                "operator_run_id": directory.name}
     failed, interrupted = False, False
     control = None
+    load_executor = None
+    previous_load = None
     try:
         if args.ensure_control_room or args.approval_mode == "browser":
             ensure_control_room(ROOT)
         print(f"Control Room: {CONTROL_ROOM}\nBundle: {bundle}", flush=True)
+        if args.load_users is not None:
+            load_executor = ActionService(ROOT).executor
+            previous_load = load_executor.load_state()
+            requested_load = {"users": args.load_users, "spawn_rate": 5}
+            outcome["operator_load"] = {"before": previous_load, "requested": requested_load,
+                "restored": False, "purpose": "Ensure the rehearsal has active charge traffic before its measured baseline"}
+            set_operator_load(load_executor, requested_load)
         if args.prepared_stack:
             clean, reason = clean_sample(health_table(lookback_s=120, run_dir=directory))
             if not clean:
@@ -300,6 +321,13 @@ def main(argv=None):
                 failed = True
                 outcome["control_cleanup_error"] = str(exc)
             outcome["operator_interventions"] = control.interventions
+        if previous_load is not None:
+            try:
+                set_operator_load(load_executor, previous_load)
+                outcome["operator_load"]["restored"] = True
+            except Exception as exc:
+                failed = True
+                outcome["load_cleanup_error"] = str(exc)
         if not args.defer_cleanup:
             try:
                 with timed("reset_after", timings):
