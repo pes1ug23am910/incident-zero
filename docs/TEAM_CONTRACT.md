@@ -10,13 +10,13 @@ tools/         read-only eyes: metrics, traces, logs, container health, deploy h
 agent/         brain: tool-calling loop, evidence, confidence, abstain, schema output
 action_api/    hands: allowlist, dry-run, approval token, kill switch, append-only log
 detect/        alert watcher on Prometheus thresholds -> alert.json
-schema/        the provided JSON schema + validator (placeholder until the schema is shared)
+schema/        our JSON schema + validator (the team defines the format)
 reports/       one JSON + one Markdown per incident run
 docs/          ARCHITECTURE.md (one page), EVALUATION_NOTE.md, TEAM_FORM.md, README.md
 runs/          timestamped run folders (ground truth lives OUTSIDE the agent's import path)
 ```
 
-Hygiene before the first push: no `CLAUDE.md`, `AGENTS.md`, `.claude/`, `.codex/`, `.build/`, prompt files, jury reports, session logs or pack bundles. Declare the AI assistants in `docs/TEAM_FORM.md`, not in the repo tree. Commits today only, each member under their own name.
+Hygiene before the first push: no build scratch, prompt files, session logs or pack bundles in the tree; the AI assistants used are declared in `docs/TEAM_FORM.md` as the event rules require. Commits today only, each member under their own name.
 
 ## 2. Interfaces (freeze these now; implementations may differ)
 
