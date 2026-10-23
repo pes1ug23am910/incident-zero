@@ -417,3 +417,63 @@ def test_tier_two_rejects_a_single_key_and_prompt_order(env):
                'Expected effect:', 'Rollback limits:', 'Verification:']
     indices = [next(i for i,l in enumerate(lines) if l.startswith(h)) for h in headers]
     assert indices == sorted(indices)
+
+
+@pytest.mark.parametrize('plan,code', [
+    ({'action':'restart_service','target':'payment; shutdown','parameters':{}}, 'INVALID_TARGET'),
+    ({'action':'restart_service','target':'payment','parameters':{'service':'ad'}}, 'INVALID_PARAMETERS'),
+    ({'action':'throttle_load','target':'load-generator','parameters':{'users':0,'spawn_rate':1}}, 'INVALID_PARAMETERS'),
+    ({'action':'throttle_load','target':'load-generator','parameters':{'users':True,'spawn_rate':1}}, 'INVALID_PARAMETERS'),
+    ({'action':'scale_service','target':'payment','parameters':{}}, 'NOT_AVAILABLE_ON_COMPOSE')])
+def test_closed_operations_targets_and_parameters(env, plan, code):
+    api, executor, _, _ = env
+    with TestClient(create_app(api)) as client:
+        response = client.post('/actions/execute', json={**plan,'report':synthetic_report(),'idempotency_key':'x'})
+        assert response.status_code == 403 and response.json()['reason_codes'] == [code]
+    assert executor.mutations == []
+
+
+def test_failed_attempt_cannot_be_reapproved_from_the_same_report(env):
+    api, _, clock, sample = env
+    sample['values'] = [.9]
+    report = synthetic_report()
+    execute(api,report)
+    api.verify('attempt-1')
+    clock.value += 301
+    with pytest.raises(Blocked, match='PREVIOUS_ATTEMPT_FAILED'):
+        approval(api, report)
+
+
+def test_world_changes_during_human_prompt_invalidates_approval(env):
+    api, executor, _, _ = env
+    report = synthetic_report()
+    plan = report['proposed_actions'][0]
+    preview = api.dry_run(plan,report)
+    def human(_):
+        executor.world['switch'] = 'changed while waiting'
+        return 'yes'
+    with pytest.raises(Blocked, match='WORLD_STATE_CHANGED'):
+        api.approve(plan,report,preview,'Tester',input_fn=human,output=lambda _:None)
+    assert executor.mutations == []
+
+
+def test_future_diagnostic_evidence_and_false_fixed_outcome_rejected():
+    from schema.validate import validate_report
+    report = synthetic_report()
+    errors = validate_report(report, resolver=lambda i:{'source':'docker' if i.startswith('container:') else 'jaeger',
+                'captured_at':'2099-01-01T00:00:00+00:00','data':{'service':'payment'}})
+    assert any('timestamp follows diagnosed_at' in e for e in errors)
+
+
+def test_policy_approval_banner_when_explicitly_configured(env):
+    api, _, clock, _ = env
+    policy = deepcopy(api.policy)
+    policy['auto_approve_tiers'] = [1]
+    other = ActionService(api.root, api.executor, api.verifier, clock=clock, policy=policy)
+    report = synthetic_report('ad')
+    plan = report['proposed_actions'][0]
+    messages=[]
+    decision=other.approve(plan,report,other.dry_run(plan,report),'Policy owner',policy_approval=True,output=messages.append)
+    assert decision['token']
+    assert 'policy approval, outside the event rules' in messages
+    assert api.policy['auto_approve_tiers'] == []
