@@ -10,13 +10,13 @@ Run: `runs/mock-non-recovery` · schema 1.0
 
 | Event | Timestamp |
 | --- | --- |
-| Detected | 2026-10-23T11:05:08.046293+00:00 |
-| Diagnosed | 2026-10-23T11:05:08.052134+00:00 |
-| Approval requested | 2026-10-23T11:05:08.174366+00:00 |
-| Approved | 2026-10-23T11:05:08.174366+00:00 |
-| Action started | 2026-10-23T11:05:08.201851+00:00 |
-| Action finished | 2026-10-23T11:05:08.212986+00:00 |
-| Verified | 2026-10-23T11:05:08.232663+00:00 |
+| Detected | 2026-10-23T11:13:47.025835+00:00 |
+| Diagnosed | 2026-10-23T11:13:47.032842+00:00 |
+| Approval requested | 2026-10-23T11:13:47.166603+00:00 |
+| Approved | 2026-10-23T11:13:47.166603+00:00 |
+| Action started | 2026-10-23T11:13:47.195864+00:00 |
+| Action finished | 2026-10-23T11:13:47.206004+00:00 |
+| Verified | 2026-10-23T11:13:47.236840+00:00 |
 | Resolved | — |
 
 ## Symptoms
@@ -85,7 +85,7 @@ Dry run performed: yes. Restore normal application behavior in payment; confirm 
 | Required | yes |
 | Approved | yes |
 | Approved by | Mock operator |
-| Approved at | 2026-10-23T11:05:08.174366+00:00 |
+| Approved at | 2026-10-23T11:13:47.166603+00:00 |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:5 |

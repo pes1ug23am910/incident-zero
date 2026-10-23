@@ -148,3 +148,28 @@ No live timings or accuracy scores are reported.
 - Aggregate multi-service tier 3 takes precedence over the sequential action
   queue. Eligible multiple proposals are reviewed individually; rejection does
   not approve or cancel later proposals.
+
+## Demo and final validation
+
+`scripts/demo.ps1` provides a safe preview by default and an explicit `-Live`
+path. It uses a prepared real tier-2 checkpoint for rejection, a live tier-1
+candidate, a forbidden-operation HTTP 403 demonstration, STOP and operator
+cleanup. It never auto-clears STOP: the operator supplies the exact phrase.
+Preflight/cleanup are outside the five-minute presentation target, and measured
+alert/model delays may exceed the target. Verification is never shortened.
+
+Executed here: PowerShell AST parse, default preview only, Python driver/response
+`--help`, and all unit tests. Neither the `-Live` path nor `show_block` was run.
+The stack was left under the other session's ownership, without a reset.
+
+Final full suite: `.\.venv\Scripts\python.exe -m pytest -q` → **331 passed,
+1 skipped in 9.15 seconds**. The Action API suite includes 44 cases. Export of
+the six mock bundles was repeated after validating the saved JSON itself, not
+only the in-memory report; all six passed. A regression covers exact sanitized
+brain-checkpoint equality, preserving null approval tokens after rejection,
+and explicit rejection when live preconditions are unavailable.
+
+Read-only image inventory, approval/STOP instructions, injection mechanism,
+five-minute timing limits and remaining limitations are in README and
+`docs/DEMO_IMAGES.md`. No new model calls or live hands acceptance claims were
+added. Commits remain on `hands`; nothing was pushed.

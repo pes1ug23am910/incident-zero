@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "incident_id": "mock-non-recovery",
   "run_id": "runs/mock-non-recovery",
-  "detected_at": "2026-10-23T11:05:08.046293+00:00",
-  "diagnosed_at": "2026-10-23T11:05:08.052134+00:00",
+  "detected_at": "2026-10-23T11:13:47.025835+00:00",
+  "diagnosed_at": "2026-10-23T11:13:47.032842+00:00",
   "resolved_at": null,
   "alert": {
     "signal": "error_rate",
@@ -82,20 +82,20 @@
   },
   "approval": {
     "required": true,
-    "requested_at": "2026-10-23T11:05:08.174366+00:00",
+    "requested_at": "2026-10-23T11:13:47.166603+00:00",
     "approved": true,
     "approved_by": "Mock operator",
-    "approved_at": "2026-10-23T11:05:08.174366+00:00",
+    "approved_at": "2026-10-23T11:13:47.166603+00:00",
     "token": "[redacted]"
   },
   "action": {
     "executed": true,
-    "started_at": "2026-10-23T11:05:08.201851+00:00",
-    "finished_at": "2026-10-23T11:05:08.212986+00:00",
+    "started_at": "2026-10-23T11:13:47.195864+00:00",
+    "finished_at": "2026-10-23T11:13:47.206004+00:00",
     "action_log_ref": "action_log:5"
   },
   "verification": {
-    "checked_at": "2026-10-23T11:05:08.232663+00:00",
+    "checked_at": "2026-10-23T11:13:47.236840+00:00",
     "signal": "error_rate",
     "before": 0.9,
     "after": 0.8,
@@ -260,19 +260,19 @@
         "decision": "approve",
         "token": "[redacted]",
         "approved_by": "Mock operator",
-        "approved_at": "2026-10-23T11:05:08.174366+00:00",
-        "requested_at": "2026-10-23T11:05:08.174366+00:00",
+        "approved_at": "2026-10-23T11:13:47.166603+00:00",
+        "requested_at": "2026-10-23T11:13:47.166603+00:00",
         "expires_at": 1600.0
       },
       "execution": {
         "executed": true,
-        "started_at": "2026-10-23T11:05:08.201851+00:00",
-        "finished_at": "2026-10-23T11:05:08.212986+00:00",
+        "started_at": "2026-10-23T11:13:47.195864+00:00",
+        "finished_at": "2026-10-23T11:13:47.206004+00:00",
         "action_log_ref": "action_log:5",
-        "idempotency_key": "runs/mock-non-recovery:0:109ccbfa5b5bc579"
+        "idempotency_key": "runs/mock-non-recovery:0:f4868f6ccc1859d2"
       },
       "verification": {
-        "checked_at": "2026-10-23T11:05:08.232663+00:00",
+        "checked_at": "2026-10-23T11:13:47.236840+00:00",
         "signal": "error_rate",
         "before": 0.9,
         "after": 0.8,

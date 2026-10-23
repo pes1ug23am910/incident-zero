@@ -82,7 +82,8 @@ class Response:
         report = deepcopy(state['report'])
         results = state.get('action_results', [])
         for result in results:
-            report['proposed_actions'][result['index']]['dry_run']['performed'] = True
+            if result['execution'].get('executed') or state.get('dry_run', {}).get('preconditions_ok'):
+                report['proposed_actions'][result['index']]['dry_run']['performed'] = True
         report['proposed_action'] = report['proposed_actions'][0] if report['proposed_actions'] else None
         if not results:
             if state.get('response_error'):
@@ -160,9 +161,15 @@ def resume(report, decision=None, *, root=ROOT, service=None, operator='local op
         snapshot = graph.get_state(config)
         if snapshot.next != ('approval',):
             raise ValueError('Checkpoint is not waiting at approval; refusing a mismatched resume')
-        if snapshot.values.get('report') != report:
+        from .llm_router import scrub
+        stored = snapshot.values.get('report')
+        if stored != report and scrub(stored) != report:
             raise ValueError('Report differs from the paused checkpoint; refusing an edited plan')
-        if not snapshot.values.get('dry_run', {}).get('preconditions_ok'):
+        # The brain bundle sanitizer replaces even a null token with a redaction
+        # marker. Trust the checkpoint after exact sanitized equality, not that
+        # marker. Every substantive report/plan field still has to match.
+        report = stored
+        if not (decision and decision.get('decision') == 'reject') and not snapshot.values.get('dry_run', {}).get('preconditions_ok'):
             graph.update_state(config, {'action_index': 0, 'action_results': []}, as_node='propose')
             graph.invoke(None, config)
         while graph.get_state(config).next == ('approval',):
@@ -205,6 +212,15 @@ def save_bundle(report, output, service, external_schema=None):
         end_run(token)
     write_bundle(report, service.verification_alert(report), run_dir, output, external_schema=external_schema)
     bundle = Path(output).parent
+    # Preserve nullable approval semantics after the generic secret scrubber.
+    from .llm_router import scrub
+    from reports.render import render_report
+    safe = scrub(report)
+    if report['approval']['token'] is None:
+        safe['approval']['token'] = None
+    Path(output).write_text(json.dumps(safe, indent=2)+'\n', encoding='utf-8')
+    Path(output).with_suffix('.md').write_text(render_report(safe), encoding='utf-8')
+    (bundle / 'alert.json').write_text(json.dumps(scrub(service.verification_alert(report)), indent=2)+'\n', encoding='utf-8')
     (bundle / 'action-log.jsonl').write_text(''.join(json.dumps({'line_no': n, **entry}) + '\n' for n, entry in entries), encoding='utf-8')
     for path in (run_dir / 'evidence').glob('*.json'):
         shutil.copy2(path, bundle / 'evidence' / path.name)
