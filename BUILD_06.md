@@ -72,3 +72,11 @@ The CLI rejection bundle `payment-failure-loop-r4` finished as `needs_human`.
 The authoritative state hashes match before/after the rejection, and no execute
 event exists. Test mode was off. Its final reset was followed by 185.031 seconds
 of qualified clean monitoring.
+
+During the recommendation restart run, five proposed finishes initially omitted
+the root component from `explains_symptoms`, despite correctly diagnosing its
+exited container. The model eventually corrected the omission: nine tool calls,
+394.16 seconds. A subsequent generic coverage fix counts a positively supported
+cause as explaining its own observed component. Caller/sibling coverage and the
+0.75 confidence gate remain unchanged; 133 focused tests passed. The live run
+used the prior rules, so no latency improvement is claimed from that change.

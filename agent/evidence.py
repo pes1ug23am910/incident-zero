@@ -365,7 +365,13 @@ def validate_causes(raw, evidence, symptom_services):
         confidence = .95 if sources >= 3 and magnitude >= .75 else .9 if sources >= 2 and magnitude >= .75 else .78 if sources >= 2 else .55 if sources else .3
         cause['confidence_evidence'] = confidence
         cause['confidence'] = min(cause['confidence_model'], confidence)
-        cause['explains_symptoms'] = sorted(set(cause['explains_symptoms']) & allowed & set(symptom_services))
+        explained = set(cause['explains_symptoms'])
+        # A supported cause explains its own component's observed anomaly; the
+        # model need not repeat that component in a list of propagated symptoms.
+        # Caller coverage remains explicit, and uncovered() still enforces .75.
+        if positive:
+            explained.add(component)
+        cause['explains_symptoms'] = sorted(explained & allowed & set(symptom_services))
         causes.append(cause)
     return sorted(causes, key=lambda c: c['confidence'], reverse=True)
 

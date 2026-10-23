@@ -187,6 +187,22 @@ def supported_finish_state(confidence=.7):
     return value, decision
 
 
+@pytest.mark.parametrize('other_symptom', [None, 'recommendation'])
+def test_finish_self_coverage_does_not_require_redundant_model_label(tmp_path, monkeypatch, other_symptom):
+    monkeypatch.setattr('agent.graph.ROOT', tmp_path)
+    value, decision = supported_finish_state(.9)
+    value['symptom_services'] = ['payment', 'frontend'] + ([other_symptom] if other_symptom else [])
+    decision['arguments']['hypotheses'][0]['explains_symptoms'] = ['frontend']
+    investigation = Investigation(tmp_path, Router(decision))
+    monkeypatch.setattr(investigation, 'read', lambda *args: pytest.fail('Finish must not perform another read'))
+    update = investigation.investigate(value)
+    assert update['hypotheses'][0]['explains_symptoms'] == ['frontend', 'payment']
+    assert update['unexplained'] == ([other_symptom] if other_symptom else [])
+    assert update.get('done', False) is (other_symptom is None)
+    if other_symptom:
+        assert update['finish_blocked']
+
+
 def test_finish_feedback_identifies_model_bottleneck_without_changing_confidence(tmp_path, monkeypatch):
     monkeypatch.setattr('agent.graph.ROOT', tmp_path)
     value, decision = supported_finish_state()
