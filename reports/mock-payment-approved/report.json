@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "incident_id": "mock-payment-approved",
   "run_id": "runs/mock-payment-approved",
-  "detected_at": "2026-10-23T11:05:06.362943+00:00",
-  "diagnosed_at": "2026-10-23T11:05:06.369037+00:00",
-  "resolved_at": "2026-10-23T11:05:06.742885+00:00",
+  "detected_at": "2026-10-23T11:13:45.216874+00:00",
+  "diagnosed_at": "2026-10-23T11:13:45.222109+00:00",
+  "resolved_at": "2026-10-23T11:13:45.586337+00:00",
   "alert": {
     "signal": "error_rate",
     "service": "payment",
@@ -82,20 +82,20 @@
   },
   "approval": {
     "required": true,
-    "requested_at": "2026-10-23T11:05:06.677383+00:00",
+    "requested_at": "2026-10-23T11:13:45.506815+00:00",
     "approved": true,
     "approved_by": "Mock operator",
-    "approved_at": "2026-10-23T11:05:06.677383+00:00",
+    "approved_at": "2026-10-23T11:13:45.506815+00:00",
     "token": "[redacted]"
   },
   "action": {
     "executed": true,
-    "started_at": "2026-10-23T11:05:06.707408+00:00",
-    "finished_at": "2026-10-23T11:05:06.715922+00:00",
+    "started_at": "2026-10-23T11:13:45.536821+00:00",
+    "finished_at": "2026-10-23T11:13:45.548384+00:00",
     "action_log_ref": "action_log:5"
   },
   "verification": {
-    "checked_at": "2026-10-23T11:05:06.730136+00:00",
+    "checked_at": "2026-10-23T11:13:45.573329+00:00",
     "signal": "error_rate",
     "before": 0.9,
     "after": 0.0,
@@ -259,19 +259,19 @@
         "decision": "approve",
         "token": "[redacted]",
         "approved_by": "Mock operator",
-        "approved_at": "2026-10-23T11:05:06.677383+00:00",
-        "requested_at": "2026-10-23T11:05:06.677383+00:00",
+        "approved_at": "2026-10-23T11:13:45.506815+00:00",
+        "requested_at": "2026-10-23T11:13:45.506815+00:00",
         "expires_at": 1600.0
       },
       "execution": {
         "executed": true,
-        "started_at": "2026-10-23T11:05:06.707408+00:00",
-        "finished_at": "2026-10-23T11:05:06.715922+00:00",
+        "started_at": "2026-10-23T11:13:45.536821+00:00",
+        "finished_at": "2026-10-23T11:13:45.548384+00:00",
         "action_log_ref": "action_log:5",
-        "idempotency_key": "runs/mock-payment-approved:0:4ddc555bbaf19762"
+        "idempotency_key": "runs/mock-payment-approved:0:2bb39b4e04b0325a"
       },
       "verification": {
-        "checked_at": "2026-10-23T11:05:06.730136+00:00",
+        "checked_at": "2026-10-23T11:13:45.573329+00:00",
         "signal": "error_rate",
         "before": 0.9,
         "after": 0.0,

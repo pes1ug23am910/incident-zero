@@ -10,14 +10,14 @@ Run: `runs/mock-payment-approved` · schema 1.0
 
 | Event | Timestamp |
 | --- | --- |
-| Detected | 2026-10-23T11:05:06.362943+00:00 |
-| Diagnosed | 2026-10-23T11:05:06.369037+00:00 |
-| Approval requested | 2026-10-23T11:05:06.677383+00:00 |
-| Approved | 2026-10-23T11:05:06.677383+00:00 |
-| Action started | 2026-10-23T11:05:06.707408+00:00 |
-| Action finished | 2026-10-23T11:05:06.715922+00:00 |
-| Verified | 2026-10-23T11:05:06.730136+00:00 |
-| Resolved | 2026-10-23T11:05:06.742885+00:00 |
+| Detected | 2026-10-23T11:13:45.216874+00:00 |
+| Diagnosed | 2026-10-23T11:13:45.222109+00:00 |
+| Approval requested | 2026-10-23T11:13:45.506815+00:00 |
+| Approved | 2026-10-23T11:13:45.506815+00:00 |
+| Action started | 2026-10-23T11:13:45.536821+00:00 |
+| Action finished | 2026-10-23T11:13:45.548384+00:00 |
+| Verified | 2026-10-23T11:13:45.573329+00:00 |
+| Resolved | 2026-10-23T11:13:45.586337+00:00 |
 
 ## Symptoms
 
@@ -85,7 +85,7 @@ Dry run performed: yes. Restore normal application behavior in payment; confirm 
 | Required | yes |
 | Approved | yes |
 | Approved by | Mock operator |
-| Approved at | 2026-10-23T11:05:06.677383+00:00 |
+| Approved at | 2026-10-23T11:13:45.506815+00:00 |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:5 |

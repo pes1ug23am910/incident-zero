@@ -10,14 +10,14 @@ Run: `runs/mock-recommendation-restart` · schema 1.0
 
 | Event | Timestamp |
 | --- | --- |
-| Detected | 2026-10-23T11:05:07.097109+00:00 |
-| Diagnosed | 2026-10-23T11:05:07.102110+00:00 |
-| Approval requested | 2026-10-23T11:05:07.255536+00:00 |
-| Approved | 2026-10-23T11:05:07.255536+00:00 |
-| Action started | 2026-10-23T11:05:07.285724+00:00 |
-| Action finished | 2026-10-23T11:05:07.296557+00:00 |
-| Verified | 2026-10-23T11:05:07.312558+00:00 |
-| Resolved | 2026-10-23T11:05:07.326077+00:00 |
+| Detected | 2026-10-23T11:13:45.983583+00:00 |
+| Diagnosed | 2026-10-23T11:13:45.990585+00:00 |
+| Approval requested | 2026-10-23T11:13:46.120413+00:00 |
+| Approved | 2026-10-23T11:13:46.120413+00:00 |
+| Action started | 2026-10-23T11:13:46.147645+00:00 |
+| Action finished | 2026-10-23T11:13:46.158651+00:00 |
+| Verified | 2026-10-23T11:13:46.183353+00:00 |
+| Resolved | 2026-10-23T11:13:46.199469+00:00 |
 
 ## Symptoms
 
@@ -85,7 +85,7 @@ Dry run performed: yes. Start a fresh recommendation process and restore its ava
 | Required | yes |
 | Approved | yes |
 | Approved by | Mock operator |
-| Approved at | 2026-10-23T11:05:07.255536+00:00 |
+| Approved at | 2026-10-23T11:13:46.120413+00:00 |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:5 |
