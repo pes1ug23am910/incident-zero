@@ -42,7 +42,28 @@ below every original alert threshold, at least 20 measured frontend requests,
 and the load generator running. Operator reset is recorded separately from
 action-caused recovery.
 
+The first payment attempt, `payment-failure-loop-r1`, produced no detector alert
+within 90 seconds at five Locust users. No diagnosis or action ran. Payment logs
+did contain failed charges, first appearing about 59 seconds after injection;
+metric export latency prevented a timely threshold crossing. The retained
+before/after clean windows were 244.781 and 183.953 seconds. The initial window
+also exposed observability-proxy errors caused by offline test fixture lookups;
+those tests were isolated, and full suites are no longer run during rehearsals.
+
+At 15:23:24 UTC the operator requested 20 users at spawn rate 5, preserving the
+previous five users/rate 1 for final restoration. `payment-failure-loop-r2`
+verified clean traffic but refused injection because that planned increase was
+above the detector's historical traffic baseline. No action ran. The runner now
+records the measured clean workload baseline when load preparation is explicitly
+requested; thresholds remain unchanged and other anomalies still block injection.
+
 ## Control Room acceptance
 
+The first successful integrated CLI loop is `payment-failure-loop-r3`: `fixed`
+after 346.016 seconds from injection, with a real 182.359-second action
+verification window and qualified 184.562/184.375-second reset windows.
+Approval was the explicit test-auto path, not a human decision. The real Control
+Room served its status and report; browser approval acceptance remains separate.
+
 Pending the live browser run. No browser approval or live recovery is claimed
-by this preflight checkpoint.
+by the browser preflight checkpoint.

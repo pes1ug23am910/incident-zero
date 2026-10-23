@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792768500.2=0.0",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "shipping"
+    },
+    "timestamp": 1792768500.2,
+    "value": 0.0,
+    "query": "named:error_rate_by_service"
+  },
+  "captured_at": "2026-10-23T15:15:00.293736+00:00",
+  "checksum": "12cf4a7c26f533dd91cd582bcb2c8ab6917eeee806851a82770668188bdc58ad"
+}

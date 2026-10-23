@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792768500.02=0.0",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "recommendation"
+    },
+    "timestamp": 1792768500.02,
+    "value": 0.0,
+    "query": "named:error_rate_by_service"
+  },
+  "captured_at": "2026-10-23T15:17:00.117163+00:00",
+  "checksum": "d280edd5c9fae00089c69403ac80080f690ebaeb1747a216357ffac35755264f"
+}
