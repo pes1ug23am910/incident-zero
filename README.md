@@ -1,21 +1,21 @@
-# Incident Zero - AI On-Call Engineer
+# Incident Zero — AI On-Call Engineer
 
-Incident Zero detects anomalies in the OpenTelemetry Demo, investigates them
-through read-only tools, and writes evidence-backed diagnoses in the team's
-schema. The brain diagnoses and proposes; the merged hands implementation adds explicit
-approval, execution, verification and rollback. Live integrated acceptance is
-pending; BUILD_05.md records the hands unit tests and deferred commands.
+Incident Zero detects anomalies in the unmodified OpenTelemetry Demo, diagnoses
+them from read-only telemetry, asks a person to approve a concrete remedy, then
+executes and measures recovery. The brain, Action API and Control Room share one
+persisted LangGraph run and one approval boundary.
 
-See [BUILD_01B.md](BUILD_01B.md) for earlier live telemetry verification,
-[BUILD_04.md](BUILD_04.md) for the diagnosis ledger, and
-[the checkpoint brief](docs/CHECKPOINT2_BRIEF.md) for the three live presentations.
-A configured model or a passing unit test is not a verified live diagnosis.
+Measured results and failures belong in [BUILD_04.md](BUILD_04.md),
+[BUILD_05.md](BUILD_05.md), [BUILD_06.md](BUILD_06.md) and the
+[evaluation ledger](docs/EVALUATION_NOTE.md). Unit tests establish specific
+properties; they do not establish live diagnostic accuracy or recovery.
 
 ## Setup
 
-Use Python 3.11 or newer, Docker Desktop with Linux containers, and the official
-demo 2.0.2 checkout at `D:\opentelemetry-demo`. Its minimal Compose file has
-**21 services**. Keep that checkout unmodified.
+Use Python 3.11+, Docker Desktop with Linux containers, and the official demo
+2.0.2 checkout at `D:\opentelemetry-demo`. Keep that checkout unmodified. Reuse
+the existing local environment; if it is missing, follow a storage-cleanup notice
+when present, otherwise recreate it:
 
 ```powershell
 cd D:\incident-zero
@@ -26,411 +26,219 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m faultctl up
 .\.venv\Scripts\python.exe -m faultctl build-netem
 .\.venv\Scripts\python.exe -m faultctl status
-.\.venv\Scripts\python.exe -m tools.cli health_table
 ```
 
-Reuse an existing environment; recreate a missing one from the commands above.
-If a storage-cleanup notice exists in the checkout, follow its rebuild command.
-`scripts/up.ps1` automates environment setup, stack startup and readiness.
-`INCIDENT_ZERO_DEMO_DIR` selects a different demo checkout.
+An existing `uv` environment may have no `pip` module. In that case install with
+`uv pip install --python .venv/Scripts/python.exe -e '.[test]'` instead of the
+`python -m pip` line; the environment need not be recreated.
 
-The collector's Docker statistics receiver uses API 1.25. This laptop's daemon
-compatibility fix is documented in BUILD_01B.md; check
-`docker version --format '{{.Server.MinAPIVersion}}'` if collector export fails.
-Do not treat missing application metrics as a healthy system. Repository scripts
-do not change daemon configuration.
+`scripts/up.ps1` automates setup and readiness. `INCIDENT_ZERO_DEMO_DIR` selects
+a different official demo checkout. The minimal stack has 21 services. The
+collector's Docker API compatibility fix for this laptop is recorded in
+[BUILD_01B.md](BUILD_01B.md); the repository does not change daemon settings.
 
-Both entry points are installed:
+Checkpoint 3 and demo wrappers capture the existing Locust swarm, set 20 users
+at spawn rate 5 before the baseline, and restore the captured settings during
+cleanup. Override with `-LoadUsers`; this is recorded operator setup, not an
+agent remedy. The standalone Python driver leaves load unchanged unless
+`--load-users` is supplied. For that deliberate workload change, the frontend
+traffic baseline is the median of the final two qualified clean-window samples;
+the bundle retains its prior value and metric evidence. All other anomaly checks
+and thresholds remain active. The first integrated payment run at five users
+produced no detector crossing within 90 seconds; sparse charge calls and metric
+flushing delayed visibility. The runner still requires observed traffic and
+never lengthens the alert deadline or fabricates recovery.
+
+Keep keys and model identifiers in ignored `.env` or the process environment.
+Process values take precedence. `OPENROUTER_MODEL` selects the primary;
+`OPENROUTER_FALLBACK_MODEL` selects its fallback. Direct Gemini requires both
+`GEMINI_API_KEY` and `GEMINI_MODEL`. No hidden default supplies a model ID.
+`OPENROUTER_FAST_MODEL` and `REVIEWER_MODEL` are reserved; no reviewer runs today.
+The sanitized report identifies the model that actually succeeded, token usage
+and a reference cost estimate, which is not a provider invoice. Never print keys.
+
+## Checkpoint 3: one full loop
 
 ```powershell
-.\.venv\Scripts\python.exe -m faultctl list
-.\.venv\Scripts\faultctl.exe list
+cd D:\incident-zero
+Remove-Item Env:INCIDENT_ZERO_TEST -ErrorAction SilentlyContinue
+.\scripts\checkpoint3.ps1 payment-failure
+# Another supported rehearsal:
+.\scripts\checkpoint3.ps1 container-stopped -Service recommendation
 ```
 
-## Model configuration
+The command starts or reuses the real Control Room at
+**http://127.0.0.1:8787**, resets the stack, measures a clean baseline, injects,
+waits up to 90 seconds for an alert, investigates, writes the report and pauses
+for approval. Review the same pending plan in the terminal and Control Room;
+approve once on either surface. `-BrowserApproval` waits exclusively for the
+browser decision. Execution and verification update the checkpoint and saved
+report. The final Markdown and action-log excerpt print in the terminal.
 
-Keep credentials in the ignored local `.env` or process environment. Do not print
-or commit keys. Existing process values override `.env`. Set these model names
-explicitly; runtime code does not supply hidden model defaults.
+The runner then resets and measures clean traffic again, even after an error.
+Before/after windows and action verification are at least 180 seconds, with two
+consecutive qualified samples, at least 20 measured frontend requests in the
+two-minute window, and a running load generator. The initial and final clearance
+windows make the complete mentor command longer than five minutes.
 
-| Variable | Role / value |
-| --- | --- |
-| `OPENROUTER_API_KEY` | Local OpenRouter credential |
-| `OPENROUTER_MODEL` | Primary: `openai/gpt-5` |
-| `OPENROUTER_FALLBACK_MODEL` | OpenRouter fallback: `google/gemini-2.5-pro` |
-| `GEMINI_API_KEY` | Optional direct-provider fallback credential |
-| `GEMINI_MODEL` | Direct-provider model, for example `gemini-2.5-pro`; **must be configured** for that route to exist |
-| `OPENROUTER_FAST_MODEL` | `openai/gpt-5-mini`, reserved for cheap helpers; the investigation does not route to it |
-| `REVIEWER_MODEL` | `google/gemini-2.5-pro`, reserved for a future reviewer; no reviewer is implemented |
+Bundles use `reports/<incident>-loop-r<n>/`, or a fresh `-ReportId`. They retain
+JSON/Markdown reports, alert, sanitized model journal, evidence snapshots,
+action-log excerpt, timings, and `verification-before-after.json`. Existing
+bundles are never overwritten. A non-actionable diagnosis remains an escalation.
 
-OpenRouter requests medium reasoning effort. Routing tries the configured primary,
-then its OpenRouter fallback, then direct Gemini when both its key and model are
-set. Transient failures are retried once before falling back. The report and
-sanitized `llm.jsonl` identify the model that actually succeeded, token usage and
-a reference estimate using $1.25/M input and $10/M output tokens. This reference
-estimate is not a provider invoice or the actual price of every fallback model.
-Temperature 0 and logged prompts make inputs reproducible, not outputs.
-
-## Diagnose an incident
-
-Run one rehearsal at a time. The single command resets, waits for clean telemetry,
-records a baseline, injects, waits up to 90 seconds for an alert, runs the agent,
-validates and prints the Markdown report, then resets and waits for error rates
-to clear. It prints elapsed seconds for every stage and attempts final cleanup
-even if a stage fails.
+For organiser incidents, start the real UI and telemetry watcher without an
+injector:
 
 ```powershell
-.\scripts\checkpoint2.ps1 payment-failure
-.\scripts\checkpoint2.ps1 container-stopped -Service recommendation
-.\scripts\checkpoint2.ps1 cache-unavailable
-.\scripts\checkpoint2.ps1 cpu-starve -Service recommendation
-```
-
-The first three are the checkpoint cases; the fourth demonstrates abstention.
-Run them in that order before further practice cases. The required repetition
-count and actual outcomes belong in BUILD_04.md. The script generates a unique
-report-bundle name; use `-ReportId <unique-name>` when you need a chosen name.
-Existing bundles are never replaced. Error-rate clearance is checked for at
-least 180 seconds with 30-second samples; a reset exit code alone is insufficient.
-
-For a detector-managed investigation:
-
-```powershell
+.\.venv\Scripts\python.exe -m ui.serve --mode real
+# In a second terminal:
 .\.venv\Scripts\python.exe -m detect.watch --interval 10 --thresholds detect/thresholds.yaml
 ```
 
-The watcher writes an alert and starts the investigator unless STOP is present.
-`--no-agent` observes without starting investigations. For an existing alert:
+The watcher writes alerts and starts investigations. Approve from the UI, or
+resume a specific report in a terminal:
 
 ```powershell
-.\.venv\Scripts\python.exe -m agent.run --alert runs/<run-id>/alert.json --incident-id <report-id> --out reports/<report-id>/report.json
-.\.venv\Scripts\python.exe -m schema.validate reports/<report-id>/report.json
-.\.venv\Scripts\python.exe -m reports.render reports/<report-id>/report.json
+.\.venv\Scripts\python.exe -m agent.respond --report reports/<id>/report.json --operator 'Yash Verma'
+.\.venv\Scripts\python.exe -m agent.respond --report reports/<id>/report.json --operator 'Yash Verma' --reject
 ```
 
-Replace placeholders with actual paths. `python -m agent run ...` is also
-supported. The incident ID labels output only; it never enters the model prompt.
-`python -m detect.once` prints one alert with its saved path, or an explicit
-`no_alert` result. An empty/missing backend response is not proof of no incident.
+For diagnosis-only rehearsals, `scripts/checkpoint2.ps1 <incident>` remains
+available. It resets after diagnosis, so its paused proposal must not be reused
+as authority to remediate a later incident. The response checks the current world.
 
-Creating a root `STOP` file stops further investigation and refuses injection
-or resumption; operator reset remains available. A paused graph can record a
-rejection with `python -m agent.respond --report reports/<report-id>/report.json
---reject`. Approval and execution are unavailable in this brain build.
+## Approval and STOP
 
-## How the agent decides
+Tier 1 shows the operation, target and expected effect and asks for `y`. Tier 2
+shows the evidence, independent-source check, alternatives, uncertainty,
+parameters, side effects and rollback limits, and requires typed `yes`.
+Critical services and all restarts require tier 2. Tier 3 has no action proposal.
+`auto_approve_tiers` stays empty in `action_api/policy.yaml`.
 
-The LangGraph StateGraph runs observe -> investigate -> diagnose -> assess_risk
--> propose. Observe always calls health_table across known services. The model
-selects one structured read per iteration, with a reason, from metrics, traces,
-logs, container health and deploy history. The total budget is 12 tools.
-
-Tool payloads are treated as untrusted data. Redaction removes incident-setting
-disclosures before prompting or snapshotting. Code rejects invented evidence IDs,
-checks component support, and computes evidence confidence from independent
-positive sources and signal magnitude. Final confidence is the minimum of model
-and evidence confidence. The action type is selected in code from the cause
-category; targets must be known services.
-
-The loop retains multiple causes and tracks symptoms still unexplained through
-the dependency graph. Caller symptoms may follow from a dependency failure;
-independent failures remain separate causes. Reports contain confidence-ordered
-`root_causes`, the first-cause `root_cause` alias, limitations, and impact before
-any proposed actions. Confidence below 0.6 or unsupported remedies escalate.
-A clean finding requires observed healthy traffic, not merely absent errors.
-
-Tier 1 is for a single auxiliary/core service, a reversible proposal and confidence
-at least 0.75; its future quick approval must show action, target and effect.
-Critical services and restarts require tier 2 review. Tier 3 suppresses proposals
-for multiple independent failures, unsafe data risk or inadequate confidence.
-`auto_approve_tiers` remains empty. See [WHY.md](docs/WHY.md) for the rationale.
-
-Eligible proposals reach a separate local preview and an approval interrupt.
-`SqliteSaver` persists `runs/checkpoints.sqlite` with `thread_id = run_id`.
-The responder requires the exact saved approval node before resuming. Even direct
-approval resumption reaches an inert execute node in this build; recovery is not
-claimed. Local checkpoints are needed for resumption even when report evidence
-has been retained separately.
-
-## Telemetry and retained reports
-
-Prometheus is at `http://localhost:9090`. Jaeger's API is available through
-`http://localhost:8080/jaeger/ui/api`; its direct host port and OpenSearch's host
-port are ephemeral. Tools discover the OpenSearch port, and logs use index
-`otel`. See [metrics](tools/METRICS.md) and [log fields](tools/LOGS.md).
-
-Docker stdout/stderr supplies missing application logs with `dlog:` IDs.
-Payment also falls back to Docker when OpenSearch has no matching records.
-Use `--severity-min TRACE` to include unclassified stdout. Rate windows are at
-least two minutes because spanmetrics flushes about once a minute.
-
-Every cited payload is snapshotted in `runs/<run-id>/evidence/`. Windows-safe
-filenames are SHA-256 digests; each record keeps the full ID and a checksum.
-Finished bundles under `reports/<report-id>/` contain report JSON and Markdown,
-the alert, sanitized LLM log, graph events, evidence copies, and the action-log
-excerpt. That excerpt is empty in this session because no action ran.
-
-The resolver tries live evidence, then run snapshots, then an explicitly selected
-report bundle, reporting the origin. Snapshots preserve observations, not current
-recovery. For retained evidence after run expiry:
+Ten-minute tokens bind the exact plan, report, operator and world state. A changed
+plan or world invalidates approval. Durable idempotency prevents replayed writes;
+one mutation/verification sequence is allowed at a time, with a five-minute target
+cooldown. Terminal and browser decisions share a response lock. A crash or an
+uncertain attempt does not trigger an automatic retry. Raw tokens remain private.
+Diagnoses older than ten minutes require a fresh investigation; a new token does
+not extend an old diagnosis.
 
 ```powershell
-.\.venv\Scripts\python.exe -m tools.resolve '<evidence-id>' --run-dir runs/<run-id> --bundle-dir reports/<report-id>
-.\.venv\Scripts\python.exe -m schema.validate reports/<report-id>/report.json
+.\.venv\Scripts\python.exe -m action_api stop --operator 'Yash Verma'
+# After review, clear the latch with the exact phrase:
+.\.venv\Scripts\python.exe -m action_api clear-stop --operator 'Yash Verma'
+# Prompt: I confirm the incident is over
 ```
 
-The [team schema](schema/README.md) is primary. The
-[external mapping adapter](schema/MAPPING.md) is identity until another schema
-is supplied. Export with:
+The Control Room STOP button, `POST /stop`, or a root `STOP` file latches the
+same kill switch. It blocks new actions and interrupts verification; rollback
+also obeys it. A pending approval becomes a saved `aborted` report without an
+execution attempt; an active response keeps ownership while cancelling safely.
+Operator reset remains available. STOP does not undo an operation
+already accepted by Docker. Clearing requires the exact phrase above.
+
+The Action API binds only to loopback. `python -m action_api serve` and
+`python -m ui.serve --mode real` serve the same app on 8787; run one instance.
+Its allowlist is `toggle_flag`, `restart_service`, `throttle_load`.
+Other operations return BLOCK with a reason code; Compose scaling is unavailable.
+
+## Control Room and five-minute demo
+
+The static HTML/CSS/JavaScript UI has War Room, Incidents, Services, Approvals and
+Safety views. No Node, frontend build, CDN or login is required. Evidence drawers
+label live versus retained observations. Real browser approval resumes the same
+checkpoint, executes through the Action API and updates the saved JSON/Markdown.
+The API contract is [ui/API.md](ui/API.md).
 
 ```powershell
-.\.venv\Scripts\python.exe -m schema.export reports/<report-id>/report.json --schema <their-schema.json>
+# Read-only rehearsal UI with process-local mock decisions; no real actions:
+.\.venv\Scripts\python.exe -m ui.serve --mode mock --port 8788
+# Preview the timed sequence without touching the stack:
+.\scripts\demo.ps1
+# Real prompt, live recovery, then BLOCK and STOP demonstrations:
+.\scripts\demo.ps1 -Live
+# Or approve from the browser:
+.\scripts\demo.ps1 -Live -BrowserApproval
 ```
 
-This retains report.json and writes validated report.external.json alongside it.
-Unmapped output fields are dropped; required unavailable values are explicitly
-marked with notes. Unrepresentable required values make export fail visibly.
-The agent also accepts `--external-schema` to keep both files during bundling.
+Preparation includes reset/clearance, **live injection, alert and diagnosis**.
+Start the five-minute presentation clock at the `PRESENTATION READY` banner,
+when the real plan is waiting for approval. Review the retained live alert and
+evidence for about 45 seconds, approve, observe at least 180 seconds of execution
+verification, then show a forbidden operation returning
+`403 / FORBIDDEN_OPERATION`, STOP, and an allowed operation refused with
+`423 / STOP_LATCHED`. The script does not claim injection-to-recovery fits five
+minutes; initial preparation and final cleanup are outside that clock.
+Verification is never shortened. An optional `-RejectedReport <path>` demonstrates
+rejection of an existing real tier-2 checkpoint. Cleanup retains its measured
+window and asks the operator to clear STOP explicitly.
 
-## How incidents are injected
+The developer acceptance driver supports `--auto-approve-for-tests` only together
+with `INCIDENT_ZERO_TEST=1`, printing that no human approval was collected.
+Tonight's automated live acceptance uses this explicit exception, recorded per
+bundle. The mentor and demo wrappers refuse that environment. The HTTP approval
+endpoint cannot enable it. Test-only `--force-nonrecovery` stops the real Locust
+swarm after execution and restores it in cleanup; it tests missing-traffic
+rollback using unmodified telemetry, not persistent application failure.
 
-The minimal demo has no writable control API. The operator's faultctl changes a
-local copy of `src/flagd/demo.flagd.json`, mounts that copy using a repository-owned
-Compose override, and checks the applied state. It does **not** edit the file in
-`D:\opentelemetry-demo`. The original source is read only to preserve and verify
-pristine bytes. Only the injection package accesses those settings for rehearsal.
+## Diagnosis, evidence and injection boundaries
 
-Infrastructure incidents use scoped Docker operations or a temporary NET_ADMIN
-helper. Reset restores the original mount and limits, starts stopped components,
-removes network impairment, and verifies cleanup. After every reset, the official
-checkout must be clean:
+The first tool is `health_table`; each later model step selects one read with a
+reason. The budget is 12 tool calls. The model sees telemetry, not the incident ID
+or injection settings. Redaction strips control disclosures before prompting or
+snapshotting. Evidence IDs must exist and support the named component; final
+confidence is the minimum of model and evidence confidence. Two Docker liveness
+fields remain one source. Caller connection errors and a dependency's exited
+container are independent observations even when stdout supplies those errors.
+
+A stopped dependency is `container_down`: `valkey-cart` is the cause component
+and `cart` owns the downstream symptoms. `dependency_unavailable` remains for
+dependency failures without an established stopped-container cause. Multiple
+independent failures, insufficient confidence, unsupported fixes and data risk
+escalate. Distinct users affected are not inferred from span rates.
+
+The operator injector mounts a repository-owned overlay and performs scoped
+Docker changes. It never edits `D:\opentelemetry-demo`. Reset restores mounts,
+limits, liveness and network state; the runner checks that checkout remains clean.
+Only the Action API's narrow setting adapter reads settings for approved writes,
+rollback and world-state hashing. Diagnosis cannot read those settings.
+
+Every reported payload is retained with a checksum. Resolve or validate it with:
 
 ```powershell
-.\.venv\Scripts\python.exe -m faultctl reset
-git -c safe.directory=D:/opentelemetry-demo -C D:\opentelemetry-demo status --porcelain
-```
-
-This overlay is the implemented boundary for the requirement to leave the demo
-unmodified. An instruction describing an in-place source edit does not describe
-this implementation. The checkpoint script additionally waits for live error-rate
-clearance after reset before declaring the stack clean.
-
-## Tests and prior work
-
-```powershell
+.\.venv\Scripts\python.exe -m tools.resolve '<evidence-id>' --run-dir runs/<run-id> --bundle-dir reports/<id>
+.\.venv\Scripts\python.exe -m schema.validate reports/<id>/report.json
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Offline fixtures verify inference and safety properties without mutating the
-demo. Live results, failed attempts, model choices and calibration belong in
-BUILD_04.md and [EVALUATION_NOTE.md](docs/EVALUATION_NOTE.md); no unit-test result
-substitutes for those measurements.
-
-The mentors permitted Yash Verma's unpublished prior code with a declaration.
-Only environment-loading and provider/retry structure from the prior LLM router
-were adapted into `agent/llm_router.py`; see the file-by-file
-[prior-work record](docs/PRIOR_WORK.md). No prior prompts, documents, reports or
-build outputs were copied. Team disclosures belong in [TEAM_FORM.md](docs/TEAM_FORM.md).
-
-Credentials, runtime state, injection journals, local environments and private
-specifications remain ignored. Report bundles are retained for review.
-
-## Approval gate and kill switch
-
-```powershell
-# A real diagnosis must already be paused at approval in runs/checkpoints.sqlite.
-.\.venv\Scripts\python.exe -m agent.respond --report reports/<id>/report.json --operator 'Yash Verma'
-# Explicit rejection does not need functioning mutation preconditions.
-.\.venv\Scripts\python.exe -m agent.respond --report reports/<id>/report.json --operator 'Yash Verma' --reject
-# Optional localhost HTTP interface (approval prompts appear in this terminal):
-.\.venv\Scripts\python.exe -m action_api serve
-.\.venv\Scripts\python.exe -m action_api stop --operator 'Yash Verma'
-.\.venv\Scripts\python.exe -m action_api clear-stop --operator 'Yash Verma' --confirmation 'I confirm the incident is over'
-```
-
-Tier 1 shows the concrete operation, target and expected effect and asks for a
-human `y` (one key on a Windows terminal). Tier 2 shows the full evidence table,
-independent-source check, alternatives, uncertainty, exact parameters, risk,
-side effects, rollback limits and verification criteria, then requires typed
-`yes`. Tier 3 escalates and proposes no action. Hard risk rules override the
-heuristic score. The policy outcomes are REQUIRE_HUMAN, ESCALATE and BLOCK;
-blocked requests include a reason code.
-
-`action_api/policy.yaml` keeps `auto_approve_tiers: []`. A deliberately enabled
-policy tier prints `policy approval, outside the event rules`; our demo never
-enables it. The test-only CLI bypass requires both `INCIDENT_ZERO_TEST=1` and
-`--auto-approve-for-tests`, prints a banner and is used only with fake executors
-in tests. The HTTP endpoint cannot request that bypass.
-
-Tokens expire in ten minutes and bind the operation/target/parameter digest,
-report digest, operator and world-state hash. Edits or external world changes
-invalidate them. Execution requires an idempotency key; replay returns the
-recorded result. One mutation/verification sequence may run at a time, with a
-five-minute target cooldown. A failed attempt requires a fresh investigation
-and approval; a process crash with uncertain effects is never retried blindly.
-
-The root `STOP` file or `POST /stop` blocks new changes and interrupts the
-verification wait. Rollback also obeys STOP. Only the exact clear phrase above
-removes the latch. Every executed action and recovery decision is audited in
-`action_api/log.jsonl`; each report bundle includes its excerpt and evidence
-snapshots. Public bundles contain redacted approval receipts, never usable tokens.
-
-`agent.respond` checks the persisted thread is at `approval` and that the saved
-report matches. Dry run and execution are separate nodes from `interrupt()`;
-the token travels in the resume value and the human is asked once. For future
-brain integration, import `build_graph` from `agent.respond` in the entry point.
-Existing inert-brain checkpoints work through the response command already.
-
-Recovery requires every original alert signal to be healthy on two consecutive
-30-second samples over at least 180 seconds, at least 20 measured frontend server
-requests in the two-minute window, and a running load generator. Lost traffic
-or telemetry never counts as recovery. Reversible settings are restored on
-non-recovery if the world still matches; a failed restart escalates.
-
-## Demo
-
-`scripts/demo.ps1` without arguments prints the five-minute presentation plan
-without touching the stack. After exclusive stack handoff, use
-`scripts/demo.ps1 -Live -RejectedReport reports/<paused-tier2>/report.json`.
-Prepare the real tier-2 checkpoint beforehand; the live tier-1 example defaults
-to the catalog incident. If the model escalates or proposes another tier, show
-that honest outcome instead of forcing approval. The script demonstrates the
-approved path, rejection, an HTTP 403 forbidden operation, and STOP, then resets
-and verifies cleanup. Clearing STOP asks the operator for the exact phrase.
-
-Preflight and cleanup are outside the presentation clock. Alert/model latency
-can make the live sequence longer than five minutes; do not shorten the required
-verification window. Individual acceptance runs use
-`python -m scripts.hands_rehearsal <incident> --live --report-id <fresh-id> --operator 'Yash Verma'`.
-No live driver was executed in this hands session.
+See [architecture](docs/ARCHITECTURE.md), [control rationale](docs/WHY.md),
+[schema](schema/README.md), [metrics](tools/METRICS.md), and
+[logs](tools/LOGS.md). The external schema adapter preserves the internal report
+and validates an additional export when a schema is supplied.
 
 ## Known limitations
 
-- Live diagnosis-to-fix, real rollback and real STOP cancellation are unverified
-  here. Reports under `reports/mock-*` are explicitly synthetic and cannot be
-  used to claim model accuracy, calibration or live latency. No model was used
-  for these hands tests; the inherited brain primary pin is `openai/gpt-5`.
-- Restart cannot recover interrupted requests or previous process state.
-  Cancelling Docker's client cannot undo a restart already accepted by the
-  daemon. An in-flight HTTP request can finish before its timeout or STOP check.
-- Throttle requires readable prior user count and spawn rate. Switch writes
-  require a matching operator overlay; official demo source writes are refused.
-- Unsupported verification signals, missing telemetry and insufficient request
-  volume fail closed. Low traffic after throttling can require rollback even if
-  application errors improve. Snapshot evidence proves history, not recovery.
-- Existing v1 diagnostic snapshots have content checksums but no explicit
-  completeness field. The hands bundle adds a hash/completeness manifest and
-  marks unproven completeness false; the shared tools format still needs the
-  tools owner's update. That limitation is not hidden by a passing unit suite.
-- Independent multi-service causes escalate at tier 3. Eligible action queues
-  are handled one at a time. There is no Kubernetes scaling executor, network
-  repair executor or reviewer model invocation in the hands path.
-- The API trusts the same-user local operator boundary; it is not a hosted,
-  authenticated multi-user service. Bind only to localhost. Private SQLite
-  state under ignored `runs/` includes rollback material and token records.
+- The complete practice set, unseen combinations and no-fault calibration have
+  not been measured. Consult the evaluation table for actual runs; synthetic
+  `reports/mock-*` bundles do not count as live accuracy or latency.
+- Restart cannot restore interrupted requests or previous process state.
+  Failed restart verification escalates; settings rollback requires an unchanged
+  relevant world. An in-flight Docker/HTTP operation may finish before STOP.
+- Missing telemetry, unsupported verification signals and insufficient traffic
+  prevent `fixed`. Old evidence snapshots establish history, never recovery.
+- Throttling needs readable previous users/spawn rate. Switch writes need the
+  operator overlay. There is no network/resource-repair or Kubernetes executor.
+- Snapshot checksums do not prove complete telemetry. The bundle manifest marks
+  absent completeness proof false. No reviewer model or autonomous memory-based
+  remediation is implemented.
+- The API trusts the local same-user boundary. Ignored `runs/` contains checkpoints,
+  tokens and rollback material; it is required to resume, and must remain private.
 
 ## Prior work
 
-The mentors permitted declared unpublished prior code. The complete port list
-and adaptations are in [PRIOR_WORK.md](docs/PRIOR_WORK.md). The hands modules
-were written for this contract and add no template ports. The event-required
-tools declaration remains in [TEAM_FORM.md](docs/TEAM_FORM.md).
-
-## Control Room
-
-The Control Room is a plain HTML, CSS and JavaScript dashboard served by FastAPI.
-There is no Node dependency, bundler, CDN or frontend build step. Its dark layout
-has five views: **War Room** shows the alert, investigation steps, diagnosis,
-impact, clickable evidence and approval gate; **Incidents** lists report bundles;
-**Services** refreshes health every ten seconds; **Approvals** shows the pending
-queue and decision history; **Safety** exposes STOP, its confirmation phrase and
-the action log. Times are displayed in IST. Unknown telemetry stays unknown.
-
-Install the Python dependencies once (an existing project environment works):
-
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e '.[test]' -r ui/requirements.txt
-```
-
-Start mock mode in the UI worktree, reading the brain checkout's recorded bundles:
-
-```powershell
-cd D:\incident-zero-ui
-.\scripts\ui.ps1 -Mode mock -ReportsDir D:\incident-zero\reports
-# Open http://127.0.0.1:8788
-```
-
-The equivalent command is `python -m ui.serve --mode mock --reports-dir D:\incident-zero\reports`.
-With no directory argument, reports are read from the current checkout's
-`reports/`. `-RunsDir` / `--runs-dir` overrides the live investigation journal
-directory; by default it is the reports directory's sibling `runs/`. New report
-bundles and investigation steps appear automatically.
-
-After the UI and hands branches are merged, start real mode from that checkout:
-
-```powershell
-.\scripts\ui.ps1 -Mode real
-# Open http://127.0.0.1:8787
-# Equivalent: python -m ui.serve --mode real
-```
-
-Use `-Port 8789` if another process already owns 8787. To serve the page inside
-the existing hands FastAPI app instead, import `router` from
-`action_api.ui_routes` and mount it with **`app.include_router(ui_router)`**:
-
-```python
-from action_api.ui_routes import router as ui_router
-app.include_router(ui_router)
-```
-
-The router includes `/`, `/static/app.js`, `/static/app.css`, and every `/api/*`
-endpoint documented in [ui/API.md](ui/API.md). The native adapter lazily calls
-`action_api.service.ActionService`; the hands app needs no additional hook module.
-Real approval presents the native dry-run plan, retains world-state/token/expiry
-checks, and runs execution and verification in the background. Each proposed
-action needs its own approval. Service audit and attempts provide durable status
-overlays; the original report and Markdown stay unchanged. The brain/hands report
-writer still owns final report export and checkpoint reconciliation.
-
-Mock mode keeps approvals and STOP in memory and resets them on restart. It never
-executes fixes or simulates recovery. If the real service is not installed, the
-banner explicitly says **MOCK FALLBACK** and controls remain in memory. Mock STOP
-does not stop another session or the live stack. Evidence resolution tries the
-read-only resolver and falls back to checksum-verified bundle snapshots; the
-drawer labels the source. A saved snapshot does not establish current recovery.
-
-Demo flow:
-
-1. Open **War Room**. Select the newest incident or inspect the saved rehearsal.
-2. Have the designated stack operator inject an incident from their separate
-   terminal, with the detector/agent running. The UI itself has no injector.
-3. Watch the investigation feed, then open the completed report. Click an evidence
-   ID to inspect its payload and whether it came from live telemetry or a snapshot.
-4. Review impact and the native dry-run plan. Tier 1 has quick Approve/Reject;
-   tier 2 requires the evidence review and typed `yes`; tier 3 shows escalation
-   findings with no approve button. Enter an operator name; rejection needs a reason.
-5. Approve in real mode and watch execution and verification. Recovery is shown
-   only when the Action API records it. Mock approval only records the decision.
-6. Press **STOP** and show the latched state and action log in **Safety**. Clear it
-   only by typing `I confirm the incident is over` exactly.
-
-The saved `payment-failure-r1` bundle is a tier-3 escalation, so it deliberately
-has no approval action. Use a newly diagnosed actionable bundle for the approval
-part of the real demo; the dashboard never rewrites a historical diagnosis to make
-it actionable. Existing journal events are observations, not timed demo playback.
-
-Verify without a browser or the live stack:
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q tests/test_ui_api.py
-# With the mock server running:
-.\.venv\Scripts\python.exe -m ui.smoke --url http://127.0.0.1:8788
-```
-
-The contract suite covers evidence checksums, all five assets/views, tier gates,
-typed confirmation, stale/expired decisions, rejection, STOP, event cursors and
-new bundles, and an injected fake ActionService execution/verification path.
-It also checks the actual disk bundle when available; set
-`INCIDENT_ZERO_TEST_REPORTS_DIR` if that bundle lives elsewhere. Tests never run
-the real executor or injector.
+The mentors permitted Yash Verma's declared unpublished prior code. Only the
+environment-loading and provider/retry structure from the earlier router was
+adapted; the hands and UI add no template ports. See
+[PRIOR_WORK.md](docs/PRIOR_WORK.md) and [TEAM_FORM.md](docs/TEAM_FORM.md).
+Credentials, runtime state, injection journals and environments remain ignored;
+sanitized report bundles are retained for review.
