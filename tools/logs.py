@@ -141,6 +141,16 @@ def field_value(document, path):
     return field_value(document.get(head), tail) if tail else document.get(head)
 
 
+def logger_scope(document):
+    """Preserve the diagnostic logger identity from an already sanitized record."""
+    for path in ("instrumentationScope.name", "instrumentation_scope.name", "scope.name",
+                 "scope_name", "logger.name", "logger_name", "logger"):
+        value = field_value(document, path)
+        if isinstance(value, str) and value.strip() and not is_sensitive(value):
+            return value[:300]
+    return None
+
+
 @bounded("opensearch")
 def get_logs(service, pattern=None, lookback_s=300, severity_min="WARN", limit=50):
     span = window(lookback_s)
@@ -198,6 +208,7 @@ def _opensearch_logs(service, pattern, span, severity_min, cap, limit):
         data.append({"timestamp": field_value(source, fields["time"]),
                      "severity": field_value(source, fields["severity_text"]) or field_value(source, fields["severity"]),
                      "body": str(field_value(source, fields["body"]))[:300],
+                     "logger_scope": logger_scope(source),
                      "trace_id": field_value(source, fields["trace"]), "evidence_id": evidence})
         ids.append(evidence)
     return envelope("get_logs", "opensearch", json.dumps(query, sort_keys=True), span, data, ids,

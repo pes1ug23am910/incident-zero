@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "id": "span:dd14e584d5cc70026e8d260b6c22ae3a/b677348ccd238fb0",
+  "source": "jaeger",
+  "data": {
+    "traceID": "dd14e584d5cc70026e8d260b6c22ae3a",
+    "spanID": "b677348ccd238fb0",
+    "operationName": "tcp.connect",
+    "references": [
+      {
+        "refType": "CHILD_OF",
+        "traceID": "dd14e584d5cc70026e8d260b6c22ae3a",
+        "spanID": "51271fa7608eccb0"
+      }
+    ],
+    "startTime": 1792757041117000,
+    "duration": 3055872,
+    "tags": [
+      {
+        "key": "error",
+        "type": "bool",
+        "value": true
+      },
+      {
+        "key": "net.peer.name",
+        "type": "string",
+        "value": "172.23.0.12"
+      },
+      {
+        "key": "net.peer.port",
+        "type": "int64",
+        "value": 9001
+      },
+      {
+        "key": "net.transport",
+        "type": "string",
+        "value": "ip_tcp"
+      },
+      {
+        "key": "otel.scope.name",
+        "type": "string",
+        "value": "@opentelemetry/instrumentation-net"
+      },
+      {
+        "key": "otel.scope.version",
+        "type": "string",
+        "value": "0.43.1"
+      },
+      {
+        "key": "otel.status_code",
+        "type": "string",
+        "value": "ERROR"
+      },
+      {
+        "key": "otel.status_description",
+        "type": "string",
+        "value": "connect EHOSTUNREACH 172.23.0.12:9001"
+      },
+      {
+        "key": "span.kind",
+        "type": "string",
+        "value": "internal"
+      }
+    ],
+    "logs": [],
+    "processID": "p1",
+    "warnings": null,
+    "process": {
+      "serviceName": "frontend",
+      "tags": [
+        {
+          "key": "container.id",
+          "type": "string",
+          "value": "47d4ddd3e3055a57893a60dd1b479cc2eee922cd29938fe67dbebae87a82fd46"
+        },
+        {
+          "key": "host.arch",
+          "type": "string",
+          "value": "amd64"
+        },
+        {
+          "key": "host.name",
+          "type": "string",
+          "value": "47d4ddd3e305"
+        },
+        {
+          "key": "os.type",
+          "type": "string",
+          "value": "linux"
+        },
+        {
+          "key": "os.version",
+          "type": "string",
+          "value": "6.6.87.2-microsoft-standard-WSL2"
+        },
+        {
+          "key": "process.command",
+          "type": "string",
+          "value": "/app/server.js"
+        },
+        {
+          "key": "process.command_args",
+          "type": "string",
+          "value": "[\"/usr/local/bin/node\",\"--require\",\"./Instrumentation.js\",\"/app/server.js\"]"
+        },
+        {
+          "key": "process.executable.name",
+          "type": "string",
+          "value": "node"
+        },
+        {
+          "key": "process.executable.path",
+          "type": "string",
+          "value": "/usr/local/bin/node"
+        },
+        {
+          "key": "process.owner",
+          "type": "string",
+          "value": "nextjs"
+        },
+        {
+          "key": "process.pid",
+          "type": "int64",
+          "value": 16
+        },
+        {
+          "key": "process.runtime.description",
+          "type": "string",
+          "value": "Node.js"
+        },
+        {
+          "key": "process.runtime.name",
+          "type": "string",
+          "value": "nodejs"
+        },
+        {
+          "key": "process.runtime.version",
+          "type": "string",
+          "value": "22.14.0"
+        },
+        {
+          "key": "service.namespace",
+          "type": "string",
+          "value": "opentelemetry-demo"
+        },
+        {
+          "key": "service.version",
+          "type": "string",
+          "value": "2.0.2"
+        },
+        {
+          "key": "telemetry.sdk.language",
+          "type": "string",
+          "value": "nodejs"
+        },
+        {
+          "key": "telemetry.sdk.name",
+          "type": "string",
+          "value": "opentelemetry"
+        },
+        {
+          "key": "telemetry.sdk.version",
+          "type": "string",
+          "value": "1.30.1"
+        }
+      ]
+    }
+  },
+  "captured_at": "2026-10-23T12:04:19.060202+00:00",
+  "checksum": "390b6d3e42b1c4c44e54eb64ef0dcb19191c053f7b517b2ebfbca8dae371abb3"
+}

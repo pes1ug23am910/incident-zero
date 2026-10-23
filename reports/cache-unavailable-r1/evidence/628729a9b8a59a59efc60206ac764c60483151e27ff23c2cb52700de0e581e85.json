@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "id": "log:otel/kFquaKEBUZiyFLby68zU",
+  "source": "opensearch",
+  "data": {
+    "attributes": {
+      "data_stream": {
+        "dataset": "default",
+        "namespace": "namespace",
+        "type": "record"
+      },
+      "userId": ""
+    },
+    "body": "GetCartAsync called with userId={userId}",
+    "instrumentationScope": {
+      "name": "cart.cartstore.ValkeyCartStore"
+    },
+    "observedTimestamp": "2026-10-23T12:14:16.531845445Z",
+    "resource": {
+      "container.id": "897bfeb378fdf4ef681fa0748d3109e75c630cddd80ac9906f874bfcae56228f",
+      "host.name": "897bfeb378fd",
+      "service.name": "cart",
+      "service.namespace": "opentelemetry-demo",
+      "service.version": "2.0.2",
+      "telemetry.sdk.language": "dotnet",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.11.2"
+    },
+    "severity": {
+      "text": "Information",
+      "number": 9
+    },
+    "spanId": "6abfc0e0cc86b1b3",
+    "@timestamp": "2026-10-23T12:14:12.2705428Z",
+    "traceId": "7b75d14f9f48a2503e63de8be0df8596"
+  },
+  "captured_at": "2026-10-23T12:15:19.203961+00:00",
+  "checksum": "bd037775e45b97b947df68170482e600c64a7e5b8050501aaa2b6679a5b1cfcb"
+}

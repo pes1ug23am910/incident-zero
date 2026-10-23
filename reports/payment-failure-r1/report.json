@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "payment-failure-r1",
+  "run_id": "runs/20261023T102943.979795Z-a1fcd705",
+  "detected_at": "2026-10-23T10:29:42.625368+00:00",
+  "diagnosed_at": "2026-10-23T10:29:46.437492+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "error_rate",
+    "service": "ad",
+    "observed": 0.07142857142857142,
+    "threshold": 0.05,
+    "window_s": 120,
+    "baseline": null
+  },
+  "symptoms": [
+    {
+      "service": "ad",
+      "signal": "error_rate",
+      "observed": "0.07142857142857142",
+      "evidence_ids": [
+        "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.018=0.07142857142857142",
+        "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"ad\"}@1792751384.019=15000.0"
+      ]
+    },
+    {
+      "service": "ad",
+      "signal": "p95_ms",
+      "observed": "15000.0",
+      "evidence_ids": [
+        "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.018=0.07142857142857142",
+        "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"ad\"}@1792751384.019=15000.0"
+      ]
+    },
+    {
+      "service": "payment",
+      "signal": "error_rate",
+      "observed": "0.22222222222222224",
+      "evidence_ids": [
+        "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"payment\"}@1792751384.018=0.22222222222222224",
+        "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"payment\"}@1792751384.019=15000.0"
+      ]
+    },
+    {
+      "service": "payment",
+      "signal": "p95_ms",
+      "observed": "15000.0",
+      "evidence_ids": [
+        "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"payment\"}@1792751384.018=0.22222222222222224",
+        "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"payment\"}@1792751384.019=15000.0"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "health_table",
+      "query": "{\"lookback_s\": 120}",
+      "why": "Locate every service anomaly before selecting a focused read.",
+      "finding": "Observed 20 service rows; 4 symptom entries.",
+      "evidence_ids": [
+        "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.018=0.07142857142857142",
+        "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"payment\"}@1792751384.018=0.22222222222222224",
+        "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"ad\"}@1792751384.019=15000.0",
+        "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"payment\"}@1792751384.019=15000.0",
+        "metric:query{__query__=\"sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.02=0.23335277939828314"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "ad",
+    "category": "unknown",
+    "cause": "The available observations do not establish a cause.",
+    "confidence_model": 0.3,
+    "confidence_evidence": 0.3,
+    "confidence": 0.3,
+    "evidence_ids": [
+      "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.018=0.07142857142857142",
+      "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"ad\"}@1792751384.019=15000.0",
+      "metric:query{__query__=\"sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.02=0.23335277939828314"
+    ],
+    "explains_symptoms": [],
+    "alternatives_considered": [
+      "Missing, delayed or incomplete telemetry can hide an incident."
+    ]
+  },
+  "root_causes": [
+    {
+      "component": "ad",
+      "category": "unknown",
+      "cause": "The available observations do not establish a cause.",
+      "confidence_model": 0.3,
+      "confidence_evidence": 0.3,
+      "confidence": 0.3,
+      "evidence_ids": [
+        "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.018=0.07142857142857142",
+        "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"ad\"}@1792751384.019=15000.0",
+        "metric:query{__query__=\"sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.02=0.23335277939828314"
+      ],
+      "explains_symptoms": [],
+      "alternatives_considered": [
+        "Missing, delayed or incomplete telemetry can hide an incident."
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.018=0.07142857142857142",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"ad\"}, \"timestamp\": 1792751384.018, \"value\": 0.07142857142857142, \"query\": \"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.018=0.07142857142857142' --run-dir 'runs/20261023T102943.979795Z-a1fcd705'"
+    },
+    {
+      "id": "metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"payment\"}@1792751384.018=0.22222222222222224",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"payment\"}, \"timestamp\": 1792751384.018, \"value\": 0.22222222222222224, \"query\": \"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"(sum by (service_name) (rate(traces_span_metrics_calls_total{status_code=\\\"STATUS_CODE_ERROR\\\"}[2m])) or (0 * sum by (service_name) (rate(traces_span_metrics_calls_total[2m])))) / sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"payment\"}@1792751384.018=0.22222222222222224' --run-dir 'runs/20261023T102943.979795Z-a1fcd705'"
+    },
+    {
+      "id": "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"ad\"}@1792751384.019=15000.0",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"ad\"}, \"timestamp\": 1792751384.019, \"value\": 15000.0, \"query\": \"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"ad\"}@1792751384.019=15000.0' --run-dir 'runs/20261023T102943.979795Z-a1fcd705'"
+    },
+    {
+      "id": "metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"payment\"}@1792751384.019=15000.0",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"payment\"}, \"timestamp\": 1792751384.019, \"value\": 15000.0, \"query\": \"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"histogram_quantile(0.95, sum by (le, service_name) (rate(traces_span_metrics_duration_milliseconds_bucket[2m])))\",service_name=\"payment\"}@1792751384.019=15000.0' --run-dir 'runs/20261023T102943.979795Z-a1fcd705'"
+    },
+    {
+      "id": "metric:query{__query__=\"sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.02=0.23335277939828314",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"ad\"}, \"timestamp\": 1792751384.02, \"value\": 0.23335277939828314, \"query\": \"sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.02=0.23335277939828314' --run-dir 'runs/20261023T102943.979795Z-a1fcd705'"
+    }
+  ],
+  "proposed_action": null,
+  "proposed_actions": [],
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "error_rate",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "needs_human",
+  "escalation_note": "Inspect the unresolved observations and collect fresh component/dependency evidence. No action proposed. Evidence-limited confidence is below 0.60. The diagnosed cause has no supported safe action. Escalate with evidence; no action may be proposed. Runbook: collect fresh component and dependency traces, logs and container state; review persistence and rollback before selecting a change.",
+  "prevention": "Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.",
+  "limitations": [
+    "Actions are proposals only. No approval, execution or recovery was performed.",
+    "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
+    "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs.",
+    "Unexplained symptom services: ad, payment",
+    "Structured decision limitation: All configured structured model routes failed; inspect sanitized llm.jsonl"
+  ],
+  "agent": {
+    "model": "unavailable",
+    "models_used": [],
+    "llm_calls": 2,
+    "tokens_input": 0,
+    "tokens_output": 0,
+    "estimated_cost_usd": 0,
+    "tool_calls": 1,
+    "elapsed_s": 2.453,
+    "stopped_because": "error",
+    "prompt_sha256": "74c22694854de3d5fd3bce99f542cb70724515ed47e14680e6ea4a9872a53038",
+    "framework": "LangGraph StateGraph + SqliteSaver"
+  },
+  "impact": {
+    "business": "auxiliary",
+    "journeys_affected": [
+      "advertising"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "manual",
+    "data_risk": "none",
+    "confidence": 0.3,
+    "tier": 3,
+    "score": 80,
+    "rationale": "Evidence-limited confidence is below 0.60. The diagnosed cause has no supported safe action. Escalate with evidence; no action may be proposed."
+  }
+}

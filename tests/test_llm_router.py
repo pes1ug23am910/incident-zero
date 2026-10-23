@@ -108,6 +108,36 @@ def test_transport_failures_retry_then_fall_back(tmp_path, monkeypatch):
     assert router.entries[1]["error"] == "ConnectionError"
 
 
+def test_chunked_response_retries_same_model_before_fallback(tmp_path, monkeypatch):
+    router, sleeps = make_router(tmp_path, monkeypatch, [
+        requests.exceptions.ChunkedEncodingError('Response ended prematurely'), Response()])
+    assert complete(router)['model'] == 'fixture/primary'
+    assert [call['json']['model'] for call in router.session.calls] == ['fixture/primary'] * 2
+    assert sleeps == [1]
+    assert router.entries[0]['error'] == 'ChunkedEncodingError'
+    assert router.entries[0]['error_detail'] == 'Response ended prematurely'
+    assert router.summary()['model'] == 'fixture/primary'
+    assert router.summary()['models_used'] == ['fixture/primary']
+
+
+def test_chunked_retry_exhaustion_and_dns_failure_remain_terminal_after_success(tmp_path, monkeypatch):
+    router, sleeps = make_router(tmp_path, monkeypatch, [Response(),
+        requests.exceptions.ChunkedEncodingError('Response ended prematurely'),
+        requests.exceptions.ChunkedEncodingError('Response ended prematurely'),
+        requests.ConnectionError('Name resolution failed'), requests.ConnectionError('Name resolution failed')],
+        env=environment(GEMINI_MODEL=''))
+    complete(router)
+    with pytest.raises(ModelUnavailable) as failure:
+        complete(router)
+    assert sleeps == [1, 1]
+    assert [entry['attempt'] for entry in router.entries[1:]] == [1, 2, 1, 2]
+    assert [entry['model'] for entry in router.entries[1:]] == ['fixture/primary'] * 2 + ['fixture/fallback'] * 2
+    assert 'ChunkedEncodingError: Response ended prematurely' in str(failure.value)
+    assert 'ConnectionError: Name resolution failed' in str(failure.value)
+    assert router.summary()['model'] == 'failed: openrouter/fixture/primary, openrouter/fixture/fallback'
+    assert router.summary()['models_used'] == ['fixture/primary']
+
+
 def test_direct_provider_is_last_fallback_and_requires_its_model(tmp_path, monkeypatch):
     router, _ = make_router(tmp_path, monkeypatch, [Response(400), Response(400), Response()])
     assert complete(router)["model"] == "fixture-direct"

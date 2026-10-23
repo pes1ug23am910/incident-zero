@@ -1,117 +1,157 @@
-# Why each control exists
+# Why these controls exist
 
-For every safety control and design choice: what it prevents, how you can check it in 30 seconds, and our answer to "why not something simpler". Commands are PowerShell from the repo root. Items marked (planned) are not built yet.
+This session builds detection and diagnosis. It proposes remedies and saves a
+graph paused for review. **It cannot execute a remedy.** Live diagnostic results
+belong in BUILD_04.md. Tests of control flow do not establish live accuracy.
 
-## Safety controls
+## Telemetry drives investigation
 
-### 1. The Action API is the only write path, behind an allowlist
-- Prevents: the agent running any Docker or shell command it likes against the demo (rule 4).
-- Check: `curl.exe -s localhost:8787/actions` lists four actions; `Select-String -Path agent\*.py,tools\*.py,detect\*.py -Pattern 'docker (stop|start|restart|update|rm|kill)'` prints nothing.
-- Why not simpler: letting the agent call Docker directly is less code, but then approval is advice, not a gate.
+The first read is health_table across known services. Each later structured tool
+call contains a reason and selects one read. The 12-call budget includes health.
+Repeated identical calls stop investigation; an explicit graph recursion limit
+bounds iteration. A call budget does not guarantee a wall-clock duration.
 
-### 2. Nothing executes without a human approval token
-- Prevents: any change to the system without an explicit yes (stage 5, rule 4).
-- Check: `pytest -q tests\test_action_api.py`; the no-token case returns 403.
-- Why not simpler: an `approved: true` field can be set by the same code that asks; a token can only come from the approval step.
+The detector reads metrics and container health without injection state. Rate
+windows are at least two minutes. The checkpoint script waits for error rates
+to clear after reset: the connector can retain prior errors for roughly 120
+seconds. Future post-action verification must cover at least 180 seconds with
+30-second samples; that verifier is not built in this session.
 
-### 3. The token is bound to the world state and expires in 10 minutes
-- Prevents: approving one system and executing on another (a container recreated, another fix landed in between).
-- Check: dry-run, then `docker restart cart`, then execute with the old token: 409.
-- Why not simpler: an approval is for one state of the system; a token that outlives that state is a blank cheque.
+Checks: tests/test_detect.py, tests/test_graph_routes.py and report investigation
+arrays. Actual alert timings are recorded separately in the live ledger.
 
-### 4. Dry run before every approval
-- Prevents: a human approving a sentence instead of a concrete plan with a predicted effect.
-- Check: the dry-run test compares container ids and the flag-file hash before and after: identical.
-- Why not simpler: "restart payment" sounds harmless until the plan shows which container and what it will interrupt.
+## Diagnosis never reads the answer
 
-### 5. STOP is a file and an endpoint, and only a person clears it
-- Prevents: a running loop continuing while a person tries to intervene, or clearing its own kill switch.
-- Check: `New-Item STOP`, then `faultctl inject cart-intermittent` refuses; `curl.exe -s -X DELETE localhost:8787/stop` without the phrase is refused. `Remove-Item STOP` after.
-- Why not simpler: an endpoint alone dies with the API process; a file works even when the API is down, and every component checks it.
+The tool layer removes control-setting names, associated trace attributes and
+events, revealing log lines, and telemetry emitted by the control backend.
+Recorded-span filtering regressions are implemented. Ordinary container liveness
+remains observable; excluded backend records are removed from model context.
 
-### 6. Verify after acting, with the alert's own query
-- Prevents: calling an incident fixed because the command returned 0.
-- Check: any `fixed` report has `verification.before` and `after`; the validator refuses `fixed` without `recovered: true`.
-- Why not simpler: a restart can succeed while the error rate stays at 40 %; we check the signal that raised the alert.
+The caller's incident identifier is report metadata, not prompt input. Diagnostic
+packages cannot import the injector or read ground-truth records. Only the
+evaluation package may read those records for scoring. Diagnosis depends on
+errors, latency, logs, service names and container state.
 
-### 7. Roll back and escalate when recovery fails
-- Prevents: leaving a fix that did not help in place.
-- Check: the forced non-recovery test restores the previous flag variant; the report says `rolled_back`.
-- Why not simpler: if our change did not help, the safest state is the one before it, plus a person.
+Service-to-setting mapping belongs only in the future `action_api/flags.py`.
+The brain proposes `toggle_flag` with a service target and the phrase "disable
+the failure switch for &lt;service&gt;". The hands may read the current variant only
+for rollback and world-state hashing. Those reads are not diagnosis. Mapping
+and writing are deferred to the Action API session.
 
-### 8. Append-only action log
-- Prevents: changes nobody can reconstruct; it also feeds `get_deploy_history`.
-- Check: `Get-Content action_api\log.jsonl -Tail 5`.
-- Why not simpler: "what changed recently" is the first question on any incident, including changes we made.
+Checks: tests/test_no_flag_reads.py, tests/test_agent_isolation.py and
+tests/test_redaction.py, alongside review of actual evidence and transcripts.
 
-### 9. The test-only approval bypass is opt-in and loud
-- Prevents: tests needing a human, and the bypass slipping into a demo.
-- Check: `--auto-approve-for-tests` without `INCIDENT_ZERO_TEST=1` refuses; with it, a banner prints.
-- Why not simpler: tests need a bypass; making it opt-in and visible keeps it from becoming the default.
+## Evidence must exist and support the component
 
-### 10. The Action API listens on localhost only
-- Prevents: anything else on the venue network calling it (out of scope 5).
-- Check: `netstat -ano | findstr 8787` shows only `127.0.0.1`.
-- Why not simpler: this is the simple version; one bind address.
+Every read snapshots evidence. The planted-evidence guard rejects IDs not
+received during the investigation and checks their relationship to the claimed
+component. Schema validation independently checks source identifiers and
+structured service names. An invented summary alone cannot establish support.
 
-## Diagnosis and rule compliance
+Resolution tries live data, the named run's snapshot, then an explicitly selected
+committed report bundle. Origins are labelled live, snapshot or bundle_snapshot.
+ID, source, checksum and size are checked. Run and bundle paths are confined, and
+linked paths are rejected. A snapshot establishes a recorded observation, not
+the current system state.
 
-### 11. No flag reads, enforced by tests
-- Prevents: disqualification (rule 6) and an agent that reads the answer instead of reasoning.
-- Check: `pytest -q tests\test_no_flag_reads.py tests\test_agent_isolation.py`.
-- Why not simpler: trusting ourselves is simpler, but a test fails loudly the moment someone adds a shortcut late at night.
+Checks: tests/test_planted_evidence.py, tests/test_snapshots.py,
+tests/test_bundle_resolution.py and tests/test_schema.py. For a retained report,
+run `python -m schema.validate reports/<incident-id>/report.json`. For one ID use
+`python -m tools.resolve '<id>' --run-dir runs/<run-id> --bundle-dir reports/<incident-id>`.
 
-### 12. Flag attributes are stripped from telemetry (planned)
-- Prevents: flag keys reaching the model through OpenFeature span attributes and flagd's own metrics.
-- Check: `python -m tools.cli get_traces cart` contains no `feature_flag` (planned).
-- Why not simpler: the rule bans reading flag settings and these attributes are flag settings; dropping them is cheaper than arguing.
+## Confidence and symptom coverage
 
-### 13. The prompt never contains incident ids or flag names
-- Prevents: matching on names instead of telemetry; hard-coded answers (out of scope 4).
-- Check: `Select-String -Path runs\*\llm.jsonl -Pattern 'faultctl|paymentFailure|payment-failure'` prints nothing.
-- Why not simpler: giving the model our practice catalogue raises the practice score and lowers the hidden-test score.
+The report separates confidence_model from confidence_evidence. Code derives
+evidence confidence from independent positive sources and signal magnitude.
+Final confidence is their minimum. High confidence needs two supporting sources;
+two Docker observations share one backend source. This heuristic needs measured
+calibration and is not an established probability.
 
-### 14. Detection starts from telemetry, not from our injector
-- Prevents: an agent that works only with `faultctl`; the hidden test injects its own way.
-- Check: `docker stop recommendation` by hand, then `python -m detect.once` fires.
-- Why not simpler: having faultctl start the agent is one line and fails the hidden test.
+root_causes is confidence-ordered; root_cause exactly aliases the first entry.
+A dependency graph associates caller symptoms with the failing component.
+Unexplained symptoms remain visible so one cause need not hide another.
+Missing telemetry and unexplained symptoms belong in limitations. Confidence
+below 0.6 escalates. Clean findings and STOP-driven aborts have separate safe
+statuses. Missing telemetry alone cannot establish no_incident.
 
-### 15. Every claim cites an evidence id that resolves
-- Prevents: invented evidence (penalised in stage 3); the builder rejects ids no tool returned in this run.
-- Check: pick any id in any report, `python -m tools.resolve "<id>"`; `pytest -q tests\test_planted_evidence.py`.
-- Why not simpler: quoted text can be invented; an id can be fetched again by anyone.
+Practice incidents are the tuning set. Combinations and no fault remain held
+out until tuning stops. Evaluation must identify measured runs and report
+calibration counts, Brier score and Wilson intervals honestly.
 
-### 16. Below 0.6 confidence the agent escalates instead of acting
-- Prevents: a confident wrong fix, which the brief scores below an escalation.
-- Check: the validator rejects `confidence < 0.6` with any status but `needs_human`; see the no-fault report.
-- Why not simpler: always proposing a fix demos better and scores worse.
+## Untrusted telemetry cannot choose an action
 
-### 17. Stop only at 0.75 with two independent sources
-- Prevents: stopping on one noisy signal, such as latency that is really load.
-- Check: in any `diagnosed` report the evidence table shows at least two different sources.
-- Why not simpler: one source always agrees with itself; wrong diagnoses show up where two sources disagree.
+Shop users can put instructions into logs, exception text and span attributes.
+Results are marked as telemetry data, and known instruction-like text is omitted
+from model input. Textual defences are supplementary: code selects the action
+type from a validated category, and targets belong to the known service list.
+The model cannot submit an arbitrary shell command.
 
-### 18. One tool per step, with a reason, health table first, capped output
-- Prevents: pasting all telemetry into one prompt (the brief asks for this explicitly), context overflow, cost.
-- Check: the `investigation` table of any report; `runs\<ts>\llm.jsonl` has one tool call per turn.
-- Why not simpler: one big prompt cannot be explained step by step and breaks as telemetry grows.
+Checks: tests/test_injection.py and tests/test_risk.py. A planted instruction
+to restart payment must not change the proposal. This regression does not prove
+protection against every possible indirect prompt injection.
 
-### 19. A budget of 12 tool calls
-- Prevents: loops that burn the spend limit and miss the 90-second target.
-- Check: `agent.tool_calls` is at most 12 in every report; `stopped_because: budget` when it runs out.
-- Why not simpler: an unbounded loop is easier to write and impossible to time.
+`action_api/policy.yaml` keeps `auto_approve_tiers: []`. Untrusted input, internal
+access and future state-changing tools require a human decision on every action.
+There is no approval bypass in this session.
 
-### 20. A strict schema with cross-field rules
-- Prevents: reports that parse but lie, such as `fixed` without an approval or a recovery.
-- Check: `python -m schema.validate schema\examples\*.json`; the invalid examples exit 1 with the field path.
-- Why not simpler: free text is easier to write and cannot be scored automatically.
+## Risk determines human review
 
-### 21. The demo stays unmodified; reset restores it byte for byte
-- Prevents: tampering (rule 6) and drift between runs.
-- Check: after `faultctl reset`, `git -C ..\opentelemetry-demo status --short` prints nothing.
-- Why not simpler: vendoring the demo into our repo would make accidental edits easy.
+agent/risk.py computes criticality, journeys, blast radius, reversibility, data
+risk, confidence, score and tier. It explicitly says distinct users were not
+measured: span rates do not become invented user counts.
 
-### 22. Temperature 0, a fallback model, and every LLM call logged
-- Prevents: runs we cannot repeat or explain, and a dead demo when one provider fails.
-- Check: open `runs\<ts>\llm.jsonl`; `agent.model` in each report names the model used.
-- Why not simpler: one provider with no log is simpler until it times out on stage.
+Tier 1 permits quick review only for one auxiliary/core service, a reversible
+proposal and confidence at least 0.75. Its line shows action, target and predicted
+effect. Tier 2 needs full evidence and typed yes for critical services or
+restarts. Tier 3 suppresses proposals and adds escalation and a runbook for
+multiple independent failures, data risk, low confidence or an unsupported remedy.
+Inherited caller symptoms remain one established cause; independent failures
+increase assessed scope.
+
+Data risk concerns the proposed change. Restarting payment creates payment risk;
+restarting a live cart/cache can discard state. A reversible application switch
+does not permit payment-data edits or charge retries. An already stopped cache
+is distinguished from discarding a live cache's state. A future restart still
+needs a human and measured verification. Impact appears before proposals.
+
+Actual quick-keypress and typed-yes clients are deferred. No reviewer agent
+exists in this build; evidence confidence supplies the independent-source rule.
+A future reviewer must use a different model/vendor from the investigator.
+
+## Durable approval boundaries
+
+The loop is a LangGraph StateGraph. SqliteSaver persists runs/checkpoints.sqlite
+with thread_id equal to run_id. Preview and approval are separate nodes because
+an interrupted node starts again on resume. The resume value carries the
+decision; future approval tokens must travel there too, avoiding a second prompt.
+
+agent.respond checks that the next saved node is exactly approval, refusing
+unknown and completed threads. This build permits rejection and refuses approval
+because the Action API is unavailable. Even direct graph resume with approval
+reaches an inert execute node: action.executed remains false. The verify node
+preserves the unperformed record and claims no recovery. STOP prevents resumption
+and stops ongoing investigation.
+
+tests/test_graph_persistence.py closes and reopens SQLite connections, resumes
+the same checkpoint without repeating preview, refuses mismatched/completed
+threads, and confirms approved resume performs no action. These are synthetic
+offline lifecycle tests, not live diagnostic evaluation.
+
+## Auditability and future work
+
+The router reads model choices from the environment and uses configured
+fallbacks. It logs sanitized requests, public tool decisions, token counts and
+reference cost estimates, excluding provider reasoning content.
+Temperature 0 and logged prompts make runs reproducible in inputs, not outputs.
+Working models and measured costs belong in BUILD_04.md.
+
+The primary schema closes objects and checks aliases, confidence, evidence and
+approval/execution consistency. The external adapter is identity until a supplied
+schema activates its mapping table. It preserves the internal report and marks
+unavailable values instead of inventing them.
+
+The later Action API session must implement the localhost allowlisted service,
+authoritative dry runs, human-issued tokens bound to world state and expiry,
+per-action approval, append-only audit, STOP endpoints and human clear phrase,
+execution, verification and rollback. Those endpoints, expiry guarantees,
+successful remediations and rollback tests are not claimed as built or verified.

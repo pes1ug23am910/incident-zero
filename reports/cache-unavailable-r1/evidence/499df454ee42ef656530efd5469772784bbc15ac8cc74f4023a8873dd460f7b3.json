@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "id": "log:otel/sVqvaKEBUZiyFLbyYcxR",
+  "source": "opensearch",
+  "data": {
+    "attributes": {
+      "data_stream": {
+        "dataset": "default",
+        "namespace": "namespace",
+        "type": "record"
+      }
+    },
+    "body": "Wasn't able to connect to redis",
+    "instrumentationScope": {
+      "name": "cart.cartstore.ValkeyCartStore"
+    },
+    "observedTimestamp": "2026-10-23T12:14:46.608317654Z",
+    "resource": {
+      "container.id": "897bfeb378fdf4ef681fa0748d3109e75c630cddd80ac9906f874bfcae56228f",
+      "host.name": "897bfeb378fd",
+      "service.name": "cart",
+      "service.namespace": "opentelemetry-demo",
+      "service.version": "2.0.2",
+      "telemetry.sdk.language": "dotnet",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.11.2"
+    },
+    "severity": {
+      "text": "Error",
+      "number": 17
+    },
+    "spanId": "965d493810afbb93",
+    "@timestamp": "2026-10-23T12:14:43.3536294Z",
+    "traceId": "8fb967da8f1a470d0a0c95c58de47e73"
+  },
+  "captured_at": "2026-10-23T12:15:19.194445+00:00",
+  "checksum": "0d4dffc0e4f5c94b1cf978eacf23e7f75d0103760a3bca8ae1f2af0072bc81ac"
+}

@@ -27,7 +27,11 @@ def build_report(state, model_summary, elapsed):
     for service in state.get('symptom_services', []):
         if not any(s['service'] == service for s in symptoms):
             ids = [i for i,e in evidence.items() if service in e['services'] and e['strength'] >= .5][:2]
-            symptoms.append({'service': service, 'signal': 'alert_context', 'observed': 'Anomaly present in the detector alert; re-evaluated during investigation.', 'evidence_ids': ids})
+            alerted = {state['alert'].get('service'), *(item.get('service') for item in state['alert'].get('anomalies', []))}
+            signal = 'alert_context' if service in alerted else 'investigation_context'
+            observed = ('Anomaly present in the detector alert; re-evaluated during investigation.' if service in alerted
+                        else 'Failure observed in evidence collected after the initial health overview.')
+            symptoms.append({'service': service, 'signal': signal, 'observed': observed, 'evidence_ids': ids})
     if not symptoms:
         row = next((r for r in health.get('data', []) if r['service'] == 'frontend'), {})
         ids = [i for i, e in evidence.items() if 'frontend' in e['services'] and (i.startswith('metric:') or ':Status=' in i)][:3]

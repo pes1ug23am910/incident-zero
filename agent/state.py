@@ -25,6 +25,8 @@ class IncidentState(TypedDict, total=False):
     unexplained: list[str]
     symptom_services: list[str]
     finish_blocked: bool
+    confidence_reassessment: bool
+    decision_repair_used: bool
     done: bool
     clean: bool
     report: dict

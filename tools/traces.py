@@ -1,7 +1,7 @@
 """Bounded summaries from the trace backend."""
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from .common import bounded, envelope, get_json, jaeger_json, window, BackendError
 from .redact import is_sensitive, scrub_trace
 from .evidence import capture_evidence
@@ -58,9 +58,13 @@ def trace_summary(trace):
 
     errors.sort(key=lambda s: (-depth(s.get("spanID")), s.get("startTime", 0), s.get("spanID", "")))
     origins = [s for s in errors if s.get("spanID") not in error_parents]
-    start = min((s.get("startTime", 0) for s in spans), default=0)
-    end = max((s.get("startTime", 0) + s.get("duration", 0) for s in spans), default=start)
+    timed_spans = [s for s in spans if isinstance(s.get("startTime"), (int, float))]
+    start = min((s["startTime"] for s in timed_spans), default=0)
+    end = max((s["startTime"] + s.get("duration", 0) for s in timed_spans), default=start)
+    epoch = datetime(1970, 1, 1, tzinfo=timezone.utc)
     return {"trace_id": trace["traceID"], "duration_ms": (end - start) / 1000,
+            "started_at": (epoch + timedelta(microseconds=start)).isoformat() if timed_spans else None,
+            "ended_at": (epoch + timedelta(microseconds=end)).isoformat() if timed_spans else None,
             "root_span": span_summary(root, processes),
             "first_error_span": span_summary(origins[0], processes) if origins else None,
             "origin_error_spans": [span_summary(s, processes) for s in origins],
