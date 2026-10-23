@@ -1,0 +1,703 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://incident-zero.local/schema/incident-report/1.0",
+  "title": "Incident Zero report version 1.0",
+  "description": "Evidence-backed incident diagnosis, human approval, action audit, and recovery checks.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "incident_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^runs/[^/\\\\]+$"
+    },
+    "detected_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+    },
+    "diagnosed_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+    },
+    "resolved_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+    },
+    "alert": {
+      "type": "object",
+      "properties": {
+        "signal": {
+          "type": "string",
+          "enum": [
+            "error_rate",
+            "latency_p95",
+            "container_health"
+          ]
+        },
+        "service": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed": {
+          "type": "number"
+        },
+        "threshold": {
+          "type": "number"
+        },
+        "window_s": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "signal",
+        "service",
+        "observed",
+        "threshold",
+        "window_s"
+      ],
+      "additionalProperties": false
+    },
+    "symptoms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "type": "string",
+            "minLength": 1
+          },
+          "signal": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observed": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "service",
+          "signal",
+          "observed",
+          "evidence_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "investigation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "tool": {
+            "type": "string",
+            "enum": [
+              "get_metrics",
+              "get_traces",
+              "get_logs",
+              "get_container_health",
+              "get_deploy_history",
+              "health_table"
+            ]
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1
+          },
+          "why": {
+            "type": "string",
+            "minLength": 1
+          },
+          "finding": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "step",
+          "tool",
+          "query",
+          "why",
+          "finding",
+          "evidence_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "root_cause": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cause": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "application_flag",
+            "container_down",
+            "restart_loop",
+            "dependency_unavailable",
+            "network",
+            "resource_starvation",
+            "load",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "alternatives_considered": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "component",
+        "cause",
+        "category",
+        "confidence",
+        "alternatives_considered"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^(trace:[^\\s/:]+|span:[^\\s/:]+/[^\\s/:]+|log:[^\\s/]+/[^\\s/]+|metric:.+\\{.*\\}@[^=]+=[^=]+|container:[^\\s:]+:[^=]+=.+|action_log:[1-9][0-9]*|dlog:[^\\s/:]+:[a-f0-9]{64})$"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "jaeger",
+              "prometheus",
+              "opensearch",
+              "docker",
+              "action_log"
+            ]
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "raw_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "summary",
+          "raw_ref"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "proposed_action": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "restart_service"
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "service": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "service"
+              ],
+              "additionalProperties": false
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "risk": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dry_run": {
+              "type": "object",
+              "properties": {
+                "performed": {
+                  "type": "boolean"
+                },
+                "predicted_effect": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "performed",
+                "predicted_effect"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "type",
+            "target",
+            "parameters",
+            "reason",
+            "risk",
+            "dry_run"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "toggle_flag"
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "flag": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "variant": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "flag",
+                "variant"
+              ],
+              "additionalProperties": false
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "risk": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dry_run": {
+              "type": "object",
+              "properties": {
+                "performed": {
+                  "type": "boolean"
+                },
+                "predicted_effect": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "performed",
+                "predicted_effect"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "type",
+            "target",
+            "parameters",
+            "reason",
+            "risk",
+            "dry_run"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "throttle_load"
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "users": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "spawn_rate": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": [
+                "users",
+                "spawn_rate"
+              ],
+              "additionalProperties": false
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "risk": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dry_run": {
+              "type": "object",
+              "properties": {
+                "performed": {
+                  "type": "boolean"
+                },
+                "predicted_effect": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "performed",
+                "predicted_effect"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "type",
+            "target",
+            "parameters",
+            "reason",
+            "risk",
+            "dry_run"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "none"
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "risk": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dry_run": {
+              "type": "object",
+              "properties": {
+                "performed": {
+                  "type": "boolean"
+                },
+                "predicted_effect": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "performed",
+                "predicted_effect"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "type",
+            "target",
+            "parameters",
+            "reason",
+            "risk",
+            "dry_run"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "const": true
+        },
+        "requested_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+        },
+        "approved": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "approved_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+        },
+        "token": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "required",
+        "requested_at",
+        "approved",
+        "approved_by",
+        "approved_at",
+        "token"
+      ],
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "properties": {
+        "executed": {
+          "type": "boolean"
+        },
+        "started_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+        },
+        "finished_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+        },
+        "action_log_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "executed",
+        "started_at",
+        "finished_at",
+        "action_log_ref"
+      ],
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "properties": {
+        "checked_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}[Tt]\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:[Zz]|[+-]\\d{2}:\\d{2})$"
+        },
+        "signal": {
+          "type": "string"
+        },
+        "before": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "after": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "recovered": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "rolled_back": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "checked_at",
+        "signal",
+        "before",
+        "after",
+        "recovered",
+        "rolled_back"
+      ],
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "no_incident",
+        "diagnosed",
+        "needs_human",
+        "fixed",
+        "rolled_back",
+        "aborted"
+      ]
+    },
+    "escalation_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "prevention": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "agent": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tool_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "elapsed_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "stopped_because": {
+          "type": "string",
+          "enum": [
+            "confident",
+            "budget",
+            "stop_signal",
+            "error"
+          ]
+        }
+      },
+      "required": [
+        "model",
+        "tool_calls",
+        "elapsed_s",
+        "stopped_because"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "incident_id",
+    "run_id",
+    "detected_at",
+    "diagnosed_at",
+    "resolved_at",
+    "alert",
+    "symptoms",
+    "investigation",
+    "root_cause",
+    "evidence",
+    "proposed_action",
+    "approval",
+    "action",
+    "verification",
+    "status",
+    "escalation_note",
+    "prevention",
+    "limitations",
+    "agent"
+  ],
+  "additionalProperties": false
+}
