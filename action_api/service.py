@@ -18,7 +18,7 @@ from agent.evidence import observation_family
 from agent.risk import assess
 from .approval import prompt
 from .safety import Blocked, digest, exclusive, now
-from .verify import Verifier
+from .verify import Verifier, finite
 
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWLIST = {"restart_service": {"service": "known service"},
@@ -297,9 +297,16 @@ class ActionService:
                 return attempt["verification"]
             if attempt["phase"] != "verifying":
                 raise Blocked("ATTEMPT_REQUIRES_REVIEW", 409)
+            observed_samples = []
+            def retain_progress(point):
+                # Keep observations even when STOP or a later callback/rollback
+                # interrupts the verifier before it returns its complete window.
+                observed_samples.append(deepcopy(point))
+                if progress:
+                    progress(point)
             try:
                 report = attempt["report"]
-                verification = self.verifier.verify(self.verification_alert(report), report["run_id"], self.check_stop, progress)
+                verification = self.verifier.verify(self.verification_alert(report), report["run_id"], self.check_stop, retain_progress)
                 if not verification["recovered"]:
                     self.check_stop()
                     attempt["phase"] = "rolling_back"
@@ -314,10 +321,12 @@ class ActionService:
             except Exception as exc:
                 stopped = isinstance(exc, Blocked) and exc.status == 423
                 attempt["phase"] = "aborted" if stopped else "uncertain"
+                observed_requests = observed_samples[-1].get('requests_observed', 0) if observed_samples else 0
                 verification = {"checked_at": now(), "signal": attempt["report"]["alert"]["signal"],
                                 "before": attempt["report"]["alert"].get("observed"), "after": None,
                                 "recovered": False, "rolled_back": False, "outcome": "blocked",
-                                "requests_observed": 0, "samples": [],
+                                "requests_observed": observed_requests if finite(observed_requests) and observed_requests >= 0 else 0,
+                                "samples": observed_samples,
                                 "rollback_note": exc.code if isinstance(exc, Blocked) else "VERIFY_OR_ROLLBACK_UNCERTAIN"}
             attempt["verification"] = verification
             self.put("attempts", key, attempt)
