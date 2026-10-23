@@ -1,138 +1,69 @@
-# Architecture
+# Architecture and verification status
 
-The brain, hands and Control Room run in one checkout. Live verification is
-recorded separately from implementation status below.
+The operator owns fault injection. The investigator receives telemetry from the
+unmodified OpenTelemetry Demo, not the injector's journal. Status below describes
+the `docsport` snapshot and its retained bundles.
 
 ```mermaid
-flowchart TD
-  Demo[Unmodified OpenTelemetry Demo] --> Tools[Read-only telemetry tools]
-  Tools --> Detect[Threshold detector]
-  Detect --> Brain[LangGraph investigation]
-  Brain --> Bundle[Report and evidence bundle]
-  Brain --> Checkpoint[SQLite approval checkpoint]
-  Checkpoint --> DryRun[Action API dry run]
-  DryRun --> Human[Terminal or Control Room approval]
-  Human --> Action[Allowlisted execution]
-  Action --> Verify[Traffic-qualified verification]
-  Verify --> Final[Checkpoint and report update]
-  Verify --> Rollback[Conditional settings rollback or escalation]
-  Action --> Audit[Append-only action log]
-  Final --> UI[Control Room]
+flowchart LR
+  Demo[Official demo] --> Tools[Read-only tools and snapshots]
+  Tools --> Detect[Detector]
+  Detect --> Graph[LangGraph investigation]
+  KB[Runbooks, catalogue, memory] -. fold integration .-> Graph
+  Graph --> Report[Report and SQLite checkpoint]
+  Report --> Preview[Action API dry run]
+  Preview --> Human[CLI or browser decision]
+  Human --> Execute[Bound token and allowlisted action]
+  Execute --> Verify[Traffic-qualified verification]
+  Verify --> Final[Report and action log]
+  Stop[STOP file] --> Graph
+  Stop --> Execute
+  Stop --> Verify
 ```
 
-## Components and boundaries
+| Component | Responsibility | Implementation / evidence |
+|---|---|---|
+| `faultctl/` | Injection, overlay, reset/read-back | Built; [BUILD_01B](../BUILD_01B.md); generic grammar and external reset require fold |
+| `tools/` | Metrics, traces, logs, containers, action history; resolution | Built; `python -m tools.cli health_table`; five read timings passed preflight |
+| `detect/` | Thresholds, baseline, debounce, watcher | Built; idle fixture quiet; outage, traffic-state, CLIENT-span and latch fixes still xfail |
+| `agent/` | Investigation, evidence, policy and response graph | Built; [payment r6](../reports/payment-failure-r6/report.json), [recommendation r3](../reports/container-stopped-r3/report.json); current-prompt reruns not verified |
+| `action_api/` | Preview, approval, idempotency, STOP, verification | Built; [payment loop r3](../reports/payment-failure-loop-r3/report.json), [restart loop r1](../reports/container-stopped-loop-r1/report.json), both test-approved |
+| `ui/` | Mock/real Control Room and shared pending checkpoint | Built; [loop r9](../reports/payment-failure-loop-r9/hands-rehearsal.json) exercised the real browser endpoint through automation |
+| `schema/`, `reports/` | Internal schema, validator, JSON/Markdown, export adapter | Built; `python -m schema.validate "reports/*/report.json"`; organiser schema not verified |
+| `knowledge/`, `memory/` | Procedures, catalogue, retrieval, incident summaries | Built on separate knowledge branch, absent here; corrected merged/live behavior not verified |
+| `eval/` | Explicit case scoring/calibration | Built; `python -m eval.calibration --help`; no held-out accuracy claim |
+| `scripts/` | Both shells, readiness, morning, Linux gate | Built; help/preview and read-only preflight exercised; no mutating rehearsal this session |
+| Reviewer model / Kubernetes scaling | Optional review / scaling | Not implemented; Compose scaling explicitly unavailable |
 
-| Component | Responsibility |
-| --- | --- |
-| `faultctl/` | Operator-only injection/reset, scoped Docker changes and repository-owned overlay; official demo source stays unmodified |
-| `tools/` | Capped metrics, traces, logs, container state and action history; redaction, evidence IDs, immutable snapshots and resolution |
-| `detect/` | Telemetry thresholds, debounce, alert persistence and investigation startup; no injection-state reads |
-| `agent/run.py`, `graph.py` | Health first, one structured tool per step, diagnosis, evidence confidence, symptom coverage and risk assessment |
-| `agent/respond.py` | Shared LangGraph response tail, canonical checkpoint checks, terminal/browser arbitration, approval, execute, verify and saved report update |
-| `action_api/` | Localhost write boundary: allowlist, authoritative preview, durable tokens/idempotency, STOP, cooldown, executors, verification and rollback |
-| `ui/`, `action_api/ui_routes.py` | Static Control Room and same-origin API; real mode mounts in the Action API, mock mode keeps decisions in memory |
-| `schema/`, `reports/` | Closed schema and cross-field validation; JSON/Markdown bundles, evidence manifest and action-log excerpts |
-| `scripts/checkpoint3.ps1` | Complete operator rehearsal with qualified before/after windows, terminal/browser decision, final report and cleanup |
-| `eval/` | Explicit offline case scoring and calibration summaries; never imported by the investigator |
+The graph starts with health and requests bounded tools, retaining reasons and
+resolvable evidence. Twelve tool reads do not establish a wall-clock or LLM-call
+deadline: guaranteed terminal reports and these limits are fold requirements.
+Low support or incomplete coverage must escalate. Code selects remedies from
+closed component/category labels; prose and retrieval cannot authorize execution.
 
-## One incident
+**Independence counts observations, not APIs.** Trace IDs, span IDs and spanmetrics
+share a trace family. Runtime CPU/memory, container lifecycle and application logs
+provide other observations. Duplicate Docker/OpenSearch logs count once; a span
+and log for the same request remain correlated. Health tables add no family.
+The snapshot still classifies spanmetrics as generic metrics, so historical
+confidence does not establish compliance with the corrected two-family rule.
+`test_spanmetrics_do_not_double_count_traces` is a strict xfail. Log-body mentions
+do not prove ownership: require the emitting component or a structured service
+field. Signal magnitude needs a service-relative baseline.
 
-1. The detector observes a threshold crossing and writes an alert. Organiser
-   incidents enter through exactly this telemetry path; the injector is optional.
-2. The investigation starts with all-service health, then chooses one read per
-   model step. Twelve calls bound the investigation. Tools reject control-setting
-   disclosure and retain sanitized observations.
-3. Code checks evidence provenance, component support and source independence;
-   final confidence is `min(model, evidence)`. The dependency graph explains caller
-   symptoms without turning one dependency failure into unrelated causes.
-4. Risk assessment runs before proposal. Code derives allowlisted actions from
-   causes. Low confidence, independent multi-service faults, data risk and
-   unsupported fixes escalate with no action.
-5. The response graph performs a real dry run, then persists an `approval`
-   interrupt in `runs/checkpoints.sqlite`, keyed by `run_id`. The saved report is
-   a sanitized presentation; the private canonical checkpoint binds tokens.
-6. A terminal `y`/typed `yes` or a browser decision resumes that checkpoint.
-   Both surfaces recheck the current world and compete for the same response
-   lock. The winner executes once; the other observes the result. Human reading
-   time does not hold the execution lock. Each action needs its own decision.
-   A browser continuation that begins before the terminal enters the responder
-   is joined under the same lock, so terminal cleanup waits for verification.
-7. Verification samples every 30 seconds for at least 180 seconds. Every original
-   alert signal must satisfy its recovery predicate on two consecutive samples,
-   with at least 20 measured frontend requests and a running load generator.
-   Both container liveness and a current Locust `running` state with positive
-   users are required; residual request counts after swarm stop do not qualify.
-   Final JSON, Markdown, evidence and the action-log excerpt are saved together.
+SQLite holds approval interrupts. CLI and browser compete for the same response;
+one single-use token binds report, action, operator and world. The required record
+is `approved_by`, `surface=cli|browser|test`, `mode=live|test`, timestamp and token
+ID. Test approvals render **Approved in TEST mode by the test harness (not a human)**.
+Historical reports omit provenance and can misleadingly name Yash; their runner
+and action-log records are authoritative. R3/restart-r1 used test approval; r4 used
+`--reject`; r9 used browser automation. Human approval is not verified. The fold
+owns schema/renderer correction and truthful historical re-rendering.
 
-The mentor/demo wrappers capture the operator's initial swarm, use 20 Locust
-users/spawn 5 for the run, and restore the prior swarm before final reset and
-clearance. The standalone runner changes load only with explicit `--load-users`.
-This setup avoids a measured five-user alert timeout and is retained in bundle
-metadata; it supplies no diagnosis or synthetic recovery observation.
-After an explicit workload change, only the detector's frontend traffic baseline
-is replaced using the final two measured qualified clean samples. Its historical
-value, new value, sample times and metric evidence are saved. Other anomalies
-and thresholds continue to refuse an unhealthy baseline.
-
-## Cause taxonomy and evidence
-
-Categories are `application_flag`, `container_down`, `restart_loop`,
-`dependency_unavailable`, `network`, `resource_starvation`, `load`, and `unknown`.
-An exited dependency is a `container_down` cause: `valkey-cart` is the component,
-`cart` is the symptom owner. Dependency wording describes that relationship;
-it does not require a second cause. Connection errors and exited state provide
-independent application/runtime observations. Repeated Docker lifecycle fields
-and duplicated OpenSearch/stdout logs do not create independent sources.
-
-Evidence IDs name traces/spans, metric points, OpenSearch/Docker logs, container
-fields and action-log lines. The resolver checks live data first, then retained
-run/bundle snapshots with checksums and explicit source labels. Snapshot evidence
-does not establish current recovery. Model identifiers come from `.env`; the
-report records the model actually used and sanitized usage/cost metadata.
-
-## Safety and persistence
-
-The allowlist contains `toggle_flag`, `restart_service` and `throttle_load`.
-Unknown operations return `FORBIDDEN_OPERATION`; Compose scaling returns
-`NOT_AVAILABLE_ON_COMPOSE`. Diagnostic modules cannot run executor commands or
-read injection journals. Only the narrow setting adapter reads state for approved
-writes, hashing and rollback.
-
-Approval tokens expire after ten minutes and bind plan, report, operator and
-world-state hashes. Durable attempt records make idempotency survive restarts.
-One action/verification sequence is active at a time, and each target has a
-five-minute cooldown. Changed worlds, interrupted/uncertain attempts and stale
-approvals fail closed.
-
-STOP is one root file shared by the detector, agent, Action API and injector.
-It blocks new changes and cancels verification waits; rollback also obeys it.
-Pending approvals persist an aborted checkpoint/report without an attempt;
-active responses retain their lock and cancel at the next safe check.
-Operator reset remains available. The clear phrase is exactly
-`I confirm the incident is over`. STOP cannot reverse a command already accepted
-by Docker. Reversible settings roll back only if the relevant world still matches;
-restart non-recovery escalates because prior process state cannot be restored.
-
-The append-only audit exports token fingerprints, never usable tokens. Private
-SQLite records under ignored `runs/` retain token/rollback state. The API binds
-to loopback. Control Room routes reject cross-origin browser mutations; the
-native API trusts the localhost same-user boundary. It is not a hosted
-multi-user authentication service.
-
-## Implementation and live status
-
-| Part | Status and evidence |
-| --- | --- |
-| Demo bring-up, injection/reset | Built and exercised live; [BUILD_01B](../BUILD_01B.md) |
-| Telemetry tools, redaction and evidence resolution | Built and exercised in retained diagnostic runs; source/snapshot regressions |
-| Detector, investigator, risk and reports | Built; payment and stopped-recommendation diagnostic runs in [BUILD_04](../BUILD_04.md) |
-| Dependency evidence scoring | Built and regression-tested; historical cache runs remain honest 0.55 escalations |
-| Action API, responder and execution | Built and verified live for [payment toggle/recovery](../reports/payment-failure-loop-r3/report.json) and [recommendation restart/recovery](../reports/container-stopped-loop-r1/report.json), with explicit developer test approval; timings in [BUILD_05](../BUILD_05.md) |
-| Rejection without mutation | Verified live: [payment-failure-loop-r4](../reports/payment-failure-loop-r4/report.json); before/after world hashes match, no execute event |
-| Mid-run STOP | Verified live: [payment-failure-loop-r5](../reports/payment-failure-loop-r5/report.json), aborted after execution; verification and rollback refused, operator cleanup measured separately |
-| Conditional settings rollback | Verified live in [payment-failure-loop-r8](../reports/payment-failure-loop-r8/report.json): stopped swarm prevented recovery and captured settings were restored; complete runner and measured cleanup passed. Earlier failed attempts remain in [BUILD_05](../BUILD_05.md) |
-| Real Control Room and checkpoint reconciliation | Verified live via [payment-failure-loop-r9](../reports/payment-failure-loop-r9/report.json): browser confirmation resumed the terminal's checkpoint, executed once, persisted fixed and completed cleanup; automated browser acceptance documented in [BUILD_06](../BUILD_06.md) |
-| Mock Control Room | Built with isolated state and no executor/recovery simulation |
-| Full-loop mentor and demo scripts | Mentor wrapper verified live in r9 with terminal waiting and browser approval; demo sequence implemented with explicit preparation boundary, not yet timed end to end |
-| Offline calibration utility | Built; historical tuning data are limited and are not held-out accuracy |
-| Reviewer model, adaptive memory, prevention, Kubernetes scaling | Not implemented |
+STOP blocks new changes and cancels waits, but cannot undo Docker's accepted
+restart. Verification lasts at least 180 seconds. Fold requirements: two fresh
+samples, at least 20 requests and 30% of the affected service's baseline traffic;
+unknown telemetry/traffic escalates without automatic rollback. Restoring a failure
+switch must be explicit in the approved rollback meaning. Historical r7/r8 rollback
+on lost traffic is a safety finding, not the target behavior. See the measured
+limitations in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).

@@ -1,68 +1,111 @@
-# Checkpoint answers
+# Checkpoint answers and evidence
 
-Five things the presenter says at each checkpoint, each with the evidence to point at. Commands are PowerShell from the repo root. Fill every `<run id>` from a real run before the checkpoint; if a line cannot be backed by a run, say so instead of saying the line.
+These are presenter answers supported by retained runs or commands. Historical
+bundles are recordings, not evidence that the current fold has passed. Run commands
+with the installed Python environment; only the stack owner may run rehearsals.
 
 ## Checkpoint 1: Eyes (10)
 
-1. "We run the official demo 2.0.2 in minimal mode, unmodified, as a sibling folder."
-   Evidence: `faultctl status` all checks pass; after `faultctl reset`, `git -C ..\opentelemetry-demo status --short` prints nothing.
-2. "We inject a practice incident and reset it with a read-back."
-   Evidence: `faultctl inject payment-failure`, then `faultctl reset` exits 0 and prints each read-back. Run id: `<run id>`.
-3. "The agent sees through five read-only tools, and every result carries evidence ids."
-   Evidence: `python -m tools.cli health_table`; `python -m tools.cli get_traces checkout`; the `evidence_ids` field in each output.
-4. "Here it summarises the symptoms of one live incident by calling tools one at a time."
-   Evidence: `reports\<report>.md`, sections Symptoms and Investigation. Run id: `<run id>`.
-5. "This is our one-page architecture."
-   Evidence: `docs\ARCHITECTURE.md`.
+1. **What are you running?** The official 2.0.2 minimal demo, with a team-owned
+   injection overlay. `python -m faultctl status` and `git -C ../opentelemetry-demo
+   status --short` check it. [BUILD_01B](../BUILD_01B.md) records 21 containers and
+   clean source status; tonight's read-only preflight also saw 21 running.
+2. **Can you inject and reset?** The historical payment rehearsal
+   [payment-failure-r6](../reports/payment-failure-r6/checkpoint2.json) records
+   operator reset/injection/cleanup. Its run is
+   `runs/20261023T114143.041886Z-68a917d4`. We have not injected in this session.
+3. **What can the agent read?** Metrics, traces, logs, container health and action
+   history. `python -m tools.cli --help` lists the tools; the five calls passed
+   the under-five-second checks in the read-only preflight.
+4. **Does it explain the symptoms?** Open the investigation table in
+   [payment-failure-r6](../reports/payment-failure-r6/report.md): three tool calls,
+   payment application cause, historical confidence 0.90. Each row gives a reason.
+5. **Where is the architecture?** [ARCHITECTURE.md](ARCHITECTURE.md) shows the tool,
+   graph, checkpoint, approval and verification boundaries with current status.
 
 ## Checkpoint 2: Brain (20)
 
-1. "Each report names the component, the cause, a category and a confidence, in our schema."
-   Evidence: `python -m schema.validate reports\*.json` exits 0; open `reports\<report>.json`, field `root_cause`.
-2. "The evidence exists. Point at any id and we fetch it again."
-   Evidence: `python -m tools.resolve "<id the mentor picks>"`; for a trace, open it in Jaeger at `http://localhost:8080/jaeger/ui/`.
-3. "It chooses its next tool from what it found, and writes down why."
-   Evidence: the `investigation` table, column `why`, in `reports\<report>.md`; `runs\<ts>\llm.jsonl` shows one tool call per turn.
-4. "It stops at 0.75 with two independent sources. Below 0.6 it escalates with its findings."
-   Evidence: the evidence table of a `diagnosed` report shows two sources; the no-fault run `reports\<no-fault report>.md` is `needs_human` or produced no alert.
-5. "On the mentor's three incidents:" `<incident 1>`: `<component, confidence>`, `<incident 2>`: `<...>`, `<incident 3>`: `<...>`. "Across all ten, `<n>`/10 correct."
-   Evidence: run ids `<run id 1>`, `<run id 2>`, `<run id 3>`; `docs\EVALUATION_NOTE.md`.
+1. **What does it output?** Component, category, confidence, evidence, proposal and
+   limitations. Run `python -m schema.validate "reports/*/report.json"` to check
+   retained bundles; the organiser's final schema is not verified.
+2. **Is the evidence real?** Choose an ID from `payment-failure-r6/report.json` and
+   run `python -m tools.resolve "ID" --bundle-dir reports/payment-failure-r6`.
+   The resolver labels live versus retained-snapshot resolution. Tonight's
+   preflight round-tripped a newly observed container ID live.
+3. **How does it choose a tool?** A structured model call chooses one next read,
+   with a reason. The run's `llm.jsonl` and report investigation table show this.
+   Code validates provenance, coverage, risk and the final action labels.
+4. **What does confidence mean?** A heuristic capped by evidence support, not a
+   calibrated probability. Historical scoring incorrectly counted spanmetrics
+   independently of traces; the fold must rerun after correcting that.
+5. **What happened on three cases?** Payment r6 named payment/application_flag at
+   0.90; recommendation r3 named recommendation/container_down at 0.90
+   (`runs/20261023T120358.826377Z-c84200c3`); cache r2 named valkey-cart/container_down
+   at 0.55 and escalated (`runs/20261023T122840.338357Z-47ea815f`). The third was not
+   a confident diagnosis pass. All-ten accuracy is not verified.
 
 ## Checkpoint 3: Hands (20)
 
-1. "The agent can only act through the Action API: restart, toggle a flag, throttle load. Scale answers `not_available_on_compose`."
-   Evidence: `curl.exe -s localhost:8787/actions`; `Select-String -Path agent\*.py,tools\*.py,detect\*.py -Pattern 'docker (stop|start|restart|update|rm|kill)'` prints nothing.
-2. "Before approval we show a dry run; only a human yes produces a token, and the token is tied to the world state."
-   Evidence: `python -m agent.respond --report reports\<report>.json` shows the plan and waits; `pytest -q tests\test_action_api.py` (403 without a token, 409 after the world changed).
-3. "Here is one full run from alert to verified recovery."
-   Evidence: report `reports\<report>.md` with status `fixed`, verification before `<x>` and after `<y>`. Run id: `<run id>`.
-4. "Every call is in the action log."
-   Evidence: `Get-Content action_api\log.jsonl -Tail 10`, lines `<n>` to `<m>` for that run.
-5. "STOP halts everything, and a failed fix rolls back."
-   Evidence: live `curl.exe -s -X POST localhost:8787/stop` during `agent.run` gives `aborted`; the rollback test, and `reports\<rolled back report>.md` if we have one. Run id: `<run id>`.
+1. **What can it change?** Only Action API allowlisted restart, toggle or throttle.
+   `python -m action_api --help` exposes the boundary; Compose scaling is unavailable.
+2. **Where is approval?** A dry run precedes a bound, expiring, single-use token.
+   `scripts/checkpoint3.ps1 payment-failure` or
+   `bash scripts/checkpoint3.sh payment-failure` waits for a real decision. Historical
+   test and browser automation are disclosed, not presented as human approval.
+3. **Has a loop recovered?** [payment-failure-loop-r3](../reports/payment-failure-loop-r3/report.json),
+   `runs/20261023T153512.976354Z-13778fd2`, records a real toggle and recovery after
+   test-harness approval. [container-stopped-loop-r1](../reports/container-stopped-loop-r1/report.json),
+   `runs/20261023T160004.705486Z-ad2f6cb4`, records a restart. Human-approved reruns
+   are scheduled, not verified.
+4. **Can rejection avoid mutation?** [payment-failure-loop-r4](../reports/payment-failure-loop-r4/hands-rehearsal.json)
+   records matching before/after world hashes and no execute event. It used
+   `--reject`; it is not evidence of a person typing no.
+5. **What do STOP and rollback prove?** [payment-failure-loop-r5](../reports/payment-failure-loop-r5/report.json)
+   aborted verification after execution; STOP cannot undo that completed toggle.
+   [r8](../reports/payment-failure-loop-r8/report.json) rolled back on lost traffic,
+   which the hands audit rejects as the target policy. Unknown verification must
+   now escalate without automatic rollback; that live fix is not verified here.
 
 ## Checkpoint 4: Hidden test (30)
 
-1. "Our agent starts from an alert on telemetry, so it does not care who injected the fault."
-   Evidence: `detect\thresholds.yaml`; `python -m detect.once` after a fault injected by hand (`docker stop <svc>`).
-2. "To run us on an unseen incident: start the watcher; each alert produces a report."
-   Evidence: `python -m detect.watch --interval 10 --thresholds detect/thresholds.yaml`; reports land in `reports\` as `.json` and `.md`. On demand: `python -m agent.run --alert <alert.json> --out reports\<name>.json`.
-3. "It never reads flags, and it never sees our practice answers."
-   Evidence: `pytest -q tests\test_no_flag_reads.py tests\test_agent_isolation.py`; the validator rejects any report that mentions flagd.
-4. "It covers infrastructure faults and two-fault combinations, and lists an alternative when there may be two causes."
-   Evidence: the combinations table in `docs\EVALUATION_NOTE.md` (`<c>`/6); `root_cause.alternatives_considered` in `reports\<combo report>.json`.
-5. "When it is not sure, it says so and hands over its findings."
-   Evidence: `status: needs_human` and `escalation_note` in `reports\<escalated report>.md`.
+1. **Can someone else inject?** Detection uses telemetry. Start
+   `python -m detect.watch --interval 10`; the diagnosis does not require faultctl
+   ground truth. The unseen-incident interface is still for the mentor to confirm.
+2. **How are unseen faults entered?** [FAULTCTL.md](FAULTCTL.md) lists existing
+   practice aliases and the generic grammar the fold must provide. Do not claim
+   arbitrary two-target combinations are tested until a retained run proves it.
+3. **How do you guard against reading the answers?** Run
+   `python -m pytest -q tests/test_no_flag_reads.py tests/test_agent_isolation.py
+   --basetemp=.build/pytest`. Flag disclosure is rejected. The broad scan currently
+   also flags the new operator-only readiness manifest; its explicit scope
+   exemption needs fold review, without weakening diagnostic scanning.
+4. **Do combinations work?** This snapshot escalates independent causes at tier 3
+   with no actions. The fold contract requires separately risked proposals for
+   supported pairs, while unsupported or incompletely covered combinations still
+   escalate. Six held-out rehearsals and their accuracy are not verified.
+5. **What if it cannot decide?** It must return `needs_human` with findings and
+   limitations. The cache r1/r2 reports demonstrate escalation. Empty telemetry
+   must not be called healthy; outage and no-traffic distinctions remain xfails.
 
-## Judges (20): one line per criterion
+## Three statements to the mentor before hidden testing
 
-1. **Safety and human approval:** "Nothing changes without a token from a human yes, tied to the world state, with a dry run first and a STOP that a person must clear."
-   Evidence: the live demo; `pytest -q tests\test_action_api.py`; `docs\WHY.md` items 1 to 10.
-2. **Agent design and tool use:** "One tool per step with a reason, a health table first, capped results, two independent sources before it stops."
-   Evidence: `docs\ARCHITECTURE.md`; the `investigation` table of any report.
-3. **Explainability:** "Every claim cites an id you can fetch again, and every step says why it was taken."
-   Evidence: `python -m tools.resolve "<id>"` on any report; `tests\test_planted_evidence.py`.
-4. **Testing and honesty:** "We scored ourselves on all ten practice incidents and six combinations, and we list what failed."
-   Evidence: `pytest -q` (`<n>` passed); `docs\EVALUATION_NOTE.md`, sections Practice incidents and What does not work.
-5. **Demo:** "Inject, alert, diagnosis, rejection, approval, recovery, STOP, in five minutes, live."
-   Evidence: `docs\DEMO_SCRIPT.md`; rehearsal times `<time 1>`, `<time 2>`.
+1. Our trace tools discover Jaeger's published port before trying the proxy.
+   Read-only discovery worked here; proxy-down live failover has not been rehearsed
+   by this session. `test_jaeger_proxy_only_is_usable` is an offline regression.
+2. Missing telemetry is not proof of health. This snapshot lacks a dedicated
+   outage alert and treats a stopped load generator as an application fault. We
+   will disclose whether the fold's outage/no-traffic distinction passes its tests.
+3. Independent causes currently escalate at tier 3 with no actions. Please confirm
+   schema, component/category conventions, multiple-cause export and abstention
+   scoring. Cache naming, image faults, misrouted calls and flood naming are not
+   defined by another benchmark's conventions.
+
+The six knowledge questions and the mentor's three-layer answer are in
+[KNOWLEDGE.md](KNOWLEDGE.md): store versus RAG, why retrieve, practice-answer
+leakage, wrong hints, measured benefit, and poisoning. The live wrong-hint demo
+and nine-run ablation remain not verified.
+
+For judges: show the evidence/action log, the actual approval surface, the
+failed rows in [EVALUATION_NOTE.md](EVALUATION_NOTE.md), and the timed preparation
+boundary in [DEMO_SCRIPT.md](DEMO_SCRIPT.md). Do not claim a 10/10 score, calibrated
+confidence, human approval or a completed five-minute rehearsal without evidence.
