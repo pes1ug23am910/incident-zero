@@ -173,7 +173,10 @@ HTTP 423 / `STOP_LATCHED` for an allowed dry run after STOP. No mutation started
 STOP was explicitly cleared. These command-level checks do not establish the
 timing of the complete five-minute presentation.
 
-The final integration suite passed **670 tests**, with **3 skipped**.
+The final integration suite passed **671 tests**, with **3 skipped**.
+Final [operator restoration](../reports/integration-final-state/final-state.json)
+recorded 21/21 running containers, the original five-user swarm, cleared STOP,
+an unchanged demo checkout and a qualified 184.859-second clean window.
 
 The hands branch retained six bundles exercising real checkpoint/response code
 with fake executors, fake telemetry and virtual 180-second windows. Confidence
