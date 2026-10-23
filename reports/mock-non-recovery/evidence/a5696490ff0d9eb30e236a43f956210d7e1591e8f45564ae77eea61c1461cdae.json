@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "id": "action_log:7",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:13:47.253623+00:00",
+    "event": "verification",
+    "report_id": "runs/mock-non-recovery",
+    "result": {
+      "checked_at": "2026-10-23T11:13:47.236840+00:00",
+      "signal": "error_rate",
+      "before": 0.9,
+      "after": 0.8,
+      "recovered": false,
+      "rolled_back": true,
+      "outcome": "unresolved",
+      "requests_observed": 40,
+      "samples": [
+        {
+          "available": true,
+          "values": [
+            0.8
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 0.0,
+          "qualified_recovery": false
+        },
+        {
+          "available": true,
+          "values": [
+            0.8
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 30.0,
+          "qualified_recovery": false
+        },
+        {
+          "available": true,
+          "values": [
+            0.8
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 60.0,
+          "qualified_recovery": false
+        },
+        {
+          "available": true,
+          "values": [
+            0.8
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 90.0,
+          "qualified_recovery": false
+        },
+        {
+          "available": true,
+          "values": [
+            0.8
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 120.0,
+          "qualified_recovery": false
+        },
+        {
+          "available": true,
+          "values": [
+            0.8
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 150.0,
+          "qualified_recovery": false
+        },
+        {
+          "available": true,
+          "values": [
+            0.8
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 180.0,
+          "qualified_recovery": false
+        }
+      ],
+      "rollback_note": "Captured settings restored; recovery still requires operator review."
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:13:47.298182+00:00",
+  "checksum": "6409592639c5a0690dac37422a74781309e51e7728b19120e18280a9d8a03535"
+}

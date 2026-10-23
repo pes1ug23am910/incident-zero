@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": "action_log:5",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:13:46.159651+00:00",
+    "event": "execute_finished",
+    "report_id": "runs/mock-recommendation-restart",
+    "actor": "Mock operator",
+    "action": "restart_service",
+    "target": "recommendation",
+    "parameters": {
+      "service": "recommendation"
+    },
+    "result": "applied",
+    "duration_ms": 0,
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:13:46.239658+00:00",
+  "checksum": "50f376527d2cdd730dd2b6a22b0db938f284be7adbedb979d6404b1c11cafb1b"
+}

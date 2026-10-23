@@ -7,10 +7,10 @@ name = "incident-zero"
 version = "0.1.0"
 description = "Telemetry tools and incident rehearsal utilities for the OpenTelemetry Demo"
 requires-python = ">=3.11"
-dependencies = ["requests>=2.32,<3", "jsonschema>=4.23,<5", "langgraph>=1,<2", "langgraph-checkpoint-sqlite>=3,<4", "PyYAML>=6,<7"]
+dependencies = ["requests>=2.32,<3", "jsonschema>=4.23,<5", "langgraph>=1,<2", "langgraph-checkpoint-sqlite>=3,<4", "PyYAML>=6,<7", "fastapi>=0.115,<1", "uvicorn>=0.30,<1"]
 
 [project.optional-dependencies]
-test = ["pytest>=8,<10"]
+test = ["pytest>=8,<10", "httpx>=0.27,<1"]
 
 [project.scripts]
 faultctl = "faultctl.cli:main"

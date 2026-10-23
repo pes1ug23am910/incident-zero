@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "id": "action_log:2",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:13:45.503815+00:00",
+    "event": "dry_run",
+    "report_id": "runs/mock-payment-approved",
+    "action": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "result": "preview_only",
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:13:45.622980+00:00",
+  "checksum": "cf4d780b0f3e6e6efd4977f8507cb9c82464f2e5a6ae01b3f1519910df3b407f"
+}

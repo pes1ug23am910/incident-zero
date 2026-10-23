@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "id": "action_log:5",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:13:46.529417+00:00",
+    "event": "execute_finished",
+    "report_id": "runs/mock-homepage-throttle",
+    "actor": "Mock operator",
+    "action": "throttle_load",
+    "target": "load-generator",
+    "parameters": {
+      "users": 1,
+      "spawn_rate": 1
+    },
+    "result": "applied",
+    "duration_ms": 0,
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:13:46.607078+00:00",
+  "checksum": "c875d70f5c732d50bce3e708000dcf9ce7b762d671591decddc44ae4c7696df0"
+}

@@ -1,0 +1,366 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "mock-homepage-throttle",
+  "run_id": "runs/mock-homepage-throttle",
+  "detected_at": "2026-10-23T11:13:46.339139+00:00",
+  "diagnosed_at": "2026-10-23T11:13:46.347652+00:00",
+  "resolved_at": "2026-10-23T11:13:46.568052+00:00",
+  "alert": {
+    "signal": "error_rate",
+    "service": "load-generator",
+    "observed": 0.9,
+    "threshold": 0.05,
+    "window_s": 120
+  },
+  "symptoms": [
+    {
+      "service": "load-generator",
+      "signal": "error_rate",
+      "observed": "Synthetic error rate .9",
+      "evidence_ids": [
+        "container:load-generator:Status=running",
+        "trace:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "get_container_health",
+      "query": "load-generator",
+      "why": "Synthetic fixture",
+      "finding": "Synthetic observation",
+      "evidence_ids": [
+        "container:load-generator:Status=running"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "load-generator",
+    "category": "load",
+    "cause": "Synthetic load-generator failure fixture.",
+    "confidence_model": 0.9,
+    "confidence_evidence": 0.9,
+    "confidence": 0.9,
+    "evidence_ids": [
+      "container:load-generator:Status=running",
+      "trace:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "explains_symptoms": [
+      "load-generator"
+    ],
+    "alternatives_considered": [
+      "Synthetic dependency failure."
+    ]
+  },
+  "evidence": [
+    {
+      "id": "container:load-generator:Status=running",
+      "source": "docker",
+      "summary": "Synthetic load-generator evidence; not measured live.",
+      "raw_ref": "offline fixture"
+    },
+    {
+      "id": "trace:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "source": "jaeger",
+      "summary": "Synthetic load-generator evidence; not measured live.",
+      "raw_ref": "offline fixture"
+    }
+  ],
+  "proposed_action": {
+    "type": "throttle_load",
+    "target": "load-generator",
+    "parameters": {
+      "users": 1,
+      "spawn_rate": 1
+    },
+    "reason": "Reduce generated request volume to relieve the observed overload.",
+    "risk": "Reduces test traffic; record the current traffic level before an approved change.",
+    "dry_run": {
+      "performed": true,
+      "predicted_effect": "Reduce the load generator to 1 concurrent user(s)."
+    }
+  },
+  "approval": {
+    "required": true,
+    "requested_at": "2026-10-23T11:13:46.485395+00:00",
+    "approved": true,
+    "approved_by": "Mock operator",
+    "approved_at": "2026-10-23T11:13:46.485395+00:00",
+    "token": "[redacted]"
+  },
+  "action": {
+    "executed": true,
+    "started_at": "2026-10-23T11:13:46.515404+00:00",
+    "finished_at": "2026-10-23T11:13:46.528407+00:00",
+    "action_log_ref": "action_log:5"
+  },
+  "verification": {
+    "checked_at": "2026-10-23T11:13:46.551931+00:00",
+    "signal": "error_rate",
+    "before": 0.9,
+    "after": 0.0,
+    "recovered": true,
+    "rolled_back": false,
+    "outcome": "recovered",
+    "requests_observed": 40,
+    "samples": [
+      {
+        "available": true,
+        "values": [
+          0.0
+        ],
+        "requests_observed": 40,
+        "load_running": true,
+        "evidence_ids": [],
+        "elapsed_s": 0.0,
+        "qualified_recovery": true
+      },
+      {
+        "available": true,
+        "values": [
+          0.0
+        ],
+        "requests_observed": 40,
+        "load_running": true,
+        "evidence_ids": [],
+        "elapsed_s": 30.0,
+        "qualified_recovery": true
+      },
+      {
+        "available": true,
+        "values": [
+          0.0
+        ],
+        "requests_observed": 40,
+        "load_running": true,
+        "evidence_ids": [],
+        "elapsed_s": 60.0,
+        "qualified_recovery": true
+      },
+      {
+        "available": true,
+        "values": [
+          0.0
+        ],
+        "requests_observed": 40,
+        "load_running": true,
+        "evidence_ids": [],
+        "elapsed_s": 90.0,
+        "qualified_recovery": true
+      },
+      {
+        "available": true,
+        "values": [
+          0.0
+        ],
+        "requests_observed": 40,
+        "load_running": true,
+        "evidence_ids": [],
+        "elapsed_s": 120.0,
+        "qualified_recovery": true
+      },
+      {
+        "available": true,
+        "values": [
+          0.0
+        ],
+        "requests_observed": 40,
+        "load_running": true,
+        "evidence_ids": [],
+        "elapsed_s": 150.0,
+        "qualified_recovery": true
+      },
+      {
+        "available": true,
+        "values": [
+          0.0
+        ],
+        "requests_observed": 40,
+        "load_running": true,
+        "evidence_ids": [],
+        "elapsed_s": 180.0,
+        "qualified_recovery": true
+      }
+    ]
+  },
+  "status": "fixed",
+  "escalation_note": null,
+  "prevention": null,
+  "limitations": [
+    "SYNTHETIC MOCK ACCEPTANCE: no incident was injected; no model or live stack was used.",
+    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored."
+  ],
+  "agent": {
+    "model": "none (mock fixtures)",
+    "tool_calls": 0,
+    "elapsed_s": 0,
+    "stopped_because": "confident"
+  },
+  "root_causes": [
+    {
+      "component": "load-generator",
+      "category": "load",
+      "cause": "Synthetic load-generator failure fixture.",
+      "confidence_model": 0.9,
+      "confidence_evidence": 0.9,
+      "confidence": 0.9,
+      "evidence_ids": [
+        "container:load-generator:Status=running",
+        "trace:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "explains_symptoms": [
+        "load-generator"
+      ],
+      "alternatives_considered": [
+        "Synthetic dependency failure."
+      ]
+    }
+  ],
+  "impact": {
+    "business": "auxiliary",
+    "journeys_affected": [
+      "generated shopping traffic"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "instant",
+    "data_risk": "none",
+    "confidence": 0.9,
+    "tier": 1,
+    "score": 17.0,
+    "rationale": "One auxiliary or core service, reversible change and confidence at least 0.75; show action, target and predicted effect and require a human yes.",
+    "uncertainty": 0.09999999999999998,
+    "observability_gap": 0.0,
+    "decision": "REQUIRE_HUMAN",
+    "reason_codes": [
+      "HUMAN_APPROVAL_REQUIRED"
+    ]
+  },
+  "proposed_actions": [
+    {
+      "type": "throttle_load",
+      "target": "load-generator",
+      "parameters": {
+        "users": 1,
+        "spawn_rate": 1
+      },
+      "reason": "Reduce generated request volume to relieve the observed overload.",
+      "risk": "Reduces test traffic; record the current traffic level before an approved change.",
+      "dry_run": {
+        "performed": true,
+        "predicted_effect": "Reduce the load generator to 1 concurrent user(s)."
+      }
+    }
+  ],
+  "action_history": [
+    {
+      "index": 0,
+      "decision": {
+        "decision": "approve",
+        "token": "[redacted]",
+        "approved_by": "Mock operator",
+        "approved_at": "2026-10-23T11:13:46.485395+00:00",
+        "requested_at": "2026-10-23T11:13:46.485395+00:00",
+        "expires_at": 1600.0
+      },
+      "execution": {
+        "executed": true,
+        "started_at": "2026-10-23T11:13:46.515404+00:00",
+        "finished_at": "2026-10-23T11:13:46.528407+00:00",
+        "action_log_ref": "action_log:5",
+        "idempotency_key": "runs/mock-homepage-throttle:0:6dda3168c992aeed"
+      },
+      "verification": {
+        "checked_at": "2026-10-23T11:13:46.551931+00:00",
+        "signal": "error_rate",
+        "before": 0.9,
+        "after": 0.0,
+        "recovered": true,
+        "rolled_back": false,
+        "outcome": "recovered",
+        "requests_observed": 40,
+        "samples": [
+          {
+            "available": true,
+            "values": [
+              0.0
+            ],
+            "requests_observed": 40,
+            "load_running": true,
+            "evidence_ids": [],
+            "elapsed_s": 0.0,
+            "qualified_recovery": true
+          },
+          {
+            "available": true,
+            "values": [
+              0.0
+            ],
+            "requests_observed": 40,
+            "load_running": true,
+            "evidence_ids": [],
+            "elapsed_s": 30.0,
+            "qualified_recovery": true
+          },
+          {
+            "available": true,
+            "values": [
+              0.0
+            ],
+            "requests_observed": 40,
+            "load_running": true,
+            "evidence_ids": [],
+            "elapsed_s": 60.0,
+            "qualified_recovery": true
+          },
+          {
+            "available": true,
+            "values": [
+              0.0
+            ],
+            "requests_observed": 40,
+            "load_running": true,
+            "evidence_ids": [],
+            "elapsed_s": 90.0,
+            "qualified_recovery": true
+          },
+          {
+            "available": true,
+            "values": [
+              0.0
+            ],
+            "requests_observed": 40,
+            "load_running": true,
+            "evidence_ids": [],
+            "elapsed_s": 120.0,
+            "qualified_recovery": true
+          },
+          {
+            "available": true,
+            "values": [
+              0.0
+            ],
+            "requests_observed": 40,
+            "load_running": true,
+            "evidence_ids": [],
+            "elapsed_s": 150.0,
+            "qualified_recovery": true
+          },
+          {
+            "available": true,
+            "values": [
+              0.0
+            ],
+            "requests_observed": 40,
+            "load_running": true,
+            "evidence_ids": [],
+            "elapsed_s": 180.0,
+            "qualified_recovery": true
+          }
+        ]
+      },
+      "error": {}
+    }
+  ]
+}
