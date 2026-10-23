@@ -24,6 +24,7 @@ class ResponseState(IncidentState, total=False):
     action_results: list[dict]
     execution_result: dict
     response_error: dict
+    response_basis: dict
 
 
 def config_for(run_id):
@@ -47,7 +48,9 @@ class Response:
         decision = interrupt({'run_id': state['run_id'], 'tier': state['report']['impact']['tier'],
                               'diagnosis': state['report']['root_causes'], 'evidence': state['report']['evidence'],
                               'plan': state['dry_run'], 'execution_available': True})
-        return {'decision': decision}
+        # Retain the exact reviewed diagnosis privately so a second surface can
+        # join this response even after the public report has been updated.
+        return {'decision': decision, 'response_basis': state.get('response_basis', state['report'])}
 
     def execute(self, state):
         decision = state['decision']
@@ -238,12 +241,6 @@ def resume(report, decision=None, *, root=ROOT, service=None, operator='local op
     with SqliteSaver.from_conn_string(str(root / 'runs' / 'checkpoints.sqlite')) as saver:
         graph = build_graph(None, saver, service)
         config = config_for(report['run_id'])
-        snapshot = graph.get_state(config)
-        if snapshot.next != ('approval',):
-            raise ValueError('Checkpoint is not waiting at approval; refusing a mismatched resume')
-        if not _matches_report(snapshot.values.get('report'), report):
-            raise ValueError('Report differs from the paused checkpoint; refusing an edited plan')
-        report = snapshot.values['report']
 
         def wait_for_other():
             deadline = time.monotonic() + 900
@@ -256,6 +253,32 @@ def resume(report, decision=None, *, root=ROOT, service=None, operator='local op
                         raise
                     time.sleep(.2)
             raise ValueError('Response is still running; inspect the Control Room and action log')
+
+        snapshot = graph.get_state(config)
+        if snapshot.next != ('approval',):
+            basis = snapshot.values.get('response_basis')
+            if basis is None:
+                # Compatibility with responses started before the private basis
+                # field existed: an actual attempt retains the approved report.
+                basis = next((attempt['report'] for attempt in service.attempts()
+                              if attempt.get('report_id') == report['run_id']
+                              and _matches_report(attempt.get('report'), report)), None)
+            if basis is None or not _matches_report(basis, report):
+                raise ValueError('Checkpoint is not waiting at approval; refusing a mismatched resume')
+            # The browser may win immediately after publication, before the
+            # terminal has even entered its prompt. Join the matching owner;
+            # never let the outer runner reset a still-verifying incident.
+            snapshot = wait_for_other()
+            if not snapshot.next:
+                if report_path:
+                    with exclusive(lock_path):
+                        save_bundle(snapshot.values['report'], report_path, service)
+                return snapshot.values['report']
+            if snapshot.next != ('approval',):
+                raise ValueError('Response stopped between checkpoints; inspect its action log before retrying')
+        if not _matches_report(snapshot.values.get('report'), report):
+            raise ValueError('Report differs from the paused checkpoint; refusing an edited plan')
+        report = snapshot.values['report']
 
         if not (decision and decision.get('decision') == 'reject') and not snapshot.values.get('dry_run', {}).get('preconditions_ok'):
             with exclusive(lock_path):

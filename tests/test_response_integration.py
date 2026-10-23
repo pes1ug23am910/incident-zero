@@ -73,6 +73,14 @@ def test_browser_resumes_checkpoint_and_saves_verified_bundle(env, monkeypatch, 
             from agent.respond import build_graph
             state = build_graph(None, saver, api).get_state(config_for(report['run_id']))
             assert not state.next and state.values['report']['status'] == status
+        # The browser can also finish before the terminal reaches resume at all.
+        # Only the exact original diagnosis may join the completed response.
+        joined = resume(report, root=api.root, service=api, report_path=path,
+                        input_fn=lambda _: pytest.fail('A completed browser decision was prompted again'))
+        assert joined['status'] == status
+        with pytest.raises(ValueError, match='not waiting at approval'):
+            resume(saved, root=api.root, service=api)
+        assert len(executor.mutations) == int(approved)
         assert not client.get('/api/approvals').json()['pending']
         assert client.post('/api/stop').json()['stopped']
         assert client.get('/health').json()['stopped']
@@ -116,6 +124,56 @@ def test_browser_wins_while_terminal_reads_prompt_without_duplicate_execution(en
         thread.join(10)
     assert not errors and not thread.is_alive()
     assert terminal_result[0]['status'] == 'fixed'
+    assert len(executor.mutations) == 1 and len(api.attempts()) == 1
+
+
+def test_terminal_joins_browser_already_verifying_before_terminal_entry(env, monkeypatch):
+    api, executor, _, sample = env
+    report, path = bundle(api, monkeypatch, 'integration-browser-first')
+    verifying, release, terminal_started = threading.Event(), threading.Event(), threading.Event()
+    def sampler(alert, run_id):
+        if executor.mutations and not release.is_set():
+            verifying.set()
+            assert release.wait(10)
+        return deepcopy(sample)
+    api.verifier.sampler = sampler
+    app = create_app(api, reports_dir=api.root / 'reports')
+    results, errors = [], []
+    def terminal():
+        terminal_started.set()
+        try:
+            results.append(resume(report, root=api.root, service=api, report_path=path,
+                                  input_fn=lambda _: pytest.fail('Browser-owned response requested terminal approval')))
+        except Exception as exc:
+            errors.append(exc)
+    thread = threading.Thread(target=terminal)
+    try:
+        with TestClient(app) as client:
+            pending = client.get('/api/approvals').json()['pending'][0]
+            response = client.post('/api/approvals/' + pending['id'] + '/approve', json={
+                'operator': 'Browser reviewer', 'confirmation': 'yes', 'revision': pending['revision']})
+            assert response.status_code == 200, response.text
+            assert verifying.wait(10)
+            altered = deepcopy(report)
+            altered['root_cause']['cause'] = 'An unreviewed replacement diagnosis'
+            with pytest.raises(ValueError, match='not waiting at approval'):
+                resume(altered, root=api.root, service=api)
+            thread.start()
+            assert terminal_started.wait(10)
+            # While the browser owns verification, the terminal must wait so its
+            # caller cannot enter operator cleanup and reset the live incident.
+            thread.join(.2)
+            assert thread.is_alive() and not results and not errors
+            release.set()
+            thread.join(10)
+            app.state.control_room.backend().pool.shutdown(wait=True)
+    finally:
+        release.set()
+        if thread.ident:
+            thread.join(10)
+    assert not errors and not thread.is_alive()
+    assert results[0]['status'] == 'fixed'
+    assert json.loads(path.read_text(encoding='utf-8'))['status'] == 'fixed'
     assert len(executor.mutations) == 1 and len(api.attempts()) == 1
 
 
