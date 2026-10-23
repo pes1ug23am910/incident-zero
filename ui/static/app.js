@@ -43,14 +43,20 @@ function renderMode() {
   document.querySelectorAll("[data-approve]").forEach(button => { button.disabled = state.stopped !== false || state.busy; });
 }
 
+function evidenceObservation(value) {
+  const text = String(value ?? "No observation recorded");
+  if (text.length <= 300) return esc(text);
+  return `<details class="evidence-observation"><summary>${esc(text.slice(0, 240))}… <span class="muted">Expand observation</span></summary><p>${esc(text)}</p></details>`;
+}
+
 function evidenceTable(evidence, reportId) {
   if (!evidence?.length) return '<p class="muted">No evidence entries have been recorded.</p>';
-  return `<div class="table-wrap"><table class="evidence-table"><thead><tr><th>Evidence ID · click to resolve</th><th>Source</th><th>Observation</th></tr></thead><tbody>${evidence.map(item => `<tr><td><button class="evidence-id" data-evidence="${esc(item.id)}" data-report="${esc(reportId)}">${esc(item.id)}</button></td><td>${esc(item.source)}</td><td>${esc(item.summary)}</td></tr>`).join("")}</tbody></table></div>`;
+  return `<div class="table-wrap"><table class="evidence-table"><thead><tr><th>Evidence ID · click to resolve</th><th>Source</th><th>Observation</th></tr></thead><tbody>${evidence.map(item => `<tr><td><button class="evidence-id" data-evidence="${esc(item.id)}" data-report="${esc(reportId)}">${esc(item.id)}</button></td><td>${esc(item.source)}</td><td>${evidenceObservation(item.summary)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
 function renderSteps(steps) {
   if (!steps?.length) return '<p class="muted">Waiting for investigation steps.</p>';
-  return `<div class="steps">${steps.map((step, index) => `<div class="step"><span class="step-number">${esc(step.step ?? index + 1)}</span><div><h3>${esc(step.tool)}</h3><p>${esc(step.why)}</p><p class="query">${esc(pretty(step.query ?? step.arguments ?? ""))}</p><p class="finding">${esc(pretty(step.finding ?? "Observation recorded"))}</p></div></div>`).join("")}</div>`;
+  return `<div class="steps">${steps.map((step, index) => `<div class="step"><span class="step-number">${esc(step.step ?? index + 1)}</span><div><h3>${esc(step.tool)}</h3><p>${esc(step.why)}</p><p class="query">${esc(pretty(step.query ?? step.arguments ?? ""))}</p><div class="finding">${evidenceObservation(pretty(step.finding ?? "Observation recorded"))}</div></div></div>`).join("")}</div>`;
 }
 
 function approvalPanel(report, pending) {
