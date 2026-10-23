@@ -19,6 +19,9 @@ recommendation, and quote (5,793 total documents at the first discovery).
 The recorded ad document in `tests/fixtures/recorded_log.json` includes its
 original document ID and capture provenance. Its benign body is retained by
 the redaction test. Synthetic disclosure variants are separately labelled.
+`tests/fixtures/recorded_sensitive_log.json` also retains a real enabled-state
+line from the ad container's existing Docker log history. Its regression confirms
+that the entire line is rejected before parsing or snapshot capture.
 
 Queries use the discovered service keyword field, `@timestamp` bounds, numeric
 severity (`>=13` WARN, `>=17` ERROR), and a body phrase when supplied. Mapping

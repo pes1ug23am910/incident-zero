@@ -233,3 +233,45 @@ For a controlled unavailable-backend check, only the verification process set
 `resolved_from="snapshot"` and its path in 2.0729 s.
 No backend was stopped or changed. Natural backend-retention expiry was **not
 verified**; fallback after a read failure was verified.
+
+## Final checks
+
+`python -m pytest -q`: **181 passed, 1 skipped in 2.83 s**. The skipped test requires
+Windows symlink-creation privilege; path traversal and confinement tests passed.
+`python -m pytest tests/test_schema.py -q`: **56 passed in 0.51 s**; schema CLI
+command timings and expected failures are in `BUILD_03.md`.
+
+Final `python -m faultctl reset --timeout 60` returned exit 0 in **1.7350 s** at
+2026-10-23 09:35:33 UTC (15:05:33 IST): `fault_state_clean=true`, `stack_ready=true`,
+21/21 containers running, and the same pristine SHA-256. The stack remains up.
+
+A later `health_table()` sample (09:44 UTC, 2.532 s) showed a transient
+recommendation error rate of 0.0625. Follow-up `get_traces('recommendation',
+lookback_s=300, limit=5)` (0.062 s), `get_logs('recommendation', lookback_s=300)`
+(0.828 s) and the 3,600-second trace query found no matching error records;
+`get_container_health(['recommendation'])` (1.266 s) confirmed running, no OOM,
+NanoCpus 0 and memory limit 52,428,800 bytes. The transient signal's cause is
+**not verified**. The next health sample had no positive error rates.
+
+That next health call took 3.172 s, exposing duplicate snapshot validation in
+the parent health call. Same-call child snapshots now reuse their already-written
+paths; a separate tool invocation still validates existing snapshots and rejects
+tampering. Backend reads reserve time for durable writes. Final live calls,
+recorded in `.build/final-latency.json`, included every snapshot write:
+
+| Command / call | Seconds | Result |
+| --- | ---: | --- |
+| `health_table()` | 2.5593 | 21 rows, no positive error rates, 153/153 evidence files, no warnings |
+| `health_table()` | 2.2929 | Same; every service with traffic has all three measurements |
+| `get_container_health()` | 1.9561 | 21 running, 126/126 evidence files, no warnings |
+| `git -c safe.directory=D:/opentelemetry-demo -C D:\opentelemetry-demo status --porcelain` | Not separately timed in final repetition | Exit 0, empty output |
+
+The final health window had seven services with positive span rate; frontend
+was 4.03374 spans/s, p95 28.9565 ms, error rate 0. Services without current traffic
+are not claimed healthy from absent telemetry. The earlier clean acceptance
+window had all 13 traffic services present. The final code passes the complete
+suite above; added regressions cover snapshot reuse, independent-call tamper
+detection and removal of a real enabled-state log line from the ad container's
+retained history. That fixture was obtained read-only with
+`docker logs ad --timestamps --tail 15000` (3,593 lines inspected; no new injection).
+Final source whitespace checks passed.
