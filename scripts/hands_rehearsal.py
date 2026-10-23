@@ -125,17 +125,18 @@ def action_log_excerpt(path):
     if not entries:
         return "No action attempt was recorded."
     rendered = []
-    if len(entries) > 12:
-        rendered.append(f"Last 12 of {len(entries)} entries; complete log: {path}")
-    for entry in entries[-12:]:
+    decisions = [entry for entry in entries if entry.get("event") != "load_observed"]
+    if len(decisions) > 12 or len(decisions) != len(entries):
+        rendered.append(f"Last {min(12, len(decisions))} decision/action events from {len(entries)} entries; complete log: {path}")
+    for entry in decisions[-12:]:
         summary = {key: entry[key] for key in ("line_no", "ts", "event", "action", "target", "actor", "mode", "duration_ms") if key in entry}
         result = entry.get("result")
         if isinstance(result, dict):
-            concise = {key: result[key] for key in ("decision", "reason_codes", "outcome", "recovered", "rolled_back", "before", "after", "requests_observed") if key in result}
+            concise = {key: result[key] for key in ("decision", "reason_codes", "outcome", "recovered", "rolled_back", "restored", "reason", "before", "after", "requests_observed") if key in result}
             samples = result.get("samples", [])
             if samples:
                 concise.update(window_s=samples[-1].get("elapsed_s"), sample_count=len(samples),
-                    last_two=[{key: point[key] for key in ("elapsed_s", "qualified_recovery", "requests_observed", "load_running", "values") if key in point} for point in samples[-2:]])
+                    last_two=[{key: point[key] for key in ("elapsed_s", "qualified_recovery", "requests_observed", "load_running", "load_state", "load_user_count", "values") if key in point} for point in samples[-2:]])
             summary["result"] = concise
         elif result is not None:
             summary["result"] = result
@@ -236,7 +237,7 @@ class RunControl:
         # The HTTP response may time out after Locust has accepted the stop.
         self.load_stopped = True
         record = {"at": datetime.now(timezone.utc).isoformat(),
-                  "operation": "stop_locust_swarm", "purpose": "Test refusal to claim recovery without measured traffic",
+                  "operation": "stop_locust_swarm", "purpose": "Test refusal to claim recovery without an active Locust swarm",
                   "verifier_overridden": False, "request_timeout_s": 45,
                   "response_confirmed": False, "observed_stopped": False, "observations": []}
         self.interventions.append(record)
