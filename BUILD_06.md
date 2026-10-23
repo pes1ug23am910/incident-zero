@@ -109,3 +109,12 @@ last measured request count, while keeping the result blocked/unrecovered and
 leaving `after` unknown. Thirteen isolated integration tests passed, including
 STOP and a callback exception after one sample. This fixes future evidence
 retention; it does not fill in the missing r5 observations retrospectively.
+
+`payment-failure-loop-r6` failed the forced-non-recovery acceptance: its operator
+stop request timed out, while residual traffic and container liveness satisfied
+the old load-running check. The report is genuinely `fixed` under those recorded
+rules, but the runner failed and no rollback is claimed. Its clean windows were
+184.782/184.718 seconds. This prompted explicit Locust state/user observation in
+the verifier and confirmed stop readback for the retry. Earlier live successes
+used container liveness per sample and separately recorded operator load setup;
+they are not being relabelled as runs of the stronger check.
