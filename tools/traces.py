@@ -42,12 +42,29 @@ def trace_summary(trace):
     processes = trace.get("processes", {})
     ordered = sorted(spans, key=lambda s: s.get("startTime", 0))
     root = next((s for s in ordered if not any(r.get("refType") == "CHILD_OF" for r in s.get("references", []))), ordered[0] if ordered else {})
-    first_error = next((s for s in ordered if is_error(s)), None)
+    # A caller's error is usually propagated from a deeper failed operation.
+    # Select origins from the full graph before applying any presentation limit.
+    by_id = {s.get("spanID"): s for s in spans}
+    parents = {s.get("spanID"): [r.get("spanID") for r in s.get("references", [])
+               if r.get("refType") == "CHILD_OF"
+               and r.get("traceID", trace["traceID"]) == trace["traceID"]] for s in spans}
+    errors = [s for s in spans if is_error(s)]
+    error_parents = {parent for s in errors for parent in parents[s.get("spanID")]}
+
+    def depth(span_id, seen=frozenset()):
+        if span_id in seen or span_id not in by_id:
+            return 0
+        return 1 + max((depth(parent, seen | {span_id}) for parent in parents[span_id]), default=0)
+
+    errors.sort(key=lambda s: (-depth(s.get("spanID")), s.get("startTime", 0), s.get("spanID", "")))
+    origins = [s for s in errors if s.get("spanID") not in error_parents]
     start = min((s.get("startTime", 0) for s in spans), default=0)
     end = max((s.get("startTime", 0) + s.get("duration", 0) for s in spans), default=start)
     return {"trace_id": trace["traceID"], "duration_ms": (end - start) / 1000,
             "root_span": span_summary(root, processes),
-            "first_error_span": span_summary(first_error, processes) if first_error else None,
+            "first_error_span": span_summary(origins[0], processes) if origins else None,
+            "origin_error_spans": [span_summary(s, processes) for s in origins],
+            "error_spans": [span_summary(s, processes) for s in errors],
             "services": sorted(set(p.get("serviceName", "unknown") for p in processes.values()))}
 
 
@@ -89,11 +106,12 @@ def get_traces(service, lookback_s=300, errors_only=True, limit=20, operation=No
         trace_id = "trace:" + trace["traceID"]
         ids.append(trace_id)
         capture_evidence(trace_id, "jaeger", trace)
-        if summary["first_error_span"]:
-            span_id = summary["first_error_span"]["span_id"]
+        for origin in summary["origin_error_spans"]:
+            span_id = origin["span_id"]
             evidence_id = f'span:{trace["traceID"]}/{span_id}'
             ids.append(evidence_id)
             observed_span = next(item for item in trace["spans"] if item.get("spanID") == span_id)
-            capture_evidence(evidence_id, "jaeger", observed_span)
+            capture_evidence(evidence_id, "jaeger", {
+                **observed_span, "process": trace["processes"].get(observed_span.get("processID"), {})})
     return envelope("get_traces", "jaeger", json.dumps(params, sort_keys=True), span, data, ids,
                     len(traces) >= requested or limit > 50)
