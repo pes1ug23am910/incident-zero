@@ -1,8 +1,4 @@
-"""Continue the diagnosis thread through approval, action and verification.
-
-Merge interface: import build_graph from this module in agent.run. Existing
-brain checkpoints at approval are supported without editing that module.
-"""
+"""Shared checkpoint continuation for terminal and Control Room decisions."""
 from __future__ import annotations
 import argparse
 from copy import deepcopy
