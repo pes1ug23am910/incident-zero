@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792773818.939=21.228915662650536",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "frontend"
+    },
+    "timestamp": 1792773818.939,
+    "value": 21.228915662650536,
+    "query": "named:p95_latency_by_service"
+  },
+  "captured_at": "2026-10-23T16:43:39.006154+00:00",
+  "checksum": "7c290bbf801e3fd503092d40af81c34b256e397a88e987cbf1f20e7b6d0bc654"
+}

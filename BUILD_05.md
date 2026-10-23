@@ -196,6 +196,7 @@ terminal or browser decision.
 | container-stopped-loop-r1 | fixed, recommendation restart | Explicit test auto | 609.922 s | 182.000 s | 184.781 / 184.656 s |
 | payment-failure-loop-r5 | aborted by STOP during verification | Explicit test auto | — | Interrupted; no recovery claim | 184.281 / 184.719 s |
 | payment-failure-loop-r6 | Failed forced-non-recovery acceptance; report fixed | Explicit test auto | Not claimed for this failed test | 181.969 s | 184.782 / 184.718 s |
+| payment-failure-loop-r7 | rolled_back; runner failed an overstrict stop assertion | Explicit test auto | — | 182.625 s | 184.844 / 183.938 s |
 
 The successful payment run is `runs/20261023T153512.976354Z-13778fd2`.
 It diagnosed `payment` / `application_flag` at 0.90 confidence with three tool
@@ -251,3 +252,14 @@ actively running Locust swarm; residual/probe traffic can exceed 20 requests.
 The subsequent verifier requires an observed running swarm with positive users
 as well as container liveness, and the operator stop must be read back. The
 retry is retained separately rather than replacing this result.
+
+The stronger verifier did roll back in r7
+(`runs/20261023T164609.601361Z-807c1a76`): all seven samples refused recovery;
+the final two observed Locust `stopped` with one remaining user and 40.003/52.003
+requests. Captured payment settings were restored and `recovered=false`.
+The runner nevertheless failed because its operator stop assertion required
+zero users. The official stack reported stopped state with a lingering user.
+The generic readback now accepts observed `stopped` with a valid nonnegative
+integer count, retaining that count exactly; running-with-zero still fails.
+Thirty-four isolated runner tests passed. R7 remains unchanged, and r8 repeats
+acceptance with that corrected assertion. R7 response duration was 206.188 seconds.

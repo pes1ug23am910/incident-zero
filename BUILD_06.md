@@ -128,3 +128,12 @@ time/state/count and an immutable `load_observed` action-log snapshot. The
 now confirms `stopped` with zero users, recording any HTTP response uncertainty;
 29 isolated runner tests cover this and actual browser-vs-terminal approval
 metadata. The retry uses this implementation.
+
+R7 demonstrated actual `rolled_back` behavior with the stronger verifier, but
+its harness failed the zero-user assertion despite Locust reporting stopped.
+The final action samples contained 40.003/52.003 requests, `load_state=stopped`,
+`load_user_count=1`, and `load_running=false`. Verification lasted 182.625 seconds;
+cleanup was qualified for 183.938 seconds. The operator readback now retains any
+valid nonnegative remaining count in a stopped state, rather than asserting it
+must be zero. This is an assertion correction, not a recovery-policy change.
+The separate r8 run uses it; r7's failure remains in its original metadata.
