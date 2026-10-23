@@ -287,6 +287,26 @@ def test_unavailable_dependency_without_unambiguous_exit_keeps_category(states):
     assert result['category'] == 'dependency_unavailable'
 
 
+def test_supported_cause_explains_its_observed_component_without_duplicate_model_entry():
+    symptoms = ['payment', 'frontend', 'checkout', 'recommendation']
+    hypothesis = cause(symptoms=['frontend'])
+    result = validate_causes([hypothesis], registry(), symptoms)
+    assert result[0]['explains_symptoms'] == ['frontend', 'payment']
+    # Even another caller needs explicit coverage; independent siblings remain.
+    assert uncovered(result, symptoms) == ['checkout', 'recommendation']
+
+
+@pytest.mark.parametrize('model,one_source', [(.7, False), (.95, True)])
+def test_implicit_self_coverage_cannot_bypass_model_or_evidence_confidence(model, one_source):
+    records = registry()
+    if one_source:
+        records.pop('log:otel/example')
+    hypothesis = cause(confidence=model, ids=list(records), symptoms=['frontend'])
+    result = validate_causes([hypothesis], records, ['payment', 'frontend'])
+    assert result[0]['confidence'] < .75
+    assert uncovered(result, ['payment', 'frontend']) == ['frontend', 'payment']
+
+
 def test_transitive_topology_covers_proxy_and_generator_but_not_independent_siblings():
     symptoms = ['payment', 'checkout', 'frontend', 'frontend-proxy', 'load-generator', 'recommendation']
     records = {'trace:payment': evidence('jaeger', ['payment'], .95),
