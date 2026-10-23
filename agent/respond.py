@@ -139,7 +139,8 @@ def build_graph(investigation, checkpointer, service=None):
     for name in ('dry_run', 'approval', 'execute', 'verify', 'record_action', 'report'):
         graph.add_node(name, getattr(response, name))
     graph.add_edge(START, 'observe')
-    graph.add_edge('observe', 'investigate')
+    from .knowledge_context import wire
+    wire(graph, END, secrets=getattr(getattr(investigation, 'router', None), 'secrets', ()))
     graph.add_conditional_edges('investigate', route_investigate, {'investigate': 'investigate', 'diagnose': 'diagnose'})
     graph.add_edge('diagnose', 'assess_risk')
     graph.add_edge('assess_risk', 'propose')
@@ -154,7 +155,6 @@ def build_graph(investigation, checkpointer, service=None):
             return 'report'
         return 'dry_run' if s['action_index'] < len(s['report']['proposed_actions']) else 'report'
     graph.add_conditional_edges('record_action', next_action, {'dry_run': 'dry_run', 'report': 'report'})
-    graph.add_edge('report', END)
     return graph.compile(checkpointer=checkpointer)
 
 

@@ -5,6 +5,28 @@
   "description": "Evidence-backed incident diagnosis, human approval, action audit, and recovery checks.",
   "type": "object",
   "properties": {
+    "runbook_refs": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/knowledge_reference"}
+    },
+    "memory_refs": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/knowledge_reference"}
+    },
+    "knowledge_consulted": {
+      "type": "object",
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "mode": {"enum": ["bm25", "hybrid", "unavailable"]},
+        "queries": {"type": "array", "items": {"type": "string"}},
+        "runbook_refs": {"type": "array", "items": {"$ref": "#/$defs/knowledge_reference"}},
+        "memory_refs": {"type": "array", "items": {"$ref": "#/$defs/knowledge_reference"}},
+        "service_refs": {"type": "array", "items": {"$ref": "#/$defs/knowledge_reference"}},
+        "limitations": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["enabled", "mode", "queries", "runbook_refs", "memory_refs", "service_refs", "limitations"],
+      "additionalProperties": false
+    },
     "schema_version": {
       "const": "1.0"
     },
@@ -1356,6 +1378,28 @@
       }
     }
   },
+  "$defs": {
+    "knowledge_reference": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^(kb:[A-Za-z0-9_.-]+#[A-Za-z0-9_.-]+|mem:[A-Za-z0-9_.-]+)$"},
+        "kind": {"enum": ["runbook", "memory", "service"]},
+        "score": {"type": "number", "minimum": 0},
+        "text": {"type": "string"},
+        "file": {"type": "string"},
+        "section": {"type": "string"},
+        "version": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "action_types": {"type": "array", "items": {"type": "string"}},
+        "applies_to": {"type": "array", "items": {"type": "string"}},
+        "component": {"type": ["string", "null"]},
+        "outcome": {"type": ["string", "null"]},
+        "category": {"type": ["string", "null"]}
+      },
+      "required": ["id", "kind", "score", "text", "file", "section", "version", "sha256"],
+      "additionalProperties": false
+    }
+  },
   "required": [
     "schema_version",
     "incident_id",
@@ -1380,6 +1424,9 @@
   ],
   "additionalProperties": false,
   "dependentRequired": {
+    "knowledge_consulted": ["runbook_refs", "memory_refs"],
+    "runbook_refs": ["knowledge_consulted", "memory_refs"],
+    "memory_refs": ["knowledge_consulted", "runbook_refs"],
     "root_causes": [
       "impact",
       "proposed_actions"
