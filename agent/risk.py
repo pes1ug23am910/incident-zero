@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .policy import SERVICE_CRITICALITY, SERVICES, causes_for, effective_confidence, select_action
+from .policy import POLICY, SERVICE_CRITICALITY, SERVICES, causes_for, effective_confidence, select_action
 
 
 JOURNEYS = {
@@ -101,6 +101,20 @@ def assess(report: dict[str, Any]) -> dict[str, Any]:
     else:
         tier, score = 2, 45
         rationale = "Confidence is sufficient for diagnosis but below quick-approval eligibility; show full evidence and require explicit typed yes."
+    evidence_confidence = min((float(cause.get('confidence_evidence', 0)) for cause in causes), default=0)
+    uncertainty = max(0, min(1, 1 - evidence_confidence))
+    tools = {'get_metrics', 'get_traces', 'get_logs', 'get_container_health', 'get_deploy_history'}
+    unavailable = {row.get('tool') for row in report.get('investigation', [])
+                   if not row.get('evidence_ids')} & tools
+    observability_gap = len(unavailable) / len(tools)
+    weights = POLICY.get('score_weights', {'uncertainty': 20, 'observability_gap': 20})
+    score = min(100, round(score + uncertainty * weights['uncertainty'] + observability_gap * weights['observability_gap'], 2)) if not no_incident else 0
+    codes = (['MULTI_SERVICE'] if blast_radius != 'single_service' else [])
+    codes += ['DATA_RISK'] if data_risk != 'none' else []
+    codes += ['LOW_CONFIDENCE'] if confidence < .6 else []
+    codes += ['CRITICAL_SERVICE'] if business == 'critical' else []
+    codes += ['RESTART_REQUIRES_HUMAN'] if any(a and a['type'] == 'restart_service' for a in candidates) else []
+    codes += ['NO_SAFE_ACTION'] if any(a is None for a in candidates) or not candidates else []
     return {
         "business": business,
         "journeys_affected": journeys,
@@ -112,4 +126,8 @@ def assess(report: dict[str, Any]) -> dict[str, Any]:
         "tier": tier,
         "score": score,
         "rationale": rationale,
+        "uncertainty": uncertainty,
+        "observability_gap": observability_gap,
+        "decision": "ESCALATE" if tier == 3 else "REQUIRE_HUMAN",
+        "reason_codes": codes or ['HUMAN_APPROVAL_REQUIRED'],
     }

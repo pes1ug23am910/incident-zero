@@ -115,3 +115,42 @@ For every safety control and design choice: what it prevents, how you can check 
 - Prevents: runs we cannot repeat or explain, and a dead demo when one provider fails.
 - Check: open `runs\<ts>\llm.jsonl`; `agent.model` in each report names the model used.
 - Why not simpler: one provider with no log is simpler until it times out on stage.
+# Hands boundary (2026-10-23)
+
+Service-to-switch mapping exists only in `action_api/flags.py`. Its configuration
+reads are not diagnosis: they retain previous values for rollback and bind
+approval to a hash of the actual mounted configuration. The agent receives only
+service targets. The executor requires the operator overlay for writes and
+never rewrites the official demo checkout. Reads of the baseline for hashing
+are permitted when no overlay is mounted.
+
+The weighted impact score adds 20 × uncertainty and 20 × observability gap to
+the existing business/reversibility score. These are starting heuristic weights,
+not probabilities. Uncertainty is 1 − evidence confidence; observability gap is
+the share of the five investigation tools that returned no evidence. Hard tier
+rules override the score. Tiers 1–2 require a human, tier 3 escalates with no
+proposal, and execution preconditions can BLOCK with an explicit reason code.
+
+Untrusted telemetry, internal access and state-changing tools require a human
+for every action. `auto_approve_tiers` stays empty. Test bypass requires both
+`INCIDENT_ZERO_TEST=1` and `--auto-approve-for-tests`, and prints a test-only
+banner. The localhost HTTP approval endpoint cannot request that bypass.
+
+An approval lasts ten minutes and binds the operation, target, parameters,
+report, operator and current world state. SQLite retains token fingerprints,
+private rollback state and idempotency records. Cross-process exclusion allows
+one mutation/verification sequence at a time; targets have a five-minute
+cooldown. Uncertain process crashes remain blocked for operator review.
+
+Dry run, approval and execution are separate nodes. Resuming the same SQLite
+thread re-enters `interrupt()` with the token, without prompting again. This
+follows the documented [LangGraph interrupt semantics](https://docs.langchain.com/oss/python/langgraph/interrupts).
+The one-import integration is `from agent.respond import build_graph` in the
+brain entry point; this branch does not edit the other session's graph files.
+
+Recovery needs a 180-second window, two consecutive successful 30-second
+samples, at least 20 measured frontend server requests in the two-minute
+window, and a running load generator. All original detector alert signals are
+rechecked, including signals omitted from the compact report. Unsupported or
+unavailable verification blocks an action. A restart cannot restore interrupted
+requests; a failed restart verification escalates without claiming rollback.
