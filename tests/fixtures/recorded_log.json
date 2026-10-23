@@ -1,0 +1,58 @@
+{
+  "provenance": {
+    "recorded_at": "2026-10-23T09:16:04.161923+00:00",
+    "source": "OpenSearch GET /otel/_search",
+    "synthetic": false
+  },
+  "document": {
+    "_index": "otel",
+    "_id": "LVoLaKEBUZiyFLbyqXDY",
+    "_score": null,
+    "_source": {
+      "attributes": {
+        "data_stream": {
+          "dataset": "default",
+          "namespace": "namespace",
+          "type": "record"
+        }
+      },
+      "body": "Non-targeted ad request received, preparing random response.",
+      "instrumentationScope": {
+        "name": "oteldemo.AdService"
+      },
+      "observedTimestamp": "2026-10-23T09:15:57.270882452Z",
+      "resource": {
+        "container.id": "fd845fb8e06947785f26ef827ed2b11da9c3e59fff670346fd5cea3788d9f3c9",
+        "host.arch": "amd64",
+        "host.name": "fd845fb8e069",
+        "os.description": "Linux 6.6.87.2-microsoft-standard-WSL2",
+        "os.type": "linux",
+        "process.command_line": "/opt/java/openjdk/bin/java -javaagent:/usr/src/app/opentelemetry-javaagent.jar oteldemo.AdService",
+        "process.executable.path": "/opt/java/openjdk/bin/java",
+        "process.pid": "1",
+        "process.runtime.description": "Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.6+7-LTS",
+        "process.runtime.name": "OpenJDK Runtime Environment",
+        "process.runtime.version": "21.0.6+7-LTS",
+        "service.instance.id": "e580abb9-bbf1-4c53-8b2b-d9addd0d1b99",
+        "service.name": "ad",
+        "service.namespace": "opentelemetry-demo",
+        "service.version": "2.0.2",
+        "telemetry.distro.name": "opentelemetry-java-instrumentation",
+        "telemetry.distro.version": "2.13.3",
+        "telemetry.sdk.language": "java",
+        "telemetry.sdk.name": "opentelemetry",
+        "telemetry.sdk.version": "1.47.0"
+      },
+      "severity": {
+        "text": "INFO",
+        "number": 9
+      },
+      "spanId": "25f76d0c3ae8c28a",
+      "@timestamp": "2026-10-23T09:15:56.448221476Z",
+      "traceId": "6110a7c84a6d11aed4dfbe22754c1a69"
+    },
+    "sort": [
+      1792746956448
+    ]
+  }
+}

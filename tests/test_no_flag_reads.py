@@ -1,16 +1,19 @@
 """Guard the complete production package tree, including future packages."""
 from pathlib import Path
 import re
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN = re.compile(r"8013|8016|ofrep|demo\.flagd\.json|defaultVariant|flagd|:4000", re.I)
 SKIP = {".git", ".venv", ".build", ".specs", ".pytest_cache", "__pycache__", "tests", "runs"}
+EXEMPT_FILES = {"action_api/flags.py", "tools/redact.py"}
 
 
 def production_files():
     # A package may be a namespace package; include code directories even before
     # their __init__ is added. Documentation-only directories aren't packages.
+    yield from ROOT.glob("*.py")
     for directory in ROOT.iterdir():
         if not directory.is_dir() or directory.name in SKIP or directory.name == "faultctl":
             continue
@@ -18,7 +21,7 @@ def production_files():
             continue
         for path in directory.rglob("*"):
             if path.is_file() and not any(part in SKIP for part in path.relative_to(ROOT).parts):
-                if path.relative_to(ROOT).as_posix() == "action_api/flags.py":
+                if path.relative_to(ROOT).as_posix() in EXEMPT_FILES:
                     continue
                 if path.suffix in {".py", ".json", ".yaml", ".yml", ".toml", ".md", ".txt", ".ps1", ".sh", ".js", ".ts"}:
                     yield path
@@ -41,3 +44,27 @@ def test_scanner_covers_future_packages(tmp_path, monkeypatch):
     package.mkdir()
     (package / "reader.py").write_text("endpoint = ':8013'", encoding="utf-8")
     assert list(production_files()) == [package / "reader.py"]
+    with pytest.raises(AssertionError, match="Forbidden"):
+        test_no_flag_reads()
+
+
+@pytest.mark.parametrize("relative", ["tools/reader.py", "tools/nested/redact.py",
+    "action_api/helper.py", "agent/reader.py", "detect/reader.py", "new_module.py"])
+def test_no_other_module_is_exempt(tmp_path, monkeypatch, relative):
+    import sys
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    path = tmp_path / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("endpoint = 'flagd'", encoding="utf-8")
+    with pytest.raises(AssertionError, match="Forbidden"):
+        test_no_flag_reads()
+
+
+def test_only_authorized_filter_and_operator_files_are_exempt(tmp_path, monkeypatch):
+    import sys
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    for relative in ("faultctl/cli.py", "tools/redact.py", "action_api/flags.py"):
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("marker = 'flagd'", encoding="utf-8")
+    test_no_flag_reads()
