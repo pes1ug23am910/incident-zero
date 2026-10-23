@@ -78,9 +78,56 @@ def run_path(run_dir=None, *, create=False):
 
 
 def snapshot_path(run_dir, identifier):
+    return _snapshot_path(run_path(run_dir), identifier)
+
+
+def bundle_path(bundle_dir):
+    """Accept only an immediate report bundle beneath repository reports."""
+    root = ROOT.resolve()
+    reports = root / "reports"
+    given = Path(bundle_dir)
+    if ".." in given.parts:
+        raise ValueError("Report bundle traversal is not allowed")
+    if given.parts == ("reports",):
+        raise ValueError("Report bundle must identify one immediate child of reports")
+    if given.is_absolute():
+        candidate = given
+    elif len(given.parts) == 1:
+        candidate = reports / given
+    elif given.parts and given.parts[0] == "reports":
+        candidate = root / given
+    else:
+        raise ValueError("Report bundle must be a name or a path under reports")
+    try:
+        if reports.resolve() != reports:
+            raise ValueError("The reports directory must not be a symbolic link")
+        resolved = candidate.resolve()
+        if resolved == reports or not resolved.is_relative_to(reports):
+            raise ValueError("Report bundle must stay inside repository reports")
+        if len(resolved.relative_to(reports).parts) != 1:
+            raise ValueError("Report bundle must identify one immediate child of reports")
+        if candidate.absolute() != resolved:
+            raise ValueError("Report bundle must not resolve through a symbolic link")
+        evidence_dir = resolved / "evidence"
+        if evidence_dir.resolve() != evidence_dir:
+            raise ValueError("Evidence directory must not be a symbolic link")
+    except RuntimeError as exc:
+        raise ValueError("Report bundle cannot resolve through recursive symbolic links") from exc
+    return resolved
+
+
+def bundle_snapshot_path(bundle_dir, identifier):
+    return _snapshot_path(bundle_path(bundle_dir), identifier)
+
+
+def _snapshot_path(directory, identifier):
     expected_source(identifier)
-    path = run_path(run_dir) / "evidence" / (hashlib.sha256(identifier.encode("utf-8")).hexdigest() + ".json")
-    if path.resolve() != path:
+    path = directory / "evidence" / (hashlib.sha256(identifier.encode("utf-8")).hexdigest() + ".json")
+    try:
+        resolved = path.resolve()
+    except RuntimeError as exc:
+        raise ValueError("Evidence file cannot resolve through recursive symbolic links") from exc
+    if resolved != path:
         raise ValueError("Evidence file must not be a symbolic link")
     return path
 
@@ -197,10 +244,22 @@ def persist_envelope(result, current):
 
 
 def load_snapshot(path, identifier):
-    source = expected_source(identifier)
     path = Path(path)
     if snapshot_path(path.parent.parent, identifier) != path or not path.is_file():
         raise ValueError("Snapshot path does not match the requested evidence")
+    return _load_snapshot_record(path, identifier, "snapshot")
+
+
+def load_bundle_snapshot(path, identifier):
+    path = Path(path)
+    if bundle_snapshot_path(path.parent.parent, identifier) != path or not path.is_file():
+        raise ValueError("Bundle snapshot path does not match the requested evidence")
+    return _load_snapshot_record(path, identifier, "bundle_snapshot")
+
+
+def _load_snapshot_record(path, identifier, origin):
+    """Read one already-confined immutable record and verify its full identity."""
+    source = expected_source(identifier)
     if path.stat().st_size > 16 * 1024 * 1024:
         raise ValueError("Snapshot exceeds the evidence size bound")
     record = json.loads(path.read_text(encoding="utf-8"))
@@ -213,8 +272,13 @@ def load_snapshot(path, identifier):
         raise ValueError("Evidence snapshot identity or source mismatch")
     return {"id": identifier, "source": source,
             "data": _clean_payload(identifier, source, record["data"]),
-            "captured_at": record["captured_at"], "resolved_from": "snapshot",
+            "captured_at": record["captured_at"], "resolved_from": origin,
             "snapshot_path": path.relative_to(ROOT.resolve()).as_posix()}
+
+
+def find_bundle_snapshot(identifier, bundle_dir):
+    """Resolve only the caller-selected bundle, never another incident's data."""
+    return load_bundle_snapshot(bundle_snapshot_path(bundle_dir, identifier), identifier)
 
 
 def find_snapshot(identifier, run_dir=None):

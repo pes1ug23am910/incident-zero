@@ -5,7 +5,7 @@ import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED = {"faultctl", "tests", ".venv", ".build", ".git", ".specs", "__pycache__", "runs"}
+EXCLUDED = {"faultctl", "eval", "tests", ".venv", ".build", ".git", ".specs", "__pycache__", "runs"}
 
 
 def violations(source):

@@ -1,0 +1,27 @@
+# A diagnosis can suggest an action, but only a human can approve it.
+# Untrusted telemetry plus internal access and future writes requires this gate.
+auto_approve_tiers: []
+service_criticality:
+  frontend: critical
+  frontend-proxy: critical
+  checkout: critical
+  payment: critical
+  cart: critical
+  valkey-cart: critical
+  product-catalog: core
+  currency: core
+  shipping: core
+  recommendation: auxiliary
+  ad: auxiliary
+  email: auxiliary
+  quote: auxiliary
+  image-provider: auxiliary
+  load-generator: auxiliary
+  jaeger: core
+  opensearch: core
+  prometheus: core
+  grafana: auxiliary
+  otel-collector: core
+load_reduction:
+  users: 1
+  spawn_rate: 1

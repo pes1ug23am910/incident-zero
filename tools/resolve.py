@@ -104,7 +104,7 @@ def _resolve(evidence_id):
     raise EvidenceNotFound("Evidence was not found or its value no longer matches")
 
 
-def resolve(evidence_id, *, run_dir=None):
+def resolve(evidence_id, *, run_dir=None, bundle_dir=None):
     try:
         source = snapshots.expected_source(evidence_id)
         if evidence_id.startswith("metric:"):
@@ -113,6 +113,8 @@ def resolve(evidence_id, *, run_dir=None):
                 raise ValueError("Metric evidence values must be finite")
         if run_dir is not None:
             run_dir = snapshots.run_path(run_dir)
+        if bundle_dir is not None:
+            bundle_dir = snapshots.bundle_path(bundle_dir)
     except (ValueError, TypeError, OSError) as exc:
         raise EvidenceNotFound(str(exc)) from exc
     try:
@@ -129,16 +131,24 @@ def resolve(evidence_id, *, run_dir=None):
         result = snapshots.find_snapshot(evidence_id, run_dir=run_dir)
         return {**result, "live_error": live_error}
     except (ValueError, OSError) as exc:
-        raise EvidenceNotFound(f"Could not re-fetch evidence: {live_error}; snapshot: {exc}") from exc
+        snapshot_error = sanitize(str(exc)) or "[redacted]"
+    if bundle_dir is not None:
+        try:
+            result = snapshots.find_bundle_snapshot(evidence_id, bundle_dir)
+            return {**result, "live_error": live_error, "run_snapshot_error": snapshot_error}
+        except (ValueError, OSError) as exc:
+            raise EvidenceNotFound(f"Could not re-fetch evidence: {live_error}; snapshot: {snapshot_error}; bundle: {exc}") from exc
+    raise EvidenceNotFound(f"Could not re-fetch evidence: {live_error}; snapshot: {snapshot_error}")
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("evidence_id")
     parser.add_argument("--run-dir", help="restrict snapshot fallback to this run under runs")
+    parser.add_argument("--bundle-dir", help="final fallback to one immediate report bundle under reports")
     args = parser.parse_args(argv)
     try:
-        print(json.dumps(resolve(args.evidence_id, run_dir=args.run_dir), indent=2))
+        print(json.dumps(resolve(args.evidence_id, run_dir=args.run_dir, bundle_dir=args.bundle_dir), indent=2))
         return 0
     except EvidenceNotFound as exc:
         print(json.dumps(sanitize({"id": args.evidence_id, "error": str(exc)})))
