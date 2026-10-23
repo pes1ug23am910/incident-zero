@@ -6,8 +6,9 @@ Install `ui/requirements.txt` into a Python 3.11+ environment first.
 
 `INCIDENT_ZERO_REPORTS_DIR` selects the report directory (default: this checkout's
 `reports`). `INCIDENT_ZERO_RUNS_DIR` selects investigation journals (default:
-the `runs` sibling of that reports directory). Paths may point to the brain
-checkout; these directories are read-only. The UI never reads injection journals.
+the `runs` sibling of that reports directory). Mock mode reads these directories.
+Real mode resumes matching checkpoints and saves the final response bundle there.
+The UI never reads injection journals.
 Discovery accepts `reports/<bundle>/report.json` and standalone `reports/*.json`.
 Partially written JSON is skipped until the next poll. Incident IDs must be unique;
 the latest diagnosed report wins if IDs are repeated.
@@ -59,26 +60,34 @@ retains 2,000 events. An initial connection may contain historical journal event
 
 ## Real Action API integration
 
-`action_api/ui_routes.py` exposes `router`, including the page and static assets.
-The hands app mounts it with:
+`python -m ui.serve --mode real` and `python -m action_api serve` expose the same
+Action API app on port 8787. `action_api/ui_routes.py` includes the page and static
+assets. The app's factory mounts a Control Room with its existing lazy service:
 
 ```python
-from action_api.ui_routes import router as ui_router
-app.include_router(ui_router)
+from action_api.ui_routes import create_room
+from ui.api import make_router
+room = create_room(service_factory)
+app.include_router(make_router(room))
 ```
 
-The shared implementation lazily imports the hands branch's
+The shared implementation lazily imports
 `action_api.service.ActionService` through `ui/action_backend.py`. No changes to
 the hands service or browser are needed. It presents a native dry run before
 approval, forwards the explicit operator answer into the native approval gate,
-then runs execute/verify in a background worker. STOP, token binding, allowlists,
+then resumes `agent.respond` in a background worker. STOP, token binding, allowlists,
 cooldowns, rollback and verification remain enforced by the native service.
-Compound reports expose a separate approval per action; one click approves only
-the selected action. UI decisions are audited through `ActionService.log`.
+Compound reports expose the current checkpoint action; one click approves only
+that action. UI decisions are audited through `ActionService.log`.
 
-The original reports are read-only. Incident JSON overlays durable service audit
-and attempt records; its `markdown` remains the original report. Final report
-export/checkpoint reconciliation remains owned by the brain/hands report writer.
+Real decisions use the canonical report in SQLite, after checking it matches the
+sanitized bundle. `agent.respond` saves the final JSON, Markdown, evidence manifest
+and action-log excerpt using the same writer as terminal responses. While a run
+is executing, incident JSON overlays durable service audit and attempt records.
+Historical bundles without a matching paused checkpoint cannot be approved.
+The terminal can wait for input while the browser decides; a shared response lock
+and checkpoint recheck ensure the action runs once. On Windows, the live terminal
+prompt detects browser continuation and waits for the shared result.
 An interrupted execution is never automatically retried by the UI. The Action
 API's durable attempt state governs whether a later operation is allowed.
 

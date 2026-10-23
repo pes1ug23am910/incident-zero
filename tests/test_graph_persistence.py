@@ -1,6 +1,7 @@
 """Offline graph lifecycle checks; these do not claim live diagnostic accuracy."""
 
 from copy import deepcopy
+from datetime import datetime, timezone
 import importlib
 
 import pytest
@@ -26,6 +27,7 @@ def report():
              "explains_symptoms": ["recommendation"]}
     return {
         "run_id": RUN_ID, "incident_id": "synthetic-offline-persistence",
+        "diagnosed_at": datetime.now(timezone.utc).isoformat(),
         "alert": {"signal": "container_health", "service": "recommendation", "observed": 1,
                   "threshold": 0, "window_s": 120},
         "limitations": ["Synthetic offline checkpoint; no live measurements."],

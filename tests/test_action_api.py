@@ -1,11 +1,12 @@
 """Hands acceptance with fakes only: no Docker, HTTP backend or real models."""
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 import os
 from pathlib import Path
 import shutil
 import threading
+import time
 
 import pytest
 from fastapi.testclient import TestClient
@@ -23,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class Clock:
     def __init__(self):
-        self.value = 1000.
+        self.value = time.time()
         self.on_sleep = None
     def __call__(self):
         return self.value
@@ -64,7 +65,8 @@ def synthetic_report(component='payment', category='application_flag', incident=
              'confidence_model': confidence, 'confidence_evidence': confidence, 'confidence': confidence,
              'evidence_ids': identifiers, 'explains_symptoms': [component], 'alternatives_considered': ['Synthetic dependency failure.']}
     report.update(incident_id=incident, run_id='runs/' + incident, status='diagnosed', root_cause=cause, root_causes=[cause],
-                  detected_at='2026-10-23T00:00:00+00:00', diagnosed_at='2026-10-23T00:01:00+00:00',
+                  detected_at=(datetime.now(timezone.utc) - timedelta(seconds=60)).isoformat(),
+                  diagnosed_at=datetime.now(timezone.utc).isoformat(),
                   alert={'signal':'error_rate','service':component,'observed':.9,'threshold':.05,'window_s':120},
                   symptoms=[{'service':component,'signal':'error_rate','observed':'Synthetic error rate .9','evidence_ids':identifiers}],
                   evidence=[{'id':i,'source':s,'summary':f'Synthetic {component} evidence; not measured live.', 'raw_ref':'offline fixture'}
@@ -531,11 +533,51 @@ def test_stdout_and_opensearch_copy_do_not_pass_independent_source_gate(env):
 def test_stop_during_final_telemetry_read_prevents_recovered_result(env):
     api, _, clock, sample = env
     execute(api, synthetic_report())
+    deadline = clock.value + 180
     def sampler(alert, run_id):
-        if clock.value >= 1180:
+        if clock.value >= deadline:
             api.stop_path.touch()
         return deepcopy(sample)
     api.verifier.sampler = sampler
     result = api.verify('attempt-1')
     assert result['outcome'] == 'blocked' and not result['recovered']
     assert result['rollback_note'] == 'STOP_LATCHED'
+
+
+@pytest.mark.parametrize('age,allowed', [(600, True), (600.01, False), (-45, True), (-45.01, False)])
+def test_diagnosis_age_is_enforced_at_shared_dry_run_boundary(env, age, allowed):
+    api, executor, clock, _ = env
+    # Round the controlled clock to whole seconds for precise boundary coverage.
+    clock.value = int(clock.value)
+    report = synthetic_report()
+    report['diagnosed_at'] = datetime.fromtimestamp(clock.value - age, timezone.utc).isoformat()
+    if allowed:
+        assert api.dry_run(report['proposed_action'], report)['preconditions_ok']
+    else:
+        with pytest.raises(Blocked) as blocked:
+            api.dry_run(report['proposed_action'], report)
+        assert blocked.value.code == 'DIAGNOSIS_EXPIRED'
+    assert not executor.mutations
+
+
+@pytest.mark.parametrize('value', [None, '', 'not-a-date', '2026-10-23T13:00:00', 42])
+def test_missing_or_unzoned_diagnosis_cannot_request_approval(env, value):
+    api, executor, _, _ = env
+    report = synthetic_report()
+    report['diagnosed_at'] = value
+    with pytest.raises(Blocked) as blocked:
+        api.dry_run(report['proposed_action'], report)
+    assert blocked.value.code == 'DIAGNOSIS_EXPIRED'
+    assert not executor.mutations
+
+
+def test_fresh_token_does_not_extend_expiring_diagnosis(env):
+    api, executor, clock, _ = env
+    report = synthetic_report()
+    report['diagnosed_at'] = datetime.fromtimestamp(clock.value - 590, timezone.utc).isoformat()
+    decision = approval(api, report)
+    clock.value += 11
+    with pytest.raises(Blocked) as blocked:
+        api.execute(report['proposed_action'], report, decision['token'], 'expired-diagnosis')
+    assert blocked.value.code == 'DIAGNOSIS_EXPIRED'
+    assert not executor.mutations
