@@ -9,7 +9,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 import pytest
 
 from action_api.app import create_app
-from agent.respond import abort_pending, config_for, pending_checkpoint, resume
+from agent.respond import abort_pending, config_for, pending_checkpoint, resume, save_bundle
 from agent.reporting import write_bundle
 from schema.validate import validate_report
 from test_action_api import env, pause_brain, synthetic_report
@@ -262,6 +262,28 @@ def test_terminal_poll_notices_cli_stop_and_aborts_pending_checkpoint(env, monke
     assert results[0]['status'] == 'aborted'
     assert not executor.mutations and not api.attempts()
     assert json.loads(path.read_text(encoding='utf-8'))['status'] == 'aborted'
+
+
+def test_bundle_retains_global_safety_events_only_within_its_action_interval(env, monkeypatch):
+    from tools.evidence import find_bundle_snapshot
+    api, _, _, _ = env
+    report, path = bundle(api, monkeypatch, 'integration-global-stop-audit')
+    api.log('stop', actor='Before this run')
+    first = api.log('dry_run', report_id=report['run_id'])
+    stop = api.log('stop', actor='Operator during this run')
+    api.log('health')
+    clear = api.log('clear_stop', actor='Operator during this run')
+    last = api.log('verification', report_id=report['run_id'], result={'outcome': 'blocked'})
+    api.log('stop', actor='After this run')
+    api.log('execute_started', report_id='runs/unrelated')
+    save_bundle(report, path, api)
+    entries = [json.loads(line) for line in (path.parent / 'action-log.jsonl').read_text(encoding='utf-8').splitlines()]
+    assert [item['event'] for item in entries] == ['dry_run', 'stop', 'clear_stop', 'verification']
+    assert [item['line_no'] for item in entries] == [int(identifier.split(':')[1]) for identifier in (first, stop, clear, last)]
+    for identifier, event in ((stop, 'stop'), (clear, 'clear_stop')):
+        snapshot = find_bundle_snapshot(identifier, path.parent)
+        assert snapshot['source'] == 'action_log' and snapshot['data']['event'] == event
+        assert snapshot['data']['complete'] is True
 
 
 def test_run_graph_pauses_after_real_dry_run_without_mutating(env):

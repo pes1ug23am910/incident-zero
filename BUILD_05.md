@@ -194,6 +194,7 @@ terminal or browser decision.
 | payment-failure-loop-r3 | fixed, payment toggle | Explicit test auto | 346.016 s | 182.359 s | 184.562 / 184.375 s |
 | payment-failure-loop-r4 | needs_human; rejection, no mutation | CLI reject; test mode off | — | Not executed | 184.640 / 185.031 s |
 | container-stopped-loop-r1 | fixed, recommendation restart | Explicit test auto | 609.922 s | 182.000 s | 184.781 / 184.656 s |
+| payment-failure-loop-r5 | aborted by STOP during verification | Explicit test auto | — | Interrupted; no recovery claim | 184.281 / 184.719 s |
 
 The successful payment run is `runs/20261023T153512.976354Z-13778fd2`.
 It diagnosed `payment` / `application_flag` at 0.90 confidence with three tool
@@ -224,3 +225,17 @@ samples at 151.953/182.000 seconds observed the container running, load running,
 and 892.045/1220.081 measured requests. The response phase took 200.141 seconds;
 the long diagnosis accounts for most of the 609.922-second injection-to-recovery
 time. Action-log lines 30–35 and all reset measurements are retained.
+
+The STOP run is `runs/20261023T161808.661278Z-149073c4`. Payment was diagnosed
+at 0.90 with three calls in 42.98 seconds. Execution began at 16:19:10.097 UTC;
+the requested timer latched STOP at 16:19:25.263 UTC. Verification recorded
+`STOP_LATCHED` at 16:19:25.692 UTC and the final report is `aborted`, with no
+rollback or recovery claim. Response duration was 30.985 seconds; injection to
+aborted report was 137.438 seconds. The global STOP entry is retained at action
+log line 41, alongside this run's lines 36–42. STOP remained latched through
+operator reset and its qualified clean window, then was explicitly cleared.
+
+The cancellation handler at the time discarded partial verifier samples; the
+empty sample list/zero request field does not mean traffic was absent. Console
+progress recorded an initial failing sample at 1.938 seconds, but its values
+were not reconstructed into the report. Before/after clean samples remain intact.

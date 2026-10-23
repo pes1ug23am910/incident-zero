@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "id": "span:ea0abeb89440dddd61e55dbad29766e0/a6f5ed2f80116c23",
+  "source": "jaeger",
+  "data": {
+    "traceID": "ea0abeb89440dddd61e55dbad29766e0",
+    "spanID": "a6f5ed2f80116c23",
+    "operationName": "POST",
+    "references": [
+      {
+        "refType": "CHILD_OF",
+        "traceID": "ea0abeb89440dddd61e55dbad29766e0",
+        "spanID": "12af70d178b13ac7"
+      }
+    ],
+    "startTime": 1792772275895000,
+    "duration": 21140,
+    "tags": [
+      {
+        "key": "error",
+        "type": "bool",
+        "value": true
+      },
+      {
+        "key": "http.flavor",
+        "type": "string",
+        "value": "1.1"
+      },
+      {
+        "key": "http.host",
+        "type": "string",
+        "value": "frontend-proxy:8080"
+      },
+      {
+        "key": "http.method",
+        "type": "string",
+        "value": "POST"
+      },
+      {
+        "key": "http.request_content_length_uncompressed",
+        "type": "int64",
+        "value": 388
+      },
+      {
+        "key": "http.scheme",
+        "type": "string",
+        "value": "http"
+      },
+      {
+        "key": "http.status_code",
+        "type": "int64",
+        "value": 500
+      },
+      {
+        "key": "http.status_text",
+        "type": "string",
+        "value": "INTERNAL SERVER ERROR"
+      },
+      {
+        "key": "http.target",
+        "type": "string",
+        "value": "/api/checkout"
+      },
+      {
+        "key": "http.url",
+        "type": "string",
+        "value": "http://frontend-proxy:8080/api/checkout"
+      },
+      {
+        "key": "http.user_agent",
+        "type": "string",
+        "value": "python-requests/2.32.3"
+      },
+      {
+        "key": "net.host.ip",
+        "type": "string",
+        "value": "172.23.0.14"
+      },
+      {
+        "key": "net.host.name",
+        "type": "string",
+        "value": "frontend-proxy"
+      },
+      {
+        "key": "net.host.port",
+        "type": "int64",
+        "value": 8080
+      },
+      {
+        "key": "net.peer.ip",
+        "type": "string",
+        "value": "172.23.0.18"
+      },
+      {
+        "key": "net.peer.port",
+        "type": "int64",
+        "value": 47658
+      },
+      {
+        "key": "net.transport",
+        "type": "string",
+        "value": "ip_tcp"
+      },
+      {
+        "key": "otel.scope.name",
+        "type": "string",
+        "value": "@opentelemetry/instrumentation-http"
+      },
+      {
+        "key": "otel.scope.version",
+        "type": "string",
+        "value": "0.57.1"
+      },
+      {
+        "key": "otel.status_code",
+        "type": "string",
+        "value": "ERROR"
+      },
+      {
+        "key": "span.kind",
+        "type": "string",
+        "value": "server"
+      }
+    ],
+    "logs": [],
+    "processID": "p3",
+    "warnings": null,
+    "process": {
+      "serviceName": "frontend",
+      "tags": [
+        {
+          "key": "container.id",
+          "type": "string",
+          "value": "47d4ddd3e3055a57893a60dd1b479cc2eee922cd29938fe67dbebae87a82fd46"
+        },
+        {
+          "key": "host.arch",
+          "type": "string",
+          "value": "amd64"
+        },
+        {
+          "key": "host.name",
+          "type": "string",
+          "value": "47d4ddd3e305"
+        },
+        {
+          "key": "os.type",
+          "type": "string",
+          "value": "linux"
+        },
+        {
+          "key": "os.version",
+          "type": "string",
+          "value": "6.6.87.2-microsoft-standard-WSL2"
+        },
+        {
+          "key": "process.command",
+          "type": "string",
+          "value": "/app/server.js"
+        },
+        {
+          "key": "process.command_args",
+          "type": "string",
+          "value": "[\"/usr/local/bin/node\",\"--require\",\"./Instrumentation.js\",\"/app/server.js\"]"
+        },
+        {
+          "key": "process.executable.name",
+          "type": "string",
+          "value": "node"
+        },
+        {
+          "key": "process.executable.path",
+          "type": "string",
+          "value": "/usr/local/bin/node"
+        },
+        {
+          "key": "process.owner",
+          "type": "string",
+          "value": "nextjs"
+        },
+        {
+          "key": "process.pid",
+          "type": "int64",
+          "value": 16
+        },
+        {
+          "key": "process.runtime.description",
+          "type": "string",
+          "value": "Node.js"
+        },
+        {
+          "key": "process.runtime.name",
+          "type": "string",
+          "value": "nodejs"
+        },
+        {
+          "key": "process.runtime.version",
+          "type": "string",
+          "value": "22.14.0"
+        },
+        {
+          "key": "service.namespace",
+          "type": "string",
+          "value": "opentelemetry-demo"
+        },
+        {
+          "key": "service.version",
+          "type": "string",
+          "value": "2.0.2"
+        },
+        {
+          "key": "telemetry.sdk.language",
+          "type": "string",
+          "value": "nodejs"
+        },
+        {
+          "key": "telemetry.sdk.name",
+          "type": "string",
+          "value": "opentelemetry"
+        },
+        {
+          "key": "telemetry.sdk.version",
+          "type": "string",
+          "value": "1.30.1"
+        }
+      ]
+    }
+  },
+  "captured_at": "2026-10-23T16:18:17.003128+00:00",
+  "checksum": "75069b7938dba7a72ad00b968cd5374f978da7f1d6a208606b08ef5dce5adc37"
+}

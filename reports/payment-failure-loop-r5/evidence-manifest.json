@@ -1,0 +1,3110 @@
+[
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772211.704=0.0",
+    "file": "0061d49f28e59f37b5ea4b0dcad737d19b1f4a99502ffd3d313aa50526f35e28.json",
+    "sha256": "aa14020bcfdaa15bc3d9951c8d97b305977d9016ac5199bfad35278579362ecf",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772331.707=34.83435582822082",
+    "file": "0136b413cbdae29f10bfe8a3194fae58219471a1c264d87951c3752e36419d96.json",
+    "sha256": "b69296fb7c2a64f287ba9bd1bd106ece7b4b9b9a4b196c423439449a5b7a09a1",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772226.711=0.9667150024167875",
+    "file": "01ba871799540ece7a81546edd5be19cd5fb6fccac22d9aa67877aa45d2bf4bf.json",
+    "sha256": "45aca9f60c7381e186b469c76dfcf5b2e001d508d9ae9cf6109aa3dbc13ebc8f",
+    "complete": false
+  },
+  {
+    "id": "container:shipping:NanoCpus=0",
+    "file": "0243b1383fb131d9ebac87989cfb3c766fca150c4370f3e3aff9c6e0a5368ff0.json",
+    "sha256": "6301a01fa5117c4e0c847cd13d0fefaafe087da49dccf5fa62f2645cccef80e6",
+    "complete": false
+  },
+  {
+    "id": "action_log:41",
+    "file": "03458f05c6527b07db2c96ae23f544537df933b3eb36ec1b478c8e55e6134410.json",
+    "sha256": "3bfc8bc48dddfd9da0bdaafc97a96cf800d4f888443c1723751fcfab85a65136",
+    "complete": true
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792772168.689=0.0",
+    "file": "046290398c42d79d2e4dcf2fc7658d348efd8594f2a26061fb24f253fd4fe3c3.json",
+    "sha256": "71921c2cc81ef6c03e7aeb01cb96162631a4f8965074e4a943cb1340fd282a5f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772225.11=0.0",
+    "file": "046f03a159cbde71883271693ebb93197624cc41b7d9bbe1d70d24e5c0903881.json",
+    "sha256": "7f1c69da562d791e455f9e1c27fdb44c203a2a5cefb88012a0659ca4647dd91c",
+    "complete": false
+  },
+  {
+    "id": "container:valkey-cart:Memory=20971520",
+    "file": "0490b867b9ba77981b639e5a86e187a6954f029e681937cd6aa6952bd7a1f95b.json",
+    "sha256": "fdc5f939b046fcc95723d8c2724d94440cc497f1ee34b1680541b95dbd41357c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772345.11=0.0",
+    "file": "05fc1ec306c29a7669bf02c1d306e10f175b0b94ee6b4e20e04f2d9f5531beae.json",
+    "sha256": "4ec770197f91b150bbd07af8f928fc4a8bbed61fd37c989d569341c6550510da",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772345.11=1.9",
+    "file": "062e555f38293f9640e9656d55077cce5db54f7a78f3b0a3483337869a0a1246.json",
+    "sha256": "864e14a36e224ebacb231de8e6f66d83cbb45c599268e62bc9535e0fbc2bc563",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772225.11=0.0",
+    "file": "06d15c5a70f142427db25c1e13a7505421a566c49e821e117c1feca20ab08472.json",
+    "sha256": "d97988bbb5e04cc734cb40a91255b2d3e5a7c32037397b6bf80690b6c27e9b15",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772288.691=45.074380165289256",
+    "file": "071389b9f2bbcd26543e652b04604065160c0c24222facfa4c6a2af5952eb2a7.json",
+    "sha256": "6338b91b94743470fe2d627e6f89d9507ff7440f35834daca0daf940c1b62d71",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772337.586=2.533502233482232",
+    "file": "07de3b66e1083993b67513869c4f6ad48f1a6dcf110e935dbfb44188029d73ad.json",
+    "sha256": "7b2f5795736d18b2d42279078b3540eb89d3544761ec91ebb58dcb031c9afba8",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772226.711=0.7000350017500875",
+    "file": "0825aa6cf9300d02e52318735104fd154d15c9fe857d73f5afc84c91b2d4dedc.json",
+    "sha256": "0bcdae4b608f07be14f7db32c51e0380738311c81f32a2d6f0025358a47c9d5a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792772217.585=5.450000000000002",
+    "file": "084d6b559087e29139511a79495563c7021ae5b21b10577fe27f9503484572e6.json",
+    "sha256": "cdbe4529b6fc1949ae930b9d5ea98114566cde29873926974745501cdad8a321",
+    "complete": false
+  },
+  {
+    "id": "action_log:37",
+    "file": "0885e6907a7b0a600db4b3ab12e9b56eb0533620b7a737902305e5326a7dd1dc.json",
+    "sha256": "a1e07a61936baa176d1cdeeeb27adf3742ddaa23ac8f0263798879add6bf8eb5",
+    "complete": true
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772232.723=5.366935013417337",
+    "file": "08c9fbe3adfe638afccc3b66e94fc65fe51ef8fe52b5f4d4cc501b2cf1aa968e.json",
+    "sha256": "4b829a43d89b1fbf4330610c07eeb03c4722136e417a0a389ea6ed76ca22b190",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772211.704=0.0",
+    "file": "09740080339577c801b24c1ff5c1342633f775d5c6ca67bcf6c769b46272f0a2.json",
+    "sha256": "17049f07827397b96538ec14d9f08d73111e1c773102aad4dcb76d98d9cb2799",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:de2f7d1feb99baea7ef8bc4ef033d3e6a46fbd5f44a450049139a907e4074c18",
+    "file": "098c9c8e27b1e1a695d250e44c36038d68514843e1445b121ff7b8821582b1e6.json",
+    "sha256": "dfe7c43fc701d566e383e9244ec11aa7766065d5e7f8e0a32aed5ff19dcd0ef7",
+    "complete": false
+  },
+  {
+    "id": "container:checkout:StartedAt=2026-10-23T08:26:28.35551033Z",
+    "file": "09b0f5e2b0a57bd67cb072a4ea8443ceec6439ac17555ec79e1479a1d1aa9d58.json",
+    "sha256": "6bbbf85d98fa594636293c087713b740ea1987e07cb3b2d8daac95ebab274234",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792772331.704=0.10526315789473685",
+    "file": "09e4f3e9070e61430ae1fccbf19f418f3484e23a5f000698f22a15a0feb78d96.json",
+    "sha256": "9a0283136d5f7d53ae7b62f6e10b01a52d91e3a66c5ec9f377123e80111e74aa",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772232.723=0.7000350017500875",
+    "file": "0a4750941e70422b417cacf8284e4eece919aa23be39aa4e8b1eba76a42da35c.json",
+    "sha256": "afc8f7f9350d94c7669f1679e66b672dd7ac7603928e0534c358b81703fc156a",
+    "complete": false
+  },
+  {
+    "id": "container:image-provider:RestartCount=0",
+    "file": "0b54d2c06462dd87b03ea61a477332fdcfabb7cba0e224e536f012bc7fa4c5d6.json",
+    "sha256": "eadd3661fedcdae7449dc3e752b21eaa9e0d95613d86d2619403778634d60566",
+    "complete": false
+  },
+  {
+    "id": "container:quote:Status=running",
+    "file": "0bc67816039a8aaba661837b38f65d6679289c41c9555f4d98d3399238271ff4.json",
+    "sha256": "fbec6dbed81e9e343d5c7b2e5b79b07cd08f9a6cf3413528c7e7c3bbed41e9b7",
+    "complete": false
+  },
+  {
+    "id": "action_log:38",
+    "file": "0c9fbbb9ee5313f3a78b83c7962398c8c81f6ba9f068a2adf68a9fd9cae89410.json",
+    "sha256": "51b5ca05ec81796978bfe1edcd31790d89c89376035277031ddd2fc6529c8aa7",
+    "complete": true
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772345.113=4.4336289085939065",
+    "file": "0cac6bc67f4bba10d9a6ac0bd2cca6673b609075cab154d388e9ec2933122fb1.json",
+    "sha256": "67fda5a94828649caec31ea48d522d25ff71481bf6b33e321b93b2ab8edff2d8",
+    "complete": false
+  },
+  {
+    "id": "span:c67521c4ab40b3a0331586c7c9251e66/0b137287cecabf94",
+    "file": "0cadc01f9919bc9afbe204d127164ae8b915d3013ee345ae2403ba30071e285f.json",
+    "sha256": "19ac42fef843d8d009e21f6f159be84dd027192f68666f08bb16c1acd2d0ad48",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772288.694=0.6500433362224148",
+    "file": "0cbc54a3af6cb87fa29cab5c88a60544625e5db6959930f2cf4745257fb4fd4e.json",
+    "sha256": "1f96a09d709eab14f746161c0035b7d24fd50f0125c2ecd4c5e8ae2ebbf5bce9",
+    "complete": false
+  },
+  {
+    "id": "container:prometheus:StartedAt=2026-10-23T08:26:29.528477315Z",
+    "file": "0cdb5ee3cfdc4e3196baa34b5c7c4aed9116fa5f7759d8f8e8190f9788288c32.json",
+    "sha256": "e7ed22be2adc37a6cd59c05606092a1be4b224ed300d878bf7a98d1859444c59",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792772286.707=1.9000000000000001",
+    "file": "0ce33142b7276fa1e7132f36d670ef30d06cddf74aec97a35562710c05a53bb5.json",
+    "sha256": "875d8488e84ae884c9871e5a8c969903772d5faab389e0999ac0ce1074d8b8da",
+    "complete": false
+  },
+  {
+    "id": "container:jaeger:StartedAt=2026-10-23T08:26:28.898653815Z",
+    "file": "0cf572692bc3019fb300bc25938a16c04cb157a728682f1f1e794b9d1a3aa746.json",
+    "sha256": "9d5e9480c4516bd2c8b6b1871852bd585afdf3a42bb4899666c9dca685680f52",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792772292.582=0.027027027027027025",
+    "file": "0de75c8a7df7b349f5dcd5701627d876f16efe0d6a9f49c0032ef83f1ba0daa2.json",
+    "sha256": "3ab82dc1bc1e91981b7b59c0b68efd8cdd08e0b9cd34bb3acc59ce11fb9bf819",
+    "complete": false
+  },
+  {
+    "id": "container:currency:OOMKilled=false",
+    "file": "0e47b4abc554f8fbf375b975e767e1be447f53e6883a1bb6283a5ddac94c1405.json",
+    "sha256": "6547ecabed8d8b3cfbfe05ed60fa51d9f082a5892c627165607ee61b720da3f6",
+    "complete": false
+  },
+  {
+    "id": "container:shipping:OOMKilled=false",
+    "file": "0e5458470a387ec9e89ca9c68b57a7ad72aa878f66c6a5e3461517d6c449a575.json",
+    "sha256": "3959a5da2d7e79073d38767ace95589232bcc685baf7bb0e9574f11ffc8afbf1",
+    "complete": false
+  },
+  {
+    "id": "container:payment:Memory=125829120",
+    "file": "0e68e5d59b69d790464cda13f2d9d7a66051639f0560c3560c545ee5a0a41d19.json",
+    "sha256": "82b54b0f25f29fceb7798e230abc6c733c16490c0a0bee388661bd6be8896742",
+    "complete": false
+  },
+  {
+    "id": "container:load-generator:Status=running",
+    "file": "0e6f7bd6cc930dfc64c9d8105a1947225ad37e67ef157c48855b11f19680dd42.json",
+    "sha256": "fe4521c5080b337604583cc63b2be99a36fd6673260583e08f19e15119148860",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792772352.72=0.19047619047619047",
+    "file": "0f5722e31904431bf0d21aca54e318b6e975189f3315493b33e5e73398dcf910.json",
+    "sha256": "342fc0a1e1e09580bb89028805ec6654709e498abc79fb2edb06f665bd9eaf4a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772232.586=0.9500475023751187",
+    "file": "0fb310d494c00de6430aa5bc2288293b53039b70e70eb1c18dceb15b8cdddb5c.json",
+    "sha256": "85ba5ca508f42eaf94ae0885e0461981f8172f1f10b792290dd8d276c6e4e2c4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772168.689=0.0",
+    "file": "0fd2ea5e1695566593334729b0910caba367a30340d0f1d5f74c75dc6f857cb1.json",
+    "sha256": "c3ad00197982220bb5eeec4d9ca898e7a2c1015125838310b1db242348e70101",
+    "complete": false
+  },
+  {
+    "id": "container:cart:RestartCount=0",
+    "file": "1089cc769fa743398cf3cc0714f368ea0236d9c523e026d6a2671224d3a98ff9.json",
+    "sha256": "20b4e7db729e193131e7260a0d31eb320c31f378baf4621c12bde98605b7ffb8",
+    "complete": false
+  },
+  {
+    "id": "container:frontend-proxy:RestartCount=0",
+    "file": "112b0bc80713430a3b52df98829e2764a5380189c4b92b3ee534f02c18222b6e.json",
+    "sha256": "1197ffb2b178edd16e8d2699ce14bc0cfa8b595bc00bf3c1474debed604d9f68",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772352.72=0.0",
+    "file": "11343d645bcb90fcfb253b9dcb71cc8fbb9a3abd4a22e937373e16d5bd6a7ccb.json",
+    "sha256": "d52849262d0492610cd5ef176052eec399fdd6c2860b1369e173d669eb7c6514",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772337.585=1.9000000000000001",
+    "file": "115dab67f47ede55fcde9fc9cc6331a3c9731750f88a53cf893cfea44499db06.json",
+    "sha256": "d066cc312c05da11b872ff1cb96cdf1b7f4792b276de6db8d6d808ffb36755bb",
+    "complete": false
+  },
+  {
+    "id": "container:image-provider:NanoCpus=0",
+    "file": "116444c67a3ec92c54a8ef116045704341c6386a9c188bdba1c7f6d616f38622.json",
+    "sha256": "8786b615dd64683f71fb970c91ac107eb2462947c9d4050714aa68a695dba4ee",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772232.72=0.0",
+    "file": "11c6386e24ad4e902df393b0071fbd156ca6f3ffbf814554214206dff5563575.json",
+    "sha256": "cb7244841781240a16164538f206fd2907d49adee7654b2fa2eb601e491c46ea",
+    "complete": false
+  },
+  {
+    "id": "container:email:NanoCpus=0",
+    "file": "11de53038876912291ba1d0f1cea1ee9f74fc3a08a366af9d783a01ca439ce8d.json",
+    "sha256": "e8f41a3c223efdb4509549c4580f8f4a1b7da80e33f3276cfd837e506cb25f7d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772345.113=1.0000666711114075",
+    "file": "124ad70cc788b2e2d97543b56efa0229238f504a351c50a113b54c69abd39601.json",
+    "sha256": "f0bad2cbe2218585a787aa5c7fd572df0ee574bf4606b8a04ee28d23ddfe5268",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772232.586=10.317182525792957",
+    "file": "12a3449a4b338675be55d4ac488e28d0cd8890957d4cc5482126f6a46fd9e5f9.json",
+    "sha256": "07994121a490253dfd1dd125ad7d062b339532bbbcc2a4d5cecc1c0ed1bd6a93",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772288.694=9.867324488299221",
+    "file": "13888e71afe002c0d1e2b72b7355c29a80c54a246d0331dfb7ca9be459471606.json",
+    "sha256": "037f856b9fdb4757559a98db988996ddff6683e3c0b1de93d51b9ea84ad75e59",
+    "complete": false
+  },
+  {
+    "id": "container:product-catalog:StartedAt=2026-10-23T08:26:28.456561269Z",
+    "file": "1460f9f5dced25873d8cec7a4d8a3ceb5bda89ccbca6b30b4b506db16455446b.json",
+    "sha256": "7c247b04d94fedfbdd7fac6ff9534740587d47223da348209499ab92b6a278c7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772243.694=1.20006000300015",
+    "file": "150d02070834d1dd14170110ed418e5124354dd0ebf0c34e4e9932e31297fa3e.json",
+    "sha256": "b960f7ced0e74b19146ffc2e1c657780d4e8026dd5b1af5db12ba0f0f0864ae1",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:e85be8c015d6bb9f66f351f7f53de43e9410f366a75fabe3c04a985d299f8cf9",
+    "file": "168c6efeabb50a21d50a6300504be61e4e2533df199749a6b60765eb5bfee7ae.json",
+    "sha256": "5c889e28ebd8f463699c8c85f104cf9fcf22941970a9263580a0fdd8de987b85",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772337.585=3.32",
+    "file": "168cc705da717a65330273d1c80742017a2b0e9a4f7ec7e13a10db4c3e90a4c8.json",
+    "sha256": "1081750a7f68d541c0d5b29c5351460261eaf10fe5fc89a6606b716f17293da6",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772337.582=0.0",
+    "file": "168d7e7d0783f2dbd82a58fc9707350bee55f062134ed4210f777a1658936407.json",
+    "sha256": "f95710a0a0d0b9dfdecce280ff8dbaf5070d4931a4d109e53c650b9272b0800a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792772288.689=0.027027027027027025",
+    "file": "16a03c2a86c9ce696ccf637efe2ade0668906a4cbfbf1c76c60e562b95d87bc0.json",
+    "sha256": "ff71aab57969d61d0dc273e6e1978968eb937485229b9e96b94a325b7d1ce667",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:1d30723d42d487bd6622b9f9d3b4914bb4d506f5493d753f86a867f938b20d4c",
+    "file": "170bc20d34d9322c25e4df08f14c3ebeafc78dbeadeb99375918979b2107d4f6.json",
+    "sha256": "f7c3949fdf7a794bd904b7266b0523d6440cff8dcc429ee639cdba117d70a4fd",
+    "complete": false
+  },
+  {
+    "id": "container:grafana:Status=running",
+    "file": "1730687a463f98194def7ce1d7045cf0fee8746fcf9570e13b5fba0cb51965de.json",
+    "sha256": "0308cde9dab9f913314725742440d0c8f8f20102991fb2bb4e33a3d4e40482d4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772225.11=0.0",
+    "file": "18a07552af9df9de50bc90749d28e8bfc9328b3f08942942a93c99b34c246c39.json",
+    "sha256": "12cf4b8b2a1a94a2e62c533da28f18b4710b9712dcf2d6a7448a4b8b48405afe",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772345.11=1.9",
+    "file": "198aa6fbcdc4f304050c264a1214e966146f59c691e56d5eba4f2cf93aaf2ac0.json",
+    "sha256": "3f9882643ba752875ee980f863b86bc48800a820fe8ee4b2c44f840dfe117a9a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792772331.704=0.25925925925925924",
+    "file": "19bd94f9e1110e82fe1a4c5e06074d75a7422812f477bd20143189c026ccd59c.json",
+    "sha256": "b879af74e9bd72a41f77613d4e576ada6e8857f46e835a4b2f08907b3db6acc6",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792772292.582=0.25925925925925924",
+    "file": "19f7c36dea529a499276c31bae7b42b694a584a2d4b819b8882edbcfc0550537.json",
+    "sha256": "564e03b8e282c57fd255e3e3b93455826f7f1561f3c35a052176636d495aaf03",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772232.586=0.9667150024167875",
+    "file": "1a003a5262fa7f8c7a30032e3c6e3eb1092a248832fff039dc89f9385d858431.json",
+    "sha256": "80a3cb2ef1be48acd029198aaae8eddf794f80bf22f5463931291c951068ef5d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772226.707=3.8454545454545443",
+    "file": "1a056fccfbf232f070bb752f5b30454a15de9006117a5f28caad5cc4b43b8560.json",
+    "sha256": "8e177cc5756ec4f40baa9b5c186953274568ccdb30f1a7c0b0cfdccc15e8398a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772292.721=45.074380165289256",
+    "file": "1a3efb6b984b719facf9f6a92eb8ac92519f46c733465567a4e8dc3e4f8ce629.json",
+    "sha256": "efd017e4fd3634fa54ea87d7805e9f2cf999df54b77c7fc696f6eb36afaa3df8",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772211.704=0.0",
+    "file": "1ab3d439b62453a29b3a5319e405653e2200905762e52bb686c12193a47d91cf.json",
+    "sha256": "a780bfcac1072e76296f7cdcaf5bf3e2768bec2a6649fa222735d358168ce0f0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772331.707=1.9000000000000001",
+    "file": "1b8d2b387d8affdd6ac6e5db23e12baf5c77ee164840c23ba6f331624631788a.json",
+    "sha256": "f96a082a183c3386fab479a88669324fdd0a7772bfbbc5d4bb80c23099ef0a60",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:673fc19a53733dbc79601bdf8b4cfa34ed7098c3b592d8066f20958db1964069",
+    "file": "1bba2a71687f180eb2d4cb9462c923cc24a7908b9dc5960c013bf8568aae0418.json",
+    "sha256": "cbc31364d48226aa49da06a09e51b6ef36cd395d6868d53f76212aaadc31a89e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772285.113=1.4000933395559705",
+    "file": "1caf193607c43789da56edd2384819f403fee6ecb9a84a627246323f71543fba.json",
+    "sha256": "8d6a0f5f76bb9b11cb9ba385b3290574493f2a586d1b46f159e883ff331e164c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792772331.707=35.52380952380949",
+    "file": "1cbca23a2f4c6a0e3dc14d97832322a9f1a8c6afd8005f3852f656b44ed7117a.json",
+    "sha256": "338cdcbc35365048191cd2a87b15d5a3d5a0b5bdfeaf5444508739b816d5ca48",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772288.691=1.9000000000000001",
+    "file": "1cbebb1664c0a917fa3279677ee425aeb4c4dc202c287faef7d748f48a859d8b.json",
+    "sha256": "238db7203f02d57db7b2c6f2a5a7124653e9c849fc878b2470e361b185573b03",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772232.723=3.9001950097504876",
+    "file": "1d28590a589ca128b81f6a3f7819905534cfc14d81ad11b1078763362a53daa1.json",
+    "sha256": "ff7087d28ba3d4dd98b6a5220838d8fe94dae4ab31b48ea6ce77b0b8b01ceca0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772288.689=0.0",
+    "file": "1d562b1c2edf55a335fa366484f0962090a1eb83cd9a3a6d26b5228a0a2f1636.json",
+    "sha256": "d7160e5044a4d2aee5cac19e31196bdaee6ef39706cc0d4035a13ad44ebcb795",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772225.11=5.000000000000007",
+    "file": "1d62d3dbf05ca6ae069c62b095ce629cba68c7c160dac8c87568825faca705cd.json",
+    "sha256": "163e933e212b11dc46754b238e58d9f017dcd22aeaf68de6be3b1842553e7837",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772352.723=0.8500566704446963",
+    "file": "1dc66a0bf58e67da11d354a426364db8c56ed4e8d684d492cdf8d071a8c63db5.json",
+    "sha256": "27fe9fb8f0e1870becaa7deddb310d11df003ceed875e197cb61cce4be15f272",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772288.694=4.83365557703847",
+    "file": "1e648e9321fe4eaa6cc91edf6be97d815fc79ffc1316dfde35803e772750407b.json",
+    "sha256": "09ae92aed806e341bf8a5cbd528c8a904901f29434db2ddca3a1eb43580fcfdf",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772352.721=1.9",
+    "file": "1ecccd837d417636cc1087cd590eaca5cb10ecabbe86821d14eca15874298db8.json",
+    "sha256": "b28661b0e6dff58b987c6adb1b11d84a4d01f5882e1c673a7df7217755fd5804",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772292.585=1.9000000000000001",
+    "file": "1f0dd7832f6aeaaffc71f3c39b42a63bb37297f4f5848811bc8f3b752b77c0f8.json",
+    "sha256": "21ed5ac63602f4ffb936073d36dbe53153bf3b135ecebc017931574a07f5ba3c",
+    "complete": false
+  },
+  {
+    "id": "container:load-generator:StartedAt=2026-10-23T08:26:29.232340601Z",
+    "file": "20fa3d4de19078420c13c023267bdc539b66824d2a52f905674cae3042d69c90.json",
+    "sha256": "7df37161245e71e5e039f5d845b4b095b6a26d803562482e2f0bd55f48edcb65",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772345.113=9.483965597706513",
+    "file": "212a95c0af629b84e8a594e68ff15f71b0fd7bce033189e8be153bb2706cb767.json",
+    "sha256": "2906c5ed09e1f37bdc960fc3c1182bc969b9cfe5873ce6ea4690876cd46bc631",
+    "complete": false
+  },
+  {
+    "id": "span:dbd072381cb919e5b3f5e875ae1f0a7a/8c33b4b89427c8e8",
+    "file": "2187d528d2c761bab02d96017d38b8b8423c38dabbc426c5c607597751f32d1f.json",
+    "sha256": "2b9fc5595a0853f1026ba54b1d4cf44b9cac22efd0ec6bd0c2d18c2f03232aed",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772226.707=4.025000000000001",
+    "file": "21af696458baa097fa703fe3b37c8014aa07445b4e89c7b2d815b3dc269b06c1.json",
+    "sha256": "3e9ebb453600857c25765fdea73e4097922b4afaed0ed4f0a3dce2cd5900b6a7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772232.723=1.20006000300015",
+    "file": "22bb9bcb0ea0c04553ba899af806748c201c7a2288a242b38ef7c8cf5c73812a.json",
+    "sha256": "61533366c015f90d44921ffad91690ae2a9fb0c2a51862ee43f67685175f55c1",
+    "complete": false
+  },
+  {
+    "id": "container:product-catalog:OOMKilled=false",
+    "file": "238735237c6fc9c0d74bb2b2e895b1dab4edd780d78a71b7df4ff740df25c915.json",
+    "sha256": "c45142036a7e1d056855070010370f9037388e00057d23db99802648ee46a940",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:116aa1968d148f7fdee279d7c3212e4a5642e0c0e070be39e9c4a53fb55d1858",
+    "file": "23a32d823e36d95f2e0de5605ee447a35646c47e26076af25c43603d7a59aa9c.json",
+    "sha256": "701a42fa6b616c28d16907a65a967a130235608472fe72b4027aff8c6272b0a8",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772352.721=3.709090909090909",
+    "file": "23cebbb8f2599de64316bd13651e1b2ca59e1b4d1117230628d5215ba8827014.json",
+    "sha256": "3137cc1f9853c1d4d3693473d0a18c5684ce7fa2d221a3e6e1139ec8153218c1",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772234.634=1256.062803140157",
+    "file": "255905310be12b6a09b7d226ace73dc254251a36c7a15a3b1a3239b6bcd9e11d.json",
+    "sha256": "97cecb64653fc3905cddda4c41ef0ca5631f1e5f504da1a692c6af4ae19a1279",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772285.11=1.9000000000000001",
+    "file": "2615c4c93f80210a5f9e9eac4e294e29ec1fc7b69a856528d57c05435369e9ff.json",
+    "sha256": "917d15546b83f9d4c6a6fefdadb78b5f1313af26f6f0cb558dd83ab279e6cf81",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772337.586=0.400026668444563",
+    "file": "2748b26f639c6081e892f61a71ef64f9aad54189b6136f677d5264ee0bffebef.json",
+    "sha256": "8a188d2e8d1e1f00e4bd50855ba17582113e144b0f8834b7096b36f4bf0b1e29",
+    "complete": false
+  },
+  {
+    "id": "container:email:Memory=104857600",
+    "file": "274f8adc770f59ab8e313a152aaec02710cc76560e2ab0d5bafcc5158fe8cbfd.json",
+    "sha256": "610c5309d61f8e0e0563f84830fe0e1d89544bb71a0c5fc373fb7a7f78d518e3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772288.694=0.400026668444563",
+    "file": "276190afb166fede449617a1b22a31bdd338841cf419edf206d6cbff098f1efb.json",
+    "sha256": "5d2a799f1ebd503f563f9689cb8db744a901ac320d80494c6a77cc2ee4012479",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772232.586=5.366935013417337",
+    "file": "2785b4e8d8dd7a79b8213779c6e4cdf96ceeb0ebcc75683533d9910f838454bb.json",
+    "sha256": "1f05f2c9cb2f15a0c3eab17a8f3304387053c7ba83f58594ed70ecdc09ddfcff",
+    "complete": false
+  },
+  {
+    "id": "container:load-generator:Memory=125829120",
+    "file": "29edec9debdac3b10ce67053ef2047ee1766b3a12d53f49304b2058b18fefce5.json",
+    "sha256": "8f2cb9f694f50b0b9266853bad71531a1fe06204b2b87af01d9da8de03b328aa",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772226.711=5.366935013417337",
+    "file": "29f876a14e4d7575df196b9f51edf06a1887b6bb0c8ab0c3ca6e8e5089b19d82.json",
+    "sha256": "3c7acf47d209573bdd8093f429ae23096a598a7db1f7c4e16a84defbbf5d2724",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772345.11=3.9999999999999996",
+    "file": "2a0a53679fe633a091835565e5cafc6c9d2a0d9a709a038a877737b4bcc419e5.json",
+    "sha256": "9683c84ed11bf4b496a968d5142fa9cef77164b124e82a8f7fa5b3f2f1bc921c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792772331.707=1.9000000000000001",
+    "file": "2a1fa1b2941248ee5d162f5efa83ce10a1c4e8ce5d507ba971424871b7371589.json",
+    "sha256": "8ceda889f465c26adb2d4a2f9dde6e0a214c88924afe85ca081ccd0a58322458",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772168.689=0.0",
+    "file": "2a78d6df49e05108bf3fd4f9c6c1f78f66f021a36f6dcd308f351e9809f2c785.json",
+    "sha256": "dc384ded561236fe5f79e68527e5d8f02e4ae217994a451011a032467f604e05",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772339.979=1076.0717381158745",
+    "file": "2aeb0c029c7b7987d1ffd4b9f7e5aafd38a536c55b3820ea3204c3474634c385.json",
+    "sha256": "0ad763b032c567586561022a8ae1f8053fb81700617a7f7923c602b993b6f843",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772286.707=40.892307692307696",
+    "file": "2bec8d0c90667e5ee735697fb9db1c9de8a5d5a182fc0a9b2863ebc60d13433e.json",
+    "sha256": "e1fe6d0ca7be5d9b0c3f80ed6484453334611139ca3d953c97573471b260c795",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772331.711=4.966997799853324",
+    "file": "2c1e68bd2e3e47f6ddb37ea1a8f48dcd0ad4250bfe3ab1ea1d07cdfd9ba1bdfb.json",
+    "sha256": "6700a44983b19ccd8c1101cc4c05ea66a12c62b03fbad612a395f93fba4b0c0b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772226.711=23.584512558961283",
+    "file": "2d02dc0076be161617fafa3c329d62991d939f7f2fa9718bb495d57b372961d8.json",
+    "sha256": "cf37eaa141c764760176dc040c39736836ee2170d5d2cc47b1a687d8df3c5b7b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792772288.689=0.01699029126213592",
+    "file": "2d1e920b1ea13c318e14b9ddcb8721c113250c06e9e59c4c219975fb849a566c.json",
+    "sha256": "04efade8514814b27cfc52b060c1575fb73a4d5828a462a8ce82f8811abe4e8d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772352.723=2.800186679111941",
+    "file": "2d64324b9a0c8a6b658581b75f58d07920f85c9402c82cb1477d1b97390698ba.json",
+    "sha256": "05b7e75a41a99574934d78c2f516508509bce5cde20dd2ec4d324b1a9418ab56",
+    "complete": false
+  },
+  {
+    "id": "trace:797ba723d8ef068dc8a2468da1c9ae1a",
+    "file": "2d926966ba320a87bf982e59e8f3cf7fc73bc621ff46d76c4bf4390ca7912d4a.json",
+    "sha256": "2bc8aefc39d6e5d9ddc1a7bdada6b474edb821dd97061e4386f4a6ec61167adb",
+    "complete": false
+  },
+  {
+    "id": "container:valkey-cart:StartedAt=2026-10-23T14:50:58.196424049Z",
+    "file": "2e0f8a9ee619b1b90730c4d39191b50b1ce21dc41c556717d52a1e16f2f989b1.json",
+    "sha256": "f1edd24d999d534b50658a85a60a0cade5c5c6685c5e134951b9f9fb0f2ff918",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792772292.582=0.10526315789473685",
+    "file": "2ee5cd201a5ada9102c736e0022a600f34517a84a05d8e3349f0e85294fbbff1.json",
+    "sha256": "84432f19bd40c165e01721a29c98db9bdb951ce7e2471cb1a5f3b6c4f83dea5e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772333.575=1100.0733382225483",
+    "file": "2f25c09a7784ff7ce258ea0bdd72175422e2fff554e69b5b2f830f8e39acd607.json",
+    "sha256": "87799f7f5029f5c3ae0bf046ab6943cae704d860c8ebb524b65f3a481cf3702b",
+    "complete": false
+  },
+  {
+    "id": "container:prometheus:OOMKilled=false",
+    "file": "302c28ed3683c5ff7e57af4d08617787dfdfebc5ce6b00ca161cc4c478ecb313.json",
+    "sha256": "057eb28a03a02b420d14b7464789c5731f1db5285f96ef850ee4051973d0b9ec",
+    "complete": false
+  },
+  {
+    "id": "container:product-catalog:NanoCpus=0",
+    "file": "30340e4ed606244445aa5dbd7bd78fcb41d205bda16865aef876319774cdbecd.json",
+    "sha256": "9e3a55901a211eb1af12e18724f0f57156a9e0ef6c7363ad618fb569ece92e27",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772243.694=5.1669250129173125",
+    "file": "30f6e51b3e8b63f2cf042b46f38209e2dc472e46431cf978d1edbf56438614ca.json",
+    "sha256": "ef434f57a82bbce6e7b377f444ed65d6cbea3419482346492abec2c532519ea7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772331.711=0.6500433362224148",
+    "file": "31074c078081616e13f0718bdce45c79de551fd3d005a68419f099f73e298007.json",
+    "sha256": "e183abe57a01e8808138e387f42316ba6b7d26eee53d987906a84309d5aba16d",
+    "complete": false
+  },
+  {
+    "id": "container:cart:StartedAt=2026-10-23T08:26:28.708327669Z",
+    "file": "312e5bc7d3bbd5d6836be5d60782b856bcbfe01d752c6f0015938eba67c69ab3.json",
+    "sha256": "fee6450586d8c9f15d1ee70ce9e30c05fc1e9254c475eb64ae374b8b482f429e",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:0dbb9925aa303266b4d52e430573143ab162fba83216a3f5df3f1860f4d729f6",
+    "file": "313a23de7aeb9c96cecc46fa19bf41735c15a7e6a7df1aad1d6fa7f6d675909e.json",
+    "sha256": "d9023b96dd653fc5d215a4b333c5c55b150abdf22d70124fa9bfe3ec68a75f32",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772292.586=1.4000933395559705",
+    "file": "32243bb430ed380115d535365d3350e2790dc41123af730b5be7a9f6f10430f6.json",
+    "sha256": "1bd6d83b59ca56ba67f54f0dac479460a27780e442ad22ca779521b9756e0a80",
+    "complete": false
+  },
+  {
+    "id": "container:shipping:RestartCount=0",
+    "file": "32398f4e02778f8aa0c5d6a1b71a21ae1cdeefc266f3b4da8e61d5f1375f779b.json",
+    "sha256": "1e8f9ec1e23fd3fe2c35e4984eeb6cf8417f8006bfe3389d155b370cce7395e9",
+    "complete": false
+  },
+  {
+    "id": "container:frontend:Status=running",
+    "file": "33b4d9b21b9cb3af689353b8448735274c165fb8a85934cbdcebbac2bc32b1da.json",
+    "sha256": "11189689159b6a99dace14d72752e93f29a5c9e221228582eb6873573a0516f5",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772345.11=0.0",
+    "file": "34095cdfdf7f22d6208715aeeac34c3d2fbc8084796ef0bb65e8fabcea4fd39e.json",
+    "sha256": "85cf7359393f96724de34c3c8532dea36c199713e03a0041f395125b6effef5f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772286.707=34.83435582822082",
+    "file": "35a237532de87bae812bcf9447fe6646f74ad4fa2f74cbc5f1774580135264f9.json",
+    "sha256": "e0095a09882dd3b2e7536ca04d40919a203b15366bacbe0f788e44786ad3cd1d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772288.691=3.9885714285714293",
+    "file": "360c50da7491b955b121485694ff8b714f1419c176a1f7a231f0966561f6f870.json",
+    "sha256": "47ae9980c4c0366848af5cef715cd0411d6c260b0423f485108fce77573f180c",
+    "complete": false
+  },
+  {
+    "id": "container:recommendation:Status=running",
+    "file": "361d0aa99fdfeef4adf68c6183a3c5c6341c55cd5696230b7db4b20acc82f251.json",
+    "sha256": "d540a96b64190044d11e18b5f527798ba7850fb9f91eb08ff0365b3c58aa8cb6",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772285.113=1.033402226815121",
+    "file": "378a86f56c63cbfbcb209b3c31a64b62bd54255a47f57ad2e35d0e8d8f083950.json",
+    "sha256": "f8383be821ffc3f5ae416b85b2f5271cdc46db3a2df9b8f0dfcbc45e3af5b664",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772217.582=0.0",
+    "file": "37dbbc71e65a4d309899bd4ff563e919c90f1bebd616a2fcc2e6c22d140edae4.json",
+    "sha256": "f17ae2d0763c95143f4751e6a9944ad68b064f6accf40b4150f19a47d4b62150",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772345.11=3.789473684210526",
+    "file": "38bbabcb4b4407cf39e176512e87a69a0897cc89209fac3c434cd8f567d207e6.json",
+    "sha256": "81ff6e4144783d61f5282536344319e9cd7b53e358fa671fac0d550a363dc02c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772345.113=2.800186679111941",
+    "file": "3938786c06996e8b4f258ca0c4047e9f2c2a5bbc5de400bf674c11aa54cd0cf2.json",
+    "sha256": "bc2180076d2eff6d92540f30289142ef15c84580eabf74ce669d5d31f99464c5",
+    "complete": false
+  },
+  {
+    "id": "container:opensearch:StartedAt=2026-10-23T08:26:29.56447477Z",
+    "file": "3a0198cfa5e330d64f78eff1823457e667cef3131155f27e7c8328bd846b9d75.json",
+    "sha256": "021566dec0a2ba761496cef00a741d66d739184c8fedcade459ac731a5c73916",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772331.704=0.0",
+    "file": "3a0442d4b41902ed1d33ed10f6118406cc33dda16cd84413edff8a3a3abac59a.json",
+    "sha256": "9a601b9640f196261d7be8d738cd970856852250f480e0f2b073827a9017668e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772331.711=2.533502233482232",
+    "file": "3aae34878d77ec013a7213305555d076c424d6e36dd564fe04072245588f6cd1.json",
+    "sha256": "64e176a8c21391da4e026f6796363970911a738e23ed03795d217983c2505664",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792772292.585=38.00000000000001",
+    "file": "3acfc36414d388045b41eb6ac4967248ab58439f0d47fff26e78b0247f892063.json",
+    "sha256": "dbaeecd3c526784392fdd9b9a98c8fbb73b2cb3e1a96f2d5d62f318072bfd533",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772232.723=10.317182525792957",
+    "file": "3aef90db3b9011e427f275abeea3672fc55d0d41310b062607ca469a6ad914ea.json",
+    "sha256": "d162a72055e3c5f4085693f73c037b633e1e1b5d62f588716b7d4199ba93b03d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772217.582=0.0",
+    "file": "3c55ccc6f2e9889e33285ea717951b76ea54eadc19fd5821861156e3cd3b37bd.json",
+    "sha256": "9999342137b6c9c48769a9e74c09ded51e6fc084567cf61b9f1e37b49dfb8a8d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772232.723=0.9500475023751187",
+    "file": "3dd785616fe0de6b567612d0b6e609a2a0ad2d9eee0025a6cb8b8216d5c1e715.json",
+    "sha256": "6ace618f5b25dd1e6816904d61fd83ac78cfb4ef8d60beafffd9c1eeb9f7cff8",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:14f2a117b1f1e5098441766dc8bcb8a42cd3019fe5b38a36926fa9db6182ec89",
+    "file": "3ddd39de6e2675b8963e988ea858a1df404d9f1dfc78d459c97a8255fbb187d8.json",
+    "sha256": "96bb2fde89125ccfb33095d5b69c5cced5f82ee78af22cbf41f801069f382e42",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792772337.582=0.10526315789473685",
+    "file": "3e1ae487b9698d75f9de7713bba48abb190fe98940aa88c883789f571818fe04.json",
+    "sha256": "0e6fe5bfd0d33c0ad23031ce67a63bcab99005651d6755d076bb3d2d09e64ff0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772286.711=1.033402226815121",
+    "file": "3f5fdc551ca472c04538052f2cab6ef87403a16383b83ed33fd38240d281632f.json",
+    "sha256": "d982997dafab28edfb1e5a55c80f5afc26db6a6bea3f7edc5bc8c6664748701d",
+    "complete": false
+  },
+  {
+    "id": "container:prometheus:Status=running",
+    "file": "4078ad6661267451848f90672c4fafcbee335529e58e428ccef9883be4d2e8c9.json",
+    "sha256": "ec0529fccebba45f27369ec7b58300e9c5e0279fac026415b192e24c5f61a52c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792772331.707=38.00000000000001",
+    "file": "40bc9016a04713961c820bb3602ee73a03a00f506370f140f4985b1646ba35cd.json",
+    "sha256": "5c7a2fef28dea7fdca2671de5ee701bd2193fb25d66c50ea8b0edacc2d129813",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792772345.11=4.450000000000001",
+    "file": "40cc1f3c2f68dc055022eabdf14153ca8c18b2308c06ea388a48ab3d2eeb464e.json",
+    "sha256": "fbc5b093531b824313f4bc81b37f89aa47d8cf22dcef07a0d3108c0361b66ab7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792772345.11=0.5",
+    "file": "41cbe6647ec0dacd9fbd790be5e7788fc3ef89361ec838d1d00fd43f01c2c10f.json",
+    "sha256": "d86eeb17f662eb063b095871bff118a0d4e803925a0df26fc97a81310cd2f0d6",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792772337.585=1.9000000000000001",
+    "file": "41fb8a6ca22ec6bbb7c4c3377e0e92258ac78d19c87fecabb79da2178a84798c.json",
+    "sha256": "b13dd308bbc49a8771f4a155be0931f9ccd5a11993c1757deb66d475beac3bef",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772345.11=33.78921795210954",
+    "file": "42229d12856791c8147543bb659b1dfd07837052f6a677261b0d1616114dfe31.json",
+    "sha256": "9ab4371fa46e0e2bb4e40ab030a119563808cc9a659f668c285540cd133c82c2",
+    "complete": false
+  },
+  {
+    "id": "container:recommendation:NanoCpus=0",
+    "file": "4225129a78641cd01b33b9a58650422b4e3b54efdb23c89b742204f8aed9c379.json",
+    "sha256": "94ae56541f5c16a8d5f081967121cb2ee7247971fb969d26c9cedc3b8f0c3248",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:e14a5f00671ab27e5f031b0f9ba8c4f4d4e65a7a49badb253df9a794296c6a58",
+    "file": "42f9819a312a664e32b9c40e6e13891804ae77bf17f7bfb2a1d950d2cc15dd2a.json",
+    "sha256": "99ec92aa33bf2a7e1a2f2954c82f8ef6745f91f93da429dcb66a97c91931698b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772345.113=0.8500566704446963",
+    "file": "43e0bc3666c447836d8474ef38745fd67875b816a12733f0e5f0f59a8305f176.json",
+    "sha256": "9531ddb135dd4ac575fcb291268e949913da059e3868f043a59458775fe21073",
+    "complete": false
+  },
+  {
+    "id": "container:payment:RestartCount=0",
+    "file": "451bc4bbe2ca0c01e7dc97c8ce66197e4ccb535476a8b4bf1374705421529353.json",
+    "sha256": "171c2fa53991880998fc6c808bcea4c542fa17f9afd9cbaeda200cb2ff86ba28",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772286.707=45.074380165289256",
+    "file": "467e6fa633d70c5d1aff6dd5e858cb862843e0d1bc574a67dacf28a88a2bccae.json",
+    "sha256": "fac7894375944624d0758dc4fa70b2662e30bfbe66a91a89e93ff9376a8e73f8",
+    "complete": false
+  },
+  {
+    "id": "container:email:Status=running",
+    "file": "46a30e445757039763b71f70862c117b00284caf736f34c779a13665870b2d76.json",
+    "sha256": "d74a1fbea8a7b134c8f24906d17c9a2ed17902149a34f1cf62724b30abc09a78",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772288.691=3.32",
+    "file": "46d9b7da2e914be24fd6edb7cba5c027d0a30b59d57ebb9440cbe04338dc446d.json",
+    "sha256": "accb5a9c525d39dcdbc55e3325a480d4061ac20b2738c9394c61cdc9269e5f90",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772345.11=0.0",
+    "file": "475a22506fe99c29e928863e730c9ab9bfdd9c4cb4dd0cfd827a3d605a2972ac.json",
+    "sha256": "58568866fa35e2c84258d2b19dd77ba23925b1ced93e571bc9488b956727b7ed",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772228.691=3.8454545454545443",
+    "file": "487ef34bb9926f2ae40a76ec7cea8c9e0ff1a6c7310d3a9c240795967705723c.json",
+    "sha256": "59d7a7e84181700cde520f6d411071b816c8ed13ee706cda84f2748b0026cf6c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772226.711=0.9500475023751187",
+    "file": "49979b0e2c60514891bb3a29608f9f0ee13819c23e3d7c409ec5d1545a5c69be.json",
+    "sha256": "eac8575d235ecba5516be6ba8e41e34b15dda7c751839e5e0730327205ced50f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792772337.582=0.026845637583892617",
+    "file": "49a7c30611e0839e73a4e340fbefc3f42b31349552f62f4de243eca5e16b6c38.json",
+    "sha256": "126aa697732f116e5bf59f8b36de6ed78179b003422e5bbce2f2bbcd00495ffa",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772232.585=3.8454545454545443",
+    "file": "49aefefe42a983ab976ac749b21b2b1eceb2541323b36d9d34912118e6bc9e1c.json",
+    "sha256": "2ca5dbcaebd5e10e08d7d9375fa0493b5840630d1eda3798edf227453c343041",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772232.586=2.9668150074170376",
+    "file": "49c01d41c950160df28a57cface8b8f72a80fcb47e6061addfe6511a59a6ec34.json",
+    "sha256": "c56960bd127b780204bd0a47381d9e681c44bea54b53cf41ff352aef94f91dfa",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772232.586=5.1669250129173125",
+    "file": "4ad5091480026d00e58c7cc211cab89301672b26c7056c56e9ee1fe678ed0283.json",
+    "sha256": "fe2f0133f51edb769dc7c5189c8ccdf099b61cf67bcc9826f0846e53f8f65019",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772285.11=40.892307692307696",
+    "file": "4b75f03915dc29dbd229013aabeff9dd91160fc38c99e0fff692d22d120fa7c9.json",
+    "sha256": "af5760bab2e52911a7417330c8b137fab5c1e5b929ed26c1c8bca12d745d1041",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772243.694=0.9500475023751187",
+    "file": "4bb897063bb53c6442be9368b30a114bc58698dc5f4cb23dd87d563d6975c485.json",
+    "sha256": "bc556574aeaeafcf422e51e2a3ec679d18762173ba189b59301abc768e22ff8a",
+    "complete": false
+  },
+  {
+    "id": "container:recommendation:Memory=52428800",
+    "file": "4bc0551cd60a5201ebafabb9a52cd83659325e0c8c0edd5a096000e08cde9911.json",
+    "sha256": "cef1901eee4b5ca4ecf5a0d05dc83dc1c65e5d61aa5fba52b9cb587aacaea236",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792772337.582=0.01699029126213592",
+    "file": "4c1f32e0bcb1a40624fce07497340c6d03f15515ee379ee406232e0e5bebfb42.json",
+    "sha256": "0592d0d9a67186e33a0628c07fe77ee40e727feb96a224c5653b9858bb11a218",
+    "complete": false
+  },
+  {
+    "id": "container:frontend:Memory=262144000",
+    "file": "4d28caf8908a8dbf37b36de4685171029afbcd73326c16589085e8b37bab991d.json",
+    "sha256": "01f92ce7872cd6994b1223da7f13af5253c2bef97da7f7033ee06ae2be33e928",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772292.585=40.892307692307696",
+    "file": "4d74f2cdb873ab0236a5d8e2149f68ba2f7d2d54c15313db979d2615fc295cca.json",
+    "sha256": "db08cf691711d40b5e19988094616f3026879d188b00333e7a47fea01d10b54b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772337.582=0.0",
+    "file": "4e2f03f8a98044deef33f5d909320a3427d46e4fc544537c9836f9ad1e7409f4.json",
+    "sha256": "fc5588f7b41b64dc545783f713461d78b3b0f2214a742d9c92be9f5be4ad184b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772243.694=3.9001950097504876",
+    "file": "4e30de34e6ec64d020c18733c4cd13ec2aa661da1e573570ef6cd3be427c7766.json",
+    "sha256": "39449441dfad8b6d4bdbf561fcc01e3230b9302aae08954742d16dd41528788b",
+    "complete": false
+  },
+  {
+    "id": "container:email:StartedAt=2026-10-23T08:26:29.125225563Z",
+    "file": "4e621d7606ec17737e2a0defcbdebe9de66befc90a047653b9299c13d9d4eb06.json",
+    "sha256": "63a15f7275ead36c929b0be07461c65eb0db5dbb3951f2b60d053e85a45eac21",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772288.691=1.9000000000000001",
+    "file": "4e71cfa84df411ec66eafe96136b1adb41f2c8f587932783a829005af57fa78a.json",
+    "sha256": "20769d2e3686845dba132fcd61ca5a228596ff51a9c88a7c474c71ec6e8fefde",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772352.723=1.0000666711114075",
+    "file": "4ea9234c5740f5cb9d0757716ab7735b46306096cb7467e23da87068fda2a93b.json",
+    "sha256": "442cfa46be2a2dad753f68bb220ee9d91c494bf6ada3341718195262e24d564b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772211.704=0.0",
+    "file": "4ee7fdb7198ef800deb04232bc3aac44916e4ebc8f890f50d6ecc4ed286112b9.json",
+    "sha256": "e44a51d3f190c689ceaeaf40fa9a2bb9956833231cd81a3a6846e92527579647",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792772288.691=1.9633333333333334",
+    "file": "4f10bdd790128d03fdcbc77c5eadb7213e364a44e5700477bfebad3e8c86743f.json",
+    "sha256": "62825b33fc08b0e97040fa9e8f9105623c4113d114cd0a0b93f808ede572c0a4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772225.113=0.7000350017500875",
+    "file": "5070e8afff9c7ae886dd7563fb30107d64cf4976dabad09d831204eaa4511cfc.json",
+    "sha256": "fd4fb540d3450175bb93e48487b707d0042bdd204d8a32ca0ad34d6bf653ffec",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772345.113=0.8500566704446963",
+    "file": "515dc454d8b0ee93d1472abfa3d860afe08c044db1c85ec1a198addb6d04419a.json",
+    "sha256": "7765ba1967a1141d44a42bdd661ed2b235278bd99de17ebbad723f62012938cd",
+    "complete": false
+  },
+  {
+    "id": "container:prometheus:RestartCount=0",
+    "file": "519ec0d835cf5378c3897c52216e9f4ccae730e226865b8fc4eb80b789cf2aa0.json",
+    "sha256": "4d53ecc22061fdc5040b70439732eb3a95a250fa47dfa1764efce6703296ee35",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772286.707=1.9000000000000001",
+    "file": "523873ca0a2f937ca3d9920643d48243d4784d6ee6198507c13984fae3a6445f.json",
+    "sha256": "fd53adb17ec301a242532e48d1056d3ae3aec8b2d16680444fd7ed720b2b1e70",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772211.704=0.0",
+    "file": "5294d26809e013175ee37be9a43da3b371a82f98357f45c414405674cb7c4c32.json",
+    "sha256": "f5a1d18cfb6f5b6fe534de607e46cf588ec3966c16f565d2cec3266458e262b2",
+    "complete": false
+  },
+  {
+    "id": "trace:dbd072381cb919e5b3f5e875ae1f0a7a",
+    "file": "529a70720f0fd2b3e1bd5c234bd3ad352681adba1965ca58ea0fbc0d3ee41def.json",
+    "sha256": "3397ba98743e3c8154d8a9a6df6c57775150a87dc6d26f0bd9c8f246f015c5c6",
+    "complete": false
+  },
+  {
+    "id": "span:dbd072381cb919e5b3f5e875ae1f0a7a/87a2ac08a4e39c44",
+    "file": "52b5a49148cee21dfdbf60df8bb2401201aa5413e7ec0e66a5e3dd1b4b1aca88.json",
+    "sha256": "a1bed3673e909510a396d6247e541104dfeb84e95284913ee3c784b4be713903",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772337.582=0.0",
+    "file": "52d527e9c8c93725eb1ce7931cfb0388dcc5dc6f885b09a70d59cb71929727a7.json",
+    "sha256": "02c3934dbb80d1de30b91236ba62421063318f1b956469b0eb2943ecbd58c431",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772225.11=3.8454545454545443",
+    "file": "52d5e983be28b0bb0c314424ea1e892a4f55ba3010f7bc0fe82fc52e27de94b3.json",
+    "sha256": "948c03f6742d4839ab6fd7c9fdcd5f6e859d6fd471635319bdb19db36f97e360",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772331.707=45.074380165289256",
+    "file": "52db29934a98744614a6eda3f4dfdc3e72259fc84af6d22cff275a9ac536a090.json",
+    "sha256": "6e1b99343a31326593b72d87aa61a60af7afda985208c202611f72ff842f8c6a",
+    "complete": false
+  },
+  {
+    "id": "container:otel-collector:StartedAt=2026-10-23T08:26:27.737727095Z",
+    "file": "532376c96caaec9c2b82c51160ce914479e55cfa8c0c4cb1057ca322c9b468d5.json",
+    "sha256": "db8bb8da3647b3c6c49aba431e04a36a04375c53294b0931b7ca51fc086b6f89",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792772292.582=0.01699029126213592",
+    "file": "540e507c0f6c2a5abbcee0b34efee28c4c8f798f83464ce496bb6ea626bc99b2.json",
+    "sha256": "c7b54a6785259e7c18edb8ab17eae8377fd6560fbb06c5b23936167d9ce7bef5",
+    "complete": false
+  },
+  {
+    "id": "container:payment:OOMKilled=false",
+    "file": "54abc003dead575259f2ed1606970123560d566175ec8aeaaca729920cca9bcd.json",
+    "sha256": "4b885a668bf0d8a85dd8ec8d0466b2508b924dc74330a238c12c4216312d00dc",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772288.691=40.892307692307696",
+    "file": "568a5fc557cb8c72041ca719d5e9830ed0267c664fe1cac44d3bfe5a1be43cc9.json",
+    "sha256": "9adf837527a0b4b0b201467a129bc6e7718b423682214b33cbead407161daed3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772352.72=0.0",
+    "file": "56c886b8f79cb573bb5ebc7bed4e11f88346f237789a9b31b19a52503924047f.json",
+    "sha256": "a09acb0079c030400bb05c76ecb4ff6ea274e697a9258b2770055176978fe5cd",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772345.11=40.017543859649095",
+    "file": "571b621469cbb9ab8e4c224ad85cebe0a6bea9aca6dc6acf48fb1c6735b42afd.json",
+    "sha256": "d5af8b7d2c3f4b9d8dd08ab144280c1d7520d7a70656dcd70312373429baa86c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772337.585=34.83435582822082",
+    "file": "57398482c69b649ff4038f16a38a042c7b354973f598431e20b9dd32f950075f.json",
+    "sha256": "f1a0a1208ec4c9a8bc8c26784ef36d77d567781dc76c9780dbdaa13b331abb24",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772352.723=4.4336289085939065",
+    "file": "58de2762bc9f9907617dd32e1eda3a7cc35cbe5009e423a1cda2e9836929953f.json",
+    "sha256": "b87ecea33a7149cf32bfa2295209002fe8e08ccc04b955e34fb8491b84175b11",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772352.72=0.0",
+    "file": "592f2fc7773ae747a002f4973333a026b36970c465750197a27c7e529ea779db.json",
+    "sha256": "57ddf017c497a05cea091e87ba53ee3c30f147e1b8c98c48f13eafb7ad787b15",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772352.72=0.0",
+    "file": "597269c5153201aa6c821cc36e93fa50013054d547cebfa57e087de74bd9f1e6.json",
+    "sha256": "738890ff0a96529367d61154446d4d792e04a200b5aa8c8cf7a063266f5cde52",
+    "complete": false
+  },
+  {
+    "id": "container:opensearch:NanoCpus=0",
+    "file": "597ef71df307f90b23da96f94ad79423c78911c303d81dde1dfb0474092d5633.json",
+    "sha256": "4cc0b2456f898fd88560c023e3e578442e78523bdddb098f5928c68181bfcf73",
+    "complete": false
+  },
+  {
+    "id": "container:jaeger:Memory=419430400",
+    "file": "59f624b8874b98a5d08464672b4cafce5a082cdb4b61d78c619ab05d2f3aca58.json",
+    "sha256": "c76474b8b04674c087ce4f7cab20e4920bcc9e011a825c5cb2267273d35f01be",
+    "complete": false
+  },
+  {
+    "id": "container:grafana:StartedAt=2026-10-23T08:26:29.201513885Z",
+    "file": "5ab471e4d36b66562906e39e6ee6980c00790721b40e6137fdbee7b29886588c.json",
+    "sha256": "9ef5e90bb72e4db9fc6b6a2e38efba588283c55fb5cfacc785c94bf8ada99e5b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772226.711=2.9668150074170376",
+    "file": "5b0f66df269ecec1029d2aa7a64019e82ded25dac21ab2f78057a901d25ae662.json",
+    "sha256": "eb7f15b7bbb6f1756a349cfc09fdd64e21aaa61bd7ca709bd5e6126bd78a00b3",
+    "complete": false
+  },
+  {
+    "id": "container:frontend-proxy:NanoCpus=0",
+    "file": "5bc34ed644a5ae21ca6d47be27c95d40cc59dd1afc0832f316c7f742dd2abade.json",
+    "sha256": "14de88b3b6a725329afed1f86f56b0ca2fffbf67f16144d5fc5699d3d55dfb3e",
+    "complete": false
+  },
+  {
+    "id": "container:currency:Status=running",
+    "file": "5c0da49f5de6bd1c88c9802df982a911990437f46f70b23d705809bf4232e38f.json",
+    "sha256": "b4a3843f80aa7c7c86a1eedc12d8a563679251bf445bd55be3f5ad494eac20fe",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772288.694=0.4500300020001334",
+    "file": "5c1e028a962fb4007b78c522e85d8ce78a35a6d63fbb06a068da90190db2bd83.json",
+    "sha256": "2f8f1d328ec28cdf698fca09566d2693f65a181013bf32f7e72b151a8b78e24e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772331.711=0.400026668444563",
+    "file": "5c5d320fe4c42735b455e452a89f25e97be412bf89b6530d182764bb16ba6558.json",
+    "sha256": "06ba154ea6130ea2956488120ae1ca9fceb83b0c31a0e7a3d36196c37fcd9677",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772345.11=44.2429906542056",
+    "file": "5d314c285d88875aa54766d109d1a238756286a8a8858095cb081ddc08280175.json",
+    "sha256": "728537f12ee7eb991efbb6786adf4913105ffcf39698834393a21fa37f5e0d86",
+    "complete": false
+  },
+  {
+    "id": "container:valkey-cart:OOMKilled=false",
+    "file": "5d4f155883d536ada4bc28a80545b58acf8a0b316be3f305b01b6a3d8004bb42.json",
+    "sha256": "a8f4d524d3eb7cd1d35b55b3e592a54ce9cfc892cb4c329d25afc953cbe9d023",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772219.979=1256.062803140157",
+    "file": "5db5201c22bd1e42dd05d0d5b60c38659e0dbcb137b9b3617855237d87a9db26.json",
+    "sha256": "8e6fa7b8d7b3a3cfdcac73d6ac92eb7d4c978a400da03ac961297b390b604d24",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772337.585=45.074380165289256",
+    "file": "5ec4f8128bb71d7f9fc225fb88ffaa709a7d1071fcfa4bee8e0e1e65c1c5faa7.json",
+    "sha256": "505119cc46dcbcff3e1b748bbe49405a4bc582e644e030840c4a17b3414499c4",
+    "complete": false
+  },
+  {
+    "id": "container:currency:Memory=20971520",
+    "file": "5ef20a5dba4ccf09882098f4024ef7ae1c68519db8d2328cef7a704469adedd7.json",
+    "sha256": "3c36704a36adf878a65ade81e5d8f7e92ead4ec9702ac6300e32bc76796ceb6a",
+    "complete": false
+  },
+  {
+    "id": "container:cart:OOMKilled=false",
+    "file": "5f4b9cdcdd95fcb25b33b44eda017e1b9d629ecb90ea43858645ee100790f5f6.json",
+    "sha256": "b90de96723995b210138af8186494ffe0ec3c6b78047f2c1d75685d7ac094310",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772352.723=0.5333688912594173",
+    "file": "5fecbe13063816dfab450dd152ad5d906b0eaa49e181abc3c45d84b4cb1fd7d6.json",
+    "sha256": "b6b151e7d75511d1cc0c989f345399cbcc1c978dc1b7f0d04ea6be655f322aeb",
+    "complete": false
+  },
+  {
+    "id": "container:product-catalog:Status=running",
+    "file": "60623af1368c7f2573cdcd3083731daede1eaeade3e2379b2186f4a723f41a1b.json",
+    "sha256": "8c5115538c9a4775b5f78e31885fe50aba495f89eff239e6a797c70f84f11355",
+    "complete": false
+  },
+  {
+    "id": "container:valkey-cart:Status=running",
+    "file": "60bac2f12fafa69b0189cc5cf8935d0aef692bf476e461a67b9d9bb59dd0ba34.json",
+    "sha256": "3f387e4d8643069d42ed6449a7be35d8aa62749169359172605db0ce5d475b97",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772288.691=3.099999999999999",
+    "file": "62b17b30056526b56a27fdd0286916c80bbccf187256f19cf8bb7ea5107a6cd1.json",
+    "sha256": "4f92986a6ca8bc8cbffc97e8949380e8b5d7252325598d5bbafc4ab13a0b3a6f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772286.707=1.9000000000000001",
+    "file": "63d332d4556393191dddbfcebc11ff4f334b2cb9893aac22829b68c0ceb47fdc.json",
+    "sha256": "9b2515db016e18cff643f9932d9276591bbee5e907783642b1ef1582d2b677ea",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772337.585=40.892307692307696",
+    "file": "6467f688bfa670ba231e1486aab5fc6e334b9562b772a26b0702bfe7dcdb94a1.json",
+    "sha256": "2e6c385ff152ed1fe837293cfb40d2645e73231c17728f7ddd03a06b9bdecde3",
+    "complete": false
+  },
+  {
+    "id": "container:frontend:RestartCount=0",
+    "file": "6547f1c594819a8cd2da74279a4b0d90b365e499fb4d83d2c404b7ea1a1b0b6f.json",
+    "sha256": "0d6fded762c0a12689587169997328fcd63b14b68d7f29dace4bf20f43207109",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772232.586=23.584512558961283",
+    "file": "65614108a9ac56fd6203c070942f570ca0e9e6029e97c4d399e81200708b669c.json",
+    "sha256": "1787082b69bd30f70a34b026da5aaacb9e2164630c6b0a99248fdc5c38880281",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772337.586=0.4500300020001334",
+    "file": "670290952950afd5e9474a59bafe6361eef69c960d4d46a23558e1ccb6900fb3.json",
+    "sha256": "c28092041504eba2d3bc5e732d32ad2274ea108cecd0990f614ea1a233a43786",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792772345.11=0.040438079191238416",
+    "file": "680b0718962929c0447478ef9c9467ae9c3fbab6e7faaf2f37ad0129ee120052.json",
+    "sha256": "4548212c46684298020ad1e311de5e1dff628b0e0849a579bdde1822951f5ab0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772286.711=1.4000933395559705",
+    "file": "68672dfd3d183ca3cfbd38ba7c97e362d2e60e22052109c119d6fec48258b7bd.json",
+    "sha256": "1b7aa4ebc256448b42017216df59f982b66a516a28fcfe7de4da82e6d33a53b0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792772285.11=38.00000000000001",
+    "file": "68b9175f7944637ac5a19d3890097c22640b6d27fca9a43ea33e4376c6fca967.json",
+    "sha256": "09d34a7ceb6e1263389f6c19dff4e14c6b2421a626271802d22c7a1f96f7a16e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772345.11=0.0",
+    "file": "6973fa8b7f366228933ad12f0011075f48774e1cc794e244f3012c096ee7c177.json",
+    "sha256": "44f73e11b24730bca38ebb8f1916525f99fbc21aefb125220a3689eac2083efe",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772225.113=0.9667150024167875",
+    "file": "69dfb57f58f6ec4513e094e3ce92fb9b7d3ff0116ff09d234a23916929ba2849.json",
+    "sha256": "77de7ae68ed59938aa01faf4ddfb8bbcaccbb0e1d06e77ba9226a5c5581f557e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772331.704=0.0",
+    "file": "6add42eba24b37ecde880babe9ac6d7088f716484614925c859d3936dc85160e.json",
+    "sha256": "fe02e64fb431f30d3ae27814d2fc3a945d2a996b3d691c2e534f047c210b7d7b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772331.704=0.0",
+    "file": "6af17b9254e1e7ea471f08e5cf392168ae5ea26d20a5172918e0348786aa8023.json",
+    "sha256": "2e0cb66987f3c238565dad9657dc1c1e82c11de3256d2e51aeadd810b96ca0e4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772337.586=1.4000933395559705",
+    "file": "6b4c0e8b427a56ccc9c19914d63ea1fe7eba12ab7d7596e89544f5d5aa634d3b.json",
+    "sha256": "81407ef911b05855a0036c34138c9e945294db79a7787ebc15506456470588d4",
+    "complete": false
+  },
+  {
+    "id": "container:prometheus:Memory=314572800",
+    "file": "6b5c3e4c4f2ac953e9e77411e9a3ae8045b1f4269a9fd006c93eaf5a4737110a.json",
+    "sha256": "09091d90a843113c60c6c0407cbac11411265eb5b6a72421665769d58106a51c",
+    "complete": false
+  },
+  {
+    "id": "container:ad:Memory=314572800",
+    "file": "6c691479aed12fc7c8b219dd5ccf9417d00725405ba8dabb8e9fc845dbe36d05.json",
+    "sha256": "77347c615ffb6e4dfa56af08e6b43b5f3b98fd12cc01680be3cd64c84b4985d3",
+    "complete": false
+  },
+  {
+    "id": "span:797ba723d8ef068dc8a2468da1c9ae1a/4295a3ef5ed0c3ab",
+    "file": "6d55d0d9991f95b8609591dfdcfac096f5dc787c5a5a81328a7da228ba58d443.json",
+    "sha256": "30e8a5d140c1b74291e4c62557646c9b662452bd3590f04ef1f6d3fe25f6d47a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772352.723=0.0",
+    "file": "6d5bd20b1aa3ceeaf81e5d5f2131d69b488eaf3736afb69f21794da51805bd59.json",
+    "sha256": "c9509c836ea34ec5348a9aada503908b081aecba05865dd1516659710f178902",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792772232.72=0.0",
+    "file": "6db367ab060511f7700ca95f40a746f8b4d6ac2487bf873e7ffbd37b81c813e9.json",
+    "sha256": "54f9638adff770bbdd8786b4e2b0e6ad84a48a558a7cebf32e07c842e835f34e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772331.711=0.6500433362224148",
+    "file": "6e2af47a7d590d3db9d5027d32e9eae02e9f0eb1334706e69d8ba07167c1db73.json",
+    "sha256": "a1a49a3686065645a636b98775d93583ae32d0ef97a241fd6f5e529683e5ce08",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772352.723=9.483965597706513",
+    "file": "6e58b220468bc308202a7aac635e96d5db988e9980f8b5bebce66b810c5cd6c2.json",
+    "sha256": "2ae8c33b29db96bb2c4780a4c7a6537cdd3181d9b07af685453dff84631c718d",
+    "complete": false
+  },
+  {
+    "id": "container:ad:Status=running",
+    "file": "6e6f270584a087683f4042e636fe169ed8de024811b65bdef43636d5d4e04c87.json",
+    "sha256": "440c8ae46477445f6a8d659a42fff6413075b396cb3da4c200c40b8da4a99810",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772211.704=0.0",
+    "file": "6e79a73688051c8b8816cb89bcf0de290c7ea99c4982b11fab97459142285b8e.json",
+    "sha256": "22a31e8671a1da2d274d38a8d40ca15e308c3ece5e23a006007ce85cfb5d2899",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772337.586=9.867324488299221",
+    "file": "6ee3d3db6d18ee25d8a71e4768040f1864e027bd905ed69851ab165dbbb0e974.json",
+    "sha256": "0a50c0f39277b12e135dae83754da9a22640cd47440ec8572c0c6de7fc331066",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772331.711=4.83365557703847",
+    "file": "6ef14f9db710b8c33eca7b233fd0372c0ea8757ca047e12bb47cd104ead36dab.json",
+    "sha256": "55db4027c5a29bc2588e1972cab8643870894f6a185b9bdc5bf2bfe20acb3b08",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772331.711=1.4000933395559705",
+    "file": "6ef379e1fd7d1eb48acaadf927ef1bee0da8aca02407b05ac578bdf045bdf0d2.json",
+    "sha256": "bea6e2c26c7635751c8cbc15e2dec672b5d563312bcab3d6d3b87980e33e8d31",
+    "complete": false
+  },
+  {
+    "id": "container:shipping:Memory=20971520",
+    "file": "6f54d46e1b216673cade83c91197b7c7f1deee0e5afe3facfbda01a3c70ff4fa.json",
+    "sha256": "40f5409b4602e79fa457fb708e43036ef8456cdb8dc040f008bb4d1067380389",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792772286.704=0.027027027027027025",
+    "file": "6fd12b5d57603d684b501ebc380d77f7d3f3dc29dbccee81e315cf4246b99001.json",
+    "sha256": "9e356d690f29c74b5e4b0e74bc28e6913306cdb3bd07a4dabe804810c53bf0b6",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792772352.72=0.5",
+    "file": "6ff14a047ff048f4efd58985f9add26d3038de132c178d4b63c44e2bb0fb07c3.json",
+    "sha256": "d6634e9733a049700cc41cd482e2b47e49132d847ad9f2ce2167d985fa46d0ac",
+    "complete": false
+  },
+  {
+    "id": "span:9d93b503624d61f8e293d7ea2acd25d7/f5f78ceee10d5fc5",
+    "file": "70237b8c04c8c1db2a5ad214c447d0e188bbcaa34a15b1bb5e178056a98be2bc.json",
+    "sha256": "947af9868343a314e7b6b487ae50213ac53e302c6e79dd3bda06225bc576d3eb",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:ea42ee7817621efb56a067a03de36c1838c685fbcf73eadfb4f548e39b6f26c9",
+    "file": "71575be67c739c2161bb613088540309df12f5e65956ef6fbbae4d06174352a8.json",
+    "sha256": "27d5dbc32ae921234d04490dd5354e3889d9a9f3c52b0a48428ea3ce3ec5c51c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772352.72=0.0",
+    "file": "71f240f31388178b33ad786abe67023e4fa19df333d6bbbdf02dfea4c12b544a.json",
+    "sha256": "27b715a7c0995653ac132cdd19c7ce4ff228911af1f485097f43fc6649444c34",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792772337.585=38.00000000000001",
+    "file": "7235d6891201db527a1af43a51638fb6fd956d426eedbce97ec812391ed44fd4.json",
+    "sha256": "50ed2546e71223e4b096db21a4d482acba751c8bef9c2099e81963bda4004059",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792772288.689=0.25925925925925924",
+    "file": "749af4f5ed623ccd213ee81d3b377688ee2d0c49fa857d52e4fcc1b06a79e808.json",
+    "sha256": "bc667263506bd2ae1f1bc5648a6c4379c1ca86ee1efae018db204e52b2c2ad5a",
+    "complete": false
+  },
+  {
+    "id": "container:otel-collector:OOMKilled=false",
+    "file": "756356d6955b529cc1063c4f089883028b1e295de838f187eda33408883ebf0e.json",
+    "sha256": "c9bc65e6b0fbad63a958fd1460f7711d4d5436bb4a4dc6356a0ec4b171371024",
+    "complete": false
+  },
+  {
+    "id": "container:jaeger:Status=running",
+    "file": "774555be580c5a4bdb0a157839c1b25b69f1064adfb26a3e9f4de9b052c62692.json",
+    "sha256": "fd7050cf41a2eff3eda8e4fdc0c0889f4fa880d342defd3816a6a870a065b472",
+    "complete": false
+  },
+  {
+    "id": "container:load-generator:OOMKilled=false",
+    "file": "77c4ba65114a43556d3f74a30c7c9b354c8eb9a71f51b463a4d05ebf19264508.json",
+    "sha256": "285a714f3e74683bdf836ffaed2bd8e200e985241d0d1d663ffde2a2b87cc900",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772227.74=1256.062803140157",
+    "file": "79941e02738e41ae9bd1efb29f46966293d5ebcb5ddb73aed1073265c4497d46.json",
+    "sha256": "7266ba7643ef1cf4817ea516a97080583c664a83e968d45b7c516c994387e341",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772232.721=3.8454545454545443",
+    "file": "7aaf17a2c3851da74a56751ab92578d8efad8a45e5e217f9454c319a160f2b33.json",
+    "sha256": "df6b018990f892b500090af676795f98c669f2699eb840daea178c1b9ad3c961",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772225.11=0.0",
+    "file": "7ac28ea288f1f18717966ac0db7829f3fbeaa07d76d5fb988117b25c6d73ae27.json",
+    "sha256": "c1bed6c55e95f6cfe87ebfab968480bb66cd86fa1d047fb30f69b1e7a0119669",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792772288.691=1.9000000000000001",
+    "file": "7b18add9a007c5e97f1b1c2447ec3f48be2f19761d3165baf25a0d71dd08737f.json",
+    "sha256": "784095f1df06b86d8b2c958001105774a8107af00ad6860064ce1bda29ba44bb",
+    "complete": false
+  },
+  {
+    "id": "container:checkout:OOMKilled=false",
+    "file": "7b74565a0a6c2a2f9b3e2a26aa49d4081fc570b355c97d154c1edb4e913eb295.json",
+    "sha256": "e51371247057e5504da1b308fdb9a6ed2ec385a0667750c42f46f6cafc6c42b4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772337.582=0.0",
+    "file": "7b8fcc6cd6293f97e585266171dc7bde4c2dc883d93e3a52908a37eac97302aa.json",
+    "sha256": "8684671b331b94b46c1ea4cd63a1390089d95b8f553a303fed9d70f50a0bd60c",
+    "complete": false
+  },
+  {
+    "id": "container:grafana:OOMKilled=false",
+    "file": "7ba9d7debadfa5178bbf0c4ce478471f10dcd098e890c818476b3862c91a0a00.json",
+    "sha256": "96ffe4c17174cb4e2c6223f08f226758b778bc2e373d694486cd8d9f9ec0b5f6",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792772168.691=5.450000000000002",
+    "file": "7cdb4ad88e7c84ee817ba912842a0c87a4a97708b71373ade7aea9bccd40e0ed.json",
+    "sha256": "8dad87d95833a23a57903b12fa5cdcb237da4a25160fbd9a6d87096a5339c026",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772352.721=3.789473684210526",
+    "file": "7dd73e66141613cc7d7a23a403913bc20700641f3e76693ea809f7e4b6ba192b.json",
+    "sha256": "23ba573d99c77ccdd192bac050b6098c7deb794cf7628f3a56b6c2fbd086696c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772352.723=0.5333688912594173",
+    "file": "7dfd5bf1ac82143ee1e94000d2f243f884099289ab01a25adca259af35fde482.json",
+    "sha256": "0369cc8b541e67a742a100afb3b683e8432cc27b9e6f640f8140f9b66a169ac8",
+    "complete": false
+  },
+  {
+    "id": "container:grafana:RestartCount=0",
+    "file": "7e35ed0735884efa705a5377477b7a0b55ce53983595726aaa5d6c57e80389fe.json",
+    "sha256": "cbb89f34aa0eed83c4e9b4457d2d6d93c177c9433fbeecb5e931c236d48ef6f7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772345.11=3.709090909090909",
+    "file": "7e6a48e1edb2002c3f71e12c96d48b834aa09fc6000f7333d06d3e25e20fac7f.json",
+    "sha256": "ceb86aa31cf74c730b70c9de9de731d55909579d44527ee497120e9c614dea02",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772337.585=3.9885714285714293",
+    "file": "7f17982642227c3f76dcd0742db2d9c49ebc4ad6136a5e7686daeefbdca1ab14.json",
+    "sha256": "081acf1c0666a4604e03d1df437d2469c904db610500211145431b4bebb49b94",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772232.586=0.7000350017500875",
+    "file": "7f780dd1ff41bde64aac9ed6b25b3d5a09cf714678b6fb817e525983c8a369c2.json",
+    "sha256": "9b7004816592681262317137c775e44f0a2e7c709d7a00c32b6b8d12b4507693",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772288.694=1.4000933395559705",
+    "file": "7fab242f85b3890b7405825c943009d703d6c7ae930dec1efbe9d60e66b65b69.json",
+    "sha256": "1e87cc478511f6ec4cc4ce2eb67eaeb971f6fa31d13eed0ed0b282977b1345c2",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772232.585=4.025000000000001",
+    "file": "801175e577f502589a5bb0bba4ac877a1ffaf60d677506a3d43c3e8bb6d05a6a.json",
+    "sha256": "3891e9b8a2ff74788f1b5091b69845e4cb74809524bcc7489c0f214472f69b88",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:6dcd0d2f129c1077bec29e2b94e5af0537348cb2deea4ad7809b83cdf4aa26a1",
+    "file": "8028edee544b147455bec5c28896e6736e3f3366f1ef1bfbf3ce25c344a2eb05.json",
+    "sha256": "22386de11a92d548af980b062c04f684068f2d5e5d126b8f517c04226013ab32",
+    "complete": false
+  },
+  {
+    "id": "container:valkey-cart:RestartCount=0",
+    "file": "806f4279820ce5d1cbf9c1152d43de6ab11db14c2728fd262b61cb660b88210a.json",
+    "sha256": "cea068c39c65f95986e08e5fb712a2a919060579accc4bd383e0ea83234176fa",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772345.113=0.800053336889126",
+    "file": "818d6d619fc356da9a2237be10b72810b6ba873fafa47a744c9fe4b458cf9acf.json",
+    "sha256": "2e361b0e9c8d0e9e10d2679cca1c87d26851c8ee9db3876d965c7eaa1f714d03",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772232.72=0.0",
+    "file": "81cc27fecc2df2df8081ba71bf0c5485f63577a377df788ab9bbf5265c331305.json",
+    "sha256": "36ca12ff4fb9a85c7d16f4d866e0a3b0166d1cf5b97a2b3b6a8091d88f4a5bd2",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772168.689=0.0",
+    "file": "829a1502d0b2e00bb665faed2b157c8b903069f06e3d75a5cecde9676369e888.json",
+    "sha256": "786e8d85da8cf0240740546f2e6a3717d546b91af8689d8388d23e67f793bfe0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772217.582=0.0",
+    "file": "82ca103ffd226e3816a9c24c3f2a9f398251c5994c5b328af6e4b851a9c4b35f.json",
+    "sha256": "8246c58537b7f4fa5ccadcf2962a5424a478b047d5143cea21d3256ecdc8c638",
+    "complete": false
+  },
+  {
+    "id": "container:payment:Status=running",
+    "file": "84064825678e94648644ef1d92a9e456cdce933336e731246c1063986398581b.json",
+    "sha256": "bb4925b3597ea9ed1456a5bd1cc5340504b39b3eb57ebc876daed9e8bbd6e32a",
+    "complete": false
+  },
+  {
+    "id": "container:currency:RestartCount=0",
+    "file": "8470054e9866ecc7f474e274d976e0a4ebda026625d3bd649447cd6357cc44e6.json",
+    "sha256": "3b126d90ce6eaf93f5b86e6c6587564ea34956b50086e0be0f36aad0bbc7f0e2",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772288.689=0.0",
+    "file": "84c491ef43454f0807f130fc605218cdfc1e075850f142f0b528933e0ede887d.json",
+    "sha256": "c9c7fbb0c0fe88409b70316c3a922805ddc7ccd08d16dee916076ccc9ff30a9d",
+    "complete": false
+  },
+  {
+    "id": "trace:c67521c4ab40b3a0331586c7c9251e66",
+    "file": "84ca48f4a0ca0378b2bd11a91e82bdaa5a920d137bca30b9ead5557f7e7ef42a.json",
+    "sha256": "43876fbe740456eb9c9ffcef8c48dab6c843c0fa6dbf3d3a381e0b7317192a91",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772352.723=2.333488899259951",
+    "file": "84f2399042d5af8808baa934bada04e6d48359f4b9b4daf203fac1c7cd5e273c.json",
+    "sha256": "bafc255c30ed221163aa94585cf66a4424588333813922523ee800158d367c00",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772345.113=0.5333688912594173",
+    "file": "867753e2ea76c9b5360a5225b3216f4178cf96d6f1e4dfec683f751d6e14b2cc.json",
+    "sha256": "bb30a79e0f1a303ae7c3b665552278d4df900c6f09ba572b8e4cfe4151e84660",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772292.721=3.099999999999999",
+    "file": "86c1e8321b20cc2e34d3e5ecfff49a418228f22cde9785154c7a7339d8c0de5a.json",
+    "sha256": "2afe83f2afed31ba0752557379ec4ff684cb0ac384d27fda50cde06c24e6e19f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772228.691=5.000000000000007",
+    "file": "8817c50b5bba26e00d53cfefe7fdde818050aabd73395727902ed5f79f9e8897.json",
+    "sha256": "8761119c94895180b158551e1b393001c39e3b362c23807728ce317292fc43d6",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772288.694=1.033402226815121",
+    "file": "8991cd232c0c4ef288a5591c86ca4eda071d083cd74e64096aeb85d5da1bae87.json",
+    "sha256": "cdd6482bc97feb51851d44a917fe13955c6136fcb3ef7004edf3c945cfcdfeb0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792772337.582=0.25925925925925924",
+    "file": "89b4cc7c271e4bd08cf31ae30cb1eed97b39ab7884e83288f4b1a3b75f05baf5.json",
+    "sha256": "c5f27414cbffa1b118d88ec19c7f16adfff63fab0b9a2e375313c3fe4697eadd",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772337.586=0.5667044469631309",
+    "file": "8b46ef544f6dabed6d343c241610e3d515297aea1b6c9b89628414e81598fed8.json",
+    "sha256": "05c29bad3b08e0d7729670a54e8c7b5f37c82d71f86343ad6f6f7e35fdb2d411",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772292.721=34.83435582822082",
+    "file": "8c035415a6510e05fa11cd516ff816b52c9be73e885544750c466e1d0e3c16a0.json",
+    "sha256": "e93895524b901cfb0af6c6d81273a7a1423b9e9e0994b68fb48818f5db06f6b2",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792772337.585=35.52380952380949",
+    "file": "8c7b7ef6a46e72901d70b88b549371839a646ffa58a9f665c79df74c55e0c850.json",
+    "sha256": "3a13dd2394984c13ac7940cd88c6481161ecc946be878317c5ca24411d3647e4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792772217.582=0.0",
+    "file": "8ce9f42943a9f2381e682df6b53c3e330e303c57fd0fb92bd81b83662a610916.json",
+    "sha256": "edbc826fe64d7c1289a5ab58eb915eff41c2f7d5f23045b34a82c63ac583ef66",
+    "complete": false
+  },
+  {
+    "id": "container:currency:StartedAt=2026-10-23T08:26:29.167214092Z",
+    "file": "8dc3bead148d4314a6911878750d51f24b497efa73517f014de86699431935fb.json",
+    "sha256": "87a50640dbc5b0bdf75adee308239315a451bf7b7795b4ced9c3cdd126de0233",
+    "complete": false
+  },
+  {
+    "id": "container:checkout:Status=running",
+    "file": "8dd2c21bb9202ae088789cfec4de9c3706e00a0cccd8d69d1e053e0d5283e9ff.json",
+    "sha256": "0de8328b5c4f08a7d66e306cee0679f0123e20701296ef99c147d73649c9b5e9",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792772345.11=37.55555555555556",
+    "file": "8ee06d0f4a8402263814529e910b45653a92302c3066d0ad8c7a984c7d4c2e72.json",
+    "sha256": "a858f05712d0c7156be2e945f3166181e0b9d4e264a4e40d18d25a81d407add0",
+    "complete": false
+  },
+  {
+    "id": "span:797ba723d8ef068dc8a2468da1c9ae1a/922b7ceedf70c375",
+    "file": "8f3f6c4d82ff3f688f437870d9538547c57671a313ccbf5018924c87a05f4b4e.json",
+    "sha256": "c4193e664d4bf8f57a6f4afac817b67f23e756b66627b044e2d44c99e40f62c8",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772337.586=4.966997799853324",
+    "file": "8fa2cd6375f92bf8cb7cbdb8cfd3960429850a7d3b5df84a67a6b494d1918a00.json",
+    "sha256": "b1188aba4587219dd1e9e6188c4612c75262ed0d892cbe342feb006fa5344139",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772352.721=3.9999999999999996",
+    "file": "8fe8e1c762be94d6f9f57c0f884df01b6ee2b92a0319901ad46c08df30767f51.json",
+    "sha256": "e0aeadccaa5d46b8e2f7977e9d7495b6f50fc4b824c15148c22f38a2a4c58fb2",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772331.704=0.0",
+    "file": "910c84408eee107c12aed824cd8ce88439d14d89ea71e0a9c7ebad08f58d457a.json",
+    "sha256": "2b226afdbb7a8bda46d4891dbea35ba5e635f45a33e16fcf7672151b3259aaea",
+    "complete": false
+  },
+  {
+    "id": "container:frontend-proxy:OOMKilled=false",
+    "file": "91d3e7f1356c5076695355cff481e019d29b1d28f0d56704568a40400dae157a.json",
+    "sha256": "ce9fddf7126a0e4274e40114976b85e75092bd13c75f48f8174cd73ec403d526",
+    "complete": false
+  },
+  {
+    "id": "container:frontend:NanoCpus=0",
+    "file": "92bc6e8bc94d351ac3b27924243f11710be19f45f85a9c86c04116de07ef8bb2.json",
+    "sha256": "3a85a09ef8c4236f1097779547c63629fb03bd474cc974ff576a1eba37909a1e",
+    "complete": false
+  },
+  {
+    "id": "container:product-catalog:Memory=20971520",
+    "file": "942baaa35c53e72b2afb1db410c030ab739fd5b050d40d632a0e03402ae660c1.json",
+    "sha256": "a21e56131fde508f6729e7c714c7c1c3edfc3fc98951fdfd998a5d31282fe033",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772225.113=5.1669250129173125",
+    "file": "9471a0ba5812d788df299c06480bd667bcf770de3c197e6762cb92165b80acf5.json",
+    "sha256": "e10395ada469e39d31660e1432ebae100195eb531e9e8c8ce315eccf9b519d40",
+    "complete": false
+  },
+  {
+    "id": "container:image-provider:Status=running",
+    "file": "9495f8c137434fede5863ddf4c6de9ae0e1359b4446ebb333fd8d0579ab62ae5.json",
+    "sha256": "c73ba47d322aa5a904eb1c89c097110335819d2bb822ef45d95b4a8e0f38dc64",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772232.72=0.0",
+    "file": "9497ca60fa30e5d66459eb227d53bf4bed298c00d8f5ea0f3e76604dc2a382eb.json",
+    "sha256": "db8449e6b6bf8a17ceabe2a375d826dd6e91730cd048cad689e245b0d6463702",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772337.586=2.400160010667378",
+    "file": "951054899d86ae3dee92bf96d2e03a07a544c0691d6da2374534d2dda638d3c9.json",
+    "sha256": "564b2eeafb66e5d4433ad07d2f20432c687e086818d1785dee9caf4dbf032ef0",
+    "complete": false
+  },
+  {
+    "id": "container:cart:Status=running",
+    "file": "9571f76c26cbb8d1c36eaedd2176673fc47784cecea5e0d25cc6ea6b1cad4d18.json",
+    "sha256": "d19a74afc3e9ff8b4feffa10efc43c740748e73a4e13fea004740cec09c09a85",
+    "complete": false
+  },
+  {
+    "id": "container:email:RestartCount=0",
+    "file": "9674ba4375ca8a43275eee93ab8344e3e129c2a77f0b889eb803d6fb035bad4e.json",
+    "sha256": "5623fde63f03f2bc94a203a6532298236fe9fbe1325b62de0a87bcfa1e71c695",
+    "complete": false
+  },
+  {
+    "id": "action_log:39",
+    "file": "96b4e13746870f1c3ddd99192bc90af555724c8202a729af0867c8e2c2b31925.json",
+    "sha256": "168e0d25d4c056c88a675c394decefafb479f64f56cb4e9f5f29a61a361b1819",
+    "complete": true
+  },
+  {
+    "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772354.634=1076.0717381158745",
+    "file": "97a5deb156ed42554df49e493930dbc46935a11de2cd252b82fc750a01acd4b0.json",
+    "sha256": "9933afdb4e94d695107c2b2003dd1b4b54f6ed2a8746768c362c5a352b970610",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772352.721=33.78219409243304",
+    "file": "97d681d5209ba95806bbef1e5a48ee6f2566dfb8c6564fa9203678bd20234ee5.json",
+    "sha256": "a121a7faf8fcf3d8f3f3abba06d53bf957ac5ffb72db8e6e18748758901cd7c3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772288.689=0.0",
+    "file": "98388c7a3c8f59e73f1a1f811ee685ba2641b8f004939e6f48d880f4568860d4.json",
+    "sha256": "71e1bf0202e38d160dde5d7c0a7c92a243dd7064e1a4da670a1696c323e88e85",
+    "complete": false
+  },
+  {
+    "id": "container:valkey-cart:NanoCpus=0",
+    "file": "995b15bfeb15bfc09e2c009a41c1afa924657c9525ef6f4362daa1acaba0e595.json",
+    "sha256": "0f7d89e3268f12b3df60feea2518a54f87627fa9f0ebd8bbca5e44c8d0cd65a6",
+    "complete": false
+  },
+  {
+    "id": "container:recommendation:RestartCount=0",
+    "file": "9aee5e60c48e2c7ea71664e49a6b39f78d4226c2d84ccc3f62c339e4fa6dc5cc.json",
+    "sha256": "4cf65245bc5b707d4a1fcdb00d50f8bcedcfadcb9c9d09898fd4ceb569fbb926",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792772345.11=0.051948051948051945",
+    "file": "9b46d3ecca1e7b0d06c939b9362d4028246fd36f67798c42508a4e57b19f5aeb.json",
+    "sha256": "81ee14318396e1b9443a4c925e3dda6907a6f08c6f846d39970cff9196dd4c48",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772352.721=40.017543859649095",
+    "file": "9bcd6e5fe0c5481a386b905e5d77d2d9996d879363f0be38ca0d31ac5dcba50e.json",
+    "sha256": "cacb9f002ae8b44bcc0ea0737165331d55955bc6d16c068720010721f7c47127",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772225.113=23.584512558961283",
+    "file": "9c351d0cd7389f162c5f00e3f0552a735d5440ca2fc4e57883acc13d017c6160.json",
+    "sha256": "0e7624661635bcaa23fd1a8e600e7717dee7e6b5b92c74015ed1dc52bdafacd0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772288.689=0.0",
+    "file": "9c74c09e55855c4d662e60e5790d23bce22a6684a77c022cd9aecfccfb32c56b.json",
+    "sha256": "654577aacf6a55e8042706dda9cea0fc4ad83dc725594e4cbfb6d45fef21d47a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772288.691=3.835294117647059",
+    "file": "9cb8388ab8f60b7d6d63765bbc1472982b550255ed168267372b2370a96ea025.json",
+    "sha256": "cb8822e624197e6d06ff19b7fcc80ca76a52bde937e5f3cb0f2ef5795fd78825",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792772286.704=0.01699029126213592",
+    "file": "9cdb406c3fdd686de75e710ab3d2c9305400fa1e65af366a1264b27a2379760b.json",
+    "sha256": "4497c9b329879d8efea8162622dcb3f557cf36ce7f54434deed1b2abbecc4c28",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792772286.704=0.25925925925925924",
+    "file": "9cf6998744b99f69187cc1dc5839726ccbbb10e5cd2fedf789389e1442b33bac.json",
+    "sha256": "a43b3304cb162fd5a29a7f53b9c7a5fd2f2dfb2d6404dbf1797d4058dae1a2e2",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772168.689=0.0",
+    "file": "9e3a968f7296477b60e04d7babf74d239c3b822a1147a748702cef45a9b3239b.json",
+    "sha256": "676539a83fdce81de5db9bcde6eddae00b15e9486e0d3539c98c0705d5075f0f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792772286.707=35.52380952380949",
+    "file": "9ea3e16d7a6dbdb9d04e057fc3272c6c6862977e5a5593f11a6b9b2215c8f16f.json",
+    "sha256": "1c38918e2585b24cce5db95062a1034fe0315798d4c992b4a7b282dc93a63757",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792772292.585=1.9000000000000001",
+    "file": "9ee8c60e7a4ce68ae6c0e60cc5dc01124f78af8a35ef1029304c3e04fb50f297.json",
+    "sha256": "58f1380dfff536e6536e131d52773178e5ef442bcfaacd3dc7ad75eafc51e7cd",
+    "complete": false
+  },
+  {
+    "id": "container:frontend-proxy:Status=running",
+    "file": "9f34b3292bc1918b37c3c81d53ec3b484516917d00a76c5889e809c12556b353.json",
+    "sha256": "a772114d949e097b015e544d85c1ac834a425dc20d649a7dda57e535ad1fc79e",
+    "complete": false
+  },
+  {
+    "id": "span:ea0abeb89440dddd61e55dbad29766e0/d6850cb71d2dc29e",
+    "file": "9f785ebd077fde283bd8bc7c5e53700709b8b2f3e4b897d02755f345f8f70bf1.json",
+    "sha256": "e63a656931f7affc8a4056c41c490a016f5449fc185478b603761d34c656fb8a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792772352.72=0.051948051948051945",
+    "file": "9f7fbae595bf1109f2e90095f5793275185e233f280fe23ed59fd4c2a5579706.json",
+    "sha256": "976942a4081798e548f9875766644b2d9e243dcfb8c84f0d13b0556f201d9afa",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772225.113=0.9500475023751187",
+    "file": "a01de1f0e525dc3aad1e209e7dc2d3a26aa9eb623a95b1f95dd868de5f609466.json",
+    "sha256": "62f5e8f95c60cd6ef8ec8f2a7109405a6e54ef029b447e3b3d9b90d2952a5d6c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792772331.707=1.9633333333333334",
+    "file": "a046285f1400aa1467b60410a2ad78f0a51b2bb120a4930c9f7a4422caef3377.json",
+    "sha256": "e79819b06938bb1ff94d96af7352ee084db943baa864efa6a091dded12975f6f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772337.585=1.9000000000000001",
+    "file": "a120a766bb42192aff57fe59e9903df82cd39276519cee83a8f5a01be525b832.json",
+    "sha256": "83941275d0658237c8197aff06a290a2e445817596a70aa12f7083fdb41b945c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772337.586=1.033402226815121",
+    "file": "a18881a447252814cc573f49b369ae803b7dcd2e49a430edaebb481b99fa050b.json",
+    "sha256": "10aed3b87bc9eac4b86c581776d9e41323af83b8449f2329355dc5d387947b98",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772292.721=1.9000000000000001",
+    "file": "a18f8aa2f89e734ce8141c6e4628cbac40ad7d9832aa205d5ef7a861c49b5a33.json",
+    "sha256": "22852fc3e040e517f6b9b4966a85f09fd8b85c8c990717beb7d8140c3f7b8a50",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772288.694=2.400160010667378",
+    "file": "a1f64301df11ac06eb86cca309eb7a68c8182dc31f5fcdba0640dc13079527ca.json",
+    "sha256": "6c5fe238066003b73f50478438b94fbcf94a9b513a14b6682a0586f420c89140",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772226.711=0.9500475023751187",
+    "file": "a21a2ec16d20208a07601508ec6334d792ce7af703fa789401a2095ff3763d4a.json",
+    "sha256": "00d77b73d3665f4ab5bedcdd79b212187e69b4bab6d29c19ff32e27b98139f6a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772232.72=0.0",
+    "file": "a3536c01cdf7627ae849bbce0e409d882692aea1333ab81ca694b5c7d0b019a2.json",
+    "sha256": "f4112862bda123cbd28f85db4057a3d797715b238645a0941e6feb7de40236d4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772225.11=0.0",
+    "file": "a384f2c7bbd57fc3a23bb26f6da11a1ca70648cd11f3bc9679e5b653dff96d95.json",
+    "sha256": "1897ebcbb13273ded633a366aea25213cc7be7d75fc2ccc17c869af943e85cb1",
+    "complete": false
+  },
+  {
+    "id": "container:ad:OOMKilled=false",
+    "file": "a395e8f9c101c39334fa187c39f8c98e3b8378a0d5f9b7b84370e77358a17812.json",
+    "sha256": "fa24d3002947f3b6ee34ca9fad495e66d29e93d65ef5c78184c58352c8706f40",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772285.11=3.099999999999999",
+    "file": "a399f1bad55cc5464a7ee8b2e2810538cca28f70b7af7d1c33568067c309ee24.json",
+    "sha256": "7078895e28e125b5c0ac61aba8dfd28affbf8e82deffa4639ffe735ac967ed0d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772292.585=3.099999999999999",
+    "file": "a3b884574d9d73b2bff205973ec0dbbb5f7cf409f6781101dd94a9c14d66f67e.json",
+    "sha256": "5f9d801c1847e52414499e152ab1e8f8d4d07ac0ae9fc492ec6b33d32855f24f",
+    "complete": false
+  },
+  {
+    "id": "container:quote:RestartCount=0",
+    "file": "a47242f520c24f57d503e7316bf477659802c37c09d1a060372009d4ac5e5b82.json",
+    "sha256": "71bb8dcd351be1f400a22d3f567f1b3d7e5d60f27d6325b01b90939c28cfd71d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772232.72=0.0",
+    "file": "a4c16bd007ff4f4d303287064edc0f1b5d4d10be5bea4cfcba28d898f4f96546.json",
+    "sha256": "79a60f31e4edbda83da857ba03f15088fd7eed564472a130fdb661852049dc17",
+    "complete": false
+  },
+  {
+    "id": "action_log:42",
+    "file": "a5da0afad5405f6e3df50ff8a24cfc1ba2df20f095fc21c1a3559557417d54d3.json",
+    "sha256": "ae667fd2ffab2369f9d9d15a195d4b92a35278fbe9eeff1c2f859fd7b01baa96",
+    "complete": true
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772288.694=0.5667044469631309",
+    "file": "a60ce1b5f3427350a8be16d92e6262a283542104481369d45ae1a5f3d3adc52d.json",
+    "sha256": "40e12a721e1dc849cde3ff8f8708b30cc15ee2f7e64662b2c416a6842dd09d68",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772345.113=19.784652310154012",
+    "file": "a62e0adfd7221e48f715d1a7d10cf9fac7a8238241e0c598ac8c74864832de2f.json",
+    "sha256": "9dbbc27dac18528739e67228bca4167e1def051f0e790ff8d745cb5c6c79af46",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772352.723=19.784652310154012",
+    "file": "a66415fac8ff23085394e9efb1852ff3eb93be22fd627a2e0d9e3492de959c99.json",
+    "sha256": "614c2c9d7a187d9f460a2f47ded4d36ee860007b82fb50aecbe895045e65b732",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772226.711=10.317182525792957",
+    "file": "a6e79406bcd3404c5f231f5164fa45d3362bf48959ba14e777512d148aa5ed13.json",
+    "sha256": "4e6a644f33b83bbd725ea0bd8307c8a26390365829992d53a983a54e836b87f3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772226.711=5.1669250129173125",
+    "file": "a71a52a7c8fcf2ce5fc658ae06d46605320093c61f0aaae2d8a1ee90e767c1a3.json",
+    "sha256": "402b675bb5df545adbdb874e5b6476ebaa2d68b7dbd4a7552eb618f529bcac46",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772352.72=0.0",
+    "file": "a7827e994b792a2ae17a58d4b0528e7c759601b91d3f918e1fc16a6a522c21fd.json",
+    "sha256": "1986c8bca31cdb796d9a6343e4a9012625b1c747f32fa3b8e52f8bda16315c60",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772243.694=2.9668150074170376",
+    "file": "a79b1dec61068799d6e54739be674271568d810320fc51574adf852160c4c846.json",
+    "sha256": "049110a4ef44ffdeff8f7d5b8bd2a0ef75170aefcb49cc32845ef1abf3ef0daf",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772286.707=3.099999999999999",
+    "file": "a7a815d6dea6097314a86c87d33abcb00699843d32e9c26d04a1e79ad0a52c6c.json",
+    "sha256": "f529a756c066f0f5cd4b8762a055d6cf43eb5af4c7c489e405b81aabf4d9dabc",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772168.689=0.0",
+    "file": "a89dc9ba4225d12d9b6742e6a2cae4c7a34fcd25f395dbb4b80cf23f0caf313c.json",
+    "sha256": "d4e8a65e63aff3551c0dcd9ec9a880c45ee775fe56c36dcd95a78d4a75cccefd",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772168.689=0.0",
+    "file": "a91047dcf49ee132d8143ffb09b30abaea43d919e26c2fd5e3902f11fdd5e2f5.json",
+    "sha256": "2e69b94bee86639a18d81a6540d40bea4ba4a832ea1e912106e27417ecbd9d33",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772288.691=34.83435582822082",
+    "file": "a99a62d5edb586e6f0dd62d7dd4a8a6c1dbc65cd5fe27936e2a87e1ee7c5ebee.json",
+    "sha256": "6c68beda538481bf81730b2a2ec47a706ef4567aa43f68dd064f3dcff69c21f3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772288.689=0.0",
+    "file": "a9bf8c94e22c10e7b1e780835384a3466072fc3c6facd8646a03125f5a80ca13.json",
+    "sha256": "6a8d2aca588af8ade2da4cc2ef1c086fbd8340bb8aadfc73f206958896a34596",
+    "complete": false
+  },
+  {
+    "id": "container:quote:OOMKilled=false",
+    "file": "aa25d6231339a3ee870592b31d3cf952f03324b4ffad0e0ab19d8ff3f2b23f3d.json",
+    "sha256": "67d6323a8c2f4292eff1d9f49c615327aae8b771dffe83c27262a0fcff942204",
+    "complete": false
+  },
+  {
+    "id": "container:recommendation:OOMKilled=false",
+    "file": "aa57f7849d4e3debd34889c7c5d19c6cfe9a47470dc26491c7696f0c0a75926e.json",
+    "sha256": "a10a67b424182f41a4137c4ac04074edc6566c4a10f774c6ad21a28aab205f85",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772331.711=9.867324488299221",
+    "file": "aab448535bf720917d19508334d32af2d341d818251af9b6d99bf4c92a5f7e17.json",
+    "sha256": "d1681844aae083d5ed0c7aa0ebdc0b38a92be8bcfb38c344a0c78a18cd76b1cc",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772232.723=2.9668150074170376",
+    "file": "ab83f53ab4d51a6acb67e2d307ce730de3dd5647855e91e1a323bcc3b9cda213.json",
+    "sha256": "02687e0095383f6b872992ebb4dc8b01f41017594fa383ed424d3386b40041e7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772288.689=0.0",
+    "file": "ac1e959599f0782f9a0d7514b7a5fa8bd37f073b33d30f05094087fbee17e89c.json",
+    "sha256": "9199f0cbfe27ed67cab47e84e981b3d0b342290c2ed168c5c2bc47b18eed3545",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772232.586=1.20006000300015",
+    "file": "ad001a5791d8cd0e30ea7314adf02a47a32009fb6a54410c673cb2c4935a33d7.json",
+    "sha256": "b7280b80b9a336b90f40c0c472403ac2a4426b7ac96a6f8cf64384df6b288c5d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772232.723=0.9667150024167875",
+    "file": "ae36d15451a28b746e065148dab4dc949d17d53df3c7b422e60ed9229b21f9e8.json",
+    "sha256": "046dc969f383bedf455ed4152abd29301b8c716fbba202e9bcccf9eccb0f718e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772225.11=4.025000000000001",
+    "file": "ae97fa38a5b94733f66d311fcd76305fd4ce60b18ea21ca33fd84e251cec567c.json",
+    "sha256": "74339d5d5cfbc3df284f209a88b5d8529af48195e25b13f352c2311a1b7b19f5",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772225.11=0.0",
+    "file": "aed94f246b6dd849df70a1e0e5cbcaa14d2ad040105357fb6b51275a16bcc8a0.json",
+    "sha256": "605176422d7cfcf95c3b4c3db517bf1ec5d9f825c401ed0eb63ca658be6657ac",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772168.689=0.0",
+    "file": "af151d6ab95cab8a57d063972cab60bfeeb75ea7c687b6c43c9d187bd97f5294.json",
+    "sha256": "d1d08a1c3c989eb396c1e0754d021f895afff1db12437e65a907a0f9ab663a67",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792772225.11=0.0",
+    "file": "af20e8ce640806b8e8bbd26cd052e2cf8e579239c659a2eb2371c017380d427b.json",
+    "sha256": "68681bc9046fcc050a210a658ef792e99c274fdf039417645ed6a511273775ee",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792772288.689=0.026845637583892617",
+    "file": "afd9ff3673c99c0c50eac56177de93fade120809688356f54a6229f864f7ad85.json",
+    "sha256": "f2cfc0fb310f3ada46ef77ff0a7a8322bcab068a9dbbad4cb0fa160490d1d4a2",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772347.74=1076.0717381158745",
+    "file": "b01d5673fd1e52024a32520d5d863b84f528f2433f975d3f513127d632d37f5e.json",
+    "sha256": "03d756083f0c424e15e789fb5eb91de0f591fc6958217ba3bda445d937a17dc5",
+    "complete": false
+  },
+  {
+    "id": "container:ad:RestartCount=0",
+    "file": "b0e4a0d78d6067bbb521a71e3cf4f5b53148fc045a3ee8ae56448f505d4d30ce.json",
+    "sha256": "2bcf9ae084daf91e8510a00e1efdd6fd583da56757fb7acead91f43108bedf85",
+    "complete": false
+  },
+  {
+    "id": "action_log:36",
+    "file": "b1b2427252ed0d4f82633f31b5959472bd5df58b2e4427078a90f362587857d8.json",
+    "sha256": "f7f9d9351cae5fe78853495bf1ef1eef591dca3e8a4f21175b7922cd04d3c7d0",
+    "complete": true
+  },
+  {
+    "id": "span:9d93b503624d61f8e293d7ea2acd25d7/cebd842720568ac9",
+    "file": "b1f9a13e43dcc0fb95d81294a101a5a81482e19aba465b8dab16016c3c6170ae.json",
+    "sha256": "10c0691986ed5b5a53ca51ae78d57947de031505d67e999a7a72555527bfd98c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772331.711=0.5667044469631309",
+    "file": "b2a3c6d1edce99a9df953aba48ece347846b9250dd57b007bed86df1e80a56bb.json",
+    "sha256": "1412fd6a5ec9c8747437535970c0b69dce8d00c508a44254fcc306a844f06e96",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792772352.721=37.55555555555556",
+    "file": "b2b0469597165beef7cb997a1025234ada62c9c0009132b27ef0ce6db93d6e66.json",
+    "sha256": "a817a1ac8acd4929794cf844313d7f149ba4928570093ca80453217f99951ffd",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772232.723=5.1669250129173125",
+    "file": "b2c96eff8060381522eb1f78dd31970c1ec8957c4daa5ead8d1802af38a36369.json",
+    "sha256": "3e9386fadc68bbb5ed1f2b901577d4290805d9457e74b751676f15fc12947d40",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792772345.11=0.19047619047619047",
+    "file": "b3935d048eedbd59cdaef170f4462e319f4f3910d98a4465b1a763b7142b735b.json",
+    "sha256": "49a8a4dd9b86acf67d4dc52dfdf1eb7cf5d258fb3a1153adfaa0792978c71706",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772345.113=0.5333688912594173",
+    "file": "b3eed968128a0c75fc19450b79e3f5357412c9874ff834cb1b6bb6435e2f76cd.json",
+    "sha256": "052dd2c5fea6738ec1fab403a3d23b957c3aa8b229f50163564927d4b5478993",
+    "complete": false
+  },
+  {
+    "id": "container:grafana:Memory=125829120",
+    "file": "b401e79a58b1a77b27bb381ada7e9af6c4938ea09224c11414282507c7546a1d.json",
+    "sha256": "c16043e4b9851d48152950053a223f816edce06161333559c95d12c16b9e8421",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792772288.689=0.0",
+    "file": "b4142308e7696dcdbfd0c609e2036d369d85992ca2b834e47d28e45013decf62.json",
+    "sha256": "fdc213f4aa3a14139a6b6626cb444ba6607206fc268c67ba884d2b13c7edb564",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772331.711=0.4500300020001334",
+    "file": "b4261233f4991ef5286da5391ccca186853573a503dc2ba3ae168f690a63e865.json",
+    "sha256": "ff7d5063f234569b1329bc7d77a141db25e63d12de8a2a95a1bf2b4030958788",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792772286.704=0.10526315789473685",
+    "file": "b4fd0f6603cd2ae3efc67aa1f626db454343d54db20a55144df345c2736f688d.json",
+    "sha256": "dee5b234a854ac4ba849693b9e425909ded948ccbb63ce502c97264f519baca3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772331.707=3.835294117647059",
+    "file": "b5f030a9a7be82ef9159374faace81752afd9400da1a49b1c95c09b88f1dd9e0.json",
+    "sha256": "dbe6d8b4a2daadc55c7949cdc7be5623379b75589f931608a034e54a60830edc",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792772286.707=38.00000000000001",
+    "file": "b6e9c7ed8810609a3de14d42345da0dfd317bb7c1790ef6414014716c194acf9.json",
+    "sha256": "27d8a276f9f01cd11de36ecaa83b62506c3c5ba32c594299203f46d654c93a61",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:abe8704724d841c41ce147765b1d375a626228c42f27a5bb01b479345dc1f3ed",
+    "file": "b781a504e20b73903349140a3ddb521ed9a51b95ce00d23374cb70d460bea479.json",
+    "sha256": "0c5217e1fcb3ab6e0a63706f24b48525754ae8088ae710928aa707084ea106aa",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772285.11=34.83435582822082",
+    "file": "b78b8f92bc05155675a03d6afcfba440fb04200aa8ae19ef1294dfcd89ffe8bb.json",
+    "sha256": "510a375b7c548678b7053019aae121c50175ba516d4a6879b893947639a39bab",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792772337.585=1.9633333333333334",
+    "file": "b7a4425d84438a6b85a7f0cc41adb15687b68d676ce834115e65101a5f1d6fc5.json",
+    "sha256": "086af32562617c4c12c2cb2d42a85e0c99a8e48f5212b2129432f9dd36608e5f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772225.113=2.9668150074170376",
+    "file": "b7f261aa0af317586b512d79a45911b22d012990aa4f080d6e36783e701858fe.json",
+    "sha256": "d9ef63b2393c7d383a9d2c35cff801815e075a560b565ca06015498ca8ba16c4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792772331.704=0.027027027027027025",
+    "file": "b8128c4976d05c00f65b25f88d1f1a700dab0882cf2beaee76af00e55f6ad489.json",
+    "sha256": "632f67876c79b5b80b08f28069c408037b78e74459c7f9c1df160ede7d8659d1",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772288.694=0.6500433362224148",
+    "file": "b9fe3fa2fd386ade08eba8e24fb5a4edfe56334efc1b83d4d6d2a8cf1dc3e1fd.json",
+    "sha256": "c522ff062839aa34a082cb59e5db1d125c7f6aaa2206f5ae279e0b694c68b6c9",
+    "complete": false
+  },
+  {
+    "id": "container:frontend:StartedAt=2026-10-23T08:26:29.311548414Z",
+    "file": "baa8efdbefdbfe699cf431c62c215a69a9ddd55d083be419540accda84e2c01c.json",
+    "sha256": "28b37adbe80963968eecaa34fdec3f623ca75b8c6606e52bceb0c9771b76d05b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772232.723=0.9500475023751187",
+    "file": "baca7423d86a8b278ba685c4690cb4c269ec17a9a8f67f4392364c706adac9d2.json",
+    "sha256": "e2ab25aef067c2b38db95f584be052924e6e2c645c079e58fd9a6f7632f57abd",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792772352.72=0.05623901581722321",
+    "file": "bb6a6084e44c4ed5c1fcbbdf45a8da15806f0185eef31741138be0e4c563b938.json",
+    "sha256": "b4a400eb0fe14f94d3e612a6db4c45272e7b17b9892cff451813e5878898beb8",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792772286.704=0.026845637583892617",
+    "file": "bbe500c5a95c5c77cf8eaa9ae0c2ce04d057d08620772e1944ac278871a03915.json",
+    "sha256": "cf4c4fad95c4f6bd8ebf08021e764b9c0ae084db12d1874db874ba983507f34d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772352.723=5.133675578371892",
+    "file": "bc64b8705b20bf29d87729d1dea0a1d29202f38111db85e67e23028b715dfba6.json",
+    "sha256": "6a522ce6b474840c4ea2538e13379d11cc2f5786005f7093939ecc572d409e49",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792772352.721=4.450000000000001",
+    "file": "bd443a705680f2a0f9249e042661c929c6f787630b93e110674cc8039d730bf3.json",
+    "sha256": "28aeb19dca013421ceb1b5ded67428435070754c4816e2935fe369eb8262f0b7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772226.707=5.000000000000007",
+    "file": "bd45279614ddd32bbe3a4de18cf4231a2d00d89d4c3df129f1d0199f728f0651.json",
+    "sha256": "73859951175a04b1363c1259f71afc9873bddf7ebd876467b7d77f63019fd406",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792772292.582=0.026845637583892617",
+    "file": "bdf6b355b3eca25c315bc6ebfb6a9c242c7d5e05dbd3b9822e6ea181e236af26.json",
+    "sha256": "1267145a30a9dfa2b3c6d03d45c678bd0e9aa928280ca8ff538bb05a238f841c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792772331.704=0.0",
+    "file": "be2b4ed4ffd215a7f013f268ca374f00c6dbc735b2fa24d321042761f723e1be.json",
+    "sha256": "78e48f8dfb78204b6e857baf354f636386f260502fcbbf5602d0f9f09f619419",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772337.582=0.0",
+    "file": "bec471f1d8c3d856092dcb4bb7c9ff452c70f05069bddb44d79c7a1939c835dd.json",
+    "sha256": "0769a5c09fd490bd3bf49f0846fcfa15a10cfbfd4e471e8a7efde3079dfe4606",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792772337.582=0.027027027027027025",
+    "file": "bedeee2e9c1a287ff1f0bae3cee0d6531b9b1ed247a59c6d93e0e6183e5bf5f8.json",
+    "sha256": "3ec9533302d885808558b0438be5a5b0d20ec9ca42d365b23e8757f8ef994253",
+    "complete": false
+  },
+  {
+    "id": "container:opensearch:Status=running",
+    "file": "bf57aa620e07d5894a8905080f2ec7705b72a1363ae226ed97e5c899aa06b94a.json",
+    "sha256": "27e804c93190247f53df16492775846a0e39dc6f4e574f1a220e5236366a87ee",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772352.72=0.0",
+    "file": "bf60f1f5afa6804964d099f470c5086be4776fafdb56c317942a489ea86c275f.json",
+    "sha256": "fd93703cf20545c4ad23699fd04639ce98451fcd9358877827e2d880fc6909be",
+    "complete": false
+  },
+  {
+    "id": "action_log:40",
+    "file": "c0ace779f154654fe047cff20084a1ed883707a38638307b296ffd3be12dc0ab.json",
+    "sha256": "982044179258fa5acf2fa5b1f09d989792763cb22dfc06ba3784172a1a5325ba",
+    "complete": true
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772331.711=1.033402226815121",
+    "file": "c0fa75fe3f09daa99a256cc9177dbd4a465d74fea826f21af2e74c3fb4a0fcf9.json",
+    "sha256": "67eb75ed32ff896f711d0a52f5f70198b979a5588f2913f5d1bed9ed1e952410",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772232.721=4.025000000000001",
+    "file": "c0fc61dfb5a09c5d280f496c1001b6c4ec31f71276875772ed001f0d5154b2bc.json",
+    "sha256": "837903c8c34f039546b9c901d8359577e0c547f7825e5f93afa03d72272f96a5",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772292.721=1.9000000000000001",
+    "file": "c1409dc8172844b180ce9129544ebf9e3819fcc4da2ca990b8e3efec3c3c05cd.json",
+    "sha256": "5970cf1355f6c176c09e45198a5c00f619ceccc5567fc95e24c94313d328d5db",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772226.711=3.9001950097504876",
+    "file": "c1bcd5577bc22d88668f30aad47420bc057649fc7d2de3dcd2d58135c8f28d8c.json",
+    "sha256": "e6e89ac4044e50f65fa93e4d869debe1446313323f41a3b817ba9b5b410c2693",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772217.582=0.0",
+    "file": "c2cb20d58f33eae6e918035d5945c1e16c4935e15f4f67a5b7aaa341bdb24d8d.json",
+    "sha256": "6bf9b495e95c7e20fb63fcab9200bc38b30527d81e4cd2ccb08a244dc74c42d3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772337.586=20.601373424894994",
+    "file": "c2e85c1ec7d75abb25e4c07c05a3fff335284d38eede04a077cf671ec323578c.json",
+    "sha256": "2102064b7f95c77036ac9f268e903925975fbbc849affe60b2ec609fb299b901",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772345.11=0.0",
+    "file": "c325542711b38de3f68531776353517162bbf38fdab1ab310efbecdf884f85c3.json",
+    "sha256": "b0a3f7db50465541ecb2519df1f9b67040cfeaa5a5c1b8e50c18ce3205d0ff7b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772337.582=0.0",
+    "file": "c435803bb593c01c644c3508e1e9072629531a3fedfbce7a28b03d4e7d00ecb7.json",
+    "sha256": "1771ab8967092c58b73026b316ac06a6a353a0b3fa4f85130ec48442f290c464",
+    "complete": false
+  },
+  {
+    "id": "container:frontend:OOMKilled=false",
+    "file": "c54e5b50d45c3a50b9986fb4f7bbf89af9b6827260f363dc03b07387c59d75a6.json",
+    "sha256": "00e02bbf815a2d6df6173c93d2239439adc5a65254e31557d972b969beb67bdc",
+    "complete": false
+  },
+  {
+    "id": "container:otel-collector:NanoCpus=0",
+    "file": "c5712e92c3f98675f3273116ce248af87789e7313760bf9e8a6ab3d1aa1a404a.json",
+    "sha256": "efc2bab25cf72ea43bea9018a32aa1d5c784eeb29542e6fccc30a7e365537425",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:1db3e7ef49842fd92d21088ebe2f591236deeaca79a85371ef98a114257fba5b",
+    "file": "c5a4aa9dd0f2b72a3b556c1da10770270bbd5e9a582c0a50effd97f0ed2ec99d.json",
+    "sha256": "31c9aa3f57e0596cae755e638fb041a62d0e66f57d96fda81e52d8d7ee10ab6c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792772211.707=5.450000000000002",
+    "file": "c5d7c9ab3b4d25c0017901e91dbd467662d117a007b24f18c340b65eb73e747f.json",
+    "sha256": "83995cf238d3465f477377b4453870b331ebbe99773cdd2cc24a3d76fa063774",
+    "complete": false
+  },
+  {
+    "id": "container:currency:NanoCpus=0",
+    "file": "c5f254f4a0f7237c68019f962c055d3bf7664dcf55549154e59bc9a16b8276a9.json",
+    "sha256": "08f7ca692dca72a2bb9fde3b4d3bbfd988424caeaa0173f5c35828ad1655eed3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772331.704=0.0",
+    "file": "c660acd181fdd27f5f85c82f40d4fb42aa4e9653ce31e8b1ad490adf334feab0.json",
+    "sha256": "06e44f4c907e055f36b0b2e1a5b9f0bcffebb9087092bf1433914d2fb3f38ae4",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772292.721=40.892307692307696",
+    "file": "c6af0f3a890ed5a28edf3e7569264da17aac777333800d6d29b22e204254c7c3.json",
+    "sha256": "e731e8580c09a86e07ad5a36797c1171b0d020460d6f28aab4796a1af58fd21f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772225.113=3.9001950097504876",
+    "file": "c733de72de9990a2385d2d50c91e99c13cc7d44411cf2f07e83a40bfd29172c4.json",
+    "sha256": "4f759402bf0a2ce8a0ac580962c07f82bff2093792eb5a05da9d4cfe3f0fd8b5",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772285.11=1.9000000000000001",
+    "file": "c76e9202866ac1453df2439b37683268834d463abc036a30cf32b0c9de6ec39d.json",
+    "sha256": "cc86b81b743ba9693058db8f728cd16f76fba5c4ad5a352225dd4f521b0ba7af",
+    "complete": false
+  },
+  {
+    "id": "span:ea0abeb89440dddd61e55dbad29766e0/a6f5ed2f80116c23",
+    "file": "c80c447b81dfbebfb2e0515b3af42dc71d8e6c742534dbd48b63b03e2895c8ca.json",
+    "sha256": "d5f046c6d153047ab48a10249d5edaebea7d65f64e98bbc6a200300b1ef18172",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772345.11=1.9",
+    "file": "c83b9df7c8d78762509cdd1097bb87d79a478ac416acde7b8b81fc9c4664c316.json",
+    "sha256": "91d13f12f03a60d8facc0a9c133f00d6005ef95272c591b7e9edcd0b1ebebbb0",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"sum(increase(traces_span_metrics_calls_total{service_name=\\\"frontend\\\",span_kind=\\\"SPAN_KIND_SERVER\\\"}[2m]))\"}@1792772243.575=1256.062803140157",
+    "file": "c897db751c0f6a6da423e7fdda883983613864a8ec847e44e06607b4c3f3c060.json",
+    "sha256": "709cfb63d850f9f52cad89ac708a18cfc31d5f1030ebd6910ba83ec24942af57",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792772345.11=0.05623901581722321",
+    "file": "c92fef6b15f8ee2901bc6dc3dcff0f9111c5f62ae5200921a5c5399d8bdedf2c.json",
+    "sha256": "4258928c2b9bb2d1d549f59d14b849cf4182cbda79a112ea979fb78a420d020a",
+    "complete": false
+  },
+  {
+    "id": "container:image-provider:StartedAt=2026-10-23T08:26:29.09780768Z",
+    "file": "c935dc7ab94fb111808048be46717d1259d4abfe02095007475e86c7a2e286b1.json",
+    "sha256": "d1867abeb0ee976af04c4994dd7afc0161d91d1dade9b0e578a2df34f1afb5e8",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772232.72=0.0",
+    "file": "c947ae87176690fae5f1e7151b190c01d09142ccc400082b2af609a9e9c8a9fe.json",
+    "sha256": "10300f3626ccf7789d3249695fd7807fe29cd02837947b8aed512c1a97c1b233",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772211.704=0.0",
+    "file": "ca30fbe841cfe11a3fea795e36c7401c64654c4c084a811e562f6e7c2d91cb87.json",
+    "sha256": "5c7460076b0aeaddd66529447acd40cc491efd8a17b37fafcb556f611d150bfd",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792772288.691=38.00000000000001",
+    "file": "ca360977918f7555ad79b6d6df38e043ec510619a1889ae19f80dd91c2c197f9.json",
+    "sha256": "92cbec3ae7145e362e977a67ff329ebdca143134e6c8651f8499a253c183ddb7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772243.694=23.584512558961283",
+    "file": "caaf7ce277c50b456e3810a2ffdd7ef69253b2fa4d56998520d1c02e528d577c.json",
+    "sha256": "7aa4dd82bc5a2d694ce1f1b49355bef45bfd368e6a1c40db18c6fccaeb655fca",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772337.585=3.099999999999999",
+    "file": "cb47d0f40f576156237e255f5a67ba0a37009f29f84a521403c77a0d0a301d46.json",
+    "sha256": "28392289b3f3640b3323228c33ddb8b8867ea6d8d4fc652fd028b20c4d9ff899",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792772331.704=0.0",
+    "file": "cc617ae95c6f6006f6eddb68169ccb8805855a6006ed54b96488034503b64d9f.json",
+    "sha256": "6db21fd3aea67393852c6687c977edd3773825381c8ec069d6ee000b195eea24",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792772217.582=0.0",
+    "file": "cce4c3d1ce4564041db2d9c36855b1f83d811d054f32b63a6e6e3cf7f12c32c7.json",
+    "sha256": "e350ceeb6f7d95e2195361a5e2952c32b72105395bdc6b956dce7c4bdfb06ff8",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772352.721=44.2429906542056",
+    "file": "cd14eabedede41dda9e2ef172476b79e15cd673b00ac57e3821576c216576a07.json",
+    "sha256": "86e89aa8b57236609a89fb68bed5b4de5c5d6230e32df1e0f9d264c2b569c86e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772226.711=1.20006000300015",
+    "file": "ce34e8f5eab46a7931384d7aad7c71afc25cee14468967b8424940a205fee379.json",
+    "sha256": "db029727b8364180b6a9ce249a93d6f4eef55f15cf2bafb7072a7fa6ade2cb92",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772243.694=5.366935013417337",
+    "file": "ce56c1e9cf878a5f756caa270617bc8065b959c23a3af3558e8785659fdc5fb5.json",
+    "sha256": "ff7e61eaadd253b30695693a39bce51538d9fbc465062c43f70912f3f57ccb16",
+    "complete": false
+  },
+  {
+    "id": "container:recommendation:StartedAt=2026-10-23T16:10:11.434490113Z",
+    "file": "ce8dde4fa6f64f6651e9e7bee1a8b612e9e5fad3443c569d32a1361618bc83c1.json",
+    "sha256": "dc359e10926fbd7090b69aae00c87a97d6eef5448d0ab1d783ca1d96b08ef65e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792772352.72=0.040438079191238416",
+    "file": "ceffb85e761505f2c32701f2d9f4342f77f3bc82b26a1a46775f8c38baa64795.json",
+    "sha256": "14b3154572c9be7b2f37189fb8e7b14f9db2c822feb8a24bfcd1eb7657556a15",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772288.694=2.533502233482232",
+    "file": "cf31c89e345ff0ad0048095ebaf33f6e0ccd90fd45e085a2ba8e060bc9129de5.json",
+    "sha256": "b06344092d085cf6f041edcb5e00c7c0562c6a92882754db8e055ff5ddb86a7f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792772288.689=0.10526315789473685",
+    "file": "cf61857e3c1d273df238f816f68a1878c5e9db05e3824868208589539954b323.json",
+    "sha256": "49bad584774cb41ad6490d85423d4cd98b01ed53e792ae3c84e5e980a1c2b26a",
+    "complete": false
+  },
+  {
+    "id": "container:opensearch:Memory=1181116006",
+    "file": "cf7be28cdf978a8d75ce8384d0dd56393308e6f3fc2253480d4f8036eb1a6c98.json",
+    "sha256": "e1ace8d669409d0d17faa7edb1d8a07cf6fccb5481266ddb0f5ea964696cb5b3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772292.723=1.033402226815121",
+    "file": "d08a7378fd6a2713b62f648534dab4700f105647031c044a8029114031e0af25.json",
+    "sha256": "c90c7b6e95e166320f6ed5b3626fe2bd01ebd32177819f424377632f5c2d45ca",
+    "complete": false
+  },
+  {
+    "id": "container:checkout:Memory=20971520",
+    "file": "d090d2dc40b140ee3752c6ce830b31a089d34fdd65bbbe0dfe52bde4f639d831.json",
+    "sha256": "1985d3be13048146bb89fcc0b00663313fce63699cf60dc2f1c61fc08bc7a515",
+    "complete": false
+  },
+  {
+    "id": "container:jaeger:OOMKilled=false",
+    "file": "d0cf132b85f9f8dc4869191dc84f6f1fcc3892b00881ef453665065a906b825d.json",
+    "sha256": "a96aa4994659d8693fe4a606f6dfec83b588431c0ba8521e4e08ebf041d106cb",
+    "complete": false
+  },
+  {
+    "id": "container:shipping:StartedAt=2026-10-23T08:26:28.13565142Z",
+    "file": "d15d27f6df01069fbbe85f32562b676b7ec34283b04edd2f1c8e46af4716bdf7.json",
+    "sha256": "a5bba1cff510061313b2fe4333ef376c8fd1e37b6e9205fa36d31cc817e527f1",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772345.113=0.0",
+    "file": "d2a0bd8157392a558f950034acfbcced74595bc40b2398271c61b175cb03a0dc.json",
+    "sha256": "b5efaa81df0f4b2d82d30d97ecb5531b091723ce5ce3b3b1d845fa5fd0100ada",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:c2a1e51a5e25c6d8f2bd2edf8e6c8770859ee44bc88e3f90906f4ce4c411e9a5",
+    "file": "d35ce06c775df687a5b83f581c8db29fbb0deaa4d0d151b5146ab4c0aadcef11.json",
+    "sha256": "40b5f316e7f4f38b286d6d839406f121e538999b0ff6bf1432f7e359a82d0a17",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792772288.691=35.52380952380949",
+    "file": "d3aced856a3f7cfa15c07b2dcd043e406e8a46e442617fb0b92709cd834bb009.json",
+    "sha256": "56a679d368f3403dcba7cf0d41313d21b045c95cf9552f8edef27b86c0b82a60",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772337.586=0.6500433362224148",
+    "file": "d3f8cb6ab60042771812af08f972a1be42b79b72839af9ab181654139d06ef54.json",
+    "sha256": "62075ad5cf43328cf30352b04e9a39d39650ee72bbed2e0aec6503f16d84c004",
+    "complete": false
+  },
+  {
+    "id": "container:jaeger:RestartCount=0",
+    "file": "d547a01f37a3d15077bdd93e2977f412a05186241af112c167dadcf00e14b1e0.json",
+    "sha256": "f5f102c1a3aa1d04e4334b299a2e8cde41f9fd45ab9239b00a01bde9a1787a5d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792772211.704=0.0",
+    "file": "d57e85f28cfcd5a773accd8401e9fedd5ca2d59d3f3da172437f535e8fe5c57d.json",
+    "sha256": "2ccdd3d06dfe35d383a00a3aaf038df5357be22caf28becc23e0690243700621",
+    "complete": false
+  },
+  {
+    "id": "trace:ea0abeb89440dddd61e55dbad29766e0",
+    "file": "d60e19d4ee57e9af167244dd82b6e5ad70b715711273ed55627d061fee40478a.json",
+    "sha256": "768efeef70156762489024799dc82762ec6b08c5c99007aad3dead691e09f727",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792772337.582=0.0",
+    "file": "d622099cb6aacbd58db48023856747ddb340daae6276060369fd964285855638.json",
+    "sha256": "46e5b0544d6b6f0ced7608b08bf872162d27ac3d318fc7534bad04aca0faa84c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772228.691=4.025000000000001",
+    "file": "d66733518e2d2683a868fb738b1687a8e29a76d7cb34a96eb96c80bdcef0b394.json",
+    "sha256": "e47f1a1278feb63628657b1c89d26f0305f5af05d01d6619d1daf29612ece132",
+    "complete": false
+  },
+  {
+    "id": "container:ad:NanoCpus=0",
+    "file": "d6e033a0caf750c09318215cd0bafc3ec88394a161a02a43feffa87e4a2c2367.json",
+    "sha256": "5da7cc9664cfdc993c07e009cce2a92f4e973c81e3ed78517a78500f2f23c56b",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772225.113=5.366935013417337",
+    "file": "d73bef43a67942137260a36c3a3c484d41362a44b122b15e950255af2a8e7e44.json",
+    "sha256": "3f02f9b74a86b1b322cc2698dbff40d33bf1227a899938003700dd206dbd85a3",
+    "complete": false
+  },
+  {
+    "id": "container:otel-collector:Memory=209715200",
+    "file": "d8d9d802709d92e073854aaa86fe23b13774331e489c95b7858500fbe68d125f.json",
+    "sha256": "f61262347fa147533879ec91448f3eed9d87a9e0a502ece3c3fced9556af7582",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772288.694=4.966997799853324",
+    "file": "d9af377a0eebf506649aeef0ee34004bc483db0fa5e2cd8cd9db1ab1168fdc5d.json",
+    "sha256": "0bca56fa2f97cc11cf17eb4751536e754e960ae9918c6e0262c016fa07ebd3fe",
+    "complete": false
+  },
+  {
+    "id": "container:frontend-proxy:Memory=68157440",
+    "file": "d9ca6785d7bf14a337aa9d6299c62e600dc8a7e3a188f7008f3e2d0b9b255855.json",
+    "sha256": "fef611a3e5b0e23b836e51609ee8e42f5fdef4b619485e92317fe8996fab19b8",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772337.582=0.0",
+    "file": "dc118a334c9bc81b2253914abbb1b09e4f5fdea42894eb51e6ab7583681844de.json",
+    "sha256": "18c1dcdbfac68e14568e899f207a43f9bcf84d848ba56add253f1ef71cb726d6",
+    "complete": false
+  },
+  {
+    "id": "container:product-catalog:RestartCount=0",
+    "file": "dc31e7a421803aa9cd17724a6e71cf28574ae40eaa4900b44d3f38c96cae6850.json",
+    "sha256": "9ae46bd3616972d15f07469fde7938af20b3d973bd2c535a65d83ef6cb026443",
+    "complete": false
+  },
+  {
+    "id": "container:frontend-proxy:StartedAt=2026-10-23T08:26:29.349062306Z",
+    "file": "dc7dbc9e02b7e2e3a385e97385f5428c45c7fbef282b16a688fab15053ba043c.json",
+    "sha256": "2276f2db58bb21d6421b9569c37a5fb978c44981de2e0fdd5711dbe943d20096",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772331.704=0.0",
+    "file": "dccdc354e1e9d29ff6949e4d5f388acc6c840ceba1dc4fde606b6a5dba0d48a6.json",
+    "sha256": "52d702c7da013843e3bd2aeffa1beff95cc091c5f9926bb14c0497581429f3f7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772243.694=0.9667150024167875",
+    "file": "dce9274b89600fb2bc626deaff6ab8c0f0c8079a93e4c3d1de15e51e69501fdf.json",
+    "sha256": "58d38b1dc31f1d854d280b12b3f8ebb51037395e0fc89975193c367600c95fd3",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772288.694=20.601373424894994",
+    "file": "dd002bed54af85e671cc451325c7ed1c897571131b9b39c30aa2c0625c8bb89d.json",
+    "sha256": "4371f719f266df88d0b555a0f8219c8732beb6f04827f8a581b7eb3d54efce02",
+    "complete": false
+  },
+  {
+    "id": "container:shipping:Status=running",
+    "file": "df277715962ed4d2dbb38512bd3ac27ec2f7efa31d4b1102dd2aef3211c1317b.json",
+    "sha256": "89eebb2cde0d5524c4eb178ea94047d1457683d1544b8ae7996b30a5e3f80c8d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792772331.704=0.026845637583892617",
+    "file": "df2b60596971981c6d0c27ed7ef11c7c619ef28e9deb1055d49e55142e851a8c.json",
+    "sha256": "9e29dba069b9a8b0b0447ca097fbb8ae3dd8cf7ab89c14453707cb36528a14a7",
+    "complete": false
+  },
+  {
+    "id": "container:grafana:NanoCpus=0",
+    "file": "df34eed31f23d98cb5d6f06c2f3400e159f1ad0bb0c249cde800cc3b66f057da.json",
+    "sha256": "53fea2cfe0b4f4294e1383f525973e767477120346b2616efee4f437946b4320",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772243.694=10.317182525792957",
+    "file": "df823a38dd90770d8a4da402a8acd7394f3bfc3b924bcad34c950e5f712b2061.json",
+    "sha256": "8422e0eba846f791c18b32a11ae60f1395fd0bbf4f49eec0fd3f94609b06770c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772292.586=1.033402226815121",
+    "file": "df8709f2bd180bd0b981917ff5c59ba77ede2a2bbbeb60360c2bd523a3a56896.json",
+    "sha256": "09a10d8dfc4332f94674e63136db69c06a5501165b3e5d8e777362402461ce93",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772292.585=45.074380165289256",
+    "file": "e00bad868bca338dc0a98faabd4f6551e15229c79ecb29de65d6e6ae0c385af8.json",
+    "sha256": "9a214e333d4b2141c291c9b4dfb7426bef2836f5fc8ea532f3fc892ee8438d06",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792772292.723=1.4000933395559705",
+    "file": "e196a25253377aced0975a9bd38a0ffd1e8ce03db144017a1dd5324ee1cb1d95.json",
+    "sha256": "68163c5f4e375d93336721a9c91c5a8c72f1766bbfa1d41855989897426194cb",
+    "complete": false
+  },
+  {
+    "id": "container:image-provider:Memory=125829120",
+    "file": "e1bf6d1474305b347732cc71a638e598157c5d5261d52139d7b8bc9783a4922a.json",
+    "sha256": "ec197bd268add6e57f909d628b0117a04271d764bbb8ca2a342f18aa1cfd8e87",
+    "complete": false
+  },
+  {
+    "id": "container:otel-collector:Status=running",
+    "file": "e1c61c6d992e947f2a5ececabf6b8a3c71da8a51da18ebb7a1cc10ae78bb7dc0.json",
+    "sha256": "fb1efa3db7878da664036179c1aa98362edd07d3b7abe27ffc545828e00b0e79",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772337.585=3.835294117647059",
+    "file": "e2ea8ccbcc16900f2b6e5f224051ad32340ec1315f6cf1907ae921c2625bc968.json",
+    "sha256": "ce4b6c0eb8275b9d455d508cb09d8da3a156075a98dbaefc8b915b8b5e69f094",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792772292.721=38.00000000000001",
+    "file": "e369810d30ce2621a7b4476f06e5a135e2bf2de8663b086f1a905e34fed66999.json",
+    "sha256": "2aae275046ef3fab1b4cd5221cd61403938ae55cf86f9d24222de0bd262eeca9",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772331.711=2.400160010667378",
+    "file": "e388ac00845f0987ffdae01704a8b43445fb2d757fac8aa34af2ba6fcf0e148c.json",
+    "sha256": "11a74fda9b086c851ea231f06d98d335c953df7fb3bf2338249a6157ef1782cf",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772345.11=0.0",
+    "file": "e3c28d7e529c6378c22c3c75777fde2aa570bf30bc56e5aeef1ba95d099e33ae.json",
+    "sha256": "fd4329affbd04a1b4365866dcc3f8ea37fe7ca50ba86839dfe01509bf763f7d7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792772217.582=0.0",
+    "file": "e47ef20abb58f818747cfeccfdc42986fb0da9fd587c816d418a7c5d3a6d9b99.json",
+    "sha256": "4c5e830bc1c7f8b7dbef1845847870f52cff13b5c6126e65cd7150ce306a561e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792772345.113=2.333488899259951",
+    "file": "e4945844814f0beb041495f228cbd7b45885dfcc0e2e2cdbe010980b49a7757c.json",
+    "sha256": "4a104d3fd00dd29671677732e265f930e2f897b5107de68986750c5d25a8ac5d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772337.586=0.6500433362224148",
+    "file": "e579bc75fe2f3b5bafc2bffa64b7fe268ec9967b343ec804d86cf462458cc7f7.json",
+    "sha256": "5b25d51ce34de5b76b38c38a92f8636e621f36142a07097b5203a1eb8f8cf238",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792772285.11=45.074380165289256",
+    "file": "e58c37b2b8c32a57c8c5b4a7d0af25456b62aa33b8092b5ffedce70438c69c04.json",
+    "sha256": "ece22a6a4e2c355eb0b21bedc924f57620c0948d479c0fbb311caf5fd169a798",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792772331.707=3.9885714285714293",
+    "file": "e6668e206e8aedd39c4edc3f6aeb02e56f64c3d45c494be23895b79a183b360d.json",
+    "sha256": "dff8ea61794b0266d90cd81a76893d2ada1b1f159e21e954365a9e819e429924",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792772225.113=1.20006000300015",
+    "file": "e6a1b249a2c8587ddecd7327e0076ba76e8fadb32d92793cfe8a4b88e3d4de51.json",
+    "sha256": "92fa7a0a47860490bbe53252e9de7038abf607969bd4b472fe71279ebc15a6b2",
+    "complete": false
+  },
+  {
+    "id": "container:ad:StartedAt=2026-10-23T08:26:28.963099046Z",
+    "file": "e760515bfad28aa0654b1e9ab56a1d563a011a9343f864cdef17da16adbd0f73.json",
+    "sha256": "472ac0fee05863ea6f8e04dffdcbfe6b75744ce36d99de79347719bdeb9d6575",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772288.689=0.0",
+    "file": "e765aa5c0bcf9e1a1e5e52bd58cf642e4ec56d5b4a6b3ec06bdccfcf3e824e6e.json",
+    "sha256": "600cad864aebd405faef27416e413d07d9ba125e652ab6262cc20e6822affea1",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772331.707=3.099999999999999",
+    "file": "e88632a1aad24603f494965dab820faa6a6ecc697520091c6e8e859d4f5f1cb4.json",
+    "sha256": "fecdf53af06dbfd92b0685d59a873a48e1e5b3dd59e95d4c61222fed6635dc7a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772331.711=20.601373424894994",
+    "file": "e8c25d92a57d8c54ba792ed0c06b28f9bb0677cbc071edfd1bfc3960d6140983.json",
+    "sha256": "5b243287d7c2ecd2d7ece9fa60c9ab879af8d552ce1af682561aa2384ed0c891",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792772292.585=35.52380952380949",
+    "file": "e8e5e7ee1c46bc0311a10d3df4ca00f38e00c62f08a6ccbb24feed380bfbbad4.json",
+    "sha256": "3cb97948a5d6a72abf8bb693cc90f5ca5fd6eb997ec90f4ba2f1c705b804f4d9",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792772352.721=1.9",
+    "file": "e904ea441aeb4f2e12b719d87d35833b97c436670f6526e9e89d93987188cf02.json",
+    "sha256": "24997b625fda8b7dc0920443ee5bb3a7d9178746512a8e8d53e35636ceb5f83d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792772331.704=0.01699029126213592",
+    "file": "e932a5b7e834e8fb907b7410586ee863e04a63dc5de6c316a9f46e981f321ae8.json",
+    "sha256": "594680a51c341179a2bddb8f8b086f0c9fa44b0cf8bbf9edb88591d5afac8bde",
+    "complete": false
+  },
+  {
+    "id": "trace:9d93b503624d61f8e293d7ea2acd25d7",
+    "file": "e96994baeece77268ada91058e62f9c5fafb6f0eee09bd78537ee3b64f750d25.json",
+    "sha256": "43e833ef0d226e742685ddce2d99ab33121f3c8474ea28bf9e2f5fc9ab1b1bc7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792772232.72=0.0",
+    "file": "e9d0699fc726f0f55210cb05ae2721e454407f935e07777d3bee68e1964cc6c5.json",
+    "sha256": "010af45c50dd0af6d9e7293f7364a78094ffb25b225341a37d952ce264239353",
+    "complete": false
+  },
+  {
+    "id": "dlog:payment:34296db20d5f5ab782df83011667c011bde6e11497640c98026e9a93e00019dd",
+    "file": "e9ee0b1c2ce9d6d36f248ebf9879ca4a3d1c3ceef60cfff7869f4ff6c96a9353.json",
+    "sha256": "780fc37817a4a59ac591e0d3f68b3c21118b534ace4a6d694b258d68cdd82661",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792772225.113=10.317182525792957",
+    "file": "e9fede0e2226c1c1a1639ced87b61fd57c2092ea30c0dfaaec0171593d4ae24a.json",
+    "sha256": "7956372beaa3e0bf25e2ef4720cd160aec8042120aa376f36b3ef0e55edc1105",
+    "complete": false
+  },
+  {
+    "id": "container:prometheus:NanoCpus=0",
+    "file": "ea25358bdeb8552178cba099608325dc3c92a68d42b731ee65c669600fd101e9.json",
+    "sha256": "a5922eefaa993a6d5ec8061c53962e4fce442a865c3a33218d6bc7bb270a4df5",
+    "complete": false
+  },
+  {
+    "id": "container:email:OOMKilled=false",
+    "file": "ea512bd2283ed1914bf5fa156839e515f0aaff9ae24f9ad945fe5c46a9b43276.json",
+    "sha256": "2c737a600895bcd88e01b0bf8cb14d7d52d096206fff9580a204b71832d2f28c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792772243.694=0.7000350017500875",
+    "file": "ea838f1979a466861d8dee175401981b1c8d6c46a4bf16893deb876c80bb97ac.json",
+    "sha256": "b49fcebd7fc8d93b620a75c486bcde2f1195eb04c916dd377f501a0678347093",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772232.586=0.9500475023751187",
+    "file": "ec61ad437b89aff1a252e46aa2e50563e6e5605423a421d19b4971fd7f813fae.json",
+    "sha256": "2f063a1d76254517a2084f79c7a1d8006751cec53b80fb35abd1dbdcee5bcaef",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772225.11=0.0",
+    "file": "ecabfdb7cb93f8e838f8dca224b623103200f7646bdc9055b33ca6f015008040.json",
+    "sha256": "23dd32a4bad769c2e09f9becec3513b1ccc2d59534bad8ec7f808e19d826edea",
+    "complete": false
+  },
+  {
+    "id": "container:quote:NanoCpus=0",
+    "file": "ecbfaa878db9e570cbb7f62fb97caf86741ac3262a0c28790cf52c32b9d92297.json",
+    "sha256": "fe09b07cf9ebc88a836ebee1b75320e1e52e89a9dc0c7c777ff156421b6673bd",
+    "complete": false
+  },
+  {
+    "id": "container:checkout:RestartCount=0",
+    "file": "ecc38629fc94d9cfb588645e7c4c1317c96a4d438518cfd26f3a18d5943d5632.json",
+    "sha256": "60ca2e0288e85d2e9624539bdb8e57ff04ff7fe018e04530bfe1eea9e7ca20ba",
+    "complete": false
+  },
+  {
+    "id": "container:opensearch:RestartCount=0",
+    "file": "ecf1be9d8ac0588bf7910f675c5888debe450ee33b025911750b4ed63cd426ce.json",
+    "sha256": "8293d96e5b6ca2622237ffd18b9f719fb2a6ba0bb416ea60d8d36615f5276d82",
+    "complete": false
+  },
+  {
+    "id": "span:c67521c4ab40b3a0331586c7c9251e66/2844c17affab7c6f",
+    "file": "ed26a2f28383836de5b7bab82619d9d71f9ec4b5488602916c7edea3b1a0cb29.json",
+    "sha256": "d0cc54c23071e065aface3b28f4c56b83e9386054f2d859c4cf08648b7014e2f",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792772331.707=3.32",
+    "file": "ef7ebadbbb9362c96079560824fc6c4f6f8b6df0d721cff2b21e7a8af10d98e6.json",
+    "sha256": "b5eea34541da25b460f452b3adae990601642f78fe54fc109012ab4d1754c2cc",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772232.721=5.000000000000007",
+    "file": "f1e9c5c54a497dd6d697952e9423aeb25c63dd3b8885fd5dc7e28679c6e40fe6.json",
+    "sha256": "35f9168d0e1a3520e6a90d4f9ceaab96e0ef6e101bdefccf1897f70c8388137a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792772292.585=34.83435582822082",
+    "file": "f1ed2aceae9c6c6cd763ed1b2f400441e939266e8244ba28f01fd2e8d0cc9b89.json",
+    "sha256": "b168e3f98da46114a3e1d5250faca1e4d95b3a5ad65300f1394910471c1326c3",
+    "complete": false
+  },
+  {
+    "id": "container:opensearch:OOMKilled=false",
+    "file": "f254bb1167d6315625b0a013d26f177b522a8de0803f7edbda5b82acf876892d.json",
+    "sha256": "3974ca43f4ee9d763437938577006577b015895532d2b739ea784f9acc490bc3",
+    "complete": false
+  },
+  {
+    "id": "container:load-generator:NanoCpus=0",
+    "file": "f305b0905387c6c34d2883b15f469e464671c145d558192a7e26a2bc4b483559.json",
+    "sha256": "f17bd26e4d2b7cca41197f9bfdcf329dab267d206c01901f896d4078072c3d4d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792772352.721=1.9071698113207547",
+    "file": "f31286746ec7c5f4f3174e542abd7ca6b9f2004ae6e4e2fd4f8a152c2c63d7f1.json",
+    "sha256": "2ac4d021983752065be418321e8b2e55bf75d91afe280189e12e7bf09d4d3076",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792772232.723=23.584512558961283",
+    "file": "f36173fce8668d4ef2b33ef8c805c59965ec26402c8fab45b19f7cfb977bbd11.json",
+    "sha256": "fdb9696b4fe5688775396e04cb58dfd56ba40f5450ece17815236aceca0d341c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772352.721=1.9",
+    "file": "f3a56c7bcb29adebb5cdb59eb4bb221a37ee5a2abdc75011220419e5ed565a33.json",
+    "sha256": "919ac5ba733b26ce12c532f958dac158a949dd535c703d63d97dc261742f5c2d",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792772345.11=1.9071698113207547",
+    "file": "f3c6912dbd03ca221776db81f20d1c603897c7db4d17e1d0bbbb0d9a1810f91b.json",
+    "sha256": "c38f39f940e94cb84b4a7f57bc4809ee27cfe8b5eeffb0a5c2bc6b90d0d2c560",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792772292.585=1.9000000000000001",
+    "file": "f3c6966280bd25c819f2d02837c924579a5d31cb03b924f383f1b723a5f7313f.json",
+    "sha256": "04125dba1e85bffe8ef8ef6a7a6f29da7a36f172bf73ae83b3347a41bf8be5e2",
+    "complete": false
+  },
+  {
+    "id": "container:load-generator:RestartCount=0",
+    "file": "f3d63114747ca9a194ea898ecbe4b5e16cb54b752785951e444739cb54704071.json",
+    "sha256": "1162cbfb1f6fbacc6e093cb77f6297c4046baf56c4c0caf936601ee187cb760e",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792772232.585=5.000000000000007",
+    "file": "f4027b6ddb4784c4afa39056099e283d117bacf6f5ba6e85d82bddd926032369.json",
+    "sha256": "5219d1de51e881db7e49ccf075702a3cc1c7d271353cb5899abe916db0c225f2",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792772345.113=5.133675578371892",
+    "file": "f46c5daa04e9f25ec09b823f617ed73041b92c56989ecc6abd544e9a1c6ee608.json",
+    "sha256": "325d104cdfb3c2228e85f3cfddd12a3723b492d222eca166ce4a29ec9839207c",
+    "complete": false
+  },
+  {
+    "id": "container:jaeger:NanoCpus=0",
+    "file": "f4ed79974c9c4cf841154e4a10fd8a70e2ac76bf2afccce4dd2d2ab17d6e0018.json",
+    "sha256": "a3e991d3458f9e7a1b6edb7fbc654bc1734f168b3e82b0e55de47057cf787bd1",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792772232.586=3.9001950097504876",
+    "file": "f51c5b6f299a37ce37c55ad6ecacd2d09eb12ef4459ed22c612c38e262058aeb.json",
+    "sha256": "d182b9b63e770e406e036a1d73d16a1a0ffd61df0415d27bd0197c74ea34b6d1",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792772331.707=40.892307692307696",
+    "file": "f5525c7dd261465c3c4d9ac12045c08e99d2743cef8ed42940d6d6778e58fd13.json",
+    "sha256": "3fae344218f1d75deba4968242439e70ff060b52b33ad629ff72fafa779aa818",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792772345.11=0.0",
+    "file": "f640e71ee654200506bdc97ae377b112b78a5536ac1f1a682fa7b7b4b4173b6a.json",
+    "sha256": "51dc89570e11ed05c03507abdea66c2ae94796f814238a9ab25c677aa8ad6c30",
+    "complete": false
+  },
+  {
+    "id": "container:checkout:NanoCpus=0",
+    "file": "f76fec78fb0b861cd72532a191ac2b2980cc629eb3f9dc8a8268be681f2c465c.json",
+    "sha256": "cd46fce93fe7056b654cdf1d85402749a8bdc64b30dde7985a04d0e86fa0634b",
+    "complete": false
+  },
+  {
+    "id": "container:quote:StartedAt=2026-10-23T08:26:29.477930572Z",
+    "file": "f7beff0c4e07f4216e3cba8055046ccbc1eec85e7a23d21aec316017155b3f35.json",
+    "sha256": "3fb8c40972f22fb532db5b8bba6b6c6f7b1323855491f31a95ef847e250568d7",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792772243.694=0.9500475023751187",
+    "file": "f7ef1b0dcf3428455d95b16564ce43689aec67f216c1c904deabfee626ee7aa0.json",
+    "sha256": "81d3ead14e88bf7d0225980f670d8be144adc1065ffcd70c983c8830725fef0c",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792772217.582=0.0",
+    "file": "f88408617958ef6ace3cf000c84c1d2a20c0e8b722c259061d4be2c9e0cea60d.json",
+    "sha256": "f81d344426d868e7686a43b6aee93b7a898a6fcca1a6d418ac46828089be8fdb",
+    "complete": false
+  },
+  {
+    "id": "container:payment:NanoCpus=0",
+    "file": "f8e327cb47da82ac1d58165cd5f31af3e70e2c63241d04fe55250a2aa02397d7.json",
+    "sha256": "1d573c67d97d383938677fef1fc1da455408c33bfd264b6c18a520a221176852",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792772352.723=0.8500566704446963",
+    "file": "f953b7822d525ec74c7a11014f3c7c95522db70ab1feb961550a8d81d575ac7f.json",
+    "sha256": "ae7e672a2880b37eebb586ec75ae4847e9bc147528be36ccec5632356bd528e4",
+    "complete": false
+  },
+  {
+    "id": "container:cart:NanoCpus=0",
+    "file": "f9cd1b16076990c88c9cc4346cc8b8faacebfa4c57f426c73c12f4e49457a506.json",
+    "sha256": "4fea35b494294088d38eac5cb35998fa892b19c835979ebf54dca7f672319ade",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792772352.723=0.800053336889126",
+    "file": "fb6c4068d7b57de2565146182b67c9b65506dc4d01f387e369324bf48006df0b.json",
+    "sha256": "714ab9ddeed71673dd691c667638b46fbfd99828626435800ed216792a8c240e",
+    "complete": false
+  },
+  {
+    "id": "container:cart:Memory=167772160",
+    "file": "fb930d8ce52443936ec3b2947e9a018004e28ae17057cf4b2ea84b7eb53d782c.json",
+    "sha256": "c0b5949d775c52d3b795ded1024cb30d2b111d53109fdb2c6f7eb892c0206b02",
+    "complete": false
+  },
+  {
+    "id": "container:quote:Memory=41943040",
+    "file": "fc02be88b8d92f13488c0225d23c9cebd54216edaa32bc771ba50cc61b5152f8.json",
+    "sha256": "d1efc79abba3cc37b78f397c1350bb74bb82dbe7c3e7e415804342d01a81dba0",
+    "complete": false
+  },
+  {
+    "id": "container:otel-collector:RestartCount=0",
+    "file": "fc5875b920401f0ac0c326723b8474bc80882154561c7051130b9f0db4965910.json",
+    "sha256": "fa7294e167b10fa55a223d68b3b17b6e4cc8b70807063eaff660b80d4f5ec8af",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792772337.586=4.83365557703847",
+    "file": "fda29bf436a93dcc6d5fbbf2f51cd86b4d5f9138162f88d51ded3335a659a3b7.json",
+    "sha256": "81a8e8573808e860cf9b2b2fc1727a74fcf0c83c0e15e43c2cecabc9bdaf9167",
+    "complete": false
+  },
+  {
+    "id": "container:payment:StartedAt=2026-10-23T08:26:28.499506526Z",
+    "file": "fdcf8c0e671d61b357822025b41c285ea5ef7424ae1d34f3140a05edf2f400b6.json",
+    "sha256": "de821d6845e21356ee2646ce874502028b9da3081e5132e38522bf2e181649d5",
+    "complete": false
+  },
+  {
+    "id": "container:image-provider:OOMKilled=false",
+    "file": "fe3497ddb84390b92f0a0d59761d8a89ef904965bdfe8e8b08537523fb0deaf7.json",
+    "sha256": "5e83a9144b7626abc8fd403866a67205b8079bf1e97563714ea1bb26e9d14ff5",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792772225.113=0.9500475023751187",
+    "file": "feefbba4004477013076d2588556021a19812e814b2f439d9e0325167020b425.json",
+    "sha256": "2b6b28bd18622bc79c1cb4517b42cc4e33306e7d4f12509736ecc33dfd0cde5a",
+    "complete": false
+  },
+  {
+    "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792772331.707=1.9000000000000001",
+    "file": "ff32d454365970d2b58c4ed3482dc2715a2b1d3972e45a7b58e5c38101efa912.json",
+    "sha256": "bfe90ba8178f4767bc5ca7750ac073c46fdc566939edbbbee92c4798202ce9be",
+    "complete": false
+  }
+]

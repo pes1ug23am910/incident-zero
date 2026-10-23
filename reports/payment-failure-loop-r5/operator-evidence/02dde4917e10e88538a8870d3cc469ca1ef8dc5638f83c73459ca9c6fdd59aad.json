@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792772139.769=0.0",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "product-catalog"
+    },
+    "timestamp": 1792772139.769,
+    "value": 0.0,
+    "query": "named:error_rate_by_service"
+  },
+  "captured_at": "2026-10-23T16:17:39.947581+00:00",
+  "checksum": "77f54a3ee53795a0b356d1067efec53d2b500737cd98f670a3c707164a158e5c"
+}

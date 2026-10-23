@@ -381,10 +381,17 @@ def save_bundle(report, output, service, external_schema=None):
     run_dir = service.root / report['run_id']
     entries = []
     if service.log_path.exists():
+        journal = []
         for number, line in enumerate(service.log_path.read_text(encoding='utf-8').splitlines(), 1):
             value = json.loads(line)
-            if value.get('report_id') == report['run_id']:
-                entries.append((number, value))
+            journal.append((number, value))
+        scoped = [number for number, value in journal if value.get('report_id') == report['run_id']]
+        if scoped:
+            first, last = scoped[0], scoped[-1]
+            entries = [(number, value) for number, value in journal
+                       if value.get('report_id') == report['run_id']
+                       or (first <= number <= last and not value.get('report_id')
+                           and value.get('event') in {'stop', 'clear_stop'})]
     current, token = begin_run(run_dir)
     try:
         for number, entry in entries:
