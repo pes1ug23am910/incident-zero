@@ -31,6 +31,7 @@
       <section id="war-room" class="view" aria-labelledby="war-title">
         <div class="page-heading"><div><p class="eyebrow">DETECT → INVESTIGATE → RESOLVE</p><h1 id="war-title">War Room<span class="title-dot">.</span></h1><p>From the first signal to an evidenced decision.</p></div><button id="latest-incident" class="secondary">Open latest incident ↗</button></div>
         <div class="stage-strip" aria-label="Incident stages"><span>01 Detect</span><span>02 Investigate</span><span>03 Diagnose</span><span>04 Propose</span><span>05 Approve</span><span>06 Verify</span><span>07 Report</span></div>
+        <article id="active-investigation" class="panel active-investigation" hidden><div class="panel-heading"><h2>Investigation in progress</h2><span class="chip diagnosed">LIVE JOURNAL</span></div><p id="active-run" class="muted"></p><div id="active-steps" aria-live="polite"></div></article>
         <div id="war-content"><div class="empty">Waiting for the first report. New bundles appear automatically.</div></div>
       </section>
       <section id="incidents" class="view" hidden aria-labelledby="incidents-title"><div class="page-heading"><div><p class="eyebrow">INCIDENT REGISTER</p><h1 id="incidents-title">Incidents<span class="title-dot">.</span></h1><p>Every diagnosis, decision and outcome.</p></div><button class="secondary refresh">Refresh</button></div><div id="incident-list"></div></section>

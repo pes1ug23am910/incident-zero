@@ -134,6 +134,12 @@ def test_stop_latch_phrase_and_resume(client):
     assert client.get("/api/log?tail=0").status_code == 422
 
 
+def test_cross_origin_write_is_refused(client):
+    assert client.post("/api/stop", headers={"Origin": "https://unrelated.example"}).status_code == 403
+    assert client.get("/api/stop").json()["stopped"] is False
+    assert client.post("/api/stop", headers={"Origin": "http://testserver"}).status_code == 200
+
+
 def test_stale_revision_expiry_and_blank_operator(client):
     stale = body(client, confirmation="yes")
     report = sample()
@@ -317,3 +323,27 @@ def test_native_adapter_approval_execution_verification_and_no_token_leak(tmp_pa
     assert client.request("DELETE", "/api/stop", json={"phrase": CLEAR_PHRASE}).json()["stopped"] is False
     assert json.loads((tmp_path / "reports/test-incident/report.json").read_text())["action"]["executed"] is False
     assert not any("private-test-token" in client.get(path).text for path in ("/api/incidents", "/api/approvals", "/api/log", "/api/events"))
+
+
+def test_native_preview_revision_binds_the_reviewed_world(tmp_path):
+    from ui.action_backend import ActionBackend
+    write_report(tmp_path / "reports", sample())
+    service = FakeService(tmp_path)
+    room = ControlRoom(tmp_path / "reports", real=True)
+    backend = ActionBackend(room, lambda: service)
+    room._backend = backend
+    original = backend.list_approvals()["pending"][0]
+    preview = next(iter(backend.previews.values()))["preview"]
+    preview["world_state_hash"] = "a different observed world"
+    fresh = backend.list_approvals()["pending"][0]
+    assert fresh["revision"] != original["revision"]
+    app = FastAPI()
+    app.include_router(make_router(room))
+    client = TestClient(app)
+    response = client.post("/api/approvals/test-incident/approve", json={"operator": "Reviewer", "revision": original["revision"], "confirmation": "yes"})
+    assert response.status_code == 409
+    assert not service.answers and not service.executions
+    client.post("/api/stop")
+    response = client.post("/api/approvals/test-incident/approve", json={"operator": "Reviewer", "revision": fresh["revision"], "confirmation": "yes"})
+    assert response.status_code == 423
+    backend.pool.shutdown(wait=True)

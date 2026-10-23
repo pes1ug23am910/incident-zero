@@ -31,11 +31,14 @@ Dates are ISO 8601 UTC; the page displays IST. Error rates are fractions, CPU is
 percent, memory is MiB. Unknown telemetry is `null`, never zero. Recorded health
 is projected from the newest report's symptoms and labelled `report_snapshot`.
 
-The client passes the displayed report's `revision` when deciding. Tier 2 adds
+The client passes the pending item's `revision` when deciding (mock: report
+fingerprint; real: report and displayed dry-run fingerprint). Tier 2 adds
 `confirmation:"yes"`; tier 3 never has a pending item or approve action. Operator
 and rejection reason cannot be blank. Invalid input returns 422, unknown IDs 404,
 tier-3 approval 403, stale/expired/repeated decisions 409, STOP-blocked approval
-423. Mock approvals expire ten minutes after first presentation; report changes
+423. Cross-origin browser mutations return 403. A changed native world state
+invalidates the displayed preview; a fresh dry run must be reviewed and approved
+again. Mock approvals expire ten minutes after first presentation; report changes
 create a new revision. An approval is not proof of execution or recovery.
 
 Mock state is process-local and resets on restart. Approval overlays never modify
