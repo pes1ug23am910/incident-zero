@@ -40,8 +40,8 @@ create a new revision. An approval is not proof of execution or recovery.
 
 Mock state is process-local and resets on restart. Approval overlays never modify
 reports, emit execution events, or claim recovery. Markdown remains the original
-recorded report. Mock STOP affects this mock API only. Mock evidence is a
-checksum-verified bundle snapshot; real mode first tries `tools.resolve`, then
+recorded report. Mock STOP affects this mock API only. Evidence first tries the
+read-only `tools.resolve` when available, then
 the selected bundle snapshot. Missing payloads return 404, never a fabricated
 payload made from the evidence summary.
 
