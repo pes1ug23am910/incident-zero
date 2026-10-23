@@ -137,3 +137,10 @@ cleanup was qualified for 183.938 seconds. The operator readback now retains any
 valid nonnegative remaining count in a stopped state, rather than asserting it
 must be zero. This is an assertion correction, not a recovery-policy change.
 The separate r8 run uses it; r7's failure remains in its original metadata.
+
+R8 passed complete forced-non-recovery acceptance: `rolled_back`, runner
+`failed=false`, real 182.750-second verification and qualified
+184.984/184.093-second before/after windows. Locust's stopped state with one
+remaining user was confirmed and retained. Residual requests and zero alert
+values did not bypass the active-swarm gate. This is a traffic-qualification
+rollback test, not a persistent-application-error test.
