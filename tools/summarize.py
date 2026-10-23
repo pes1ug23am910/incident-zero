@@ -1,6 +1,7 @@
 """Join observable measurements without interpreting missing telemetry as healthy."""
 
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from .common import bounded, envelope, window
 from .metrics import get_metrics
 from .containers import get_container_health
@@ -11,8 +12,9 @@ def health_table(lookback_s=120):
     span = window(lookback_s)
     queries = {"error_rate": "error_rate_by_service", "p95_ms": "p95_latency_by_service", "rps": "rps_by_service"}
     with ThreadPoolExecutor(max_workers=4) as pool:
-        futures = {key: pool.submit(get_metrics, value, lookback_s) for key, value in queries.items()}
-        health_future = pool.submit(get_container_health)
+        futures = {key: pool.submit(copy_context().run, get_metrics, value, lookback_s)
+                   for key, value in queries.items()}
+        health_future = pool.submit(copy_context().run, get_container_health)
         results = {key: future.result() for key, future in futures.items()}
         health = health_future.result()
     rows = {}

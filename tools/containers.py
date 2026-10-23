@@ -8,6 +8,7 @@ import re
 import subprocess
 
 from .common import bounded, docker, envelope, window, BackendError
+from .evidence import capture_evidence
 
 INSPECT_FORMAT = ('{"Name":{{json .Name}},"State":{{json .State}},'
                   '"RestartCount":{{json .RestartCount}},"Created":{{json .Created}},'
@@ -89,5 +90,9 @@ def get_container_health(names=None):
     rows = [health_row(item, stats.get(item["Name"].lstrip("/"))) for item in inspected]
     ids = [f'container:{row["name"]}:{field}={evidence_value(row[field])}' for row in rows
            for field in ("Status", "RestartCount", "OOMKilled", "StartedAt", "NanoCpus", "Memory")]
+    for row in rows:
+        for field in ("Status", "RestartCount", "OOMKilled", "StartedAt", "NanoCpus", "Memory"):
+            identity = f'container:{row["name"]}:{field}={evidence_value(row[field])}'
+            capture_evidence(identity, "docker", {"name": row["name"], "field": field, "value": row[field]})
     return envelope("get_container_health", "docker", "inspect + stats", window(), rows, ids,
                     **({"warnings": warnings} if warnings else {}))

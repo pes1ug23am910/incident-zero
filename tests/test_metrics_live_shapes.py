@@ -1,6 +1,7 @@
 """Regression checks for shapes discovered on the live 2.0.2 stack."""
 
 from datetime import datetime
+import json
 
 import pytest
 
@@ -40,11 +41,13 @@ def test_health_traffic_measurements_have_current_proofs(monkeypatch):
 
     def read_metric(query, lookback):
         value = measures[query]
+        old = metrics.metric_id({"service_name": "frontend"}, [1000, 99.0], query)
+        current = metrics.metric_id({"service_name": "frontend"}, [1015, value], query)
         return {"data": [{"metric": {"service_name": "frontend"},
                           "values": [[1000, 99.0], [1015, value]],
-                          "peak_evidence_id": query + "-old",
-                          "latest_evidence_id": query + "-current"}],
-                "evidence_ids": [query + "-old", query + "-current"], "truncated": False}
+                          "peak_evidence_id": old,
+                          "latest_evidence_id": current}],
+                "evidence_ids": [old, current], "truncated": False}
 
     monkeypatch.setattr(summarize, "get_metrics", read_metric)
     monkeypatch.setattr(summarize, "get_container_health", lambda: {
@@ -54,7 +57,10 @@ def test_health_traffic_measurements_have_current_proofs(monkeypatch):
     row = result["data"][0]
     assert (row["error_rate"], row["p95_ms"], row["rps"]) == (0.0, 4.7, 1.2)
     assert result["telemetry_available"] is True
-    assert set(result["evidence_ids"]) == {name + "-current" for name in measures}
+    assert set(result["evidence_ids"]) == {
+        metrics.metric_id({"service_name": "frontend"}, [1015, value], name)
+        for name, value in measures.items()
+    }
 
 
 def test_jaeger_search_uses_explicit_microsecond_window(monkeypatch):
@@ -72,3 +78,29 @@ def test_jaeger_search_uses_explicit_microsecond_window(monkeypatch):
     assert params["end"] - params["start"] == pytest.approx(60_000_000, abs=2)
     assert params["start"] == int(datetime.fromisoformat(result["window"]["from"]).timestamp() * 1e6)
     assert params["end"] == int(datetime.fromisoformat(result["window"]["to"]).timestamp() * 1e6)
+
+
+def test_health_children_capture_into_the_callers_run(monkeypatch, tmp_path):
+    from tools import evidence
+
+    monkeypatch.setattr(evidence, "ROOT", tmp_path)
+    monkeypatch.setattr(metrics, "named_query", lambda name: name)
+    values = {"error_rate_by_service": 0.0, "p95_latency_by_service": 4.0, "rps_by_service": 2.0}
+
+    def read_metric(url, params):
+        return {"status": "success", "data": {"result": [{
+            "metric": {"service_name": "checkout"},
+            "values": [[1015, str(values[params["query"]])]],
+        }]}}
+
+    monkeypatch.setattr(metrics, "get_json", read_metric)
+    monkeypatch.setattr(summarize, "get_container_health", lambda: {"data": [], "evidence_ids": []})
+    result = summarize.health_table(run_dir="health-test")
+    assert result["run_dir"] == "runs/health-test"
+    assert len(list((tmp_path / "runs").iterdir())) == 1
+    assert len(result["evidence_paths"]) == 3
+    for relative in result["evidence_paths"].values():
+        snapshot = json.loads((tmp_path / relative).read_text(encoding="utf-8"))
+        assert snapshot["data"]["timestamp"] == 1015
+        assert snapshot["data"]["metric"] == {"service_name": "checkout"}
+        assert "tool" not in snapshot["data"]

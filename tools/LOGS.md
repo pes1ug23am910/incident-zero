@@ -35,6 +35,19 @@ does not pretend to classify it. The evidence form is
 `dlog:<container>:<sha256-of-original-timestamped-line>`; resolution searches the
 latest 5,000 retained lines and snapshot resolution can preserve older proof.
 
+The payment injection on this run produced five WARN records containing a
+payment exception in Docker, while OpenSearch contained zero payment records
+for that interval. Payment therefore also falls back to Docker when its
+OpenSearch query has no hits. Its structured `err.message` becomes the returned
+body; `trace_id` supplies trace correlation. Checkout emitted INFO request logs
+during the same failure and correctly returned no WARN lines.
+
+Snapshots retain the complete timestamped Docker line, including the input
+used for its digest, alongside the parsed fields. Windows-safe snapshot files
+use `runs/<run>/evidence/<sha256-of-id>.json`; the response's `evidence_paths`
+maps each original evidence ID to that file. OpenSearch snapshots retain the
+complete sanitized source document.
+
 Every log source is scrubbed before truncation. Revealing lines are dropped;
 ordinary operational exceptions remain available. Responses contain at most
 100 lines and bodies at most 300 characters. The Docker read is capped at

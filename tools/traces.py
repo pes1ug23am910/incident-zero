@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 from .common import bounded, envelope, get_json, jaeger, window, BackendError
 from .redact import is_sensitive, scrub_trace
+from .evidence import capture_evidence
 
 
 def tags(span):
@@ -78,12 +79,21 @@ def get_traces(service, lookback_s=300, errors_only=True, limit=20, operation=No
     traces = raw.get("data") or []
     data, ids = [], []
     for trace in traces[:requested]:
+        trace = scrub_trace(trace)
+        if trace is None:
+            continue
         summary = trace_summary(trace)
         if summary is None:
             continue
         data.append(summary)
-        ids.append("trace:" + trace["traceID"])
+        trace_id = "trace:" + trace["traceID"]
+        ids.append(trace_id)
+        capture_evidence(trace_id, "jaeger", trace)
         if summary["first_error_span"]:
-            ids.append(f'span:{trace["traceID"]}/{summary["first_error_span"]["span_id"]}')
+            span_id = summary["first_error_span"]["span_id"]
+            evidence_id = f'span:{trace["traceID"]}/{span_id}'
+            ids.append(evidence_id)
+            observed_span = next(item for item in trace["spans"] if item.get("spanID") == span_id)
+            capture_evidence(evidence_id, "jaeger", observed_span)
     return envelope("get_traces", "jaeger", json.dumps(params, sort_keys=True), span, data, ids,
                     len(traces) >= requested or limit > 50)

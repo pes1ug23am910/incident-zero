@@ -7,6 +7,7 @@ import math
 from .common import bounded, envelope, get_json, prometheus, window, BackendError
 from .queries import QUERIES, named_query
 from .redact import is_sensitive, redact_metric_series
+from .evidence import capture_evidence
 
 
 def metric_id(metric, point, query):
@@ -42,12 +43,17 @@ def get_metrics(promql, lookback_s=300, step_s=15):
         points = [[ts, float(value) if math.isfinite(float(value)) else None]
                   for ts, value in values[:200]]
         numeric = [p for p in points if p[1] is not None]
-        evidence = metric_id(item.get("metric", {}), max(numeric, key=lambda p: p[1]), query) if numeric else None
+        peak = max(numeric, key=lambda p: p[1]) if numeric else None
+        evidence = metric_id(item.get("metric", {}), peak, query) if peak else None
         latest = metric_id(item.get("metric", {}), points[-1], query) if points and points[-1][1] is not None else None
         if evidence:
             ids.append(evidence)
+            capture_evidence(evidence, "prometheus", {"metric": item.get("metric", {}),
+                             "timestamp": peak[0], "value": peak[1], "query": query})
         if latest:
             ids.append(latest)
+            capture_evidence(latest, "prometheus", {"metric": item.get("metric", {}),
+                             "timestamp": points[-1][0], "value": points[-1][1], "query": query})
         result.append({"metric": item.get("metric", {}), "values": points,
                        "peak_evidence_id": evidence, "latest_evidence_id": latest})
     extra = {} if result else {"warning": "No metric series returned; telemetry is missing or the selector has no matches."}

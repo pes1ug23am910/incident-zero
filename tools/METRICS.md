@@ -78,6 +78,17 @@ original timestamp and checks its labels and value. Raw series retain their
 metric name. Diagnostic responses and evidence pass through the telemetry
 redactor before use.
 
+Every tool accepts an optional `run_dir`; otherwise it creates a timestamped
+run. Evidence snapshots are stored at
+`runs/<run>/evidence/<sha256-of-evidence-id>.json`: a digest filename is needed
+because evidence IDs contain characters Windows forbids in filenames. Each
+JSON document retains the exact original `id`, source, sanitized payload and
+capture time. The envelope's `evidence_paths` maps each ID to its file.
+Health-table workers share their caller's run, including the underlying metric
+points and Docker observations. Trace snapshots retain the sanitized trace and
+selected error span, rather than only the compact summary. Resolution tries the
+live backend first and then the saved observation, reporting `resolved_from`.
+
 Jaeger is reachable at `http://localhost:8080/jaeger/ui/api`. Trace searches send
 explicit **microsecond `start` and `end`** values; they do not rely on the ignored
 `lookback` parameter. The live service listing returned 15 backend services,

@@ -8,6 +8,7 @@ from urllib.parse import quote
 from .common import bounded, envelope, search_json, log_index, window, BackendError, remaining
 from .containers import container_names
 from .redact import sanitize, is_sensitive
+from .evidence import capture_evidence
 
 SEVERITIES = {"TRACE": 1, "DEBUG": 5, "INFO": 9, "WARN": 13, "ERROR": 17, "FATAL": 21}
 STDOUT_SERVICES = {"checkout", "product-catalog", "shipping", "email", "frontend"}
@@ -50,6 +51,12 @@ def parse_docker_line(container, line):
         elif isinstance(level, str):
             severity = {"WARNING": "WARN", "CRITICAL": "FATAL", "INFORMATION": "INFO"}.get(level.upper(), level.upper())
         trace_id = document.get("trace_id", document.get("traceId", document.get("traceID")))
+        message = document.get("message", document.get("msg"))
+        error = document.get("err")
+        if not message and isinstance(error, dict):
+            message = error.get("message")
+        if isinstance(message, str):
+            body = message
     if severity not in SEVERITIES:
         found = re.search(r"(?i)\b(TRACE|DEBUG|INFO|WARN(?:ING)?|ERROR|FATAL|CRITICAL)\b", body)
         if found:
@@ -70,7 +77,7 @@ def resolve_docker_log(container, line_hash):
 
 def _docker_logs(service, pattern, span, severity_min, cap, limit):
     lines = docker_log_lines(service, span["from"], span["to"])
-    rows = []
+    rows, original_lines = [], {}
     for line in lines:
         row = parse_docker_line(service, line)
         if row is None or (pattern and pattern.casefold() not in line.casefold()):
@@ -79,8 +86,11 @@ def _docker_logs(service, pattern, span, severity_min, cap, limit):
         if SEVERITIES.get(row["severity"], 0) < SEVERITIES[severity_min] and severity_min != "TRACE":
             continue
         rows.append(row)
+        original_lines[row["evidence_id"]] = line
     rows.sort(key=lambda row: row["timestamp"], reverse=True)
     data = rows[:cap]
+    for row in data:
+        capture_evidence(row["evidence_id"], "docker", {**row, "original_line": original_lines[row["evidence_id"]]})
     return envelope("get_logs", "docker", json.dumps({"container": service, "since": span["from"],
                     "until": span["to"], "severity_min": severity_min, "pattern": pattern}, sort_keys=True),
                     span, data, [row["evidence_id"] for row in data],
@@ -162,6 +172,8 @@ def get_logs(service, pattern=None, lookback_s=300, severity_min="WARN", limit=5
              "sort": [{fields["time"]: {"order": "desc"}}], "track_total_hits": True}
     raw = search_json(f"/{quote(index, safe='')}/_search", query)
     hits = raw.get("hits", {}).get("hits", [])
+    if not hits and service == "payment":
+        return _docker_logs(service, pattern, span, severity_min.upper(), cap, limit)
     total = raw.get("hits", {}).get("total", {})
     count = total.get("value", 0) if isinstance(total, dict) else total
     data, ids = [], []
@@ -173,6 +185,7 @@ def get_logs(service, pattern=None, lookback_s=300, severity_min="WARN", limit=5
         if source is None:
             continue
         evidence = f'log:{hit.get("_index", index)}/{hit["_id"]}'
+        capture_evidence(evidence, "opensearch", source)
         data.append({"timestamp": field_value(source, fields["time"]),
                      "severity": field_value(source, fields["severity_text"]) or field_value(source, fields["severity"]),
                      "body": str(field_value(source, fields["body"]))[:300],

@@ -6,6 +6,7 @@ import json
 from . import get_metrics, get_traces, get_logs, get_container_health, get_deploy_history, health_table, list_services
 from .queries import QUERIES
 from .resolve import resolve, EvidenceNotFound
+from .redact import sanitize
 
 
 def main(argv=None):
@@ -33,9 +34,11 @@ def main(argv=None):
     deploy.add_argument("--lookback-s", type=int, default=3600)
     health = commands.add_parser("health_table", aliases=["health"])
     health.add_argument("--lookback-s", type=int, default=120)
-    commands.add_parser("list_services", aliases=["services"])
+    services = commands.add_parser("list_services", aliases=["services"])
     evidence = commands.add_parser("resolve")
     evidence.add_argument("evidence_id")
+    for command in (metrics, traces, logs, containers, deploy, health, services, evidence):
+        command.add_argument("--run-dir", help="run name or runs/<name> for evidence snapshots")
     commands.add_parser("queries")
     values = vars(parser.parse_args(argv))
     name = values.pop("tool")
@@ -53,7 +56,7 @@ def main(argv=None):
         result = functions[name](**values)
     except EvidenceNotFound as exc:
         result = {"error": str(exc)}
-    print(json.dumps(result, indent=2, allow_nan=False))
+    print(json.dumps(sanitize(result), indent=2, allow_nan=False))
     return 1 if result.get("error") else 0
 
 

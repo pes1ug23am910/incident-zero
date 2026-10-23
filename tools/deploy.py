@@ -4,6 +4,8 @@ from datetime import datetime
 import json
 from .common import ROOT, bounded, envelope, window
 from .containers import inspect_rows
+from .evidence import capture_evidence
+from .redact import is_sensitive
 
 
 def action_entries():
@@ -42,10 +44,18 @@ def get_deploy_history(lookback_s=3600):
                 events.append({"timestamp": timestamp, "kind": field, "container": name,
                                "evidence_id": f"container:{name}:{field}={timestamp}"})
     for line, record in action_entries():
+        if is_sensitive(record):
+            continue
         timestamp = next((record[k] for k in ("timestamp", "at", "executed_at", "started_at", "created_at", "ts") if record.get(k)), None)
         if include(timestamp):
             events.append({"timestamp": timestamp, "kind": "action", "record": record,
                            "evidence_id": f"action_log:{line}"})
     events.sort(key=lambda e: datetime.fromisoformat(e["timestamp"].replace("Z", "+00:00")), reverse=True)
+    for event in events[:100]:
+        if event["kind"] == "action":
+            capture_evidence(event["evidence_id"], "action_log", event["record"])
+        else:
+            capture_evidence(event["evidence_id"], "docker", {"name": event["container"],
+                             "field": event["kind"], "value": event["timestamp"]})
     return envelope("get_deploy_history", "action_log", "container Created/StartedAt + action journal", span,
                     events[:100], [e["evidence_id"] for e in events[:100]], len(events) > 100)

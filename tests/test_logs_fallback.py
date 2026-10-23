@@ -43,3 +43,16 @@ def test_docker_log_resolver_rejects_other_projects_and_bad_digests(monkeypatch)
         logs.resolve_docker_log("outside", "a" * 64)
     with pytest.raises(ValueError, match="digest"):
         logs.resolve_docker_log("checkout", "../escape")
+
+
+def test_payment_uses_fallback_after_empty_exported_logs(monkeypatch):
+    monkeypatch.setattr(logs, "discover_fields", lambda _: {"service_filter": "resource.service.name.keyword",
+        "time": "@timestamp", "severity": "severity.number", "body": "body"})
+    monkeypatch.setattr(logs, "search_json", lambda *a, **kw: {"hits": {"total": {"value": 0}, "hits": []}})
+    line = '2026-10-23T09:20:52.164139313Z {"level":"warn","trace_id":"abc","err":{"message":"Payment request failed. Invalid token."}}'
+    monkeypatch.setattr(logs, "docker_log_lines", lambda *a, **kw: [line])
+    result = logs.get_logs("payment")
+    assert result["source"] == "docker"
+    assert result["data"][0]["severity"] == "WARN"
+    assert result["data"][0]["body"] == "Payment request failed. Invalid token."
+    assert result["evidence_ids"][0].startswith("dlog:payment:")
