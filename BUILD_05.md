@@ -192,6 +192,7 @@ terminal or browser decision.
 | payment-failure-loop-r1 | No alert in 90s; no diagnosis/action | Not reached | — | — | 244.781 / 183.953 s |
 | payment-failure-loop-r2 | Planned workload exceeded old baseline; injection refused | Not reached | — | — | 184.391 / 184.500 s |
 | payment-failure-loop-r3 | fixed, payment toggle | Explicit test auto | 346.016 s | 182.359 s | 184.562 / 184.375 s |
+| payment-failure-loop-r4 | needs_human; rejection, no mutation | CLI reject; test mode off | — | Not executed | 184.640 / 185.031 s |
 
 The successful payment run is `runs/20261023T153512.976354Z-13778fd2`.
 It diagnosed `payment` / `application_flag` at 0.90 confidence with three tool
@@ -207,3 +208,10 @@ preparation uses 20 users/spawn 5 and a measured clean workload baseline without
 changing thresholds. The second refusal is also retained. The mentor command
 captures and restores its previous swarm settings. The five-minute presentation
 starts after live diagnosis preparation; it never shortens verification.
+
+The rejection run is `runs/20261023T154711.305759Z-b5f7c99e`. Its final report
+records `approved=false` and `executed=false`; the action log contains only
+dry-run and rejection events. Authoritative world hashes before and after the
+decision match. It finished 145.453 seconds after injection, then the operator
+reset and completed the separate clean window. This is rejection acceptance,
+not action-caused recovery.

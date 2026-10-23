@@ -67,3 +67,8 @@ Room served its status and report; browser approval acceptance remains separate.
 
 Pending the live browser run. No browser approval or live recovery is claimed
 by the browser preflight checkpoint.
+
+The CLI rejection bundle `payment-failure-loop-r4` finished as `needs_human`.
+The authoritative state hashes match before/after the rejection, and no execute
+event exists. Test mode was off. Its final reset was followed by 185.031 seconds
+of qualified clean monitoring.
