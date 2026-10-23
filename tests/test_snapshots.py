@@ -44,6 +44,46 @@ def test_first_capture_in_run_is_immutable():
     assert path.read_bytes() == original
 
 
+def test_nested_tools_reuse_persisted_paths_but_new_calls_revalidate(monkeypatch):
+    identifier = "container:payment:Status=running"
+    validated = []
+    original_load = evidence.load_snapshot
+
+    def observe_load(path, requested):
+        validated.append(requested)
+        return original_load(path, requested)
+
+    monkeypatch.setattr(evidence, "load_snapshot", observe_load)
+
+    @bounded("docker")
+    def child():
+        return envelope("child", "docker", "read", window(), [{"name": "payment", "Status": "running"}], [identifier])
+
+    @bounded("docker")
+    def parent():
+        result = child()
+        return envelope("parent", "docker", "summary", result["window"], result["data"], result["evidence_ids"])
+
+    first = parent(run_dir="nested")
+    assert not first.get("error")
+    assert validated == []
+    second = parent(run_dir="nested")
+    assert not second.get("error")
+    assert second["evidence_paths"] == first["evidence_paths"]
+    assert validated == [identifier]
+
+
+def test_new_call_rejects_tampering_after_cached_capture():
+    result = recorded()
+    identifier = result["evidence_ids"][0]
+    path = evidence.ROOT / result["evidence_paths"][identifier]
+    content = json.loads(path.read_text(encoding="utf-8"))
+    content["data"]["value"] = "tampered"
+    path.write_text(json.dumps(content), encoding="utf-8")
+    with pytest.raises(ValueError, match="checksum"):
+        recorded()
+
+
 def test_live_evidence_is_preferred_over_snapshot(monkeypatch):
     result = recorded()
     identifier = result["evidence_ids"][0]
