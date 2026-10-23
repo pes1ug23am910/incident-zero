@@ -6,7 +6,7 @@ from tools.redact import FLAG_NAMES
 
 
 ROOT = Path(__file__).resolve().parents[1]
-FORBIDDEN = re.compile(r"(?<!\d)(?:8013|8016)(?!\d)|ofrep|demo\.flagd\.json|defaultVariant|flagd|:4000\b|feature[_.\s-]*flag|"
+FORBIDDEN = re.compile(r"(?<!\w)(?:8013|8016)(?!\w)|ofrep|demo\.flagd\.json|defaultVariant|flagd|:4000\b|feature[_.\s-]*flag|"
                        + "|".join(re.escape(name) for name in FLAG_NAMES), re.I)
 SKIP = {".git", ".venv", ".build", ".specs", ".pytest_cache", "__pycache__", "tests", "runs"}
 EXEMPT_FILES = {"action_api/flags.py", "tools/redact.py"}
@@ -14,6 +14,8 @@ EXEMPT_FILES = {"action_api/flags.py", "tools/redact.py"}
 
 def test_port_scan_does_not_match_digits_inside_recorded_timestamps():
     assert not FORBIDDEN.search('2026-10-23T11:06:45.858013+00:00')
+    assert not FORBIDDEN.search('sha256: a8395f3e94c565a0b7f02bd3eea8ad61dba41d8cb11d66e0c8016a32930490e1')
+    assert not FORBIDDEN.search('evidence/abc8013def.json')
     assert FORBIDDEN.search('http://localhost:8013/evaluate')
     assert FORBIDDEN.search('port = 8016')
 
