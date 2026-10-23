@@ -101,6 +101,7 @@ def test_complete_loop_retains_both_windows_action_log_and_real_approval(loop, c
     outcome = json.loads((bundle / "hands-rehearsal.json").read_text())
     assert outcome["status"] == "fixed"
     assert outcome["approval_path"] == "terminal"
+    assert outcome["approval_waiter"] == "terminal"
     assert outcome["test_auto_approval"] is False
     assert outcome["recovery_verification"]["before"]["elapsed_s"] >= 180
     assert outcome["recovery_verification"]["after"]["elapsed_s"] >= 180
@@ -116,6 +117,38 @@ def test_rejection_passes_no_approval_and_records_no_recovery_duration(loop):
     outcome = json.loads((loop.root / "reports/payment-failure-loop-r1/hands-rehearsal.json").read_text())
     assert loop.resumes[0][0] == {"decision": "reject"}
     assert "inject_to_recovery_s" not in outcome["timings"]
+
+
+@pytest.mark.parametrize("event", ["ui_approval", "approval_rejected"])
+def test_terminal_waiter_records_actual_browser_decision(loop, monkeypatch, event):
+    original = driver.save_bundle
+
+    def save(report, path, service):
+        original(report, path, service)
+        entry = {"event": event, "report_id": report["run_id"],
+                 "ui_decision": {"status": "approved" if event == "ui_approval" else "rejected"}}
+        with (path.parent / "action-log.jsonl").open("a", encoding="utf-8") as output:
+            output.write(json.dumps(entry) + "\n")
+
+    monkeypatch.setattr(driver, "save_bundle", save)
+    loop.final_status = "fixed" if event == "ui_approval" else "needs_human"
+    assert driver.main(["payment-failure", "--live"]) == 0
+    outcome = json.loads((loop.root / "reports/payment-failure-loop-r1/hands-rehearsal.json").read_text())
+    assert outcome["approval_waiter"] == "terminal"
+    assert outcome["approval_path"] == "browser"
+    assert outcome["test_auto_approval"] is False
+
+
+@pytest.mark.parametrize("fallback", ["terminal", "test_auto"])
+def test_approval_path_requires_ui_decision_for_exact_run(tmp_path, fallback):
+    path = tmp_path / "action-log.jsonl"
+    entries = [
+        {"event": "ui_approval", "report_id": "other", "ui_decision": {"status": "approved"}},
+        {"event": "approval_rejected", "report_id": "current"},
+        {"event": "ui_approval", "report_id": "current", "ui_decision": None},
+    ]
+    path.write_text("\n".join(map(json.dumps, entries)), encoding="utf-8")
+    assert driver.recorded_approval_path(path, "current", fallback) == fallback
 
 
 def test_auto_approval_requires_both_gates_and_records_test_path(loop, monkeypatch):
@@ -151,9 +184,12 @@ def test_forced_nonrecovery_requires_test_gate_before_any_command(loop):
 def test_control_waits_for_verifying_and_restores_captured_swarm(monkeypatch):
     cancelled = Mock()
     cancelled.wait.side_effect = [False, False]
+    cancelled.is_set.return_value = False
     response = Mock()
     response.json.return_value = {"success": True}
-    get = Mock(return_value=response)
+    stopped = Mock()
+    stopped.json.return_value = {"state": "stopped", "user_count": 0}
+    get = Mock(side_effect=[response, stopped])
     post = Mock(return_value=response)
     monkeypatch.setattr(driver.requests, "get", get)
     monkeypatch.setattr(driver.requests, "post", post)
@@ -164,11 +200,48 @@ def test_control_waits_for_verifying_and_restores_captured_swarm(monkeypatch):
     control.cancelled = cancelled
     control._run()
     assert service.attempts.call_count == 2
-    get.assert_called_once_with("http://localhost/loadgen/stop", timeout=10)
+    assert get.call_args_list[0].args == ("http://localhost/loadgen/stop",)
+    assert get.call_args_list[0].kwargs == {"timeout": 45}
+    assert get.call_args_list[1].args == ("http://localhost/loadgen/stats/requests",)
     control.finish()
     post.assert_called_once_with("http://localhost/loadgen/swarm", data={"user_count": 37, "spawn_rate": 2.5}, timeout=10)
     assert [item["operation"] for item in control.interventions] == ["stop_locust_swarm", "restore_locust_swarm"]
     assert control.interventions[0]["verifier_overridden"] is False
+    assert control.interventions[0]["observed_stopped"] is True
+
+
+def test_swarm_stop_timeout_accepts_only_observed_stopped_zero_users(monkeypatch):
+    stopped = Mock()
+    stopped.json.return_value = {"state": "stopped", "user_count": 0}
+    monkeypatch.setattr(driver.requests, "get", Mock(side_effect=[driver.requests.Timeout("read timed out"), stopped]))
+    service = SimpleNamespace(executor=SimpleNamespace(load_url="http://localhost/loadgen"))
+    control = driver.RunControl(service, "r", force_nonrecovery=True)
+    control._stop_swarm()
+    record = control.interventions[0]
+    assert record["observed_stopped"] is True
+    assert record["response_confirmed"] is False
+    assert "Timeout" in record["response_uncertainty"]
+    assert record["observations"][-1]["users"] == 0
+    assert control.load_stopped is True
+
+
+def test_swarm_stop_acknowledgement_without_stopped_state_fails(monkeypatch):
+    acknowledged = Mock()
+    acknowledged.json.return_value = {"success": True}
+    running = Mock()
+    running.json.return_value = {"state": "running", "user_count": 4}
+    monkeypatch.setattr(driver.requests, "get", Mock(side_effect=lambda url, **kw: acknowledged if url.endswith("/stop") else running))
+    elapsed = [0]
+    monkeypatch.setattr(driver.time, "monotonic", lambda: elapsed[0])
+    service = SimpleNamespace(executor=SimpleNamespace(load_url="http://localhost/loadgen"))
+    control = driver.RunControl(service, "r", force_nonrecovery=True)
+    control.cancelled = SimpleNamespace(is_set=lambda: False, wait=lambda delay: elapsed.__setitem__(0, elapsed[0] + delay))
+    with pytest.raises(RuntimeError, match="did not reach observed stopped state"):
+        control._stop_swarm()
+    record = control.interventions[0]
+    assert record["response_confirmed"] is True
+    assert record["observed_stopped"] is False
+    assert all(item["state"] == "running" and item["users"] == 4 for item in record["observations"])
 
 
 def test_browser_wait_requires_saved_decision_not_initial_diagnosis(tmp_path, monkeypatch):
