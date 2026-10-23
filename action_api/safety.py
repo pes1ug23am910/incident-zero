@@ -19,6 +19,15 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def diagnosis_is_current(report, observed_at):
+    """Share one age boundary between queue visibility and action authority."""
+    try:
+        diagnosed = datetime.fromisoformat(report['diagnosed_at'])
+        return diagnosed.utcoffset() is not None and -45 <= observed_at - diagnosed.timestamp() <= 600
+    except (KeyError, TypeError, ValueError, OverflowError, OSError):
+        return False
+
+
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
                                      allow_nan=False).encode()).hexdigest()
