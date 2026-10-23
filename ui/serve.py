@@ -18,10 +18,15 @@ def main(argv=None):
     import uvicorn
     from fastapi import FastAPI
     from ui.api import ControlRoom, make_router
-    room = ControlRoom(real=args.mode == "real")
-    app = FastAPI(title="Incident Zero Control Room")
-    app.state.control_room = room
-    app.include_router(make_router(room))
+    if args.mode == "real":
+        from action_api.app import create_app
+        app = create_app(reports_dir=args.reports_dir, runs_dir=args.runs_dir)
+        room = app.state.control_room
+    else:
+        room = ControlRoom(real=False)
+        app = FastAPI(title="Incident Zero Control Room")
+        app.state.control_room = room
+        app.include_router(make_router(room))
     port = args.port or (8788 if args.mode == "mock" else 8787)
     print(f"Control Room: http://127.0.0.1:{port} · {room.mode()} · reports: {room.reports}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port)

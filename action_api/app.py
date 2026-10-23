@@ -5,7 +5,7 @@ from .service import ActionService, ALLOWLIST
 from .safety import Blocked
 
 
-def create_app(service=None, input_fn=input):
+def create_app(service=None, input_fn=input, *, reports_dir=None, runs_dir=None):
     app = FastAPI(title="Incident Zero Action API")
     # Lazy creation keeps importing the app free of Docker reads and mutations.
     boundary = service
@@ -68,6 +68,11 @@ def create_app(service=None, input_fn=input):
     def clear(body: dict):
         return api().clear_stop(body["confirmation"], body["operator"])
 
+    from .ui_routes import create_room
+    from ui.api import make_router
+    room = create_room(api, reports_dir, runs_dir)
+    app.state.control_room = room
+    app.include_router(make_router(room))
     return app
 
 

@@ -13,6 +13,7 @@ import sqlite3
 import time
 
 from agent.policy import POLICY, SERVICES, causes_for, select_action
+from agent.evidence import observation_family
 from agent.risk import assess
 from .approval import prompt
 from .safety import Blocked, digest, exclusive, now
@@ -139,10 +140,14 @@ class ActionService:
                       if (action := select_action(cause)) is not None]
         if plan not in candidates:
             raise Blocked("PLAN_NOT_DERIVED_FROM_CAUSE")
-        # Two independent source types identifying the diagnosed cause, not two
-        # rows of the same backend. A reviewer is optional, never self-judgment.
-        cited = {i for cause in causes_for(report) for i in cause.get("evidence_ids", [])}
-        sources = {row.get("source") for row in report.get("evidence", []) if row.get("id") in cited}
+        # Use the brain's observation families: runtime state and app stdout
+        # are independent, but stdout and its collected copy are one source.
+        # Only evidence cited by causes proposing this action may corroborate it.
+        cited = {i for cause in causes_for(report)
+                 if (action := select_action(cause)) is not None and canonical_plan(action) == plan
+                 for i in cause.get("evidence_ids", [])}
+        sources = {observation_family(row['id'], row) for row in report.get("evidence", [])
+                   if row.get("id") in cited and row.get('source')}
         sources.discard(None)
         if len(sources) < 2:
             raise Blocked("SECOND_SOURCE_REQUIRED")
