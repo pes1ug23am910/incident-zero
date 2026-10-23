@@ -80,8 +80,8 @@ class Controller:
             command += ["-f", str(self.override)]
         return self.run(command + list(args), timeout=timeout)
 
-    def services(self):
-        return json.loads(self.compose("config", "--format", "json", override=False).stdout)["services"]
+    def services(self, *, timeout=180):
+        return json.loads(self.compose("config", "--format", "json", override=False, timeout=timeout).stdout)["services"]
 
     def target(self, name):
         services = self.services()
@@ -376,7 +376,7 @@ class Controller:
             return {"ok": not errors, "fault_state_clean": fault_state_clean, "stack_ready": readiness["ok"], "checks": checks, "errors": errors, "reset_at": now()}
 
     def status(self, traffic_seconds=0):
-        from tools.common import jaeger_json, read_with_retry, READ_TIMEOUT_S
+        from tools.common import BackendError, jaeger_json, read_with_retry, READ_TIMEOUT_S
 
         checks = []
         started = time.monotonic()
@@ -387,10 +387,19 @@ class Controller:
                 checks.append({"check": name, "ok": True, "elapsed_s": round(time.monotonic() - tick, 3), "detail": detail})
             except Exception as error:
                 checks.append({"check": name, "ok": False, "elapsed_s": round(time.monotonic() - tick, 3), "detail": str(error)})
+        def read(operation):
+            def attempt():
+                try:
+                    return operation()
+                except FaultError as error:
+                    raise BackendError(str(error)) from error
+            return read_with_retry(attempt)
+        def docker_read(*args):
+            return read(lambda: self.run(["docker", *args], timeout=READ_TIMEOUT_S))
         def containers():
-            services = self.services()
+            services = read(lambda: self.services(timeout=READ_TIMEOUT_S))
             names = [value.get("container_name", name) for name, value in services.items()]
-            values = json.loads(self.run(["docker", "inspect", *names]).stdout)
+            values = json.loads(docker_read("inspect", *names).stdout)
             bad = {item["Name"].lstrip("/"): item["State"]["Status"] for item in values if item["State"]["Status"] != "running" or item["State"].get("Health", {}).get("Status") == "unhealthy"}
             if bad:
                 raise FaultError(json.dumps(bad))
@@ -408,11 +417,15 @@ class Controller:
                 raise FaultError("Missing trace services: " + ", ".join(missing))
             return names
         def opensearch():
-            result = self.run(["docker", "port", "opensearch", "9200"], check=False)
-            if result.returncode == 0 and result.stdout.strip():
+            try:
+                result = docker_read("port", "opensearch", "9200")
+            except (BackendError, OSError, subprocess.SubprocessError):
+                result = None
+            if result is not None and result.stdout.strip():
                 port = result.stdout.splitlines()[0].rsplit(":", 1)[1]
                 return http(f"http://localhost:{port}/_cluster/health").json()["status"]
-            return json.loads(self.run(["docker", "exec", "opensearch", "curl", "-fsS", "http://localhost:9200/_cluster/health"]).stdout)["status"]
+            return json.loads(docker_read("exec", "opensearch", "curl", "-fsS", "--max-time", "8",
+                                         "http://localhost:9200/_cluster/health").stdout)["status"]
         def traffic():
             def recent():
                 end = int(time.time() * 1_000_000)

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "id": "log:otel/dFquaKEBUZiyFLbyY8yl",
+  "source": "opensearch",
+  "data": {
+    "attributes": {
+      "data_stream": {
+        "dataset": "default",
+        "namespace": "namespace",
+        "type": "record"
+      },
+      "productId": "LS4PSXUNUM",
+      "quantity": 4,
+      "userId": "2cb55be8-cedb-11f1-b855-4a77265a94bd"
+    },
+    "body": "AddItemAsync called with userId={userId}, productId={productId}, quantity={quantity}",
+    "instrumentationScope": {
+      "name": "cart.cartstore.ValkeyCartStore"
+    },
+    "observedTimestamp": "2026-10-23T12:13:41.668255941Z",
+    "resource": {
+      "container.id": "897bfeb378fdf4ef681fa0748d3109e75c630cddd80ac9906f874bfcae56228f",
+      "host.name": "897bfeb378fd",
+      "service.name": "cart",
+      "service.namespace": "opentelemetry-demo",
+      "service.version": "2.0.2",
+      "telemetry.sdk.language": "dotnet",
+      "telemetry.sdk.name": "opentelemetry",
+      "telemetry.sdk.version": "1.11.2"
+    },
+    "severity": {
+      "text": "Information",
+      "number": 9
+    },
+    "spanId": "d4258c0dbf6ca6ca",
+    "@timestamp": "2026-10-23T12:13:36.8595778Z",
+    "traceId": "60b503385ad9c8cd0691c6b69477172e"
+  },
+  "captured_at": "2026-10-23T12:15:19.211982+00:00",
+  "checksum": "ce3e5315e2d2d92e3741ed49cf90c7a4cd6f29d447f783adaf9fa5e43bf0cf46"
+}

@@ -1,0 +1,236 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "payment-failure-r5",
+  "run_id": "runs/20261023T113346.104216Z-514905da",
+  "detected_at": "2026-10-23T11:33:45.026533+00:00",
+  "diagnosed_at": "2026-10-23T11:34:44.482769+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "error_rate",
+    "service": "checkout",
+    "observed": 0.10526315789473685,
+    "threshold": 0.05,
+    "window_s": 120,
+    "baseline": null
+  },
+  "symptoms": [
+    {
+      "service": "checkout",
+      "signal": "error_rate",
+      "observed": "0.10526315789473685",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792755226.124=0.10526315789473685"
+      ]
+    },
+    {
+      "service": "payment",
+      "signal": "error_rate",
+      "observed": "0.2",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792755226.124=0.2"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "health_table",
+      "query": "{\"lookback_s\": 120}",
+      "why": "Locate every service anomaly before selecting a focused read.",
+      "finding": "Observed 20 service rows; 2 symptom entries.",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792755226.124=0.10526315789473685",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792755226.124=0.2"
+      ]
+    },
+    {
+      "step": 2,
+      "tool": "get_traces",
+      "query": "{\"service\": \"checkout\", \"lookback_s\": 120, \"errors_only\": true, \"limit\": 5}",
+      "why": "Identify the failing operation in checkout and see if errors originate from a downstream call (e.g., payment) or a local checkout exception.",
+      "finding": "[{\"trace_id\": \"9aa98be4d38becccbec4c03a9f937336\", \"duration_ms\": 853.67, \"root_span\": {\"span_id\": \"9a8f2e5d5b2e3a9a\", \"service\": \"load-generator\", \"operation\": \"POST\", \"duration_ms\": 19.279, \"status_message\": \"\", \"exception\": {}}, \"first_error_span\": {\"span_id\": \"b16fb018fb635c3b\", \"service\": \"payment\", \"operation\": \"grpc.oteldemo.PaymentService/Charge\", \"duration_ms\": 1.023, \"status_message\": \"\", \"exception\": {\"exception.message\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"exception.stacktrace\": \"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.chargeServiceHandler [as charge] (/usr/src/app/index.js:21:22)\", \"exception.type\": \"Error\"}}, \"origin_error_spans\": [{\"span_id\": \"b16fb018fb635c3b\", \"service\": \"payment\", \"operation\": \"grpc.oteldemo.PaymentService/Charge\", \"duration_ms\": 1.023, \"status_message\": \"\", \"exception\": {\"exception.message\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"exception.stacktrace\": \"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.chargeServiceHandler [as charge] (/usr/src/app/index.js:21:22)\", \"exception.type\": \"Error\"}}, {\"span_id\": \"4843b",
+      "evidence_ids": [
+        "span:9aa98be4d38becccbec4c03a9f937336/b16fb018fb635c3b",
+        "span:6dbec879ef0402d09d8b6d57318561ad/616710e9363c0763"
+      ]
+    },
+    {
+      "step": 3,
+      "tool": "get_logs",
+      "query": "{\"service\": \"payment\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
+      "why": "Corroborate the payment application exception seen in error traces and rule out dependency or container issues by checking fresh WARN/ERROR logs for the same failing operation and error text.",
+      "finding": "[{\"timestamp\": \"2026-10-23T11:33:56.303299012Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"da8752ba6b99e167dfdcc2498029380f\", \"evidence_id\": \"dlog:payment:9a6cf3f3ff7d76cafed2d9ece63f441427018335e2bc014ebe79e1d1b66d6c4b\"}, {\"timestamp\": \"2026-10-23T11:33:43.032247917Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"b79093fe9d1cdb099f962604bfd08147\", \"evidence_id\": \"dlog:payment:a047448acf9f98e9f5be787f44d350d534381194b074c1216c693241e75d912c\"}, {\"timestamp\": \"2026-10-23T11:33:33.841814397Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"9aa98be4d38becccbec4c03a9f937336\", \"evidence_id\": \"dlog:payment:3094a9920ab0dec31e7abbf87c2ba0fef437920e112813e7f4d7061505fb40fb\"}, {\"timestamp\": \"2026-10-23T11:33:16.299586145Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"6dbec879ef0402d09d8b6d57318561ad\", \"evidence_id\": \"dlog:payment:70efaa46f703efcadda66b6744f4f58136649e946d7bc299261358d1646d27ef\"}]",
+      "evidence_ids": [
+        "dlog:payment:3094a9920ab0dec31e7abbf87c2ba0fef437920e112813e7f4d7061505fb40fb"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "payment",
+    "cause": "Local application exception during grpc.oteldemo.PaymentService/Charge with error \"Payment request failed. Invalid token. app.loyalty.level=gold\" propagating to checkout and callers.",
+    "category": "application_flag",
+    "confidence_model": 0.9,
+    "evidence_ids": [
+      "span:9aa98be4d38becccbec4c03a9f937336/b16fb018fb635c3b",
+      "span:6dbec879ef0402d09d8b6d57318561ad/616710e9363c0763",
+      "dlog:payment:3094a9920ab0dec31e7abbf87c2ba0fef437920e112813e7f4d7061505fb40fb",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792755226.124=0.2"
+    ],
+    "explains_symptoms": [
+      "checkout",
+      "payment"
+    ],
+    "alternatives_considered": [
+      "Checkout mishandling payment errors",
+      "Downstream dependency of payment failing",
+      "Intermittent network timeouts"
+    ],
+    "confidence_evidence": 0.95,
+    "confidence": 0.9
+  },
+  "root_causes": [
+    {
+      "component": "payment",
+      "cause": "Local application exception during grpc.oteldemo.PaymentService/Charge with error \"Payment request failed. Invalid token. app.loyalty.level=gold\" propagating to checkout and callers.",
+      "category": "application_flag",
+      "confidence_model": 0.9,
+      "evidence_ids": [
+        "span:9aa98be4d38becccbec4c03a9f937336/b16fb018fb635c3b",
+        "span:6dbec879ef0402d09d8b6d57318561ad/616710e9363c0763",
+        "dlog:payment:3094a9920ab0dec31e7abbf87c2ba0fef437920e112813e7f4d7061505fb40fb",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792755226.124=0.2"
+      ],
+      "explains_symptoms": [
+        "checkout",
+        "payment"
+      ],
+      "alternatives_considered": [
+        "Checkout mishandling payment errors",
+        "Downstream dependency of payment failing",
+        "Intermittent network timeouts"
+      ],
+      "confidence_evidence": 0.95,
+      "confidence": 0.9
+    }
+  ],
+  "evidence": [
+    {
+      "id": "dlog:payment:3094a9920ab0dec31e7abbf87c2ba0fef437920e112813e7f4d7061505fb40fb",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-23T11:33:33.841814397Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"9aa98be4d38becccbec4c03a9f937336\", \"evidence_id\": \"dlog:payment:3094a9920ab0dec31e7abbf87c2ba0fef437920e112813e7f4d7061505fb40fb\", \"original_line\": \"2026-10-23T11:33:33.841814397Z {\\\"level\\\":\\\"warn\\\",\\\"time\\\":1792755213840,\\\"pid\\\":16,\\\"hostname\\\":\\\"c4595978b15c\\\",\\\"trace_id\\\":\\\"9aa98be4d38becccbec4c03a9f937336\\\",\\\"span_id\\\":\\\"b16fb018fb635c3b\\\",\\\"trace_flags\\\":\\\"01\\\",\\\"service.name\\\":\\\"payment\\\",\\\"err\\\":{\\\"type\\\":\\\"Error\\\",\\\"message\\\":\\\"Payment request failed. Invalid token. app.loyalty.level=gold\\\",\\\"stack\\\":\\\"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\\\n    at asyn",
+      "raw_ref": "python -m tools.resolve 'dlog:payment:3094a9920ab0dec31e7abbf87c2ba0fef437920e112813e7f4d7061505fb40fb' --run-dir 'runs/20261023T113346.104216Z-514905da'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792755226.124=0.10526315789473685",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"checkout\"}, \"timestamp\": 1792755226.124, \"value\": 0.10526315789473685, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792755226.124=0.10526315789473685' --run-dir 'runs/20261023T113346.104216Z-514905da'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792755226.124=0.2",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"payment\"}, \"timestamp\": 1792755226.124, \"value\": 0.2, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792755226.124=0.2' --run-dir 'runs/20261023T113346.104216Z-514905da'"
+    },
+    {
+      "id": "span:6dbec879ef0402d09d8b6d57318561ad/616710e9363c0763",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"6dbec879ef0402d09d8b6d57318561ad\", \"spanID\": \"616710e9363c0763\", \"operationName\": \"grpc.oteldemo.PaymentService/Charge\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"6dbec879ef0402d09d8b6d57318561ad\", \"spanID\": \"ae6f827e6f23bb1b\"}], \"startTime\": 1792755196291000, \"duration\": 8266, \"tags\": [{\"key\": \"app.payment.amount\", \"type\": \"string\", \"value\": \"97.69\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.error_message\", \"type\": \"string\", \"value\": \"Payment request failed. Invalid token. app.loyalty.level=gold\"}, {\"key\": \"grpc.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-grpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.57.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"rpc.method\", \"type\": \"string\", \"value\": \"Charge\"}, ",
+      "raw_ref": "python -m tools.resolve 'span:6dbec879ef0402d09d8b6d57318561ad/616710e9363c0763' --run-dir 'runs/20261023T113346.104216Z-514905da'"
+    },
+    {
+      "id": "span:9aa98be4d38becccbec4c03a9f937336/b16fb018fb635c3b",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"9aa98be4d38becccbec4c03a9f937336\", \"spanID\": \"b16fb018fb635c3b\", \"operationName\": \"grpc.oteldemo.PaymentService/Charge\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"9aa98be4d38becccbec4c03a9f937336\", \"spanID\": \"dc60ef2c3ff3449d\"}], \"startTime\": 1792755213840000, \"duration\": 1023, \"tags\": [{\"key\": \"app.payment.amount\", \"type\": \"string\", \"value\": \"19600.43\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.error_message\", \"type\": \"string\", \"value\": \"Payment request failed. Invalid token. app.loyalty.level=gold\"}, {\"key\": \"grpc.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-grpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.57.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"rpc.method\", \"type\": \"string\", \"value\": \"Charge\"",
+      "raw_ref": "python -m tools.resolve 'span:9aa98be4d38becccbec4c03a9f937336/b16fb018fb635c3b' --run-dir 'runs/20261023T113346.104216Z-514905da'"
+    }
+  ],
+  "proposed_action": {
+    "type": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "reason": "disable the failure switch for payment",
+    "risk": "Configuration change requires human approval and a recorded rollback value.",
+    "dry_run": {
+      "performed": false,
+      "predicted_effect": "Restore normal application behavior in payment; confirm with fresh telemetry."
+    }
+  },
+  "proposed_actions": [
+    {
+      "type": "toggle_flag",
+      "target": "payment",
+      "parameters": {
+        "service": "payment"
+      },
+      "reason": "disable the failure switch for payment",
+      "risk": "Configuration change requires human approval and a recorded rollback value.",
+      "dry_run": {
+        "performed": false,
+        "predicted_effect": "Restore normal application behavior in payment; confirm with fresh telemetry."
+      }
+    }
+  ],
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "error_rate",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "diagnosed",
+  "escalation_note": null,
+  "prevention": "Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.",
+  "limitations": [
+    "Actions are proposals only. No approval, execution or recovery was performed.",
+    "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
+    "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs."
+  ],
+  "agent": {
+    "model": "openai/gpt-5",
+    "models_used": [
+      "openai/gpt-5"
+    ],
+    "llm_calls": 3,
+    "tokens_input": 34369,
+    "tokens_output": 3603,
+    "estimated_cost_usd": 0.078991,
+    "tool_calls": 3,
+    "elapsed_s": 58.375,
+    "stopped_because": "confident",
+    "prompt_sha256": "1b8ed98156c66f6775f94a4ae31d85efee45b7f1a0d5edcd12d846184d207652",
+    "framework": "LangGraph StateGraph + SqliteSaver"
+  },
+  "impact": {
+    "business": "critical",
+    "journeys_affected": [
+      "checkout",
+      "payment"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "instant",
+    "data_risk": "none",
+    "confidence": 0.9,
+    "tier": 2,
+    "score": 60,
+    "rationale": "A critical service or process restart requires the full evidence table, a reviewer or the independent-source check, and explicit typed yes."
+  }
+}

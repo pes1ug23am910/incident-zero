@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))\",service_name=\"ad\"}@1792751384.02=0.23335277939828314",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "ad"
+    },
+    "timestamp": 1792751384.02,
+    "value": 0.23335277939828314,
+    "query": "sum by (service_name) (rate(traces_span_metrics_calls_total[2m]))"
+  },
+  "captured_at": "2026-10-23T10:29:44.122627+00:00",
+  "checksum": "87ab7e054bba3440af4dc1b1d643f5ae9f01d740456080e8c805a0fffc18a694"
+}

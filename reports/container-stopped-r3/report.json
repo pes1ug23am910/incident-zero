@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "container-stopped-r3",
+  "run_id": "runs/20261023T120358.826377Z-c84200c3",
+  "detected_at": "2026-10-23T12:03:57.412289+00:00",
+  "diagnosed_at": "2026-10-23T12:05:32.326168+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "container_health",
+    "service": "recommendation",
+    "observed": 1,
+    "threshold": 0,
+    "window_s": 120,
+    "baseline": null
+  },
+  "symptoms": [
+    {
+      "service": "recommendation",
+      "signal": "container_status",
+      "observed": "exited",
+      "evidence_ids": [
+        "container:recommendation:Status=exited"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "health_table",
+      "query": "{\"lookback_s\": 120}",
+      "why": "Locate every service anomaly before selecting a focused read.",
+      "finding": "Observed 20 service rows; 1 symptom entries.",
+      "evidence_ids": [
+        "container:recommendation:Status=exited"
+      ]
+    },
+    {
+      "step": 2,
+      "tool": "get_traces",
+      "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"errors_only\": true, \"limit\": 5}",
+      "why": "Recommendation container is exited; check if frontend requests show dependency connection errors to confirm a container_down impact versus a harmless idle path.",
+      "finding": "[{\"trace_id\": \"a1f004f6d9ecaade2545e46eefba7094\", \"duration_ms\": 5.773, \"root_span\": {\"span_id\": \"d0ae11ca6686a806\", \"service\": \"load-generator\", \"operation\": \"GET\", \"duration_ms\": 5.773, \"status_message\": \"\", \"exception\": {}}, \"first_error_span\": {\"span_id\": \"f6b3d49cc7d06d9e\", \"service\": \"frontend\", \"operation\": \"grpc.oteldemo.RecommendationService/ListRecommendations\", \"duration_ms\": 0.544, \"status_message\": \"14\", \"exception\": {}}, \"origin_error_spans\": [{\"span_id\": \"f6b3d49cc7d06d9e\", \"service\": \"frontend\", \"operation\": \"grpc.oteldemo.RecommendationService/ListRecommendations\", \"duration_ms\": 0.544, \"status_message\": \"14\", \"exception\": {}}, {\"span_id\": \"6addc5ea9826742d\", \"service\": \"frontend\", \"operation\": \"GET\", \"duration_ms\": 3.356, \"status_message\": \"\", \"exception\": {}}], \"error_spans\": [{\"span_id\": \"f6b3d49cc7d06d9e\", \"service\": \"frontend\", \"operation\": \"grpc.oteldemo.RecommendationService/ListRecommendations\", \"duration_ms\": 0.544, \"status_message\": \"14\", \"exception\": {}}, {\"span_id\": \"46a6f800fe34c12a\", \"service\": \"frontend\", \"operation\": \"executing api route (pages) /api/recommendations\", \"duration_ms\": 2.281, \"status_message\": \"\", \"exception\": {\"exception.message\": \"14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:04.173Z)\", \"exception.stacktrace\": \"Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:04.173Z)\\n    at callErrorFromStatus ",
+      "evidence_ids": [
+        "span:a1f004f6d9ecaade2545e46eefba7094/f6b3d49cc7d06d9e",
+        "span:dd14e584d5cc70026e8d260b6c22ae3a/b677348ccd238fb0"
+      ]
+    },
+    {
+      "step": 3,
+      "tool": "get_logs",
+      "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
+      "why": "Corroborate frontend caller errors to the stopped recommendation service with concrete log lines (EHOSTUNREACH/UNAVAILABLE) as a second, independent evidence source for container_down.",
+      "finding": "[{\"timestamp\": \"2026-10-23T12:04:39.369498800Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:8b873ddcc13d3052c248472cd230be33a3b83ad6a803667b4d9b7f8048c8acc0\"}, {\"timestamp\": \"2026-10-23T12:04:39.369436787Z\", \"severity\": \"ERROR\", \"body\": \" ⨯ Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:48e0d8f6d1bb75a6ba63c3c1e9b5c427f8eb67b0679d1c036a927e27616e46da\"}, {\"timestamp\": \"2026-10-23T12:04:39.369292116Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:61ff3fb5af13f32b2000e16991428fe925f97d7a406384705e929e9ebb06e184\"}, {\"timestamp\": \"2026-10-23T12:04:39.369217632Z\", \"severity\": \"ERROR\", \"body\": \"Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa\"}, {\"timestamp\": \"2026-10-23T12:04:33.431608155Z\", \"severity\": \"ERROR\", \"body\": \"  details: 'No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)',\", \"trace_id\": null, \"evide",
+      "evidence_ids": [
+        "dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "recommendation",
+    "cause": "Container is exited; frontend calls to RecommendationService fail with UNAVAILABLE and EHOSTUNREACH to 172.23.0.12:9001.",
+    "category": "container_down",
+    "confidence_model": 0.9,
+    "evidence_ids": [
+      "container:recommendation:Status=exited",
+      "span:a1f004f6d9ecaade2545e46eefba7094/f6b3d49cc7d06d9e",
+      "span:dd14e584d5cc70026e8d260b6c22ae3a/b677348ccd238fb0",
+      "dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa"
+    ],
+    "explains_symptoms": [
+      "recommendation"
+    ],
+    "alternatives_considered": [
+      "Transient DNS or network issue to recommendation without container exit"
+    ],
+    "confidence_evidence": 0.9,
+    "confidence": 0.9
+  },
+  "root_causes": [
+    {
+      "component": "recommendation",
+      "cause": "Container is exited; frontend calls to RecommendationService fail with UNAVAILABLE and EHOSTUNREACH to 172.23.0.12:9001.",
+      "category": "container_down",
+      "confidence_model": 0.9,
+      "evidence_ids": [
+        "container:recommendation:Status=exited",
+        "span:a1f004f6d9ecaade2545e46eefba7094/f6b3d49cc7d06d9e",
+        "span:dd14e584d5cc70026e8d260b6c22ae3a/b677348ccd238fb0",
+        "dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa"
+      ],
+      "explains_symptoms": [
+        "recommendation"
+      ],
+      "alternatives_considered": [
+        "Transient DNS or network issue to recommendation without container exit"
+      ],
+      "confidence_evidence": 0.9,
+      "confidence": 0.9
+    }
+  ],
+  "evidence": [
+    {
+      "id": "container:recommendation:Status=exited",
+      "source": "docker",
+      "summary": "{\"name\": \"recommendation\", \"field\": \"Status\", \"value\": \"exited\"}",
+      "raw_ref": "python -m tools.resolve 'container:recommendation:Status=exited' --run-dir 'runs/20261023T120358.826377Z-c84200c3'"
+    },
+    {
+      "id": "dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-23T12:04:39.369217632Z\", \"severity\": \"ERROR\", \"body\": \"Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)\", \"trace_id\": null, \"evidence_id\": \"dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa\", \"original_line\": \"2026-10-23T12:04:39.369217632Z Error: 14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:31.945Z)\"}",
+      "raw_ref": "python -m tools.resolve 'dlog:frontend:73042247b8bc9efeeeed1dd829ee86fc5381f3ce63d0b1a7036354d03a7d2aaa' --run-dir 'runs/20261023T120358.826377Z-c84200c3'"
+    },
+    {
+      "id": "span:a1f004f6d9ecaade2545e46eefba7094/f6b3d49cc7d06d9e",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"a1f004f6d9ecaade2545e46eefba7094\", \"spanID\": \"f6b3d49cc7d06d9e\", \"operationName\": \"grpc.oteldemo.RecommendationService/ListRecommendations\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"a1f004f6d9ecaade2545e46eefba7094\", \"spanID\": \"46a6f800fe34c12a\"}], \"startTime\": 1792757046008000, \"duration\": 544, \"tags\": [{\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.error_message\", \"type\": \"string\", \"value\": \"14 UNAVAILABLE: No connection established. Last error: connect EHOSTUNREACH 172.23.0.12:9001 (2026-10-23T12:04:04.173Z)\"}, {\"key\": \"grpc.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"net.peer.name\", \"type\": \"string\", \"value\": \"recommendation\"}, {\"key\": \"net.peer.port\", \"type\": \"int64\", \"value\": 9001}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-grpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value",
+      "raw_ref": "python -m tools.resolve 'span:a1f004f6d9ecaade2545e46eefba7094/f6b3d49cc7d06d9e' --run-dir 'runs/20261023T120358.826377Z-c84200c3'"
+    },
+    {
+      "id": "span:dd14e584d5cc70026e8d260b6c22ae3a/b677348ccd238fb0",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"dd14e584d5cc70026e8d260b6c22ae3a\", \"spanID\": \"b677348ccd238fb0\", \"operationName\": \"tcp.connect\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"dd14e584d5cc70026e8d260b6c22ae3a\", \"spanID\": \"51271fa7608eccb0\"}], \"startTime\": 1792757041117000, \"duration\": 3055872, \"tags\": [{\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"net.peer.name\", \"type\": \"string\", \"value\": \"172.23.0.12\"}, {\"key\": \"net.peer.port\", \"type\": \"int64\", \"value\": 9001}, {\"key\": \"net.transport\", \"type\": \"string\", \"value\": \"ip_tcp\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-net\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.43.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"otel.status_description\", \"type\": \"string\", \"value\": \"connect EHOSTUNREACH 172.23.0.12:9001\"}, {\"key\": \"span.kind\", \"type\": \"string\", \"val",
+      "raw_ref": "python -m tools.resolve 'span:dd14e584d5cc70026e8d260b6c22ae3a/b677348ccd238fb0' --run-dir 'runs/20261023T120358.826377Z-c84200c3'"
+    }
+  ],
+  "proposed_action": {
+    "type": "restart_service",
+    "target": "recommendation",
+    "parameters": {
+      "service": "recommendation"
+    },
+    "reason": "Restore the diagnosed unavailable component recommendation.",
+    "risk": "Restart may interrupt in-flight work; review state and evidence before approval.",
+    "dry_run": {
+      "performed": false,
+      "predicted_effect": "Start a fresh recommendation process and restore its availability to callers."
+    }
+  },
+  "proposed_actions": [
+    {
+      "type": "restart_service",
+      "target": "recommendation",
+      "parameters": {
+        "service": "recommendation"
+      },
+      "reason": "Restore the diagnosed unavailable component recommendation.",
+      "risk": "Restart may interrupt in-flight work; review state and evidence before approval.",
+      "dry_run": {
+        "performed": false,
+        "predicted_effect": "Start a fresh recommendation process and restore its availability to callers."
+      }
+    }
+  ],
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "container_health",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "diagnosed",
+  "escalation_note": null,
+  "prevention": "Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.",
+  "limitations": [
+    "Actions are proposals only. No approval, execution or recovery was performed.",
+    "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
+    "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs."
+  ],
+  "agent": {
+    "model": "openai/gpt-5",
+    "models_used": [
+      "openai/gpt-5"
+    ],
+    "llm_calls": 3,
+    "tokens_input": 34143,
+    "tokens_output": 5839,
+    "estimated_cost_usd": 0.101069,
+    "tool_calls": 3,
+    "elapsed_s": 93.5,
+    "stopped_because": "confident",
+    "prompt_sha256": "1b8ed98156c66f6775f94a4ae31d85efee45b7f1a0d5edcd12d846184d207652",
+    "framework": "LangGraph StateGraph + SqliteSaver"
+  },
+  "impact": {
+    "business": "auxiliary",
+    "journeys_affected": [
+      "recommendations"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "self_healing",
+    "data_risk": "none",
+    "confidence": 0.9,
+    "tier": 2,
+    "score": 45,
+    "rationale": "A critical service or process restart requires the full evidence table, a reviewer or the independent-source check, and explicit typed yes."
+  }
+}

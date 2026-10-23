@@ -120,6 +120,7 @@ def test_operator_metadata_never_enters_model_prompt(tmp_path, monkeypatch):
     value = state()
     value["incident_id"] = "operator-only-answer-marker"
     value["alert"]["incident_id"] = "operator-only-answer-marker"
+    value["alert"]["detected_at"] = "2026-10-23T12:12:23+00:00"
     value["run_id"] = "runs/operator-only-run-marker"
     router = Router()
     investigation = Investigation(tmp_path, router)
@@ -129,6 +130,7 @@ def test_operator_metadata_never_enters_model_prompt(tmp_path, monkeypatch):
     assert "operator-only-answer-marker" not in transcript
     assert "operator-only-run-marker" not in transcript
     assert "<telemetry>" in transcript
+    assert "2026-10-23T12:12:23+00:00" in transcript
 
 
 def test_finish_does_not_hide_unexplained_independent_service(tmp_path, monkeypatch):
@@ -168,3 +170,138 @@ def test_finish_cannot_claim_clean_without_successful_trace(tmp_path, monkeypatc
 @pytest.mark.parametrize("proposals,expected", [([], "report"), ([{"type": "restart_service"}], "dry_run")])
 def test_only_actionable_reports_enter_preview_and_approval(proposals, expected):
     assert route_proposal({"report": {"proposed_actions": proposals}}) == expected
+
+
+def supported_finish_state(confidence=.7):
+    value = state()
+    value['evidence'] = {
+        'trace:payment': {'source': 'jaeger', 'services': ['payment'], 'strength': .95},
+        'log:otel/payment': {'source': 'opensearch', 'services': ['payment'], 'strength': .9},
+        'metric:payment': {'source': 'prometheus', 'services': ['payment'], 'strength': .9},
+    }
+    decision = {'name': 'finish', 'arguments': {'reason': 'Reassess all current observations.',
+        'hypotheses': [{'component': 'payment', 'cause': 'Local application failure.',
+            'category': 'application_flag', 'confidence_model': confidence,
+            'evidence_ids': list(value['evidence']), 'explains_symptoms': ['payment']}],
+        'no_incident': False, 'limitations': []}}
+    return value, decision
+
+
+def test_finish_feedback_identifies_model_bottleneck_without_changing_confidence(tmp_path, monkeypatch):
+    monkeypatch.setattr('agent.graph.ROOT', tmp_path)
+    value, decision = supported_finish_state()
+    investigation = Investigation(tmp_path, Router(decision))
+    first = investigation.investigate(value)
+    assert 'model confidence 0.70' in first['validation_error']
+    assert 'evidence confidence is 0.95' in first['validation_error']
+    assert 'seek independent positive support' not in first['validation_error']
+    assert 'Symptoms without a proposed explanation' not in first['validation_error']
+    assert first['hypotheses'][0]['confidence'] == .7
+    assert not first['finish_blocked']  # One reassessment can use existing evidence.
+    second = investigation.investigate({**value, **first})
+    assert second['finish_blocked'] and not second['done']
+    assert second['hypotheses'][0]['confidence'] == .7
+
+
+def test_finish_feedback_identifies_evidence_bottleneck_and_requires_read(tmp_path, monkeypatch):
+    monkeypatch.setattr('agent.graph.ROOT', tmp_path)
+    value, decision = supported_finish_state(.9)
+    value['evidence'] = {'trace:payment': value['evidence']['trace:payment']}
+    decision['arguments']['hypotheses'][0]['evidence_ids'] = ['trace:payment']
+    update = Investigation(tmp_path, Router(decision)).investigate(value)
+    assert 'evidence confidence 0.55' in update['validation_error']
+    assert 'seek independent positive support' in update['validation_error']
+    assert update['finish_blocked']
+
+
+def test_finish_feedback_does_not_consume_malformed_decision_repair(tmp_path, monkeypatch):
+    monkeypatch.setattr('agent.graph.ROOT', tmp_path)
+    value, decision = supported_finish_state()
+    router = Router(decision)
+    investigation = Investigation(tmp_path, router)
+    feedback = investigation.investigate(value)
+    router.decision['arguments']['hypotheses'].append({
+        'component': 'checkout', 'cause': 'Unobserved possibility.', 'category': 'application_flag',
+        'confidence_model': .3, 'evidence_ids': [], 'explains_symptoms': ['checkout']})
+    first_error = investigation.investigate({**value, **feedback})
+    assert first_error['decision_repair_used']
+    assert first_error.get('stopped_because') != 'error'
+    second_error = investigation.investigate({**value, **feedback, **first_error})
+    assert second_error['stopped_because'] == 'error'
+
+
+def test_third_finish_cannot_bypass_required_read_by_raising_model_confidence(tmp_path, monkeypatch):
+    monkeypatch.setattr('agent.graph.ROOT', tmp_path)
+    value, decision = supported_finish_state()
+    router = Router(decision)
+    investigation = Investigation(tmp_path, router)
+    first = investigation.investigate(value)
+    second = investigation.investigate({**value, **first})
+    assert second['finish_blocked']
+    router.decision['arguments']['hypotheses'][0]['confidence_model'] = .9
+    blocked = {**value, **first, **second}
+    third = investigation.investigate(blocked)
+    assert 'not offered' in third['validation_error']
+    assert not third.get('done') and 'hypotheses' not in third
+    assert blocked['hypotheses'][0]['confidence'] == .7
+    fourth = investigation.investigate({**blocked, **third})
+    assert fourth['stopped_because'] == 'error'
+
+
+@pytest.mark.parametrize('malformation', ['missing_no_incident', 'string_no_incident'])
+def test_finish_arguments_use_schema_and_repeated_malformed_finish_abstains(tmp_path, monkeypatch, malformation):
+    monkeypatch.setattr('agent.graph.ROOT', tmp_path)
+    value, decision = supported_finish_state(.9)
+    if malformation == 'missing_no_incident':
+        del decision['arguments']['no_incident']
+    else:
+        value.update(clean=True, symptom_services=[], unexplained=[],
+            alert={'signal': 'no_alert', 'service': 'frontend'},
+            health={'data': [{'service': 'frontend', 'rps': 5, 'error_rate': 0}]},
+            findings=[{'tool': 'get_traces', 'result': {'data': [{'first_error_span': None}]}}])
+        decision['arguments'].update(no_incident='false', hypotheses=[])
+    investigation = Investigation(tmp_path, Router(decision))
+    first = investigation.investigate(value)
+    assert 'no_incident' in first['validation_error']
+    assert not first.get('done') and 'clean' not in first
+    assert first['decision_repair_used']
+    second = investigation.investigate({**value, **first})
+    assert second['stopped_because'] == 'error'
+
+
+@pytest.mark.parametrize('tool', ['get_traces', 'get_logs'])
+def test_late_failure_adds_only_admitted_positive_services_to_symptoms(tmp_path, monkeypatch, tool):
+    monkeypatch.setattr('agent.graph.ROOT', tmp_path)
+    value = state()
+    value.update(alert={'signal': 'container_status', 'service': 'valkey-cart',
+                        'detected_at': '2026-10-23T12:12:23Z', 'window_s': 120},
+                 symptom_services=['valkey-cart'], unexplained=['valkey-cart'], clean=True)
+    decision = {'name': tool, 'arguments': {'reason': 'Check delayed dependency failures.',
+        'hypotheses': [], 'service': 'cart', 'lookback_s': 600}}
+    evidence = {
+        'failure': {'services': ['cart', 'valkey-cart', 'frontend'],
+                    'positive_services': ['cart', 'valkey-cart', 'unknown-service'], 'strength': .9},
+        'healthy': {'services': ['payment'], 'positive_services': ['payment'], 'strength': .3},
+        'planted': {'services': ['ad'], 'positive_services': ['ad'], 'strength': 0},
+        'old': {'services': ['currency'], 'positive_services': ['currency'], 'strength': .9,
+                'data': {'@timestamp': '2026-10-23T12:00:00Z'}},
+    }
+    investigation = Investigation(tmp_path, Router(decision))
+    monkeypatch.setattr(investigation, 'read', lambda *args: ({'tool': tool}, evidence, {'data': []}))
+    update = investigation.investigate(value)
+    assert update['symptom_services'] == ['cart', 'valkey-cart']
+    assert update['unexplained'] == ['cart', 'valkey-cart']
+    assert update['hypotheses'] == []  # Observations do not invent causes or coverage.
+    assert not update['clean']
+
+
+def test_ordinary_resource_metric_does_not_create_a_new_symptom(tmp_path, monkeypatch):
+    monkeypatch.setattr('agent.graph.ROOT', tmp_path)
+    decision = {'name': 'get_metrics', 'arguments': {'reason': 'Inspect utilization.',
+        'hypotheses': [], 'promql': 'cpu_percent'}}
+    investigation = Investigation(tmp_path, Router(decision))
+    evidence = {'metric': {'services': ['ad'], 'positive_services': ['ad'], 'strength': .5}}
+    monkeypatch.setattr(investigation, 'read', lambda *args: ({'tool': 'get_metrics'}, evidence, {'data': []}))
+    update = investigation.investigate(state())
+    assert update['tool_calls_used'] == 2
+    assert 'symptom_services' not in update

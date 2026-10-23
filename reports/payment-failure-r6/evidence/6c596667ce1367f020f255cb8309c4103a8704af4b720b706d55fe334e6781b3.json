@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "id": "span:8b306c3c608065647aca9d4022faf156/4383d7dd6b4d084a",
+  "source": "jaeger",
+  "data": {
+    "traceID": "8b306c3c608065647aca9d4022faf156",
+    "spanID": "4383d7dd6b4d084a",
+    "operationName": "grpc.oteldemo.PaymentService/Charge",
+    "references": [
+      {
+        "refType": "CHILD_OF",
+        "traceID": "8b306c3c608065647aca9d4022faf156",
+        "spanID": "1a19809816e08270"
+      }
+    ],
+    "startTime": 1792755662471000,
+    "duration": 588,
+    "tags": [
+      {
+        "key": "app.payment.amount",
+        "type": "string",
+        "value": "1137.50"
+      },
+      {
+        "key": "error",
+        "type": "bool",
+        "value": true
+      },
+      {
+        "key": "grpc.error_message",
+        "type": "string",
+        "value": "Payment request failed. Invalid token. app.loyalty.level=gold"
+      },
+      {
+        "key": "grpc.error_name",
+        "type": "string",
+        "value": "Error"
+      },
+      {
+        "key": "otel.scope.name",
+        "type": "string",
+        "value": "@opentelemetry/instrumentation-grpc"
+      },
+      {
+        "key": "otel.scope.version",
+        "type": "string",
+        "value": "0.57.1"
+      },
+      {
+        "key": "otel.status_code",
+        "type": "string",
+        "value": "ERROR"
+      },
+      {
+        "key": "rpc.method",
+        "type": "string",
+        "value": "Charge"
+      },
+      {
+        "key": "rpc.service",
+        "type": "string",
+        "value": "oteldemo.PaymentService"
+      },
+      {
+        "key": "rpc.system",
+        "type": "string",
+        "value": "grpc"
+      },
+      {
+        "key": "span.kind",
+        "type": "string",
+        "value": "server"
+      }
+    ],
+    "logs": [
+      {
+        "timestamp": 1792755662471581,
+        "fields": [
+          {
+            "key": "event",
+            "type": "string",
+            "value": "exception"
+          },
+          {
+            "key": "exception.message",
+            "type": "string",
+            "value": "Payment request failed. Invalid token. app.loyalty.level=gold"
+          },
+          {
+            "key": "exception.stacktrace",
+            "type": "string",
+            "value": "Error: Payment request failed. Invalid token. app.loyalty.level=gold\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Object.chargeServiceHandler [as charge] (/usr/src/app/index.js:21:22)"
+          },
+          {
+            "key": "exception.type",
+            "type": "string",
+            "value": "Error"
+          }
+        ]
+      }
+    ],
+    "processID": "p8",
+    "warnings": null,
+    "process": {
+      "serviceName": "payment",
+      "tags": [
+        {
+          "key": "container.id",
+          "type": "string",
+          "value": "c4595978b15c825b28e15f11c66fea8f812cf335eb5e306b814b2a3e54b07e9a"
+        },
+        {
+          "key": "host.arch",
+          "type": "string",
+          "value": "amd64"
+        },
+        {
+          "key": "host.name",
+          "type": "string",
+          "value": "c4595978b15c"
+        },
+        {
+          "key": "os.type",
+          "type": "string",
+          "value": "linux"
+        },
+        {
+          "key": "os.version",
+          "type": "string",
+          "value": "6.6.87.2-microsoft-standard-WSL2"
+        },
+        {
+          "key": "process.command",
+          "type": "string",
+          "value": "/usr/src/app/index.js"
+        },
+        {
+          "key": "process.command_args",
+          "type": "string",
+          "value": "[\"/usr/local/bin/node\",\"--require\",\"./opentelemetry.js\",\"/usr/src/app/index.js\"]"
+        },
+        {
+          "key": "process.executable.name",
+          "type": "string",
+          "value": "node"
+        },
+        {
+          "key": "process.executable.path",
+          "type": "string",
+          "value": "/usr/local/bin/node"
+        },
+        {
+          "key": "process.owner",
+          "type": "string",
+          "value": "node"
+        },
+        {
+          "key": "process.pid",
+          "type": "int64",
+          "value": 16
+        },
+        {
+          "key": "process.runtime.description",
+          "type": "string",
+          "value": "Node.js"
+        },
+        {
+          "key": "process.runtime.name",
+          "type": "string",
+          "value": "nodejs"
+        },
+        {
+          "key": "process.runtime.version",
+          "type": "string",
+          "value": "22.14.0"
+        },
+        {
+          "key": "service.namespace",
+          "type": "string",
+          "value": "opentelemetry-demo"
+        },
+        {
+          "key": "service.version",
+          "type": "string",
+          "value": "2.0.2"
+        },
+        {
+          "key": "telemetry.sdk.language",
+          "type": "string",
+          "value": "nodejs"
+        },
+        {
+          "key": "telemetry.sdk.name",
+          "type": "string",
+          "value": "opentelemetry"
+        },
+        {
+          "key": "telemetry.sdk.version",
+          "type": "string",
+          "value": "1.30.1"
+        }
+      ]
+    }
+  },
+  "captured_at": "2026-10-23T11:41:54.016447+00:00",
+  "checksum": "66ee9925208d395e941938861454914089f51d25dd57fe0a3b1323961a8b4d74"
+}
