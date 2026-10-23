@@ -32,6 +32,13 @@ This session's model API cost is zero. No new template files were ported.
 
 ## Verification checkpoint
 
+Final step-3 full command: `.\.venv\Scripts\python.exe -m pytest -q` →
+**325 passed, 1 skipped in 8.58 seconds**. The skip is the existing Windows
+symbolic-link privilege check. No tests were excluded and no live executor ran.
+`tests/test_action_api.py` includes the six saved-bundle acceptance cases,
+cross-process lock behavior, strict parameters, policy opt-in banner, new-world
+rejection during a prompt, and future-evidence timestamp rejection.
+
 The mocked Action API suite currently passes 33 cases. It includes HTTP
 403/409/423, forbidden operations, dry-run immutability, token expiry/plan edits,
 durable replay, concurrent execution exclusion, cooldown, STOP, rollback,
