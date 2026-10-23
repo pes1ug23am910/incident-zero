@@ -376,6 +376,8 @@ class Controller:
             return {"ok": not errors, "fault_state_clean": fault_state_clean, "stack_ready": readiness["ok"], "checks": checks, "errors": errors, "reset_at": now()}
 
     def status(self, traffic_seconds=0):
+        from tools.common import jaeger_json, read_with_retry, READ_TIMEOUT_S
+
         checks = []
         started = time.monotonic()
         def check(name, operation):
@@ -394,11 +396,13 @@ class Controller:
                 raise FaultError(json.dumps(bad))
             return {"running": len(values), "expected": len(names)}
         def http(url):
-            response = requests.get(url, timeout=3)
-            response.raise_for_status()
-            return response
+            def read():
+                response = requests.get(url, timeout=READ_TIMEOUT_S)
+                response.raise_for_status()
+                return response
+            return read_with_retry(read)
         def jaeger():
-            names = http("http://localhost:8080/jaeger/ui/api/services").json()["data"]
+            names = jaeger_json("/services")["data"]
             missing = sorted({"frontend", "checkout", "payment"} - set(names))
             if missing:
                 raise FaultError("Missing trace services: " + ", ".join(missing))
@@ -410,13 +414,11 @@ class Controller:
                 return http(f"http://localhost:{port}/_cluster/health").json()["status"]
             return json.loads(self.run(["docker", "exec", "opensearch", "curl", "-fsS", "http://localhost:9200/_cluster/health"]).stdout)["status"]
         def traffic():
-            url = "http://localhost:8080/jaeger/ui/api/traces"
             def recent():
                 end = int(time.time() * 1_000_000)
-                response = requests.get(url, params={"service": "frontend", "start": end - 120_000_000,
-                                                    "end": end, "limit": 100}, timeout=3)
-                response.raise_for_status()
-                return {trace["traceID"] for trace in response.json()["data"]}
+                response = jaeger_json("/traces", params={"service": "frontend", "start": end - 120_000_000,
+                                                        "end": end, "limit": 100})
+                return {trace["traceID"] for trace in response["data"]}
             before = recent()
             time.sleep(traffic_seconds)
             after = recent()

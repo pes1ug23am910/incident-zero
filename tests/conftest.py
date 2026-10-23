@@ -3,6 +3,12 @@
 import pytest
 
 
+@pytest.fixture
+def local_jaeger_endpoint(monkeypatch):
+    from tools import common
+    monkeypatch.setattr(common, 'jaeger_endpoints', lambda: ['http://localhost:8080/jaeger/ui/api'])
+
+
 @pytest.fixture(autouse=True)
 def isolated_evidence_runs(tmp_path, monkeypatch):
     from tools import evidence

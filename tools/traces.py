@@ -2,7 +2,7 @@
 
 import json
 from datetime import datetime
-from .common import bounded, envelope, get_json, jaeger, window, BackendError
+from .common import bounded, envelope, get_json, jaeger_json, window, BackendError
 from .redact import is_sensitive, scrub_trace
 from .evidence import capture_evidence
 
@@ -70,7 +70,7 @@ def trace_summary(trace):
 
 @bounded("jaeger")
 def list_services():
-    raw = get_json(jaeger() + "/services")
+    raw = jaeger_json("/services", fetch=get_json)
     if raw.get("errors"):
         raise BackendError(str(raw["errors"]))
     services = [service for service in raw.get("data", []) if not is_sensitive(service)]
@@ -90,7 +90,7 @@ def get_traces(service, lookback_s=300, errors_only=True, limit=20, operation=No
         params["tags"] = json.dumps({"error": "true"})
     if operation:
         params["operation"] = operation
-    raw = get_json(jaeger() + "/traces", params=params)
+    raw = jaeger_json("/traces", params=params, fetch=get_json)
     if raw.get("errors"):
         raise BackendError(str(raw["errors"]))
     traces = raw.get("data") or []

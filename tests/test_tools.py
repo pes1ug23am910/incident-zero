@@ -49,7 +49,7 @@ def test_named_queries_use_discovered_variant():
     assert "or (0 *" in query
 
 
-def test_trace_summary_and_cap(monkeypatch):
+def test_trace_summary_and_cap(monkeypatch, local_jaeger_endpoint):
     trace = {"traceID": "1" * 32, "processes": {"p1": {"serviceName": "checkout"}}, "spans": [
         {"spanID": "2" * 16, "processID": "p1", "operationName": "charge", "startTime": 1000,
          "duration": 5000, "tags": [{"key": "error", "value": True}], "references": [],
@@ -91,13 +91,16 @@ def test_logs_discover_exact_fields_and_bound_results(monkeypatch, synthetic_map
     assert logs.field_value({"resource": {"attributes": {"service.name": "payment"}}}, "resource.attributes.service.name") == "payment"
 
 
-def test_missing_log_index_is_explicit_error(monkeypatch):
+def test_missing_log_index_and_unavailable_fallback_are_explicit_error(monkeypatch):
     def unavailable(*a, **kw):
         raise BackendError("HTTP 404 index_not_found_exception")
     monkeypatch.setattr(logs, "search_json", unavailable)
+    monkeypatch.setattr(logs, "docker_log_lines", lambda *a, **kw: (_ for _ in ()).throw(BackendError("Docker unavailable")))
     result = logs.get_logs("payment")
     assert result["error"]["type"] == "BackendError"
     assert result["data"] == []
+    assert "index_not_found_exception" in result["error"]["message"]
+    assert "Docker unavailable" in result["error"]["message"]
 
 
 def test_health_table_retains_unknown_values(monkeypatch):
