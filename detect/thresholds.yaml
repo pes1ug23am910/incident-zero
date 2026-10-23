@@ -1,0 +1,14 @@
+# Numeric, flat YAML; rates use the measured two-minute connector window.
+error_rate: 0.05
+p95_ms: 1500
+restart_increase: 2
+restart_window_s: 300
+rps_multiplier: 3
+baseline_window_s: 600
+rate_window_s: 120
+debounce_s: 180
+cpu_percent: 90
+cpu_limit_saturation: 0.85
+resource_limit_reduction_ratio: 0.5
+memory_ratio: 0.95
+memory_growth_ratio: 1.25
