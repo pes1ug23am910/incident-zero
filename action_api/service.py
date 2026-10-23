@@ -5,7 +5,6 @@ contain only token fingerprints and service names. An interrupted mutation is
 never retried automatically: its persisted intent requires operator review.
 """
 from copy import deepcopy
-from datetime import datetime
 from functools import wraps
 import json
 from pathlib import Path
@@ -17,7 +16,7 @@ from agent.policy import POLICY, SERVICES, causes_for, select_action
 from agent.evidence import observation_family
 from agent.risk import assess
 from .approval import prompt
-from .safety import Blocked, digest, exclusive, now
+from .safety import Blocked, diagnosis_is_current, digest, exclusive, now
 from .verify import Verifier, finite
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -132,13 +131,7 @@ class ActionService:
 
     def constraints(self, plan, report):
         self.check_stop()
-        try:
-            diagnosed = datetime.fromisoformat(report['diagnosed_at'])
-            age = self.clock() - diagnosed.timestamp()
-            current = diagnosed.utcoffset() is not None and -45 <= age <= 600
-        except (KeyError, TypeError, ValueError, OverflowError, OSError):
-            current = False
-        if not current:
+        if not diagnosis_is_current(report, self.clock()):
             raise Blocked('DIAGNOSIS_EXPIRED', 409,
                           'A timezone-aware diagnosis from the last ten minutes is required; run diagnosis again.')
         impact = assess(report)

@@ -257,6 +257,7 @@ class FakeService:
         self.log_path = root / "log.jsonl"
         self.executions = []
         self.answers = []
+        self.clock = lambda: datetime.fromisoformat('2026-10-23T10:02:00+00:00').timestamp()
 
     def log(self, event, **fields):
         with self.log_path.open("a", encoding="utf-8") as stream:
@@ -368,3 +369,47 @@ def test_native_preview_revision_binds_the_reviewed_world(tmp_path):
     response = client.post("/api/approvals/test-incident/approve", json={"operator": "Reviewer", "revision": fresh["revision"], "confirmation": "yes"})
     assert response.status_code == 423
     backend.pool.shutdown(wait=True)
+
+
+@pytest.mark.parametrize('diagnosed', ['expired', 'future', 'naive', 'missing', 'not-a-date', None, 42])
+def test_native_queue_skips_invalid_historical_diagnoses_before_any_preview(tmp_path, monkeypatch, diagnosed):
+    from ui.action_backend import ActionBackend
+    service = FakeService(tmp_path)
+    stale, fresh = sample('historical'), sample('current')
+    if diagnosed in ('expired', 'future'):
+        age = 601 if diagnosed == 'expired' else -46
+        stale['diagnosed_at'] = datetime.fromtimestamp(service.clock() - age, timezone.utc).isoformat()
+    elif diagnosed == 'naive':
+        stale['diagnosed_at'] = datetime.fromtimestamp(service.clock()).isoformat()
+    elif diagnosed == 'missing':
+        stale.pop('diagnosed_at')
+    else:
+        stale['diagnosed_at'] = diagnosed
+    write_report(tmp_path / 'reports', stale)
+    write_report(tmp_path / 'reports', fresh)
+    room = ControlRoom(tmp_path / 'reports', real=True)
+    backend = ActionBackend(room, lambda: service, response_driver=FakeResponseDriver)
+    previews, checkpoints = [], []
+    original_preview, original_pending = service.dry_run, backend.pending
+    def preview(action, report):
+        previews.append(report['incident_id'])
+        service.log('dry_run', report_id=report['incident_id'])
+        return original_preview(action, report)
+    def pending(report):
+        checkpoints.append(report['incident_id'])
+        return original_pending(report)
+    monkeypatch.setattr(service, 'dry_run', preview)
+    monkeypatch.setattr(backend, 'pending', pending)
+    try:
+        for _ in range(5):
+            assert [item['report_id'] for item in backend.list_approvals()['pending']] == ['current']
+        assert previews == ['current']
+        assert checkpoints == ['current'] * 5
+        assert [json.loads(line)['report_id'] for line in service.log_path.read_text().splitlines()] == ['current']
+        assert 'historical' in room.records()
+        # Even a cached preview must disappear as the diagnosis ages out.
+        service.clock = lambda: datetime.fromisoformat(fresh['diagnosed_at']).timestamp() + 1200
+        assert not backend.list_approvals()['pending']
+        assert previews == ['current']
+    finally:
+        backend.pool.shutdown(wait=True)

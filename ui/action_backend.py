@@ -6,6 +6,7 @@ import threading
 
 from fastapi import HTTPException
 
+from action_api.safety import diagnosis_is_current
 from ui.api import action_of, fingerprint, lines, now, tier_of
 
 
@@ -57,9 +58,7 @@ class ActionBackend:
             if report.get('status') != 'diagnosed' or not report.get('proposed_actions'):
                 continue
             try:
-                diagnosed = datetime.fromisoformat(report['diagnosed_at'])
-                age = self.service.clock() - diagnosed.timestamp()
-                if diagnosed.utcoffset() is None or not -45 <= age <= 600:
+                if not diagnosis_is_current(report, self.service.clock()):
                     continue
                 abort(report, root=self.service.root, service=self.service, report_path=path)
             except (ValueError, KeyError, TypeError):
@@ -85,6 +84,10 @@ class ActionBackend:
             stopped = self.get_stop()["stopped"]
             for identity, (_, report) in self.room.records().items():
                 if tier_of(report) not in (1, 2) or report["status"] != "diagnosed" or (report.get("approval") or {}).get("approved") is not None:
+                    continue
+                # Historical diagnoses stay readable without re-running live
+                # preflight or appending the same refusal on every UI poll.
+                if not diagnosis_is_current(report, self.service.clock()):
                     continue
                 try:
                     state = self.pending(report)
