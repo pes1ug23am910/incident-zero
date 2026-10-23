@@ -1,0 +1,14 @@
+{
+  "demo_dir": "../opentelemetry-demo",
+  "compose_file": "docker-compose.minimal.yml",
+  "demo_version": "2.0.2",
+  "netem_image": "incident-zero-netem:local",
+  "containers": {
+    "ad": "ad", "cart": "cart", "checkout": "checkout", "currency": "currency",
+    "email": "email", "frontend": "frontend", "frontend-proxy": "frontend-proxy",
+    "image-provider": "image-provider", "load-generator": "load-generator", "payment": "payment",
+    "product-catalog": "product-catalog", "quote": "quote", "recommendation": "recommendation",
+    "shipping": "shipping", "flagd": "flagd", "valkey-cart": "valkey-cart", "jaeger": "jaeger",
+    "grafana": "grafana", "otel-collector": "otel-collector", "prometheus": "prometheus", "opensearch": "opensearch"
+  }
+}
