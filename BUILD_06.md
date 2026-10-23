@@ -88,3 +88,10 @@ blocking execution and interrupting verification. Ten isolated integration tests
 exercise these paths with network and subprocess access denied. The waiting-STOP
 browser runner test also passed. These tests do not substitute for the live
 mid-verification STOP and browser acceptance recorded below.
+
+`container-stopped-loop-r1` recovered recommendation through a real restart:
+`fixed` at 609.922 seconds after injection, 182.000 seconds of verification,
+and clean 184.781/184.656-second before/after windows. The two final action
+samples had 892.045/1220.081 measured requests, a running load generator and a
+running recommendation container. The Control Room was restarted after this
+run to load the reviewed approval/STOP fixes before the remaining cases.

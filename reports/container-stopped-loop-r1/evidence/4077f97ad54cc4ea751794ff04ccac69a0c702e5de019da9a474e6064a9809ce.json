@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": "action_log:33",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T16:06:55.718858+00:00",
+    "event": "execute_started",
+    "report_id": "runs/20261023T160004.705486Z-ad2f6cb4",
+    "actor": "Yash Verma",
+    "idempotency_key": "runs/20261023T160004.705486Z-ad2f6cb4:0:e2ac4e8f6223ea9a",
+    "token_digest": "e2ac4e8f6223ea9ac8768148b9d0b2cb29065622dbd7ebad0d0dbbbe8da1ea73",
+    "action": "restart_service",
+    "target": "recommendation",
+    "parameters": {
+      "service": "recommendation"
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T16:10:00.576024+00:00",
+  "checksum": "cb8a0b29541de17ceffdd737c4311d12f691a2b32781ce897c344fc342670629"
+}

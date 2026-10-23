@@ -193,6 +193,7 @@ terminal or browser decision.
 | payment-failure-loop-r2 | Planned workload exceeded old baseline; injection refused | Not reached | — | — | 184.391 / 184.500 s |
 | payment-failure-loop-r3 | fixed, payment toggle | Explicit test auto | 346.016 s | 182.359 s | 184.562 / 184.375 s |
 | payment-failure-loop-r4 | needs_human; rejection, no mutation | CLI reject; test mode off | — | Not executed | 184.640 / 185.031 s |
+| container-stopped-loop-r1 | fixed, recommendation restart | Explicit test auto | 609.922 s | 182.000 s | 184.781 / 184.656 s |
 
 The successful payment run is `runs/20261023T153512.976354Z-13778fd2`.
 It diagnosed `payment` / `application_flag` at 0.90 confidence with three tool
@@ -215,3 +216,11 @@ dry-run and rejection events. Authoritative world hashes before and after the
 decision match. It finished 145.453 seconds after injection, then the operator
 reset and completed the separate clean window. This is rejection acceptance,
 not action-caused recovery.
+
+The recommendation restart run is `runs/20261023T160004.705486Z-ad2f6cb4`.
+It diagnosed `recommendation/container_down` at 0.90, performed the tier-2
+`restart_service` action, and reached `fixed` before reset. Final verification
+samples at 151.953/182.000 seconds observed the container running, load running,
+and 892.045/1220.081 measured requests. The response phase took 200.141 seconds;
+the long diagnosis accounts for most of the 609.922-second injection-to-recovery
+time. Action-log lines 30–35 and all reset measurements are retained.
