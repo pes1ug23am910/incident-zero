@@ -62,10 +62,14 @@ class Investigation:
         finding, evidence, result = self.read('health_table', {'lookback_s': 120}, 'Locate every service anomaly before selecting a focused read.', 1)
         active = anomalies(result)
         # Resource limits remain visible even below the detector threshold.
-        services = sorted({a['service'] for a in active if a['service'] in SERVICES})
+        services = {a['service'] for a in active if a['service'] in SERVICES}
+        if state['alert'].get('signal') != 'no_alert' and state['alert'].get('service') in SERVICES:
+            services.add(state['alert']['service'])
+            services.update(a['service'] for a in state['alert'].get('anomalies', []) if a['service'] in SERVICES)
+        services = sorted(services)
         clean = not services and result.get('telemetry_available', False) and any(r.get('service') == 'frontend' and (r.get('rps') or 0) > 0 for r in result['data'])
         return {'findings': [finding], 'evidence': evidence, 'health': result, 'tool_calls_used': 1,
-                'unexplained': services, 'hypotheses': [], 'seen_calls': [], 'done': False, 'clean': clean,
+                'unexplained': services, 'symptom_services': services, 'hypotheses': [], 'seen_calls': [], 'done': False, 'clean': clean,
                 'audit': [{'node': 'observe', 'ts': now()}]}
 
     def investigate(self, state):
@@ -80,11 +84,12 @@ class Investigation:
         messages = [{'role': 'system', 'content': SYSTEM},
                     {'role': 'user', 'content': '<telemetry>\n' + json.dumps(data_projection(context), separators=(',', ':')) + '\n</telemetry>'}]
         try:
-            decision = self.router.complete(messages, FUNCTIONS)
+            functions = [f for f in FUNCTIONS if not state.get('finish_blocked') or f['function']['name'] != 'finish']
+            decision = self.router.complete(messages, functions)
             name, args = decision['name'], dict(decision['arguments'])
             why = args.pop('reason')
             raw_causes = args.pop('hypotheses')
-            all_symptoms = {a['service'] for a in anomalies(state['health']) if a['service'] in SERVICES}
+            all_symptoms = set(state.get('symptom_services', [])) or {a['service'] for a in anomalies(state['health']) if a['service'] in SERVICES}
             if not all_symptoms:
                 all_symptoms = {state['alert'].get('service', 'frontend')}
             causes = validate_causes(raw_causes, state['evidence'], all_symptoms)
@@ -93,6 +98,9 @@ class Investigation:
                       'audit': [{'node': 'investigate', 'ts': now(), 'choice': name, 'why': why}]}
             if name == 'finish':
                 clean = bool(args.get('no_incident')) and state['clean'] and any(f['tool']=='get_traces' and f['result']['data'] and not any(t.get('first_error_span') for t in f['result']['data']) for f in state['findings'])
+                if not clean and (not causes or unexplained or any(c['confidence'] < .75 for c in causes)):
+                    return {**update, 'done': False, 'finish_blocked': True,
+                            'validation_error': 'Finish refused: gather another independent positive source for each cause and investigate uncovered services: ' + ', '.join(unexplained)}
                 update.update(done=True, clean=clean, stopped_because='confident' if (clean or causes and not unexplained) else 'budget')
                 return update
             if name not in self.toolset or name == 'health_table':
@@ -109,7 +117,7 @@ class Investigation:
             if identity in state.get('seen_calls', []):
                 return {**update, 'done': True, 'stopped_because': 'budget', 'validation_error': 'Repeated identical read stopped for lack of progress.'}
             finding, evidence, result = self.read(name, args, why, state['tool_calls_used'] + 1)
-            update.update(findings=[finding], evidence=evidence, tool_calls_used=state['tool_calls_used'] + 1,
+            update.update(findings=[finding], evidence=evidence, tool_calls_used=state['tool_calls_used'] + 1, finish_blocked=False,
                           seen_calls=state.get('seen_calls', []) + [identity], last_call=identity)
             return update
         except (PlantedEvidence, ValueError, TypeError, KeyError, JSONValidationError) as exc:

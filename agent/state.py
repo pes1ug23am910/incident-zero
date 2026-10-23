@@ -23,6 +23,8 @@ class IncidentState(TypedDict, total=False):
     validation_error: str
     health: dict
     unexplained: list[str]
+    symptom_services: list[str]
+    finish_blocked: bool
     done: bool
     clean: bool
     report: dict
