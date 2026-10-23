@@ -12,11 +12,10 @@ import re
 from typing import Any, Callable
 
 from jsonschema import Draft202012Validator, FormatChecker
+from tools.redact import is_sensitive
 
 SCHEMA_PATH = Path(__file__).with_name("incident_report.schema.json")
-# The guard must recognise prohibited report content without placing those
-# endpoint/configuration markers in a diagnostic package's source text.
-PROHIBITED_TEXT = ("flag" + "d", "demo." + "flag" + "d.json", "default" + "Variant")
+SENSITIVE_TEXT_ERROR = "contains prohibited configuration-disclosure text"
 Resolver = Callable[[str], Any]
 TIMESTAMP_PATTERN = r"^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:[Zz]|[+-]\d{2}:\d{2})$"
 FORMAT_CHECKER = FormatChecker()
@@ -132,8 +131,8 @@ def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir
         validator.iter_errors(report), key=lambda error: str(list(error.absolute_path))
     )]
     for path, value in _strings(report):
-        if any(marker.casefold() in value.casefold() for marker in PROHIBITED_TEXT):
-            errors.append(f"{_path(path)}: contains prohibited configuration-disclosure text")
+        if is_sensitive(value):
+            errors.append(f"{_path(path)}: {SENSITIVE_TEXT_ERROR}")
     errors.extend(f"{_path(path)}: numbers must be finite" for path in _nonfinite_paths(report))
     # Semantic checks assume the strict schema's types and required fields.
     if errors:

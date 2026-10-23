@@ -16,7 +16,7 @@ FLAG_NAMES = (
 _SENSITIVE = re.compile(
     r"feature[_.\s-]*flag|flagd|defaultVariant|demo\.flagd\.json|ofrep|"
     r"(?:app|demo)\.recommendation\.cache_enabled|"
-    r"High CPU-Load problempattern enabled|"
+    r"problempattern|"
     + "|".join(re.escape(name) for name in FLAG_NAMES), re.IGNORECASE,
 )
 _CONTAINER_EVIDENCE = re.compile(
