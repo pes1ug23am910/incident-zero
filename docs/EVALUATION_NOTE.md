@@ -50,11 +50,25 @@ Variants of the same slide incidents (run if time allows):
 
 ## Full loop runs (approve, act, verify)
 
-| Incident | Action | Approved by | Before | After | Recovered? | Final status | Action log lines |
+The hands session ran **mock integration acceptance only** while another session
+owned the sole live stack. The six bundles below exercise the real SQLite
+checkpoint/approval/response path with fake executors and telemetry. No row
+counts toward live diagnosis accuracy or confidence calibration. Confidence
+0.90 is an input fixture; model = none; the 180-second windows use virtual time.
+
+| Bundle | Action | Approval fixture | Before | After | Recovered in mock? | Final status | Action log |
 |---|---|---|---|---|---|---|---|
-| `<id>` | `<type target>` | `<name>` | `<value>` | `<value>` | `<...>` | `<...>` | `<n-m>` |
-| `<id>` (rejected) | `<type target>` | `<name>` said no | `<value>` | n/a | n/a | `needs_human` | `<n>` |
-| `<id>` (STOP mid-run) | none | n/a | n/a | n/a | n/a | `aborted` | `<n>` |
+| [payment approved](../reports/mock-payment-approved/report.md) | toggle_flag payment | Mock operator: yes | 0.9 | 0 | yes, 40 requests | fixed | [excerpt](../reports/mock-payment-approved/action-log.jsonl) |
+| [payment rejected](../reports/mock-payment-rejected/report.md) | none executed | Mock operator: no | 0.9 | n/a | not checked | needs_human | [excerpt](../reports/mock-payment-rejected/action-log.jsonl) |
+| [recommendation restart](../reports/mock-recommendation-restart/report.md) | restart_service recommendation | Mock operator: yes | 0.9 | 0 | yes, 40 requests | fixed | [excerpt](../reports/mock-recommendation-restart/action-log.jsonl) |
+| [homepage throttle](../reports/mock-homepage-throttle/report.md) | throttle_load load-generator | Mock operator: y | 0.9 | 0 | yes, 40 requests | fixed | [excerpt](../reports/mock-homepage-throttle/action-log.jsonl) |
+| [STOP mid-run](../reports/mock-stop-mid-run/report.md) | toggle_flag payment, then STOP | Mock operator: yes | 0.9 | unavailable | no | aborted | [excerpt](../reports/mock-stop-mid-run/action-log.jsonl) |
+| [forced non-recovery](../reports/mock-non-recovery/report.md) | toggle_flag payment, then rollback | Mock operator: yes | 0.9 | 0.8 | no; original settings restored | rolled_back | [excerpt](../reports/mock-non-recovery/action-log.jsonl) |
+
+The mock signals intentionally use one scalar error-rate fixture across action
+types; they do not reproduce the actual stopped-container or flood signatures.
+All live rows remain unverified. Exact follow-up commands are in
+[BUILD_05.md](../BUILD_05.md#live-acceptance-deferred).
 
 ## Confidence calibration
 
@@ -75,12 +89,17 @@ Known by design:
 - No `scale_service` on Docker Compose; the API answers `not_available_on_compose`.
 - Network and resource-starvation faults have no allowlisted fix. We diagnose and escalate.
 - `restart_service` cannot be undone. If verification fails after a restart, we escalate.
-- Two faults at once: one primary cause and one alternative. A third cause is missed.
+- Independent multi-service causes escalate at tier 3. Eligible proposal queues
+  are approved individually, and rejection does not cancel later proposals.
 - Live evidence can age out. Tools retain sanitized snapshots per run, and resolution reports when it used a snapshot; retained historical evidence does not establish current recovery.
 
 Found in testing (one line each: what failed, why we think it failed, which report shows it):
-- `<...>`
-- `<...>`
+- A concurrent caller initially attempted to read a Windows byte-locked file;
+  the lock now inspects file size without reading the locked byte. The threaded
+  exclusion regression test passes.
+- No live hands failure or success has been measured. Missing or insufficient
+  traffic, unavailable telemetry and concurrent world changes all block a
+  recovery claim in mocked tests.
 
 ## What we would do next
 
