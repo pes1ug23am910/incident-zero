@@ -14,7 +14,7 @@ import threading
 import time
 from uuid import uuid4
 
-from fastapi import APIRouter, Body, HTTPException, Query, Request
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from starlette.concurrency import run_in_threadpool
@@ -96,6 +96,7 @@ class ControlRoom:
         self.epoch = uuid4().hex
         self.health_cache = None
         self.health_time = 0
+        self.last_stop = None
 
     def backend(self):
         if not self.real:
@@ -345,6 +346,10 @@ class ControlRoom:
         return {"rows": list(rows.values()), "source": "report_snapshot", "observed_at": observed_at, "warnings": ["Recorded symptoms only; missing values are unknown, not healthy."], "mode": self.mode()}
 
     def scan(self):
+        stopped = self.stop()
+        if stopped["stopped"] != self.last_stop:
+            self.last_stop = stopped["stopped"]
+            self.emit("stop", stopped)
         for identity in self.records():
             report = self.detail(identity)
             base = {"incident_id": identity, "run_id": report.get("run_id"), "recorded": True}
@@ -373,13 +378,21 @@ class ControlRoom:
                 result = step.get("result") or {}
                 compact = {"step": step.get("step"), "tool": step.get("tool"), "query": json.dumps(step.get("arguments", {})),
                            "why": step.get("why"), "finding": result.get("error") or "Tool result recorded", "evidence_ids": result.get("evidence_ids", [])}
-                self.emit("investigation_step", {"run_id": run_id, "step": compact, "recorded": False}, (run_id, "step", fingerprint(compact)))
+                observed_at = datetime.fromtimestamp(journal.stat().st_mtime, timezone.utc).isoformat()
+                self.emit("investigation_step", {"run_id": run_id, "step": compact, "recorded": False, "observed_at": observed_at}, (run_id, "step", fingerprint(compact)))
         for item in self.approvals()["pending"]:
             self.emit("approval_requested", {"incident_id": item.get("report_id", item["id"]), "approval": item}, ("approval", item["id"], item.get("revision"), item.get("expiry")))
 
 
 def make_router(room):
-    router = APIRouter()
+    def same_origin(request: Request):
+        if request.method not in ("POST", "DELETE"):
+            return
+        origin = request.headers.get("origin")
+        if request.headers.get("sec-fetch-site") == "cross-site" or (origin and origin != str(request.base_url).rstrip("/")):
+            raise HTTPException(403, "Control Room writes require the same origin")
+
+    router = APIRouter(dependencies=[Depends(same_origin)])
 
     @router.get("/", include_in_schema=False)
     @router.get("/index.html", include_in_schema=False)
