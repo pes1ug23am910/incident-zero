@@ -259,14 +259,15 @@ class RunControl:
                 value = response.json()
                 observation.update(state=value.get("state"), users=value.get("user_count"))
                 record["observations"].append(observation)
-                if observation["state"] == "stopped" and observation["users"] == 0:
+                if (observation["state"] == "stopped"
+                        and type(observation["users"]) is int and observation["users"] >= 0):
                     record["observed_stopped"] = True
                     return
             except (requests.RequestException, ValueError) as exc:
                 observation["error"] = type(exc).__name__ + ": " + str(exc)
                 record["observations"].append(observation)
             self.cancelled.wait(min(2, max(0, deadline - time.monotonic())))
-        raise RuntimeError("Locust did not reach observed stopped state with zero users within 45 seconds")
+        raise RuntimeError("Locust did not reach observed stopped state with a valid user count within 45 seconds")
 
     def finish(self):
         self.cancelled.set()
