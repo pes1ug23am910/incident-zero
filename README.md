@@ -2,9 +2,9 @@
 
 Incident Zero detects anomalies in the OpenTelemetry Demo, investigates them
 through read-only tools, and writes evidence-backed diagnoses in the team's
-schema. This session builds the brain for Checkpoint 2. It proposes actions and
-assesses their risk; **no proposed action is executed**. The Action API, actual
-human approval tokens, execution, verification and rollback are a later session.
+schema. The brain diagnoses and proposes; the merged hands implementation adds explicit
+approval, execution, verification and rollback. Live integrated acceptance is
+pending; BUILD_05.md records the hands unit tests and deferred commands.
 
 See [BUILD_01B.md](BUILD_01B.md) for earlier live telemetry verification,
 [BUILD_04.md](BUILD_04.md) for the diagnosis ledger, and
@@ -234,3 +234,104 @@ build outputs were copied. Team disclosures belong in [TEAM_FORM.md](docs/TEAM_F
 
 Credentials, runtime state, injection journals, local environments and private
 specifications remain ignored. Report bundles are retained for review.
+
+## Approval gate and kill switch
+
+```powershell
+# A real diagnosis must already be paused at approval in runs/checkpoints.sqlite.
+.\.venv\Scripts\python.exe -m agent.respond --report reports/<id>/report.json --operator 'Yash Verma'
+# Explicit rejection does not need functioning mutation preconditions.
+.\.venv\Scripts\python.exe -m agent.respond --report reports/<id>/report.json --operator 'Yash Verma' --reject
+# Optional localhost HTTP interface (approval prompts appear in this terminal):
+.\.venv\Scripts\python.exe -m action_api serve
+.\.venv\Scripts\python.exe -m action_api stop --operator 'Yash Verma'
+.\.venv\Scripts\python.exe -m action_api clear-stop --operator 'Yash Verma' --confirmation 'I confirm the incident is over'
+```
+
+Tier 1 shows the concrete operation, target and expected effect and asks for a
+human `y` (one key on a Windows terminal). Tier 2 shows the full evidence table,
+independent-source check, alternatives, uncertainty, exact parameters, risk,
+side effects, rollback limits and verification criteria, then requires typed
+`yes`. Tier 3 escalates and proposes no action. Hard risk rules override the
+heuristic score. The policy outcomes are REQUIRE_HUMAN, ESCALATE and BLOCK;
+blocked requests include a reason code.
+
+`action_api/policy.yaml` keeps `auto_approve_tiers: []`. A deliberately enabled
+policy tier prints `policy approval, outside the event rules`; our demo never
+enables it. The test-only CLI bypass requires both `INCIDENT_ZERO_TEST=1` and
+`--auto-approve-for-tests`, prints a banner and is used only with fake executors
+in tests. The HTTP endpoint cannot request that bypass.
+
+Tokens expire in ten minutes and bind the operation/target/parameter digest,
+report digest, operator and world-state hash. Edits or external world changes
+invalidate them. Execution requires an idempotency key; replay returns the
+recorded result. One mutation/verification sequence may run at a time, with a
+five-minute target cooldown. A failed attempt requires a fresh investigation
+and approval; a process crash with uncertain effects is never retried blindly.
+
+The root `STOP` file or `POST /stop` blocks new changes and interrupts the
+verification wait. Rollback also obeys STOP. Only the exact clear phrase above
+removes the latch. Every executed action and recovery decision is audited in
+`action_api/log.jsonl`; each report bundle includes its excerpt and evidence
+snapshots. Public bundles contain redacted approval receipts, never usable tokens.
+
+`agent.respond` checks the persisted thread is at `approval` and that the saved
+report matches. Dry run and execution are separate nodes from `interrupt()`;
+the token travels in the resume value and the human is asked once. For future
+brain integration, import `build_graph` from `agent.respond` in the entry point.
+Existing inert-brain checkpoints work through the response command already.
+
+Recovery requires every original alert signal to be healthy on two consecutive
+30-second samples over at least 180 seconds, at least 20 measured frontend server
+requests in the two-minute window, and a running load generator. Lost traffic
+or telemetry never counts as recovery. Reversible settings are restored on
+non-recovery if the world still matches; a failed restart escalates.
+
+## Demo
+
+`scripts/demo.ps1` without arguments prints the five-minute presentation plan
+without touching the stack. After exclusive stack handoff, use
+`scripts/demo.ps1 -Live -RejectedReport reports/<paused-tier2>/report.json`.
+Prepare the real tier-2 checkpoint beforehand; the live tier-1 example defaults
+to the catalog incident. If the model escalates or proposes another tier, show
+that honest outcome instead of forcing approval. The script demonstrates the
+approved path, rejection, an HTTP 403 forbidden operation, and STOP, then resets
+and verifies cleanup. Clearing STOP asks the operator for the exact phrase.
+
+Preflight and cleanup are outside the presentation clock. Alert/model latency
+can make the live sequence longer than five minutes; do not shorten the required
+verification window. Individual acceptance runs use
+`python -m scripts.hands_rehearsal <incident> --live --report-id <fresh-id> --operator 'Yash Verma'`.
+No live driver was executed in this hands session.
+
+## Known limitations
+
+- Live diagnosis-to-fix, real rollback and real STOP cancellation are unverified
+  here. Reports under `reports/mock-*` are explicitly synthetic and cannot be
+  used to claim model accuracy, calibration or live latency. No model was used
+  for these hands tests; the inherited brain primary pin is `openai/gpt-5`.
+- Restart cannot recover interrupted requests or previous process state.
+  Cancelling Docker's client cannot undo a restart already accepted by the
+  daemon. An in-flight HTTP request can finish before its timeout or STOP check.
+- Throttle requires readable prior user count and spawn rate. Switch writes
+  require a matching operator overlay; official demo source writes are refused.
+- Unsupported verification signals, missing telemetry and insufficient request
+  volume fail closed. Low traffic after throttling can require rollback even if
+  application errors improve. Snapshot evidence proves history, not recovery.
+- Existing v1 diagnostic snapshots have content checksums but no explicit
+  completeness field. The hands bundle adds a hash/completeness manifest and
+  marks unproven completeness false; the shared tools format still needs the
+  tools owner's update. That limitation is not hidden by a passing unit suite.
+- Independent multi-service causes escalate at tier 3. Eligible action queues
+  are handled one at a time. There is no Kubernetes scaling executor, network
+  repair executor or reviewer model invocation in the hands path.
+- The API trusts the same-user local operator boundary; it is not a hosted,
+  authenticated multi-user service. Bind only to localhost. Private SQLite
+  state under ignored `runs/` includes rollback material and token records.
+
+## Prior work
+
+The mentors permitted declared unpublished prior code. The complete port list
+and adaptations are in [PRIOR_WORK.md](docs/PRIOR_WORK.md). The hands modules
+were written for this contract and add no template ports. The event-required
+tools declaration remains in [TEAM_FORM.md](docs/TEAM_FORM.md).

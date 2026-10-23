@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "id": "action_log:1",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:13:46.103414+00:00",
+    "event": "dry_run",
+    "report_id": "runs/mock-recommendation-restart",
+    "action": "restart_service",
+    "target": "recommendation",
+    "parameters": {
+      "service": "recommendation"
+    },
+    "result": "preview_only",
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:13:46.228662+00:00",
+  "checksum": "dc10c9bcf73f5a020a36ee7efb642306258d542223229f670b0f48caa0a10db7"
+}
