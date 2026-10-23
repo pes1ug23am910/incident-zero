@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "id": "action_log:3",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:05:06.990545+00:00",
+    "event": "approval_rejected",
+    "report_id": "runs/mock-payment-rejected",
+    "actor": "Mock operator",
+    "action": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:05:07.034068+00:00",
+  "checksum": "05f8b96c9ba3fdd24fac4b745a74eb7c82f6674b8d06ebb1d52ae13a353d4c09"
+}

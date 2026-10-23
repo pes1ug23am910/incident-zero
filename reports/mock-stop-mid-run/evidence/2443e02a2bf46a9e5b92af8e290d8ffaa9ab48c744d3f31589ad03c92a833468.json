@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": "action_log:5",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:05:07.906109+00:00",
+    "event": "execute_finished",
+    "report_id": "runs/mock-stop-mid-run",
+    "actor": "Mock operator",
+    "action": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "result": "applied",
+    "duration_ms": 0,
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:05:07.968017+00:00",
+  "checksum": "1e61351fda1ab644b04836a8a92578f3916eff4dcba77532b9f6c46d96ebdff8"
+}

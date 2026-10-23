@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "id": "action_log:1",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:05:08.158583+00:00",
+    "event": "dry_run",
+    "report_id": "runs/mock-non-recovery",
+    "action": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "result": "preview_only",
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:05:08.291357+00:00",
+  "checksum": "851931f79aae7efbf084a3573171e00b7d0e5bf6bb3c95e89aa8d9bc7ee7a1d9"
+}

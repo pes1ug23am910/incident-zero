@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "id": "action_log:6",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:05:07.633301+00:00",
+    "event": "verification",
+    "report_id": "runs/mock-homepage-throttle",
+    "result": {
+      "checked_at": "2026-10-23T11:05:07.624791+00:00",
+      "signal": "error_rate",
+      "before": 0.9,
+      "after": 0.0,
+      "recovered": true,
+      "rolled_back": false,
+      "outcome": "recovered",
+      "requests_observed": 40,
+      "samples": [
+        {
+          "available": true,
+          "values": [
+            0.0
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 0.0,
+          "qualified_recovery": true
+        },
+        {
+          "available": true,
+          "values": [
+            0.0
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 30.0,
+          "qualified_recovery": true
+        },
+        {
+          "available": true,
+          "values": [
+            0.0
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 60.0,
+          "qualified_recovery": true
+        },
+        {
+          "available": true,
+          "values": [
+            0.0
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 90.0,
+          "qualified_recovery": true
+        },
+        {
+          "available": true,
+          "values": [
+            0.0
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 120.0,
+          "qualified_recovery": true
+        },
+        {
+          "available": true,
+          "values": [
+            0.0
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 150.0,
+          "qualified_recovery": true
+        },
+        {
+          "available": true,
+          "values": [
+            0.0
+          ],
+          "requests_observed": 40,
+          "load_running": true,
+          "evidence_ids": [],
+          "elapsed_s": 180.0,
+          "qualified_recovery": true
+        }
+      ]
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:05:07.672066+00:00",
+  "checksum": "458344b7c7a5e429ea3470e018ca5895a010a8b56916ff22a2834dfdb52a2768"
+}

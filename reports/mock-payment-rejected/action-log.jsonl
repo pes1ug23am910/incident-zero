@@ -1,0 +1,3 @@
+{"line_no": 1, "ts": "2026-10-23T11:05:06.975027+00:00", "event": "dry_run", "report_id": "runs/mock-payment-rejected", "action": "toggle_flag", "target": "payment", "parameters": {"service": "payment"}, "result": "preview_only"}
+{"line_no": 2, "ts": "2026-10-23T11:05:06.989037+00:00", "event": "dry_run", "report_id": "runs/mock-payment-rejected", "action": "toggle_flag", "target": "payment", "parameters": {"service": "payment"}, "result": "preview_only"}
+{"line_no": 3, "ts": "2026-10-23T11:05:06.990545+00:00", "event": "approval_rejected", "report_id": "runs/mock-payment-rejected", "actor": "Mock operator", "action": "toggle_flag", "target": "payment", "parameters": {"service": "payment"}}
