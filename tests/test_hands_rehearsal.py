@@ -82,9 +82,11 @@ def loop(tmp_path, monkeypatch):
     monkeypatch.setattr(driver, "command", command)
     monkeypatch.setattr(driver, "resume", resume)
     monkeypatch.setattr(driver, "save_bundle", save)
-    monkeypatch.setattr(driver, "require_clean", lambda *a: {"verified": True, "elapsed_s": 180, "samples": []})
+    monkeypatch.setattr(driver, "require_clean", lambda *a: {"verified": True, "elapsed_s": 180, "samples": [
+        {"elapsed_s": 150, "clean": True, "qualified_traffic": True, "frontend_rps": 19, "evidence_ids": []},
+        {"elapsed_s": 180, "clean": True, "qualified_traffic": True, "frontend_rps": 21, "evidence_ids": []}]})
     monkeypatch.setattr(driver, "check_demo_unchanged", lambda: None)
-    monkeypatch.setattr(driver, "Detector", lambda: SimpleNamespace(prime_baseline=lambda **k: None, poll=lambda **k: state.baseline))
+    monkeypatch.setattr(driver, "Detector", lambda: SimpleNamespace(baseline={"frontend": 5}, prime_baseline=lambda **k: None, poll=lambda **k: state.baseline))
     monkeypatch.setattr(driver, "wait_for_alert", lambda *a, **k: {"signal": "error_rate"})
     monkeypatch.setattr(driver, "write_alert", lambda alert, path: path / "alert.json")
     monkeypatch.setattr(driver, "ActionService", lambda *a: SimpleNamespace())
@@ -227,10 +229,56 @@ def test_optional_operator_load_is_restored_even_on_baseline_failure(loop, monke
     assert driver.main(["payment-failure", "--live", "--load-users", "20"]) == int(baseline_failure)
     assert applied == [{"users": 20, "spawn_rate": 5}, previous]
     outcome = json.loads((loop.root / "reports/payment-failure-loop-r1/hands-rehearsal.json").read_text())
-    assert outcome["operator_load"] == {"before": previous, "requested": {"users": 20, "spawn_rate": 5},
-        "restored": True, "purpose": "Ensure the rehearsal has active charge traffic before its measured baseline"}
+    assert outcome["operator_load"]["before"] == previous
+    assert outcome["operator_load"]["requested"] == {"users": 20, "spawn_rate": 5}
+    assert outcome["operator_load"]["restored"] is True
+    assert outcome["operator_load"]["detector_baseline"]["frontend_rps"] == 20
 
 
 def test_default_loop_does_not_change_operator_load(loop, monkeypatch):
     monkeypatch.setattr(driver, "set_operator_load", lambda *a: pytest.fail("load was not requested"))
     assert driver.main(["payment-failure", "--live"]) == 0
+
+
+def test_explicit_load_baseline_uses_observed_rates_and_retains_evidence():
+    detector = SimpleNamespace(baseline={"frontend": 5, "payment": 1})
+    evidence = 'metric:query{__query__="named:rps_by_service",service_name="frontend"}@1=20'
+    record = driver.prepare_load_baseline(detector, {"verified": True, "elapsed_s": 184, "samples": [
+        {"elapsed_s": 154, "clean": True, "qualified_traffic": True, "frontend_rps": 20, "evidence_ids": [evidence]},
+        {"elapsed_s": 184, "clean": True, "qualified_traffic": True, "frontend_rps": 22, "evidence_ids": [evidence]}]})
+    assert detector.baseline == {"frontend": 21, "payment": 1}
+    assert record["previous_frontend_rps"] == 5
+    assert record["evidence_ids"] == [evidence]
+    assert record["sample_elapsed_s"] == [154, 184]
+
+
+def test_changed_workload_does_not_suppress_other_baseline_anomalies(loop, monkeypatch):
+    monkeypatch.setattr(driver, "ActionService", lambda *a: SimpleNamespace(executor=SimpleNamespace(load_state=lambda: {"users": 5, "spawn_rate": 1})))
+    monkeypatch.setattr(driver, "set_operator_load", lambda *a: None)
+    loop.baseline = {"service": "payment", "signal": "error_rate"}
+    assert driver.main(["payment-failure", "--live", "--load-users", "20"]) == 1
+    assert all(command[:2] != ["faultctl", "inject"] for command in loop.commands)
+    bundle = loop.root / "reports/payment-failure-loop-r1"
+    outcome = json.loads((bundle / "hands-rehearsal.json").read_text())
+    assert "payment:error_rate" in outcome["error"]
+    assert (bundle / "baseline-alert.json").is_file()
+    assert (bundle / "action-log.jsonl").read_text() == ""
+
+
+def test_rejection_world_comparison_never_exports_settings():
+    service = SimpleNamespace(world=lambda plan: {"containers": {"payment": "running"}, "switches": {"private_variant": "secret"}})
+    proposal = {"type": "toggle_flag", "target": "payment", "parameters": {"service": "payment"}}
+    first = driver.rejection_world_hash(service, proposal)
+    second = driver.rejection_world_hash(service, proposal)
+    assert first["available"] is True and first["hash"] == second["hash"]
+    assert "private_variant" not in json.dumps(first)
+    assert "secret" not in json.dumps(first)
+
+
+def test_rejection_world_read_failure_stays_unknown_and_does_not_block(loop, monkeypatch):
+    monkeypatch.setattr(driver, "rejection_world_hash", lambda *a: {"hash": None, "available": False, "error": "WORLD_STATE_UNAVAILABLE"})
+    loop.final_status = "needs_human"
+    assert driver.main(["payment-failure", "--live", "--reject"]) == 0
+    outcome = json.loads((loop.root / "reports/payment-failure-loop-r1/hands-rehearsal.json").read_text())
+    assert outcome["rejection_immutability"]["unchanged"] is None
+    assert loop.resumes[0][0] == {"decision": "reject"}
