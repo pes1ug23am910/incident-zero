@@ -7,7 +7,7 @@ They cover an application fault, a stopped application container, and a stopped 
 
 Run the three cases in the order below and require three consecutive correct live diagnoses for each before moving to the CPU backup and remaining practice incidents. Each run uses a fresh bundle. Do not fill the rehearsal entries from unit tests or from an injection read-back alone.
 
-The one-command sequence is `scripts/checkpoint2.ps1 <incident>`: reset, verify clean telemetry, inject, wait up to 90 seconds for an alert, diagnose, validate, print the report, reset and verify clean telemetry again. It prints elapsed seconds per stage. Reset clearance takes at least 180 seconds, sampled every 30 seconds. An under-90-second diagnosis is a presentation target, not a result to assert before measurement.
+The one-command sequence is `scripts/checkpoint2.ps1 <incident>` (bash twin available): preflight, reset, verify clean telemetry, inject, wait for an alert, diagnose, validate, print, reset and verify clean telemetry. Wrappers request a 150-second alert budget; `detect.watch` still needs the fold's cap extension (strict regression xfail). The direct Python module keeps its historical 90-second default. Reset clearance takes at least 180 seconds, sampled every 30 seconds. Under-90-second diagnosis is a presentation target, not an assumed result. All run results below are historical; approval modes and rollback limitations are qualified in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).
 
 ## 1. `payment-failure` (the payment service fails when charging)
 
