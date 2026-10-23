@@ -43,9 +43,10 @@ scoring changes have not retroactively changed any report's measured confidence.
 
 Each integrated bundle records the actual approval path, stage timings,
 action-log excerpt, original alert, action samples and before/after cleanup
-measurements. `fixed` requires every original alert signal to recover on two
+measurements. The current `fixed` rule requires every original alert signal to recover on two
 consecutive samples over >=180 seconds, >=20 measured requests, and a running
-load generator. Rejection and STOP do not claim recovery caused by an action.
+load-generator container plus observed Locust `running` state with positive users.
+Rejection and STOP do not claim recovery caused by an action.
 Recovery seconds use the runner's injection-to-finished measurement after final
 bundle validation; the underlying action samples retain their own elapsed times.
 
@@ -61,8 +62,10 @@ wrappers reject that environment. Browser acceptance uses the real confirmation.
 | [payment-failure-loop-r4](../reports/payment-failure-loop-r4/report.json), rejection | needs_human | CLI explicit reject; test mode off | None executed | — | Before/after authoritative world hashes match; response finished 145.453s after injection; action log contains preview and rejection only |
 | [container-stopped-loop-r1](../reports/container-stopped-loop-r1/report.json), recommendation | fixed | Explicit developer test auto-approval | restart_service recommendation | 609.922 | Container running on final two samples; 892.045/1220.081 measured requests; load running; 182.000s verification |
 | [payment-failure-loop-r5](../reports/payment-failure-loop-r5/report.json), STOP during response | aborted | Explicit developer test auto-approval, then STOP | toggle_flag executed; verification interrupted | — | STOP 15s after execution began; no recovery or rollback claimed; response finished 137.438s after injection |
-| payment-failure, forced traffic loss | Pending live acceptance | — | — | — | Must refuse false recovery and restore prior settings |
-| Real Control Room approval | Pending live acceptance | — | — | — | Must resume checkpoint and persist final report |
+| [payment-failure-loop-r6](../reports/payment-failure-loop-r6/hands-rehearsal.json), forced traffic loss | Acceptance failed; saved report says fixed | Explicit developer test auto-approval | toggle_flag payment | — | Operator swarm-stop request timed out; old verification accepted 56.005/70.005 measured requests with the container running; rollback was not exercised |
+| [payment-failure-loop-r7](../reports/payment-failure-loop-r7/hands-rehearsal.json), forced traffic loss retry | rolled_back in report; runner failed its stop confirmation | Explicit developer test auto-approval | toggle_flag payment, then captured setting restored | — | Real rollback after 182.625s; stopped swarm with one remaining user prevented recovery despite 40.003/52.003 measured requests; harness incorrectly required zero users |
+| [payment-failure-loop-r8](../reports/payment-failure-loop-r8/report.json), forced traffic loss complete retry | rolled_back | Explicit developer test auto-approval | toggle_flag payment, then captured setting restored | — | Complete runner passed; 182.750s verification refused recovery with stopped swarm; response finished 322.844s after injection; operator cleanup recovered separately |
+| [payment-failure-loop-r9](../reports/payment-failure-loop-r9/report.json), real Control Room approval | fixed | Real browser confirmation, automated acceptance; terminal waiter | toggle_flag payment | 313.078 | Actual checkpoint3 wrapper passed; 183.500s verification, both alert values zero; 1260.084/1188.079 requests; Locust running with 21 observed users |
 
 The successful payment run used
 `runs/20261023T153512.976354Z-13778fd2`. Its clean before/after windows were
@@ -105,11 +108,72 @@ The forced non-recovery case stops the **Locust swarm** after real execution,
 leaving its container running. It uses actual unchanged telemetry, then restores
 the captured users/spawn rate during operator cleanup. This checks traffic-loss
 qualification and rollback; it does not demonstrate an application signal that
-remains above threshold despite remediation. Commands and detailed timings are
+remains above threshold despite remediation.
+
+The first forced attempt, r6 (`runs/20261023T162708.899517Z-3196e5c8`), failed
+acceptance. Its `/loadgen/stop` response timed out after ten seconds and did not
+establish stopped swarm state. The old verifier checked container liveness and
+counted requests, accepting 56.005/70.005 requests in its final two samples over
+181.969 seconds. The saved `fixed` report is retained honestly, but does not prove
+the requested non-recovery/rollback path. The runner failed before final timing
+validation; its response phase took 199.703 seconds, with clean before/after
+windows of 184.782/184.718 seconds. The revised operator control allows a longer
+request, retains uncertainty and requires observed `stopped` state. The reported
+remaining-user count is retained rather than assumed zero. No request-count
+threshold or telemetry value is changed for the retry.
+The verifier now independently requires observed Locust `running` state and
+positive users as well as container liveness; stopped/unknown state fails closed
+even when residual request counters exceed 20. The r6 report retains the older
+container-only qualification and is not retroactively counted as rollback success.
+
+The next attempt, r7 (`runs/20261023T164609.601361Z-807c1a76`), exercised real
+rollback. Its final samples at 152.594/182.625 seconds observed Locust `stopped`
+with one remaining user; `load_running` was false despite positive request
+counts. The captured setting was restored and the report says `rolled_back`,
+`recovered = false`. The [action log](../reports/payment-failure-loop-r7/action-log.jsonl)
+contains load observations, rollback and verification at lines 50–63. The runner
+still failed because its operator stop confirmation incorrectly demanded zero
+remaining users. That failure is retained; current confirmation accepts observed
+`stopped` state with a valid nonnegative user count and records it honestly.
+The response phase took 206.188 seconds; qualified before/after cleanup windows
+were 184.844/183.938 seconds. No injection-to-recovery time is claimed for rollback.
+
+The complete retry, r8 (`runs/20261023T165913.243864Z-df3099ba`), passed with
+`rolled_back` and no operator-control error. Both the stop response and observed
+stopped swarm were confirmed. Final samples at 152.750/182.750 seconds had
+80.005/72.005 measured requests and zero alert values, but Locust remained stopped
+with one reported user, so recovery correctly stayed false. The actual captured
+setting was restored. Response took 205.125 seconds and finished 322.844 seconds
+after injection; clean before/after windows were 184.984/184.093 seconds.
+Its [action log](../reports/payment-failure-loop-r8/action-log.jsonl) retains
+the run's approval, execution, load observations, rollback and verification.
+
+The real Control Room run, r9 (`runs/20261023T171108.246095Z-f4afce0d`), used
+the actual `scripts/checkpoint3.ps1` terminal flow and approved through the browser
+as `Integration acceptance`. Browser automation entered the real confirmation;
+this was an automated acceptance decision, not a person approving. The bundle
+records `approval_waiter = terminal`, `approval_path = browser`, and test auto
+approval disabled. The [action log](../reports/payment-failure-loop-r9/action-log.jsonl)
+contains `ui_approval`, one execution start/finish and measured verification.
+The terminal joined that same result and waited before cleanup. The response
+phase took 219.734 seconds; qualified before/after windows were 184.047/183.922
+seconds. JSON/Markdown and action evidence persisted with `fixed`, and the whole
+runner completed without failure. This establishes the shared browser/terminal
+gate; it does not establish a separate timed five-minute presentation.
+
+Commands and detailed timings are
 in [BUILD_05](../BUILD_05.md); browser observations are in
 [BUILD_06](../BUILD_06.md).
 
 ## Synthetic acceptance retained separately
+
+The separate live [safety probe](../reports/safety-loop-r1/acceptance.json)
+returned HTTP 403 / `FORBIDDEN_OPERATION` for the forbidden operation, then
+HTTP 423 / `STOP_LATCHED` for an allowed dry run after STOP. No mutation started;
+STOP was explicitly cleared. These command-level checks do not establish the
+timing of the complete five-minute presentation.
+
+The final integration suite passed **670 tests**, with **3 skipped**.
 
 The hands branch retained six bundles exercising real checkpoint/response code
 with fake executors, fake telemetry and virtual 180-second windows. Confidence
@@ -134,6 +198,9 @@ been measured in the retained diagnosis set. The offline utility
 case-based scoring, Brier scores and Wilson intervals with source/model grouping.
 No aggregate calibration number is asserted from synthetic data or this narrow,
 repeated tuning set. Complete the held-out fold after freezing tuning changes.
+The complete five-minute presentation has not been timed live. Its script
+explicitly places injection and diagnosis before the presentation clock and
+retains their measured latency; the verification window is never shortened.
 
 Known limits: no Compose scaling or network/resource repair, irreversible restart
 side effects, finite telemetry retention, same-user localhost trust, and no

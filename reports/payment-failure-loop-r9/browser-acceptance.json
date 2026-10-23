@@ -1,0 +1,2538 @@
+{
+  "incident_id": "payment-failure-loop-r9",
+  "started_at": "2026-10-23T17:07:32.859264+00:00",
+  "method": "Automated Playwright interaction with the real Control Room approval form",
+  "approval_path": "browser form, tier 2 typed yes, standard ActionService gate",
+  "test_bypass_used": false,
+  "direct_mutation_requests_used": false,
+  "operator": "Integration acceptance",
+  "approval_note": "Authorized browser acceptance through the real approval gate.",
+  "approve_click_attempts": 1,
+  "page_errors": [],
+  "responses": [
+    {
+      "at": "2026-10-23T17:07:33.943766+00:00",
+      "path": "/",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:33.968891+00:00",
+      "path": "/static/app.css",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:33.983899+00:00",
+      "path": "/static/app.js",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:34.099828+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:34.148187+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:35.427585+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:35.692132+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:36.703795+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:36.769301+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:37.975882+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:38.020558+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:38.020558+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:38.051186+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:38.237925+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:39.093941+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:39.135416+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:39.590985+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:44.092813+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:44.096334+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:44.153165+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:44.329171+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:45.005549+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:45.068962+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:45.112740+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:50.464396+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:54.090422+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:54.115483+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:54.371606+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:55.418187+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:55.868255+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:56.014121+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:56.854391+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:07:56.925018+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:01.228149+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:04.131796+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:04.132800+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:04.154889+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:04.371532+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:05.300053+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:05.353396+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:06.628612+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:11.682203+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:12.057146+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:14.096935+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:14.127017+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:14.436154+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:15.460870+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:16.672028+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:16.741785+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:17.427008+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:22.822767+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:24.093235+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:24.095536+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:24.109866+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:24.397263+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:24.833355+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:24.900517+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:27.986969+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:28.256588+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:33.631751+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:34.087932+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:34.102209+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:34.423336+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:35.441899+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:36.724938+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:36.772246+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:39.111718+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:43.691449+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:44.094288+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:44.095288+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:44.114567+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:44.405526+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:44.521317+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:45.465902+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:45.545131+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:49.903614+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:54.101090+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:54.166066+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:54.489074+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:55.091009+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:55.263078+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:56.650199+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:08:56.693854+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:00.328676+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:00.656678+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:04.089993+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:04.090993+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:04.096083+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:04.294993+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:05.171385+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:05.227176+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:06.039371+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:11.474618+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:14.097327+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:14.129390+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:14.370119+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:15.061849+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:15.963675+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:16.815520+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:16.865519+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:16.906140+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:22.219254+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:24.094066+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:24.097066+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:24.115738+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:24.326949+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:25.234391+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:25.289979+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:27.687794+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:31.812031+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:33.041683+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:34.089475+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:34.116993+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:34.464561+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:35.399032+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:36.733761+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:36.801592+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:38.403970+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:43.820467+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:44.090573+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:44.090573+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:44.111581+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:44.335912+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:45.149160+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:45.200453+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:47.419476+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:49.191829+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:54.087199+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:54.108086+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:54.385926+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:54.622624+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:55.150155+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:56.740323+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:56.798415+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:09:59.964644+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:02.787708+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:04.085534+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:04.086534+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:04.113539+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:04.277094+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:04.841124+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:04.949781+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:05.385423+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:10.757700+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:14.094020+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:14.127419+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:14.427980+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:15.312301+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:16.148209+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:16.655866+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:16.707426+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:19.498406+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:21.537278+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:24.096739+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:24.096739+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:24.129841+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:24.389902+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:25.208960+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:25.248284+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:26.970609+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:32.366336+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:34.113240+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:34.129732+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:34.346324+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:35.443129+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:35.980356+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:36.780862+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:36.832534+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:37.742244+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:43.163608+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:44.091066+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:44.095067+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:44.123364+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:44.322601+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:45.202787+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:45.272008+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:48.528514+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:51.962853+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:53.983241+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:54.095874+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:54.116806+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:54.528323+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:55.480827+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:56.258167+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:56.300202+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:10:59.362940+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:04.090219+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:04.090219+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:04.114602+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:04.317401+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:04.784768+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:04.861494+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:04.899098+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:08.001653+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:08.035383+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:08.083069+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:08.385159+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:08.971496+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:10.011422+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:10.106188+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:10.192084+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:11.282669+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:11.297036+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:11.297036+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:11.324201+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:11.623599+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:12.183312+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:12.227442+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:14.087260+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:14.088262+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:14.108301+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:14.334769+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:15.047682+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:15.117676+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:15.554373+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:16.122141+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:16.138673+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:16.140743+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:16.161927+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:16.435359+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:16.972026+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:17.009125+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:20.932994+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:24.103981+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:24.136311+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:24.660959+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:25.299173+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:26.327775+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:26.601719+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:26.678119+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:30.649406+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:30.664367+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:30.667871+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:30.680893+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:31.036763+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:31.544847+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:31.587696+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:31.791512+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:34.102182+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:34.102182+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:34.116182+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:34.423138+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:35.032545+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:35.075440+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:37.144470+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:42.529305+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:44.096531+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:44.125592+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:44.529557+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:45.475063+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:46.681786+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:46.736986+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:47.946142+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:48.035182+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:53.359341+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:54.084743+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:54.084743+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:54.109336+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:54.413442+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:55.375115+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:55.472405+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:11:58.729748+00:00",
+      "path": "/api/incidents/payment-failure-loop-r8",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:01.452577+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:01.467090+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:01.498844+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:01.855041+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:02.478733+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:04.043698+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:04.113592+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:04.145818+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:13.782706+00:00",
+      "path": "/api/approvals/payment-failure-loop-r9/approve",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:13.817328+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:13.857574+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:14.358344+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:14.819210+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:15.965807+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:16.774248+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:16.791790+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:16.841705+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:22.879154+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:22.897063+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:22.902061+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:22.921169+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:23.204865+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:23.812068+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:23.864477+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:24.089226+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:24.090228+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:24.108757+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:24.391531+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:25.548234+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:25.588979+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:34.098870+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:34.150039+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:34.496473+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:35.838939+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:36.777785+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:36.841449+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:38.928778+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:44.084052+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:44.084052+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:44.113398+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:44.426978+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:45.793543+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:45.856192+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:54.085957+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:54.112719+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:54.434853+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:55.717347+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:56.472605+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:56.535332+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:12:56.588266+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:04.091923+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:04.094726+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:04.116700+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:04.378756+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:05.740654+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:05.818025+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:13.519885+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:14.094048+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:14.114322+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:14.599985+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:15.976760+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:16.743681+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:16.794893+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:24.107736+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:24.107736+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:24.114753+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:24.432840+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:25.763127+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:25.832305+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:29.135888+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:34.090301+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:34.121175+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:34.642562+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:36.165532+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:36.737064+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:36.784882+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:44.100346+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:44.100346+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:44.120955+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:44.338890+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:45.264623+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:45.333168+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:46.402944+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:54.100735+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:54.113351+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:54.520317+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:56.073051+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:56.550402+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:13:56.597193+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:03.501214+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:04.087821+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:04.087821+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:04.112856+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:04.340905+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:05.483246+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:05.533320+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:14.104291+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:14.130141+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:14.487730+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:15.483254+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:16.875351+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:16.935039+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:20.343424+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:24.095478+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:24.095478+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:24.115784+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:24.680373+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:25.501841+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:25.572054+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:34.094553+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:34.119372+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:34.428164+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:35.587984+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:36.382407+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:36.917218+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:36.979363+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:44.091057+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:44.091057+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:44.192985+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:44.440289+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:45.633751+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:45.683978+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:53.445093+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:54.096418+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:54.181693+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:54.586450+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:55.902880+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:56.423856+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:14:56.475444+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:04.102150+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:04.110153+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:04.129019+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:04.413539+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:05.543808+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:05.608196+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:10.833592+00:00",
+      "path": "/api/events",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:14.092710+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:14.116686+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:14.510894+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:15.400413+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:16.896697+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:16.965419+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:24.089999+00:00",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:24.091618+00:00",
+      "path": "/api/stop",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:24.129556+00:00",
+      "path": "/api/log",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:24.464605+00:00",
+      "path": "/api/approvals",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:25.874347+00:00",
+      "path": "/api/incidents",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "at": "2026-10-23T17:15:25.943205+00:00",
+      "path": "/api/incidents/payment-failure-loop-r9",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "success": true,
+  "before": {
+    "observed_at": "2026-10-23T17:12:05.004397+00:00",
+    "expected_incident_visible": true,
+    "incident_heading": "payment-failure-loop-r9 \u00b7 23 Oct, 22:41:06 IST",
+    "status_displayed": "DIAGNOSED",
+    "status": "diagnosed",
+    "mode": "REAL",
+    "connection": "Connected \u00b7 updates automatic",
+    "diagnosed_component": "payment",
+    "pending_approval_visible": true,
+    "stop_latched_visible": false,
+    "notice": "",
+    "verification_fields": {
+      "action executed": "No recorded execution",
+      "signal": "error_rate",
+      "before": "Not recorded",
+      "after": "Not recorded",
+      "recovery": "Not yet verified",
+      "checked": "\u2014"
+    }
+  },
+  "approval_revision": "d55e84cb585386b245815c264de8ff8e505fed565fde624d3ba0a519a896b62f",
+  "before_screenshot": "browser-before.png",
+  "approve_clicked_at": "2026-10-23T17:12:05.988723+00:00",
+  "approval_response": {
+    "at": "2026-10-23T17:12:13.784213+00:00",
+    "path": "/api/approvals/payment-failure-loop-r9/approve",
+    "status": 200,
+    "observed_fields": {
+      "id": "payment-failure-loop-r9",
+      "report_id": "payment-failure-loop-r9",
+      "status": "approved",
+      "operator": "Integration acceptance",
+      "mode": "real",
+      "decided_at": "2026-10-23T17:12:06.333117+00:00"
+    }
+  },
+  "approval_response_received_at": "2026-10-23T17:12:13.788232+00:00",
+  "after": {
+    "observed_at": "2026-10-23T17:15:26.710018+00:00",
+    "expected_incident_visible": true,
+    "incident_heading": "payment-failure-loop-r9 \u00b7 23 Oct, 22:41:06 IST",
+    "status_displayed": "FIXED",
+    "status": "fixed",
+    "mode": "REAL",
+    "connection": "Connected \u00b7 updates automatic",
+    "diagnosed_component": "payment",
+    "pending_approval_visible": false,
+    "stop_latched_visible": false,
+    "notice": "",
+    "verification_fields": {
+      "action executed": "Yes \u00b7 23 Oct, 22:42:19 IST",
+      "signal": "error_rate",
+      "before": "0.08219178082191782",
+      "after": "0",
+      "recovery": "Confirmed by report",
+      "checked": "23 Oct, 22:45:25 IST"
+    }
+  },
+  "seconds_from_click_to_fixed_ui": 200.843,
+  "after_screenshot": "browser-after.png",
+  "finished_at": "2026-10-23T17:15:27.184575+00:00",
+  "elapsed_s": 474.328
+}

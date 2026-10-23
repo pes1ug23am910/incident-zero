@@ -127,8 +127,13 @@ A successful command does not prove that users can complete requests. The
 verifier checks every signal in the original alert, every 30 seconds, over at
 least 180 seconds. Two consecutive final samples must satisfy recovery, observe
 at least 20 frontend server requests in the two-minute counter window, and show
-the load-generator container running. Request counts are measured increases,
+the load-generator container running plus current Locust state `running` with
+`user_count > 0`. Request counts are measured increases,
 not an RPS extrapolation. Missing telemetry or stopped traffic prevents `fixed`.
+The actual swarm observation and its time are retained. A live container can
+host a stopped swarm, while residual/background requests still exceed 20; the
+first forced non-recovery attempt exposed that gap. Unknown/unavailable swarm
+state fails closed. This rule applies to every incident, not a rehearsal name.
 
 The >=180-second window accommodates spanmetrics flushing and trailing error
 history. Both initial/final reset windows in the full-loop runner apply the same
@@ -161,10 +166,19 @@ interrupted requests or the old process, so failed verification escalates.
 STOP forbids rollback too; no silent compensation overrides operator control.
 
 The forced live non-recovery rehearsal explicitly stops the Locust swarm after
-real execution, leaving its container running. It records traffic loss, uses the
+real execution, leaving its container running. It records the stopped swarm, uses the
 unmodified sampler and restores the previous swarm during operator cleanup.
-This rehearsal checks refusal to claim recovery without traffic and rollback;
+The control allows a 45-second stop response and then checks actual stopped
+state with a valid remaining-user count. Locust may report residual users after
+stopping; the observed count is retained rather than assumed zero. A timed-out
+response is recorded as uncertain; only an observed stopped swarm confirms the
+intervention. Cleanup waits for the outstanding
+request before restoring users, preventing a late stop from undoing restoration.
+This rehearsal checks refusal to claim recovery without an active workload and rollback;
 it does not demonstrate a persistent application fault after remediation.
+The complete [r8 live run](../reports/payment-failure-loop-r8/report.json)
+demonstrated that guard and an actual settings rollback even with positive
+residual request counts; operator cleanup recovery was measured separately.
 
 ## Test exceptions and audit are explicit
 
