@@ -12,7 +12,7 @@ from action_api.app import create_app
 from agent.respond import abort_pending, config_for, pending_checkpoint, resume, save_bundle
 from agent.reporting import write_bundle
 from schema.validate import validate_report
-from test_action_api import env, pause_brain, synthetic_report
+from test_action_api import env, execute, pause_brain, synthetic_report
 
 
 @pytest.fixture(autouse=True)
@@ -284,6 +284,33 @@ def test_bundle_retains_global_safety_events_only_within_its_action_interval(env
         snapshot = find_bundle_snapshot(identifier, path.parent)
         assert snapshot['source'] == 'action_log' and snapshot['data']['event'] == event
         assert snapshot['data']['complete'] is True
+
+
+@pytest.mark.parametrize('failure,phase,reason', [
+    ('stop', 'aborted', 'STOP_LATCHED'),
+    ('callback', 'uncertain', 'VERIFY_OR_ROLLBACK_UNCERTAIN'),
+])
+def test_interrupted_verification_retains_actual_partial_samples_without_recovery(env, failure, phase, reason):
+    api, executor, _, sample = env
+    execute(api, synthetic_report())
+    observed = []
+    def progress(point):
+        observed.append(deepcopy(point))
+        if failure == 'stop':
+            api.stop('Test interruption')
+        else:
+            raise RuntimeError('Simulated progress consumer failure')
+    verification = api.verify('attempt-1', progress=progress)
+    assert verification['outcome'] == 'blocked' and verification['recovered'] is False
+    assert verification['rolled_back'] is False and verification['after'] is None
+    assert verification['rollback_note'] == reason
+    assert verification['samples'] == observed and len(observed) == 1
+    assert verification['samples'][0]['elapsed_s'] == 0
+    assert verification['requests_observed'] == sample['requests_observed']
+    assert api.attempts()[0]['phase'] == phase
+    assert not executor.rollbacks
+    logged = [json.loads(line) for line in api.log_path.read_text(encoding='utf-8').splitlines()]
+    assert logged[-1]['event'] == 'verification' and logged[-1]['result']['samples'] == observed
 
 
 def test_run_graph_pauses_after_real_dry_run_without_mutating(env):
