@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": "action_log:4",
+  "source": "action_log",
+  "data": {
+    "ts": "2026-10-23T11:05:08.212475+00:00",
+    "event": "execute_started",
+    "report_id": "runs/mock-non-recovery",
+    "actor": "Mock operator",
+    "idempotency_key": "runs/mock-non-recovery:0:109ccbfa5b5bc579",
+    "token_digest": "109ccbfa5b5bc579da7cabba0725a2e32fcdfe656e37edd273cf597ae45bb3f1",
+    "action": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "complete": true
+  },
+  "captured_at": "2026-10-23T11:05:08.298873+00:00",
+  "checksum": "b2940147ac62c6bba3f9369b8374431513fcd2010ff8e5df5f2c46cb008eb78d"
+}
