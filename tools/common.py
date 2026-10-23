@@ -52,7 +52,9 @@ def bounded(source):
             from .evidence import begin_run, end_run, persist_envelope
             from .redact import sanitize
 
-            token = DEADLINE.set(time.monotonic() + 2.8)
+            # Reserve time for filtering and durable evidence writes within the
+            # three-second tool budget, including a slow Docker stats sample.
+            token = DEADLINE.set(time.monotonic() + 2.5)
             started = time.monotonic()
             run_token = None
             current = None

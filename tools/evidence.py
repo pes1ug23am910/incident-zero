@@ -108,6 +108,8 @@ def _clean_payload(identifier, source, data):
 class EvidenceRun:
     path: Path
     captured: dict = field(default_factory=dict)
+    # Shared by nested tools in one call only; a later call revalidates disk.
+    persisted_paths: dict = field(default_factory=dict)
     lock: threading.RLock = field(default_factory=threading.RLock)
 
 
@@ -168,8 +170,12 @@ def _from_envelope(identifier, result):
 
 def persist_envelope(result, current):
     paths = {}
+    root = ROOT.resolve()
     with current.lock:
         for identifier in result.get("evidence_ids", []):
+            if identifier in current.persisted_paths:
+                paths[identifier] = current.persisted_paths[identifier]
+                continue
             payload = current.captured.get(identifier) or _from_envelope(identifier, result)
             payload = {**payload, "data": _clean_payload(identifier, payload["source"], payload["data"])}
             snapshot = {"version": 1, **payload, "captured_at": datetime.now(timezone.utc).isoformat()}
@@ -182,8 +188,10 @@ def persist_envelope(result, current):
             except FileExistsError:
                 # Snapshots are immutable; validate existing bytes, never overwrite them.
                 load_snapshot(path, identifier)
-            paths[identifier] = path.relative_to(ROOT.resolve()).as_posix()
-    result["run_dir"] = current.path.relative_to(ROOT.resolve()).as_posix()
+            relative = path.relative_to(root).as_posix()
+            current.persisted_paths[identifier] = relative
+            paths[identifier] = relative
+    result["run_dir"] = current.path.relative_to(root).as_posix()
     result["evidence_paths"] = paths
     return result
 

@@ -35,6 +35,14 @@ def test_recorded_log_is_preserved_and_disclosure_variants_are_removed():
         assert sanitize({"body": text, "traceId": source["traceId"]}) is None
 
 
+def test_recorded_enabled_state_log_is_removed():
+    from tools.logs import parse_docker_line
+    recorded = json.loads((FIXTURES / "recorded_sensitive_log.json").read_text(encoding="utf-8"))
+    assert recorded["provenance"]["synthetic"] is False
+    assert redact_text(recorded["line"]) is None
+    assert parse_docker_line(recorded["container"], recorded["line"]) is None
+
+
 def test_backend_spans_and_control_metrics_are_removed():
     trace = {"traceID": "a" * 32, "processes": {"p1": {"serviceName": "checkout"},
         "p2": {"serviceName": "flagd"}}, "spans": [
