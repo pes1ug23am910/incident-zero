@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "mock-stop-mid-run",
+  "run_id": "runs/mock-stop-mid-run",
+  "detected_at": "2026-10-23T11:05:07.741411+00:00",
+  "diagnosed_at": "2026-10-23T11:05:07.745915+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "error_rate",
+    "service": "payment",
+    "observed": 0.9,
+    "threshold": 0.05,
+    "window_s": 120
+  },
+  "symptoms": [
+    {
+      "service": "payment",
+      "signal": "error_rate",
+      "observed": "Synthetic error rate .9",
+      "evidence_ids": [
+        "container:payment:Status=running",
+        "trace:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "get_container_health",
+      "query": "payment",
+      "why": "Synthetic fixture",
+      "finding": "Synthetic observation",
+      "evidence_ids": [
+        "container:payment:Status=running"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "payment",
+    "category": "application_flag",
+    "cause": "Synthetic payment failure fixture.",
+    "confidence_model": 0.9,
+    "confidence_evidence": 0.9,
+    "confidence": 0.9,
+    "evidence_ids": [
+      "container:payment:Status=running",
+      "trace:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "explains_symptoms": [
+      "payment"
+    ],
+    "alternatives_considered": [
+      "Synthetic dependency failure."
+    ]
+  },
+  "evidence": [
+    {
+      "id": "container:payment:Status=running",
+      "source": "docker",
+      "summary": "Synthetic payment evidence; not measured live.",
+      "raw_ref": "offline fixture"
+    },
+    {
+      "id": "trace:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "source": "jaeger",
+      "summary": "Synthetic payment evidence; not measured live.",
+      "raw_ref": "offline fixture"
+    }
+  ],
+  "proposed_action": {
+    "type": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "reason": "disable the failure switch for payment",
+    "risk": "Configuration change requires human approval and a recorded rollback value.",
+    "dry_run": {
+      "performed": true,
+      "predicted_effect": "Restore normal application behavior in payment; confirm with fresh telemetry."
+    }
+  },
+  "approval": {
+    "required": true,
+    "requested_at": "2026-10-23T11:05:07.867395+00:00",
+    "approved": true,
+    "approved_by": "Mock operator",
+    "approved_at": "2026-10-23T11:05:07.867395+00:00",
+    "token": "[redacted]"
+  },
+  "action": {
+    "executed": true,
+    "started_at": "2026-10-23T11:05:07.896588+00:00",
+    "finished_at": "2026-10-23T11:05:07.906109+00:00",
+    "action_log_ref": "action_log:5"
+  },
+  "verification": {
+    "checked_at": "2026-10-23T11:05:07.917684+00:00",
+    "signal": "error_rate",
+    "before": 0.9,
+    "after": null,
+    "recovered": false,
+    "rolled_back": false,
+    "outcome": "blocked",
+    "requests_observed": 0,
+    "samples": [],
+    "rollback_note": "STOP_LATCHED"
+  },
+  "status": "aborted",
+  "escalation_note": "Operator review required: rejected, blocked, unverified or rolled back remediation. Inspect action history and all alert signals before a new attempt.",
+  "prevention": null,
+  "limitations": [
+    "SYNTHETIC MOCK ACCEPTANCE: no incident was injected; no model or live stack was used.",
+    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored."
+  ],
+  "agent": {
+    "model": "none (mock fixtures)",
+    "tool_calls": 0,
+    "elapsed_s": 0,
+    "stopped_because": "confident"
+  },
+  "root_causes": [
+    {
+      "component": "payment",
+      "category": "application_flag",
+      "cause": "Synthetic payment failure fixture.",
+      "confidence_model": 0.9,
+      "confidence_evidence": 0.9,
+      "confidence": 0.9,
+      "evidence_ids": [
+        "container:payment:Status=running",
+        "trace:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "explains_symptoms": [
+        "payment"
+      ],
+      "alternatives_considered": [
+        "Synthetic dependency failure."
+      ]
+    }
+  ],
+  "impact": {
+    "business": "critical",
+    "journeys_affected": [
+      "checkout",
+      "payment"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "instant",
+    "data_risk": "none",
+    "confidence": 0.9,
+    "tier": 2,
+    "score": 62.0,
+    "rationale": "A critical service or process restart requires the full evidence table, a reviewer or the independent-source check, and explicit typed yes.",
+    "uncertainty": 0.09999999999999998,
+    "observability_gap": 0.0,
+    "decision": "REQUIRE_HUMAN",
+    "reason_codes": [
+      "CRITICAL_SERVICE"
+    ]
+  },
+  "proposed_actions": [
+    {
+      "type": "toggle_flag",
+      "target": "payment",
+      "parameters": {
+        "service": "payment"
+      },
+      "reason": "disable the failure switch for payment",
+      "risk": "Configuration change requires human approval and a recorded rollback value.",
+      "dry_run": {
+        "performed": true,
+        "predicted_effect": "Restore normal application behavior in payment; confirm with fresh telemetry."
+      }
+    }
+  ],
+  "action_history": [
+    {
+      "index": 0,
+      "decision": {
+        "decision": "approve",
+        "token": "[redacted]",
+        "approved_by": "Mock operator",
+        "approved_at": "2026-10-23T11:05:07.867395+00:00",
+        "requested_at": "2026-10-23T11:05:07.867395+00:00",
+        "expires_at": 1600.0
+      },
+      "execution": {
+        "executed": true,
+        "started_at": "2026-10-23T11:05:07.896588+00:00",
+        "finished_at": "2026-10-23T11:05:07.906109+00:00",
+        "action_log_ref": "action_log:5",
+        "idempotency_key": "runs/mock-stop-mid-run:0:eba61a0f71f3cdff"
+      },
+      "verification": {
+        "checked_at": "2026-10-23T11:05:07.917684+00:00",
+        "signal": "error_rate",
+        "before": 0.9,
+        "after": null,
+        "recovered": false,
+        "rolled_back": false,
+        "outcome": "blocked",
+        "requests_observed": 0,
+        "samples": [],
+        "rollback_note": "STOP_LATCHED"
+      },
+      "error": {}
+    }
+  ]
+}
