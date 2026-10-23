@@ -3,6 +3,7 @@ param(
     [string]$Operator = 'Yash Verma',
     [string]$Incident = 'payment-failure',
     [Alias('svc')][string]$Service,
+    [ValidateRange(1, 100)][int]$LoadUsers = 20,
     [string]$RejectedReport,
     [switch]$BrowserApproval,
     [string]$ReportId = ('demo-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
@@ -41,7 +42,7 @@ try {
     }
     $ownsStack = $true
     Write-Host 'Control Room: http://127.0.0.1:8787. Initial reset and clearance are preflight; begin the five-minute clock at injection.'
-    $arguments = @('-m', 'scripts.hands_rehearsal', $Incident, '--live', '--report-id', $ReportId, '--operator', $Operator, '--ensure-control-room', '--defer-cleanup')
+    $arguments = @('-m', 'scripts.hands_rehearsal', $Incident, '--live', '--report-id', $ReportId, '--operator', $Operator, '--ensure-control-room', '--defer-cleanup', '--load-users', $LoadUsers)
     if ($Service) { $arguments += @('--svc', $Service) }
     if ($BrowserApproval) { $arguments += @('--approval-mode', 'browser') }
     Invoke-CheckedPython @arguments

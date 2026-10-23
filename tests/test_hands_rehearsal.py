@@ -213,3 +213,24 @@ def test_real_control_room_refuses_existing_mock_without_starting_process(monkey
     monkeypatch.setattr(driver.subprocess, "Popen", lambda *a, **k: pytest.fail("must not start another server"))
     with pytest.raises(RuntimeError, match="non-real"):
         driver.ensure_control_room()
+
+
+@pytest.mark.parametrize("baseline_failure", [False, True])
+def test_optional_operator_load_is_restored_even_on_baseline_failure(loop, monkeypatch, baseline_failure):
+    applied = []
+    previous = {"users": 5, "spawn_rate": 1}
+    executor = SimpleNamespace(load_state=lambda: previous)
+    monkeypatch.setattr(driver, "ActionService", lambda *a: SimpleNamespace(executor=executor))
+    monkeypatch.setattr(driver, "set_operator_load", lambda executor, values: applied.append(values))
+    if baseline_failure:
+        loop.baseline = {"signal": "error_rate"}
+    assert driver.main(["payment-failure", "--live", "--load-users", "20"]) == int(baseline_failure)
+    assert applied == [{"users": 20, "spawn_rate": 5}, previous]
+    outcome = json.loads((loop.root / "reports/payment-failure-loop-r1/hands-rehearsal.json").read_text())
+    assert outcome["operator_load"] == {"before": previous, "requested": {"users": 20, "spawn_rate": 5},
+        "restored": True, "purpose": "Ensure the rehearsal has active charge traffic before its measured baseline"}
+
+
+def test_default_loop_does_not_change_operator_load(loop, monkeypatch):
+    monkeypatch.setattr(driver, "set_operator_load", lambda *a: pytest.fail("load was not requested"))
+    assert driver.main(["payment-failure", "--live"]) == 0
