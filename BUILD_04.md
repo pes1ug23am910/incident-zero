@@ -36,6 +36,35 @@ All ten practice cases are tuning data. The no-fault and combination cases will
 be held out until the prompt is frozen. Temperature 0 and logged prompts make
 runs reproducible in inputs, not outputs.
 
+## Audit corrections before the repeated rehearsal
+
+- B1: origin selection examines the complete parent/child graph and returns
+  leaf error spans deepest first, with a separate `span:` proof for each. The
+  retained nine-error payment trace now names `payment` / `PaymentService/Charge`
+  first and retains `Payment request failed. Invalid token…`. A two-hop synthetic
+  failure with a second independent branch verifies ordering and both span IDs.
+- B2: every report string uses the shared disclosure guard, with the offending
+  JSON path returned. The audit's leak is rejected. The runner validates before
+  writing a bundle and gives one finish-only repair using the same evidence and
+  tool count, including when all twelve reads have been used. Persistent refusal
+  writes no invalid bundle and ends the checkpoint. Targeted suite: 143 passed,
+  two existing live-fixture skips.
+- M1: the operator prepares one persistent injection directory mount at `up`.
+  Injection rewrites the file; reset restores its pristine bytes. Diagnostic
+  container/deploy/health outputs exclude the control backend. Named spanmetrics
+  filter its evaluation operations before aggregation and retain safe query
+  aliases in evidence; resolution expands those aliases at the backend boundary.
+  The retained working-tree evidence-grounding improvements were reviewed and
+  kept; named aliases preserve the same positive signal scoring.
+  Live verification on 23 October: checkout error rate 0.20, payment 0.50;
+  ad/cart/recommendation each 0.00. Frontend/proxy/load-generator had propagated
+  checkout failures. The control container ID was identical before injection,
+  after injection and after reset. Reset succeeded; error rates cleared by the
+  92-second sample and remained clean through 182 seconds. Observations are in
+  `reports/verification-m1/observations.json`. The official demo checkout remained
+  clean. Targeted operator/filter/query/disclosure checks: 61 passed; query and
+  evidence-isolation checks: 72 passed.
+
 ## Scope and unresolved acceptance
 
 - No Action API, human approval execution, rollback, or recovery caused by an

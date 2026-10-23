@@ -1,6 +1,7 @@
 """Named PromQL with the names verified on the demo's OTLP receiver."""
 
 from .common import get_json, prometheus
+from .redact import APPLICATION_SPAN_SELECTOR
 
 CANDIDATES = {
     "calls": ("traces_span_metrics_calls_total", "calls_total"),
@@ -17,12 +18,13 @@ def build_queries(names=()):
     calls = selected["calls"]
     # The connector exports about once a minute: rate needs at least two
     # samples. All span kinds also cover services that only emit client spans.
-    denominator = f"sum by (service_name) (rate({calls}[2m]))"
+    selector = APPLICATION_SPAN_SELECTOR
+    denominator = f"sum by (service_name) (rate({calls}{{{selector}}}[2m]))"
     # Missing error-labelled series means zero errors only if calls exist.
-    errors = f'sum by (service_name) (rate({calls}{{status_code="STATUS_CODE_ERROR"}}[2m]))'
+    errors = f'sum by (service_name) (rate({calls}{{{selector},status_code="STATUS_CODE_ERROR"}}[2m]))'
     return {
         "error_rate_by_service": f"({errors} or (0 * {denominator})) / {denominator}",
-        "p95_latency_by_service": f'histogram_quantile(0.95, sum by (le, service_name) (rate({selected["duration"]}[2m])))',
+        "p95_latency_by_service": f'histogram_quantile(0.95, sum by (le, service_name) (rate({selected["duration"]}{{{selector}}}[2m])))',
         "rps_by_service": denominator,
         "container_cpu": selected["cpu"],
         "container_memory": selected["memory"],

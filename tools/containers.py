@@ -9,6 +9,7 @@ import subprocess
 
 from .common import bounded, docker, envelope, window, BackendError
 from .evidence import capture_evidence
+from .redact import is_sensitive
 
 INSPECT_FORMAT = ('{"Name":{{json .Name}},"State":{{json .State}},'
                   '"RestartCount":{{json .RestartCount}},"Created":{{json .Created}},'
@@ -26,9 +27,11 @@ def inspect_rows(names=None):
     selected = available if names is None else list(names)
     if any(n not in available for n in selected):
         raise ValueError("Container names must belong to the demo Compose project")
+    selected = [name for name in selected if not is_sensitive(name)]
     if not selected:
         return []
-    return [json.loads(line) for line in docker("inspect", "--format", INSPECT_FORMAT, *selected).splitlines()]
+    rows = [json.loads(line) for line in docker("inspect", "--format", INSPECT_FORMAT, *selected).splitlines()]
+    return [row for row in rows if not is_sensitive(row["Name"])]
 
 
 def memory_mb(value):
@@ -68,6 +71,7 @@ def get_container_health(names=None):
         if any(n not in selected for n in names):
             raise ValueError("Container names must belong to the demo Compose project")
         selected = list(names)
+    selected = [name for name in selected if not is_sensitive(name)]
     if not selected:
         return envelope("get_container_health", "docker", "inspect + stats", window(), [],
                         warning="No containers found for the selected Compose project")
@@ -87,7 +91,8 @@ def get_container_health(names=None):
         except (ValueError, OSError, TimeoutError, subprocess.SubprocessError) as exc:
             stats = {}
             warnings.append("Live resource sample unavailable: " + str(exc)[:200])
-    rows = [health_row(item, stats.get(item["Name"].lstrip("/"))) for item in inspected]
+    rows = [health_row(item, stats.get(item["Name"].lstrip("/"))) for item in inspected
+            if not is_sensitive(item["Name"])]
     ids = [f'container:{row["name"]}:{field}={evidence_value(row[field])}' for row in rows
            for field in ("Status", "RestartCount", "OOMKilled", "StartedAt", "NanoCpus", "Memory")]
     for row in rows:
