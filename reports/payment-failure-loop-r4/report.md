@@ -100,12 +100,18 @@ Dry run performed: yes. Restore normal application behavior in payment; confirm 
 
 ## Approval record
 
+Rejected
+
 | Field | Value |
 | --- | --- |
 | Required | yes |
 | Approved | no |
-| Approved by | Yash Verma |
+| Recorded actor | Yash Verma |
+| Surface | cli |
+| Mode | live |
+| Requested at | 2026-10-23T15:48:46.560694+00:00 |
 | Approved at | — |
+| Token id | absent |
 | Token | absent |
 | Executed | no |
 | Action log | — |
@@ -140,6 +146,7 @@ Monitor component error rate, latency and container lifecycle; alert on sustaine
 - Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.
 - Temperature 0 and logged prompts make runs reproducible in inputs, not outputs.
 - Recovery verifies observed signals and request counts; interrupted requests cannot be restored.
+- Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value. Rejection was supplied by the explicit CLI reject option, not a typed response.
 
 ## Investigation budget
 

@@ -244,9 +244,12 @@
     "required": true,
     "requested_at": "2026-10-23T17:00:07.862129+00:00",
     "approved": true,
-    "approved_by": "Yash Verma",
+    "approved_by": "test harness",
     "approved_at": "2026-10-23T17:00:07.862129+00:00",
-    "token": "[redacted]"
+    "token": "sha256:bf01fb299487281116f3f6eed251420b503721b4a787a2957b151e935f20f287",
+    "mode": "test",
+    "surface": "test",
+    "token_id": "sha256:bf01fb299487281116f3f6eed251420b503721b4a787a2957b151e935f20f287"
   },
   "action": {
     "executed": true,
@@ -1534,7 +1537,8 @@
   "limitations": [
     "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
     "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs.",
-    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored."
+    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored.",
+    "Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value."
   ],
   "agent": {
     "model": "openai/gpt-5",
@@ -1577,11 +1581,14 @@
       "index": 0,
       "decision": {
         "decision": "approve",
-        "token": "[redacted]",
-        "approved_by": "Yash Verma",
+        "token": "sha256:bf01fb299487281116f3f6eed251420b503721b4a787a2957b151e935f20f287",
+        "approved_by": "test harness",
         "approved_at": "2026-10-23T17:00:07.862129+00:00",
         "requested_at": "2026-10-23T17:00:07.862129+00:00",
-        "expires_at": 1792775407.8621294
+        "expires_at": 1792775407.8621294,
+        "mode": "test",
+        "surface": "test",
+        "token_id": "sha256:bf01fb299487281116f3f6eed251420b503721b4a787a2957b151e935f20f287"
       },
       "execution": {
         "executed": true,

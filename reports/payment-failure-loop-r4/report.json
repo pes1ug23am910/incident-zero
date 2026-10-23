@@ -301,7 +301,10 @@
     "approved": false,
     "approved_by": "Yash Verma",
     "approved_at": null,
-    "token": null
+    "token": null,
+    "mode": "live",
+    "surface": "cli",
+    "token_id": null
   },
   "action": {
     "executed": false,
@@ -323,7 +326,8 @@
   "limitations": [
     "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
     "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs.",
-    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored."
+    "Recovery verifies observed signals and request counts; interrupted requests cannot be restored.",
+    "Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value. Rejection was supplied by the explicit CLI reject option, not a typed response."
   ],
   "agent": {
     "model": "openai/gpt-5",
@@ -367,7 +371,10 @@
       "decision": {
         "decision": "reject",
         "approved_by": "Yash Verma",
-        "requested_at": "2026-10-23T15:48:46.560694+00:00"
+        "requested_at": "2026-10-23T15:48:46.560694+00:00",
+        "mode": "live",
+        "surface": "cli",
+        "token_id": null
       },
       "execution": {
         "rejected": true

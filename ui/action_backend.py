@@ -171,23 +171,35 @@ class ActionBackend:
             result = {key: value for key, value in item.items() if key != "preview"}
             result.update(operator=operator, note=note, reason=reason, status="approved" if approved else "rejected", decided_at=now(), mode="real")
             if not approved:
-                self.service.log("approval_rejected", report_id=report["run_id"], actor=operator, ui_decision=result)
-                answer = {'decision': 'reject', 'approved_by': operator, 'requested_at': now()}
+                from action_api.executors import LocalExecutor
+                rejection_mode = 'live' if isinstance(self.service.executor, LocalExecutor) else 'test'
+                result.update(surface='browser', mode=rejection_mode, token_id=None, requested_at=now())
+                self.service.log("approval_rejected", report_id=report["run_id"], actor=operator,
+                                 surface='browser', mode=rejection_mode, token_id=None,
+                                 requested_at=result['requested_at'], ui_decision=result)
+                answer = {'decision': 'reject', 'approved_by': operator, 'requested_at': now(),
+                          'surface': 'browser', 'mode': rejection_mode, 'token_id': None}
             else:
                 actions = canonical.get("proposed_actions") or [action_of(canonical)]
                 action = actions[item["action_index"]]
                 # This answer originates in the explicit HTTP button/typed confirmation.
                 # The native gate still rechecks report, world state, tier and STOP.
                 try:
+                    # Optional legacy test adapters cannot establish live provenance.
+                    import inspect
+                    provenance = {'surface': 'browser'} if 'surface' in inspect.signature(self.service.approve).parameters else {}
                     answer = self.service.approve(action, canonical, item["preview"], operator,
                                                   input_fn=lambda _: "y" if item["tier"] == 1 else confirmation,
-                                                  output=lambda _: None)
+                                                  output=lambda _: None, **provenance)
                 except Exception as exc:
                     if getattr(exc, "code", "") in ("WORLD_OR_PLAN_CHANGED", "WORLD_STATE_CHANGED"):
                         self.previews.pop((approval_id, item["report_revision"]), None)
                     raise
                 if answer.get("decision") != "approve":
                     raise HTTPException(409, "Action service did not approve this plan")
+                result.update(surface=answer.get('surface', 'browser'), mode=answer.get('mode', 'test'),
+                              token_id=answer.get('token_id'), approved_by=answer.get('approved_by', 'test harness'),
+                              requested_at=answer.get('requested_at', now()))
                 self.service.log("ui_approval", report_id=report["run_id"], actor=operator, ui_decision=result)
             self.pool.submit(self.continue_response, deepcopy(report), answer, path, operator)
             self.room.emit("approval_decided", {"incident_id": item["report_id"], "decision": result})
@@ -214,7 +226,11 @@ class ActionBackend:
             decision = history[-1]
             approved = decision["status"] == "approved"
             report["ui_decision"] = decision
-            report["approval"] = {**report.get("approval", {}), "approved": approved, "approved_by": decision["operator"], "approved_at": decision["decided_at"] if approved else None}
+            report["approval"] = {**report.get("approval", {}), "approved": approved,
+                                  "approved_by": decision.get('approved_by', decision["operator"]),
+                                  "surface": decision.get('surface', 'browser'), "mode": decision.get('mode', 'test'),
+                                  "token_id": decision.get('token_id'),
+                                  "approved_at": decision["decided_at"] if approved else None}
             if not approved:
                 report["status"] = "needs_human"
         attempts = [item for item in self.service.attempts() if item.get("report_id") == report.get("run_id")]

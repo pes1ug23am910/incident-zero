@@ -96,12 +96,18 @@ Dry run performed: yes. Start a fresh recommendation process and restore its ava
 
 ## Approval record
 
+Approved in TEST mode by the test harness (not a human)
+
 | Field | Value |
 | --- | --- |
 | Required | yes |
 | Approved | yes |
-| Approved by | Yash Verma |
+| Recorded actor | test harness |
+| Surface | test |
+| Mode | test |
+| Requested at | 2026-10-23T16:06:51.851424+00:00 |
 | Approved at | 2026-10-23T16:06:51.851424+00:00 |
+| Token id | sha256:e2ac4e8f6223ea9ac8768148b9d0b2cb29065622dbd7ebad0d0dbbbe8da1ea73 |
 | Token | present (redacted) |
 | Executed | yes |
 | Action log | action_log:34 |
@@ -137,6 +143,7 @@ Monitor component error rate, latency and container lifecycle; alert on sustaine
 - Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.
 - Temperature 0 and logged prompts make runs reproducible in inputs, not outputs.
 - Recovery verifies observed signals and request counts; interrupted requests cannot be restored.
+- Historical approval provenance was corrected from the retained action log; the original audit entries and evidence snapshots are unchanged. Prompt-shown time was not recorded, so requested_at retains its original value.
 
 ## Investigation budget
 
