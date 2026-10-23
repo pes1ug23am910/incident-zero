@@ -62,7 +62,9 @@ def create_app(service=None, input_fn=input, *, reports_dir=None, runs_dir=None)
 
     @app.post("/stop")
     def stop(body: dict):
-        return api().stop(body.get("operator", "local operator"))
+        result = api().stop(body.get("operator", "local operator"))
+        room.backend().abort_waiting()
+        return result
 
     @app.delete("/stop")
     def clear(body: dict):

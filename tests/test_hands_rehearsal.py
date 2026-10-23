@@ -282,3 +282,17 @@ def test_rejection_world_read_failure_stays_unknown_and_does_not_block(loop, mon
     outcome = json.loads((loop.root / "reports/payment-failure-loop-r1/hands-rehearsal.json").read_text())
     assert outcome["rejection_immutability"]["unchanged"] is None
     assert loop.resumes[0][0] == {"decision": "reject"}
+
+
+def test_browser_wait_routes_pending_stop_through_canonical_abort(tmp_path, monkeypatch):
+    from agent import respond
+    report = {"run_id": "r", "status": "diagnosed"}
+    path = tmp_path / "report.json"
+    path.write_text(json.dumps(report), encoding="utf-8")
+    stop = tmp_path / "STOP"
+    stop.touch()
+    service = SimpleNamespace(root=tmp_path, stop_path=stop)
+    abort = Mock(return_value={**report, "status": "aborted"})
+    monkeypatch.setattr(respond, "abort_pending", abort, raising=False)
+    assert driver.wait_for_browser(path, "r", service)["status"] == "aborted"
+    abort.assert_called_once_with(report, root=tmp_path, service=service, report_path=path)

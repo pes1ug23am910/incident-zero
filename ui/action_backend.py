@@ -44,8 +44,26 @@ class ActionBackend:
 
     def set_stop(self):
         result = {**self.service.stop("Control Room operator"), "mode": "real"}
+        self.abort_waiting()
         self.room.emit("stop", result)
         return result
+
+    def abort_waiting(self):
+        """Close currently actionable prompts; old reports remain historical."""
+        abort = getattr(self.response_driver, 'abort_pending', None)
+        if abort is None:
+            return
+        for path, report in self.room.records().values():
+            if report.get('status') != 'diagnosed' or not report.get('proposed_actions'):
+                continue
+            try:
+                diagnosed = datetime.fromisoformat(report['diagnosed_at'])
+                age = self.service.clock() - diagnosed.timestamp()
+                if diagnosed.utcoffset() is None or not -45 <= age <= 600:
+                    continue
+                abort(report, root=self.service.root, service=self.service, report_path=path)
+            except (ValueError, KeyError, TypeError):
+                continue
 
     def clear_stop(self, phrase):
         result = {**self.service.clear_stop(phrase, "Control Room operator"), "mode": "real"}
@@ -93,6 +111,14 @@ class ActionBackend:
                     if cached is None and not stopped:
                         try:
                             preview = self.service.dry_run(action, canonical)
+                            original = state.get('dry_run', {})
+                            if original.get('preconditions_ok') and any(
+                                    preview.get(field) != original.get(field)
+                                    for field in ('plan_digest', 'report_digest', 'world_state_hash')):
+                                # Reviewing the browser cannot give an earlier
+                                # diagnosis new authority after an operator reset.
+                                from action_api.safety import Blocked
+                                raise Blocked('WORLD_OR_PLAN_CHANGED', 409)
                             cached = {"preview": preview, "expiry": (datetime.now(timezone.utc) + timedelta(minutes=10)).isoformat()}
                             self.previews[key] = cached
                         except Exception as exc:

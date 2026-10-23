@@ -83,13 +83,18 @@ class Response:
     def report(self, state):
         report = deepcopy(state['report'])
         results = state.get('action_results', [])
+        stopped = (self.api.stop_path.exists()
+                   or 'STOP_LATCHED' in state.get('response_error', {}).get('reason_codes', [])
+                   or any('STOP_LATCHED' in item.get('error', {}).get('reason_codes', [])
+                          or item.get('verification', {}).get('rollback_note') == 'STOP_LATCHED'
+                          for item in results))
         for result in results:
             if result['execution'].get('executed') or state.get('dry_run', {}).get('preconditions_ok'):
                 report['proposed_actions'][result['index']]['dry_run']['performed'] = True
         report['proposed_action'] = report['proposed_actions'][0] if report['proposed_actions'] else None
         if not results:
             if state.get('response_error'):
-                report['status'] = 'aborted' if self.api.stop_path.exists() else 'needs_human'
+                report['status'] = 'aborted' if stopped else 'needs_human'
                 report['escalation_note'] = 'Action blocked: ' + json.dumps(state['response_error'])
             return {'report': report, 'status': report['status']}
         executed = [r for r in results if r['execution'].get('executed')]
@@ -104,7 +109,7 @@ class Response:
             report['action'] = {k: chosen['execution'][k] for k in ('executed', 'started_at', 'finished_at', 'action_log_ref')}
             report['verification'] = chosen['verification']
         all_recovered = len(executed) == len(report['proposed_actions']) and all(r['verification'].get('recovered') for r in executed)
-        if self.api.stop_path.exists():
+        if stopped:
             report['status'] = 'aborted'
         elif all_recovered:
             report['status'] = 'fixed'
@@ -113,7 +118,7 @@ class Response:
             report['status'] = 'rolled_back'
         else:
             report['status'] = 'needs_human'
-        report['escalation_note'] = None if all_recovered else 'Operator review required: rejected, blocked, unverified or rolled back remediation. Inspect action history and all alert signals before a new attempt.'
+        report['escalation_note'] = None if all_recovered and not stopped else 'Operator review required: rejected, blocked, unverified or rolled back remediation. Inspect action history and all alert signals before a new attempt.'
         report['action_history'] = []
         for item in results:
             safe = deepcopy(item)
@@ -183,6 +188,40 @@ def pending_checkpoint(report, *, root=ROOT, service=None):
         return state
 
 
+def abort_pending(report, *, root=ROOT, service=None, report_path=None):
+    """Latch-aware cancellation of a matching approval, without minting a token.
+
+    An active response owns the same lock and observes STOP itself. Return None
+    immediately in that case so the HTTP kill switch never waits on verification.
+    """
+    root = Path(root)
+    service = service or ActionService(root)
+    if not service.stop_path.exists():
+        raise ValueError('STOP must be latched before aborting a pending approval')
+    try:
+        with exclusive(service.private / ('response-' + digest(report['run_id']) + '.lock')):
+            with SqliteSaver.from_conn_string(str(root / 'runs' / 'checkpoints.sqlite')) as saver:
+                graph = build_graph(None, saver, service)
+                config = config_for(report['run_id'])
+                snapshot = graph.get_state(config)
+                if snapshot.next != ('approval',):
+                    return None
+                if not _matches_report(snapshot.values.get('report'), report):
+                    raise ValueError('Report differs from the paused checkpoint; refusing an edited plan')
+                service.log('approval_aborted', report_id=report['run_id'], reason='STOP_LATCHED')
+                graph.update_state(config, {'response_error': Blocked('STOP_LATCHED', 423).payload(),
+                    'response_basis': snapshot.values['report']}, as_node='dry_run')
+                graph.invoke(None, config)
+                final = graph.get_state(config).values['report']
+                if report_path:
+                    save_bundle(final, report_path, service)
+                return final
+    except Blocked as exc:
+        if exc.code != 'MUTATION_IN_FLIGHT':
+            raise
+        return None
+
+
 class _ResponseElsewhere(Exception):
     """Another operator has consumed the displayed approval."""
 
@@ -206,7 +245,7 @@ def _terminal_input(prompt, changed):
     answer = []
     while True:
         if changed():
-            print('\nApproval continued in the Control Room; waiting for its result.', flush=True)
+            print('\nApproval changed or STOP was latched; waiting for the shared result.', flush=True)
             raise _ResponseElsewhere()
         if msvcrt.kbhit():
             char = msvcrt.getwch()
@@ -293,12 +332,12 @@ def resume(report, decision=None, *, root=ROOT, service=None, operator='local op
                 elif decision and decision.get('token'):
                     answer = decision
                 else:
-                    human_input = (lambda prompt: _terminal_input(prompt, changed)) if input_fn is input else input_fn
+                    human_input = (lambda prompt: _terminal_input(prompt, lambda: service.stop_path.exists() or changed())) if input_fn is input else input_fn
                     answer = service.approve(state['report']['proposed_actions'][state.get('action_index', 0)],
                                              state['report'], state['dry_run'], operator, input_fn=human_input,
                                              auto_approve_for_tests=auto_approve_for_tests)
                 with exclusive(lock_path):
-                    if changed():
+                    if changed() or service.stop_path.exists():
                         raise _ResponseElsewhere()
                     if answer.get('decision') == 'reject' and decision:
                         service.log('approval_rejected', report_id=report['run_id'], actor=operator)
@@ -310,6 +349,8 @@ def resume(report, decision=None, *, root=ROOT, service=None, operator='local op
                 if single_step:
                     break
             except _ResponseElsewhere:
+                if service.stop_path.exists():
+                    abort_pending(state['report'], root=root, service=service, report_path=report_path)
                 wait_for_other()
                 decision = None
                 if single_step:

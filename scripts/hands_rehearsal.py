@@ -171,6 +171,11 @@ def wait_for_browser(report_path, run_id, service, timeout_s=1200):
             raise RuntimeError("Browser response changed the report run ID")
         if report.get("action_history") or report.get("status") == "aborted":
             return report
+        if service is not None and service.stop_path.exists():
+            from agent.respond import abort_pending
+            aborted = abort_pending(report, root=service.root, service=service, report_path=report_path)
+            if aborted is not None:
+                return aborted
         time.sleep(.5)
     raise RuntimeError("Browser approval/verification did not finish within 1200 seconds")
 
