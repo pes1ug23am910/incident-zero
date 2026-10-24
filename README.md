@@ -9,8 +9,9 @@ approval-to-recovery loop. Use the integrated checkout for the demo.
 
 Historical outcomes and failures are in [the evaluation note](docs/EVALUATION_NOTE.md).
 Live recoveries so far were approved through the test harness; a human-approved
-run is scheduled at 09:30. The later browser run was automated acceptance, not a
-person approving. Real human CLI and browser approval remain **not verified**.
+run is reserved for the operator after the 09:50 IST handoff on 24 October.
+The later browser run was automated acceptance, not a person approving.
+Real human CLI and browser approval remain **not verified**.
 
 ## Setup and run
 
@@ -101,7 +102,12 @@ OFF therefore has a fresh passing rehearsal for this case; one run does not
 establish general superiority or reliability. Cache was skipped because fewer
 than nine minutes remained before the 08:57 handoff. See [BUILD_10](BUILD_10.md)
 for timings and handoff evidence, and [BUILD_09](BUILD_09.md) for earlier partial
-acceptance. Human-approved Checkpoint 3 remains the operator's 09:00 run.
+acceptance. Build 11's payment/cache attempts were refused by preflight
+(23/26 and 25/26); neither injected an incident. Control Room freshness was
+unverified in both, and payment also encountered transient high baseline latency.
+The final reset and required stack-state checks passed at 09:26:53 IST; see
+[BUILD_11](BUILD_11.md). Human-approved Checkpoint 3 remains the operator's run
+after the 09:50 handoff deadline.
 
 ## Approval gate and kill switch
 
@@ -137,7 +143,13 @@ fold gate. Aggregate metrics hide rare operations. The detector can misclassify
 synthetic-client latency and unavailable telemetry; one clean recording is not
 proof for every laptop. Ten strict xfails document outstanding regressions.
 
-The optional reviewer is **built, not live-verified**. It is off by default;
+The optional reviewer is **built, not live-verified**. The 24 October Build 11
+payment attempt enabled it with knowledge OFF, but preflight refused the
+rehearsal before injection or diagnosis. The reviewer was never called: latency,
+provider behavior, the live review block, additional evidence and unchanged
+confidence remain unverified. The primary model's readiness probe returned HTTP
+200; that is not a reviewer result. See [BUILD_11](BUILD_11.md) for retained
+failure evidence and timings. It is off by default;
 `INCIDENT_ZERO_REVIEWER=1` enables it before risk assessment and proposals.
 `REVIEWER_MODEL` comes from the environment / `.env` and must be a vendor-qualified
 OpenRouter model from a different vendor than every primary model used. No model
