@@ -74,11 +74,11 @@ def test_provenance_and_scores_are_stable(index):
 
 
 def test_memory_upsert_updates_one_record_and_ranks_outcome(index):
-    record = {"incident_id": "offline-example", "symptom_fingerprint": "cart connection refused cache",
+    record = {"memory_id": "a" * 64, "symptom_fingerprint": "cart connection refused cache",
               "component": "valkey-cart", "category": "container_down", "outcome": "escalated"}
     index.upsert_memory(record)
     hits = index.search("cart connection refused", runbook_k=0, service_k=0)["memory_refs"]
-    assert hits[0]["id"] == "mem:offline-example"
+    assert hits[0]["id"] == "mem:" + "a" * 64
     assert hits[0]["component"] == "valkey-cart"
     assert hits[0]["category"] == "container_down"
     assert hits[0]["outcome"] == "escalated"
@@ -91,13 +91,13 @@ def test_memory_upsert_updates_one_record_and_ranks_outcome(index):
 
 
 def test_memory_redaction_and_safe_identity(index):
-    record = {"incident_id": "redaction-example", "component": "payment", "cause": FLAG_NAMES[0] + "=true",
+    record = {"memory_id": "b" * 64, "component": "payment", "cause": FLAG_NAMES[0] + "=true",
               "symptom_fingerprint": "payment errors", "outcome": "unknown"}
     index.upsert_memory(record)
     hit = index.search("payment errors")["memory_refs"][0]
     assert not is_sensitive(hit)
     assert "cause" not in json.loads(hit["text"])
-    with pytest.raises(ValueError, match="safe incident_id"):
+    with pytest.raises(ValueError, match="opaque memory_id"):
         index.upsert_memory({"incident_id": "../outside"})
 
 

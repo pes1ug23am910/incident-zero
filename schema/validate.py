@@ -133,6 +133,8 @@ def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir
     for path, value in _strings(report):
         if is_sensitive(value):
             errors.append(f"{_path(path)}: {SENSITIVE_TEXT_ERROR}")
+        if value.startswith(("kb:", "mem:")) and ("evidence_ids" in path or path[:1] == ("evidence",)):
+            errors.append(f"{_path(path)}: knowledge hints are not telemetry evidence")
     errors.extend(f"{_path(path)}: numbers must be finite" for path in _nonfinite_paths(report))
     # Semantic checks assume the strict schema's types and required fields.
     if errors:

@@ -1,5 +1,5 @@
 [CmdletBinding(PositionalBinding=$false)]
-param([Alias('h','-help')][switch]$Help, [Parameter(Position=0)][string]$Incident, [string]$Combo, [Alias('svc')][string]$Service, [string]$ReportId, [int]$AlertTimeout=150, [int]$CleanTimeout=360, [Parameter(ValueFromRemainingArguments=$true)][string[]]$Remaining)
+param([Alias('h','-help')][switch]$Help, [Parameter(Position=0)][string]$Incident, [string]$Combo, [Alias('svc','-svc')][string]$Service, [string]$ReportId, [int]$AlertTimeout=150, [int]$CleanTimeout=360, [Parameter(ValueFromRemainingArguments=$true)][string[]]$Remaining)
 if ($Help -or ($Remaining -contains '--help') -or $Incident -eq '--help') { Write-Output 'Usage: checkpoint2.ps1 <incident> [-Combo ids] [-Service name] [-ReportId id] [-AlertTimeout 150] [-CleanTimeout 360]; -Help / --help / -h'; exit 0 }
 if ($Remaining) { throw ('Unrecognized arguments: ' + ($Remaining -join ' ')) }
 . "$PSScriptRoot/_shell.ps1"

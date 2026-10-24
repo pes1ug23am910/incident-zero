@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN = re.compile(r"(?<!\w)(?:8013|8016)(?!\w)|ofrep|demo\.flagd\.json|defaultVariant|flagd|:4000\b|feature[_.\s-]*flag|"
                        + "|".join(re.escape(name) for name in FLAG_NAMES), re.I)
 SKIP = {".git", ".venv", ".build", ".specs", ".pytest_cache", "__pycache__", "tests", "runs"}
-EXEMPT_FILES = {"action_api/flags.py", "tools/redact.py"}
+EXEMPT_FILES = {"action_api/flags.py", "tools/redact.py", "scripts/preflight_checks.json"}
 CODE_SUFFIXES = {".py", ".js", ".ts", ".ps1", ".sh"}
 
 

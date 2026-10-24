@@ -177,7 +177,7 @@ def test_report_then_remember_records_terminal_outcome(offline, monkeypatch):
     # This is the offline diagnosis graph's fail-closed response, no Action API.
     final = graph.invoke(Command(resume={'decision': 'reject'}), config)
     assert final['report']['status'] == 'needs_human'
-    record = json.loads((offline / 'memory/terminal.json').read_text(encoding='utf-8'))
+    record = json.loads(next((offline / 'memory').glob('*.json')).read_text(encoding='utf-8'))
     assert record['outcome'] == 'escalated'
     assert record['action_taken'] == []
     assert record['seconds_to_recovery'] is None
@@ -202,7 +202,7 @@ def test_response_graph_remembers_final_rejection_without_execution(offline, env
     assert final['report']['status'] == 'needs_human'
     assert final['report']['approval']['approved'] is False
     assert executor.mutations == []
-    record = json.loads((offline / 'memory/response-memory.json').read_text(encoding='utf-8'))
+    record = json.loads(next((offline / 'memory').glob('*.json')).read_text(encoding='utf-8'))
     assert record['outcome'] == 'escalated' and record['action_taken'] == []
 
 
