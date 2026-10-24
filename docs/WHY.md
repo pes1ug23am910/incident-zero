@@ -1,5 +1,15 @@
 # Why these controls exist
 
+**Audit qualification (October 23):** the historical implementation described
+below has unresolved safety findings. Test approvals in older reports are not
+human decisions; browser r9 was automated. Unknown/trafficless verification must
+escalate without automatic rollback, rather than use the historical r7/r8 path.
+Actual sample age, baseline-relative affected-service traffic, already-clear
+alerts, bounded locks, fresh server state and browser codes require the fold
+fixes. Spanmetrics and spans share one evidence family. Refer to
+[ARCHITECTURE.md](ARCHITECTURE.md) and [EVALUATION_NOTE.md](EVALUATION_NOTE.md) for
+the current status; the historical examples below do not certify those fixes.
+
 The integrated loop can change the live stack only through a concrete approved
 plan. These rules distinguish diagnosis, authorization, command success and
 measured recovery. Actual live results are in [BUILD_05](../BUILD_05.md) and
