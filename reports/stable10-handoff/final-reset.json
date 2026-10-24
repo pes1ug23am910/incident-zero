@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "fault_state_clean": true,
+  "stack_ready": true,
+  "checks": [
+    {
+      "check": "pristine-source",
+      "ok": true,
+      "sha256": "20ecdbe4edca79013c3199e76a950838ee30868d8f5278ca601f44b215811793"
+    },
+    {
+      "check": "persistent-injection-mount",
+      "ok": true
+    },
+    {
+      "check": "containers",
+      "ok": true,
+      "elapsed_s": 0.331,
+      "detail": {
+        "running": 21,
+        "expected": 21
+      }
+    },
+    {
+      "check": "shop",
+      "ok": true,
+      "elapsed_s": 0.016,
+      "detail": 200
+    },
+    {
+      "check": "prometheus",
+      "ok": true,
+      "elapsed_s": 0.005,
+      "detail": 200
+    },
+    {
+      "check": "jaeger-services",
+      "ok": true,
+      "elapsed_s": 0.089,
+      "detail": [
+        "flagd",
+        "frontend",
+        "cart",
+        "ad",
+        "currency",
+        "load-generator",
+        "frontend-proxy",
+        "product-catalog",
+        "shipping",
+        "quote",
+        "recommendation",
+        "email",
+        "jaeger-all-in-one",
+        "payment",
+        "checkout"
+      ]
+    },
+    {
+      "check": "opensearch",
+      "ok": true,
+      "elapsed_s": 0.094,
+      "detail": "yellow"
+    },
+    {
+      "check": "load-generator-ui",
+      "ok": true,
+      "elapsed_s": 0.101,
+      "detail": 200
+    }
+  ],
+  "errors": [],
+  "reset_at": "2026-10-24T08:53:39.021194+05:30"
+}

@@ -90,7 +90,18 @@ test container. Every entry point accepts `-Help`, `--help` and `-h` with exit 0
 For organiser-injected incidents run `python -m detect.watch --interval 10`;
 duplicate-investigation handling still needs the fold regression fix.
 
-**Latest acceptance preflight: FAIL.** clean detector: alerts: checkout:p95_ms; traffic health and baseline: 12 traffic services; nonzero errors/missing baseline/high p95: ['checkout']; RAM: 0.91 GiB free; needs >=1 Earlier fresh checks passed 26/26 at the authorized 1 GiB RAM floor. Recommendation repetition 2 also missed the 120-second agent target. See [BUILD_09](BUILD_09.md) for the partial live table and unfinished checks. Knowledge remains OFF provisionally; no fresh OFF comparison or CLI repair was completed.
+**Latest acceptance preflight: PASS, 26/26 at 08:45 IST on 24 October.**
+The stopped-recommendation demo default is **knowledge OFF**: set
+`$env:INCIDENT_ZERO_KNOWLEDGE = '0'` before its PowerShell command (bash:
+`export INCIDENT_ZERO_KNOWLEDGE=0`). The single fresh OFF run diagnosed
+`recommendation / container_down` at **0.90 confidence in 59.673 s** agent time.
+This morning's ON runs were **0.80 / 56.537 s** and **0.90 / 172.794 s**
+(rounded **0.80 / 57 s**, **0.90 / 173 s**); the second exceeded the <120 s gate.
+OFF therefore has a fresh passing rehearsal for this case; one run does not
+establish general superiority or reliability. Cache was skipped because fewer
+than nine minutes remained before the 08:57 handoff. See [BUILD_10](BUILD_10.md)
+for timings and handoff evidence, and [BUILD_09](BUILD_09.md) for earlier partial
+acceptance. Human-approved Checkpoint 3 remains the operator's 09:00 run.
 
 ## Approval gate and kill switch
 
