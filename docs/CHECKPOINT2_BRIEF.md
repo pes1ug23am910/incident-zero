@@ -2,7 +2,17 @@
 
 Format agreed with the mentor: we pick three practice incidents from the slide, explain the problem, the objective and the expected result, then run the agent live and it must produce that result. The retained diagnosis runs below are historical evidence. The integration round adds the separate full-loop command `scripts/checkpoint3.ps1 <incident>`; measured recovery and approval paths belong in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).
 
-**24 October demo-stable:** fresh retained runs are below; knowledge demo default **OFF**, provisional and not freshly validated. See [BUILD_09](../BUILD_09.md) for failed preparations, complete wrapper times, cleanup and uncompleted checks. Checkpoint 3 and typed CLI/live approval were not exercised in this session.
+**24 October demo-stable:** stopped-recommendation demo default **knowledge OFF**,
+now supported by one fresh passing diagnosis: **0.90 / 59.673 s** agent time.
+The morning ON runs were **0.80 / 56.537 s** and **0.90 / 172.794 s**
+(rounded **0.80 / 57 s**, **0.90 / 173 s**); the latter failed the <120 s gate.
+This is a case-specific demo selection, not proof of general OFF superiority or
+reliability. Latest preflight passed **26/26 at 08:45 IST**. Cache was **not run**:
+the required nine-minute allowance before 08:57 was unavailable after step 1.
+See [BUILD_10](../BUILD_10.md) for this comparison and handoff, and
+[BUILD_09](../BUILD_09.md) for earlier preparations and partial acceptance.
+Checkpoint 3 and typed human approval remain unverified by this session; the
+human operator runs Checkpoint 3 at 09:00.
 
 | Fresh bundle | Diagnosis run ID | Result |
 |---|---|---|
@@ -10,6 +20,7 @@ Format agreed with the mentor: we pick three practice incidents from the slide, 
 | [stable09-payment-on-r4](../reports/stable09-payment-on-r4/report.json) | `runs/20261024T022402.665842Z-6bf15653` | diagnosed; 0.95; 38.891 s agent |
 | [stable09-recommendation-on-r1](../reports/stable09-recommendation-on-r1/report.json) | `runs/20261024T023315.758052Z-0903788b` | diagnosed; 0.80; 56.537 s agent |
 | [stable09-recommendation-on-r2](../reports/stable09-recommendation-on-r2/report.json) | `runs/20261024T024152.039733Z-dc7d26df` | diagnosed; 0.90; 172.794 s agent |
+| [stable10-recommendation-off-r1](../reports/stable10-recommendation-off-r1/report.json) | `runs/20261024T031911.242799Z-f052efa4` | knowledge OFF; diagnosed; 0.90; 59.673 s agent |
 
 ## Why these three
 They cover an application fault, a stopped application container, and a stopped dependency container. They also exercise different evidence paths: traces plus logs, container state plus upstream errors, and errors that point past their emitting service to a dependency. **All three expected proposals are tier 2**: payment is critical, and every restart requires tier 2 review. The CPU backup is intended to demonstrate tier 3 abstention; it has not been rehearsed live. Checkpoint 2 runs diagnose and propose; Checkpoint 3 uses the integrated Action API to collect approval, execute and verify.
@@ -20,7 +31,7 @@ agent time below 120 seconds. Retry a failed core case once, then test knowledge
 off if the retry fails. Cache is allowed to be intermittent and must be disclosed.
 Each attempt uses a fresh bundle; unit tests cannot fill the live table.
 
-The one-command sequence is `scripts/checkpoint2.ps1 <incident>` (bash twin available): preflight, reset, verify clean telemetry, inject, wait for an alert, diagnose, validate, print, reset and verify clean telemetry. Wrappers use the supported 90-second alert budget; 150-second watcher support remains a strict regression xfail. Unsupported values are rejected before injection. Reset clearance takes at least 180 seconds, sampled every 30 seconds. The fresh demo-stable table is in [BUILD_09](../BUILD_09.md); older results below remain historical. Approval modes and rollback limitations are qualified in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).
+The one-command sequence is `scripts/checkpoint2.ps1 <incident>` (bash twin available): preflight, reset, verify clean telemetry, inject, wait for an alert, diagnose, validate, print, reset and verify clean telemetry. Wrappers use the supported 90-second alert budget; 150-second watcher support remains a strict regression xfail. Unsupported values are rejected before injection. Reset clearance takes at least 180 seconds, sampled every 30 seconds. Fresh demo-stable results are in [BUILD_09](../BUILD_09.md) and [BUILD_10](../BUILD_10.md); older results below remain historical. Approval modes and rollback limitations are qualified in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).
 
 ## 1. `payment-failure` (the payment service fails when charging)
 
@@ -45,7 +56,7 @@ The one-command sequence is `scripts/checkpoint2.ps1 <incident>` (bash twin avai
 - **Objective.** From the alert on the frontend's error rate or on container health, the agent must look past the frontend (where the errors appear) to the component that is actually missing, and prove it with container state, not just with upstream errors.
 - **Expected result.** `component = recommendation`, `category = container_down`, final confidence at least 0.75, container evidence (`Status = exited`) plus upstream failed calls, and a `restart_service` proposal targeting `recommendation`. Impact tier **2**, status `diagnosed`: the component is auxiliary, but a process restart always needs full evidence and explicit typed yes. It is self-healing rather than an instant reversible switch, so it does not qualify for tier 1.
 - **What the agent must not do.** Blame the frontend, or stop at "errors on frontend" without the container evidence.
-- Command: `scripts/checkpoint2.ps1 container-stopped -Service recommendation`
+- Demo default: set `$env:INCIDENT_ZERO_KNOWLEDGE = '0'`, then run `scripts/checkpoint2.ps1 container-stopped -Service recommendation`. Bash: `INCIDENT_ZERO_KNOWLEDGE=0 bash scripts/checkpoint2.sh container-stopped --svc recommendation`. Use `-Service` in PowerShell; the literal `--svc` form was rejected in this session before stack access.
 - Rehearsal 1 (r1) run id: `runs/20261023T114929.814263Z-8fd5a8fd`; report: [container-stopped-r1](../reports/container-stopped-r1/report.json)
 - Rehearsal 2 (r2) run id: `runs/20261023T115651.341545Z-14d550d5`; report: [container-stopped-r2](../reports/container-stopped-r2/report.json)
 - Rehearsal 3 (r3) run id: `runs/20261023T120358.826377Z-c84200c3`; report: [container-stopped-r3](../reports/container-stopped-r3/report.json)
