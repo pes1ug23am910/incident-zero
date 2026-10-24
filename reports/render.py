@@ -107,7 +107,9 @@ def render_report(report: dict) -> str:
              r['verification'].get('outcome'), ', '.join(r['error'].get('reason_codes', []))) for r in report['action_history']])
     lines += ["", "## Alternatives and escalation", ""]
     lines += [f"- {_cell(item)}" for item in root.get("alternatives_considered", [])] or ["No alternatives recorded."]
-    lines += ["", _cell(report["escalation_note"]), "", "## Prevention", "", _cell(report["prevention"]), "", "## Limitations", ""]
+    lines += ["", _cell(report["escalation_note"]), "", "## Prevention", ""]
+    lines += [_cell(line) for line in report["prevention"].splitlines()]
+    lines += ["", "## Limitations", ""]
     lines += [f"- {_cell(item)}" for item in report["limitations"]] or ["No limitations recorded."]
     agent = report["agent"]
     lines += ["", "## Investigation budget", "", f"Model: {_cell(agent['model'])}; {agent['tool_calls']} tool calls; {agent['elapsed_s']:.2f} s; stopped because {_cell(agent['stopped_because'])}.", ""]
