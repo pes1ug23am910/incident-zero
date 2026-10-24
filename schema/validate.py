@@ -141,6 +141,19 @@ def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir
     def fail(path: str, message: str) -> None:
         errors.append(f"$.{path}: {message}")
 
+    if 'knowledge_consulted' in report:
+        consulted = report['knowledge_consulted']
+        for key, kind in (('runbook_refs', 'runbook'), ('memory_refs', 'memory'), ('service_refs', 'service')):
+            refs = consulted[key]
+            if key in report and report[key] != refs:
+                fail(key, 'must equal knowledge_consulted citations')
+            if len({ref['id'] for ref in refs}) != len(refs):
+                fail('knowledge_consulted.' + key, 'citation ids must be unique')
+            for ref in refs:
+                prefix = 'mem:' if kind == 'memory' else 'kb:'
+                if ref['kind'] != kind or not ref['id'].startswith(prefix):
+                    fail('knowledge_consulted.' + key, 'citation kind and namespace must match the collection')
+
     status = report["status"]
     root = report["root_cause"]
     if root["confidence"] < 0.6 and status not in {"needs_human", "no_incident", "aborted"}:

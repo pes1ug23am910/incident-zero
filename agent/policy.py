@@ -94,7 +94,7 @@ def runbook_suggestion(causes: list[dict[str, Any]]) -> str:
     return "Runbook: collect fresh component and dependency traces, logs and container state; review persistence and rollback before selecting a change."
 
 
-def propose(report: dict[str, Any]) -> dict[str, Any]:
+def _propose(report: dict[str, Any]) -> dict[str, Any]:
     """Return a new report with policy-generated proposals and impact.
 
     Aggregate tier 3 suppresses every candidate, including in combined incidents.
@@ -127,6 +127,45 @@ def propose(report: dict[str, Any]) -> dict[str, Any]:
     if not result["proposed_actions"]:
         result["status"] = "needs_human"
         result["escalation_note"] = runbook_suggestion(causes)
+    return result
+
+
+def propose(report: dict[str, Any], *, knowledge_selections=None) -> dict[str, Any]:
+    """Validate retrieved remediation against the existing closed policy.
+
+    A citation can explain a permitted proposal. It cannot authorize a new
+    operation, target, parameter, or risk-tier exception.
+    """
+    result = _propose(report)
+    if knowledge_selections is None:
+        return result
+    refs = {ref['id']: ref for ref in result.get('runbook_refs', [])}
+    approved = {(action['type'], action['target']): action for action in result['proposed_actions']}
+    causes = causes_for(result)
+    matched = set()
+    for selection in knowledge_selections:
+        citation = selection['citation_id']
+        ref = refs.get(citation, {})
+        choice = (selection['action_type'], selection['target'])
+        related = [cause for cause in causes if (candidate := select_action(cause))
+                   and (candidate['type'], candidate['target']) == choice]
+        lifecycle = {'container_down', 'restart_loop', 'dependency_unavailable'}
+        applies = any(cause['component'] in ref.get('applies_to', []) and (
+            ref.get('category') in ('service', cause['category']) or
+            ref.get('category') in lifecycle and cause['category'] in lifecycle) for cause in related)
+        valid = (ref.get('section') == 'remediation' and choice in approved
+                 and choice[0] in ref.get('action_types', []) and applies)
+        if valid:
+            action = approved[choice]
+            action['reason'] += f" Runbook: {citation}; validated against the action allowlist."
+            matched.add(choice)
+        else:
+            result['limitations'].append(
+                f"Runbook/policy disagreement: {citation} suggested {choice[0]} on {choice[1]}; "
+                'policy wins. No unapproved operation, target or parameters were admitted.')
+    if approved.keys() - matched:
+        result['limitations'].append(
+            'No matching cited runbook selection for every proposal; the evidence-based policy supplied the remaining proposal.')
     return result
 
 
