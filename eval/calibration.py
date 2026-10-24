@@ -12,6 +12,7 @@ from datetime import datetime
 import json
 import math
 from pathlib import Path
+import re
 import statistics
 from typing import Any
 
@@ -280,14 +281,106 @@ def evaluate_manifest(path: str | Path, root: Path = ROOT) -> dict:
     return summarize(rows)
 
 
+def case_for_incident(incident_id: str, cases: dict[str, dict]) -> str | None:
+    """Conservative offline metadata match; never infer truth from a diagnosis."""
+    if incident_id in cases:
+        return incident_id
+    base = re.sub(r'(?:-loop)?-r[1-9][0-9]*$', '', incident_id)
+    if base in cases:
+        return base
+    matches = [key for key, case in cases.items() if len(case['injections']) == 1
+               and case['injections'][0]['incident_id'] == base]
+    return matches[0] if len(matches) == 1 else None
+
+
+def evaluate_bundles(directory: str | Path, *, cases_path: Path = CASES_PATH) -> dict:
+    """Read retained report.json files only; missing labels are not failures."""
+    directory = Path(directory)
+    if not directory.is_dir():
+        raise ValueError('Bundle directory does not exist')
+    cases = load_cases(cases_path)
+    labelled, unlabelled = [], []
+    for path in sorted(directory.rglob('report.json')):
+        report = json.loads(path.read_text(encoding='utf-8-sig'))
+        confidence = report['root_cause']['confidence']
+        brier_score([confidence], [False])  # Validate even an unlabelled probability.
+        incident_id = report['incident_id']
+        case_id = case_for_incident(incident_id, cases)
+        if case_id is None:
+            row = {'incident_id': incident_id, 'case_id': None, 'confidence': confidence,
+                   'correct': None, 'label': 'unlabelled', 'calibration_eligible': False}
+            unlabelled.append(row)
+        else:
+            row = score_report(report, case_id, cases=cases)
+            row['incident_id'] = incident_id
+            labelled.append(row)
+        row['report_path'] = path.relative_to(directory).as_posix()
+    summary = summarize(labelled)
+    eligible = [row for row in labelled if row['calibration_eligible']]
+    buckets = []
+    for lower, upper, label in BUCKETS:
+        samples = [row for row in eligible if lower <= row['confidence'] < upper]
+        hits = sum(row['correct'] for row in samples)
+        buckets.append({'bucket': label, 'count': len(samples), 'correct': hits,
+                        'hit_rate': hits / len(samples) if samples else None,
+                        'wilson_95': wilson_interval(hits, len(samples)),
+                        'unlabelled': sum(lower <= row['confidence'] < upper for row in unlabelled),
+                        'excluded': sum(not row['calibration_eligible'] and lower <= row['confidence'] < upper
+                                        for row in labelled)})
+    summary.update(bundle_count=len(labelled) + len(unlabelled), unlabelled=unlabelled,
+                   calibration_count=len(eligible), excluded_count=len(labelled) - len(eligible),
+                   bundle_buckets=buckets,
+                   brier=brier_score([row['confidence'] for row in eligible], [row['correct'] for row in eligible]))
+    return summary
+
+
+def bundle_markdown(summary: dict) -> str:
+    lines = ['## Calibration (measured)', '',
+             'Reproduce with `python -m eval.calibration reports/`. Only retained `report.json` files are read; '
+             'no stack access or injection is performed.', '',
+             f"Bundles: {summary['bundle_count']}; labelled: {len(summary['runs'])}; "
+             f"unlabelled: {len(summary['unlabelled'])}; cause-confidence samples: {summary['calibration_count']}; "
+             f"labelled abstentions/clean reports excluded: {summary['excluded_count']}. "
+             f"Brier score (labelled cause-confidence samples): {_cell(summary['brier'])}.", '',
+             '| Stated confidence | Labelled count | Hits | Hit rate | Wilson 95% | Unlabelled | Excluded |',
+             '|---|---:|---:|---:|---|---:|---:|']
+    for bucket in summary['bundle_buckets']:
+        interval = bucket['wilson_95']
+        values = (bucket['bucket'], bucket['count'], bucket['correct'], bucket['hit_rate'],
+                  f'{interval[0]:.4f}–{interval[1]:.4f}' if interval else None,
+                  bucket['unlabelled'], bucket['excluded'])
+        lines.append('| ' + ' | '.join(_cell(value) for value in values) + ' |')
+    lines += ['', 'Labels use exact cause-set `correct` from the evaluator against `eval/cases.jsonl`, '
+              'not recovery status. IDs match exact case IDs or unique single-injection IDs, with optional '
+              '`-rN` / `-loop-rN` repetition suffixes. No label is inferred from the predicted component, '
+              'directory name or a successful action. Injection journals are not verified by this command.', '',
+              'Small-sample caveat: these are retained practice bundles, with repeated cases and different '
+              'models/prompts pooled descriptively. Wilson intervals assume independent Bernoulli trials; '
+              'correlated repetitions and selective retention limit that interpretation. This is not evidence '
+              'of calibrated probabilities, held-out accuracy, or the current prompt\'s accuracy. '
+              'Unlabelled bundles are excluded from hit rates and Brier, never counted as incorrect. '
+              'Unknown-only abstentions and clean no-fault reports have no asserted cause probability; '
+              'false-positive causes on no-fault cases remain eligible.', '',
+              '| Bundle | Matched case | Correct | Confidence | Included in calibration |',
+              '|---|---|---|---:|---|']
+    for row in sorted(summary['runs'] + summary['unlabelled'], key=lambda row: row['report_path']):
+        values = (row['report_path'], row['case_id'] or 'unlabelled',
+                  'unlabelled' if row['correct'] is None else 'yes' if row['correct'] else 'no',
+                  row['confidence'], 'yes' if row['calibration_eligible'] else 'no')
+        lines.append('| ' + ' | '.join(_cell(value) for value in values) + ' |')
+    return '\n'.join(lines) + '\n'
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('bundles', nargs='?', type=Path, help='Read-only bundle directory; prints a Markdown calibration table')
     parser.add_argument("--results", default=".build/current-results.json", help="Explicit evaluation manifest; not passed to diagnosis")
     parser.add_argument("--json", dest="json_path")
     parser.add_argument("--markdown", dest="markdown_path")
     args = parser.parse_args(argv)
     try:
-        summary = evaluate_manifest(args.results)
+        summary = evaluate_bundles(args.bundles) if args.bundles is not None else evaluate_manifest(args.results)
+        rendered = bundle_markdown(summary) if args.bundles is not None else markdown(summary)
         encoded = json.dumps(summary, indent=2, allow_nan=False) + "\n"
         if args.json_path:
             path = Path(args.json_path)
@@ -296,9 +389,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.markdown_path:
             path = Path(args.markdown_path)
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(markdown(summary), encoding="utf-8")
+            path.write_text(rendered, encoding="utf-8")
         if not args.json_path and not args.markdown_path:
-            print(encoded, end="")
+            print(rendered if args.bundles is not None else encoded, end="")
         else:
             print(f"Scored {len(summary['runs'])} reports across {len(summary['groups'])} model/split groups.")
         return 0
