@@ -160,7 +160,12 @@ class Investigation:
 
     def diagnose(self, state):
         from .reporting import build_report
+        from .review import maybe_review
         report = build_report(state, self.router.summary(), time.monotonic()-self.started)
+        report = maybe_review(report, self.router, self.read, self.run_dir,
+                              env=getattr(self.router, 'env', None),
+                              stop_requested=lambda: (ROOT / 'STOP').exists())
+        report['agent']['elapsed_s'] = round(time.monotonic() - self.started, 3)
         return {'report': report, 'status': report['status'], 'audit': [{'node': 'diagnose', 'ts': now()}]}
 
     def assess_risk(self, state):

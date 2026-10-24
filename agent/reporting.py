@@ -13,6 +13,39 @@ from .prompts import PROMPT_SHA256
 ROOT = Path(__file__).resolve().parents[1]
 
 
+PREVENTION = {
+    'application_flag': 'Gate canary promotion on error-rate regression and add a contract test for the failing operation. Alert settings: `error_rate: 0.05`, `rate_window_s: 120`, `debounce_s: 180`.',
+    'container_down': 'Add a readiness probe every 10 s with a 2 s timeout and remove the instance from routing after 3 failures; configure a restart policy and alert on non-running container state.',
+    'restart_loop': 'Alert settings: `restart_increase: 2`, `restart_window_s: 300`; add startup grace and a readiness probe (10 s interval, 2 s timeout, 3 failures) so an unhealthy restart never receives traffic.',
+    'dependency_unavailable': 'Give callers a 1 s dependency timeout and at most 2 retries with exponential backoff and jitter, only for idempotent operations and within the request deadline; gate readiness on the required dependency.',
+    'network': 'Set a 1 s per-hop timeout within the end-to-end deadline, with at most 1 retry for idempotent calls; compare client/server span latency. Alert settings: `p95_ms: 1500`, `rate_window_s: 120`.',
+    'resource_starvation': 'Load-test a candidate per-instance limit of 1 CPU and 512 MiB memory and bound caches before rollout. Alert settings: `cpu_limit_saturation: 0.85`, `memory_ratio: 0.95`, `memory_growth_ratio: 1.25`.',
+    'load': 'Load-test an ingress cap of 100 requests/s per replica with a burst of 200 and return 429 above capacity; size replicas from that test. Alert settings: `rps_multiplier: 3`, `baseline_window_s: 600`, `rate_window_s: 120`.',
+    'telemetry_outage': 'Probe the collector readiness endpoint every 10 s with a 2 s timeout and 3-failure threshold; independently alert on missing scrapes for 120 s and retain a bounded exporter retry queue.',
+}
+
+
+def prevention_for(causes):
+    """Evidence-linked proposals, not claims that settings have been deployed."""
+    lines = ['Proposed safeguards; validate timeout, capacity and probe settings against the service SLO before rollout. '
+             'Alert snippets use the flat numeric format in `detect/thresholds.yaml`.', '']
+    seen = set()
+    for cause in causes:
+        component = cause.get('component', 'unknown')
+        category = cause.get('category', 'unknown')
+        ids = tuple(dict.fromkeys(cause.get('evidence_ids', [])))
+        identity = (component, category, ids)
+        if identity in seen:
+            continue
+        seen.add(identity)
+        advice = PREVENTION.get(category, 'Establish the cause with fresh component and dependency observations before selecting a preventive change.')
+        citation = ', '.join(f'`{identifier}`' for identifier in ids) or 'none retained; cause requires confirmation'
+        lines.append(f'- {component}: {advice} Evidence: {citation}.')
+    if not seen:
+        lines.append('- No established cause or evidence; collect observations before selecting a preventive change.')
+    return '\n'.join(lines)
+
+
 def build_report(state, model_summary, elapsed):
     evidence = state.get('evidence', {})
     health = state.get('health', {})
@@ -97,7 +130,7 @@ def build_report(state, model_summary, elapsed):
             'action': {'executed': False, 'started_at': None, 'finished_at': None, 'action_log_ref': None},
             'verification': {'checked_at': None, 'signal': alert['signal'], 'before': None, 'after': None, 'recovered': None, 'rolled_back': False},
             'status': status, 'escalation_note': escalation,
-            'prevention': 'Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.',
+            'prevention': prevention_for(causes),
             'limitations': limitations, 'agent': {**model_summary, 'tool_calls': state.get('tool_calls_used',0),
                 'elapsed_s': round(elapsed, 3), 'stopped_because': stopped, 'prompt_sha256': PROMPT_SHA256, 'framework': 'LangGraph StateGraph + SqliteSaver'}}
     from .knowledge_context import attach_context
@@ -117,7 +150,7 @@ def write_bundle(report, alert, run_dir, output, secrets=(), external_schema=Non
     safe_alert['anomalies'] = [a for a in alert.get('anomalies',[]) if a.get('service') in SERVICES]
     (bundle / 'alert.json').write_text(json.dumps(scrub(safe_alert,secrets),indent=2)+'\n',encoding='utf-8')
     (bundle / 'action-log.jsonl').write_text('',encoding='utf-8')
-    for name in ('llm.jsonl','graph_updates.jsonl'):
+    for name in ('llm.jsonl','graph_updates.jsonl','review-llm.jsonl'):
         source = run_dir / name
         (bundle / name).write_text(scrub(source.read_text(encoding='utf-8'),secrets) if source.exists() else '',encoding='utf-8')
     (bundle / 'evidence').mkdir(exist_ok=True)
