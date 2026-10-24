@@ -5,6 +5,36 @@ repetitions are recorded separately in [BUILD_09](../BUILD_09.md). Tuning cases,
 live writes with automated approval, and synthetic fixtures remain separate.
 A schema-valid report is not automatically a correct diagnosis or recovery claim.
 
+## Pushed head 9e05fa87a, 24 October 10:27-11:07 IST: live verification
+
+This section supersedes the readiness paragraph below it. Latest preflight:
+**PASS 26/26** at 10:54:43 IST (`20261024T052443Z`), on a fresh real Control Room
+started 10:27:29 IST. Knowledge OFF, reviewer OFF, test mode unset, model
+`openai/gpt-5` through OpenRouter.
+
+| Bundle | Mode | Component / category | Confidence (model / evidence / final) | Alert after inject | Agent | Approval | Outcome |
+|---|---|---|---|---|---|---|---|
+| [head-payment-manual-r3](../reports/head-payment-manual-r3/report.json) | Checkpoint 2, diagnosis only | payment / application_flag | 0.80 / 0.95 / 0.80 | 38.6 s | 3 tool calls, 30.92 s | None (tier 2 proposal: toggle_flag) | diagnosed; bundle valid; reset verified |
+| [head-payment-cp3-r1](../reports/head-payment-cp3-r1/report.json) | Checkpoint 3, **human typed yes**, terminal, live | payment / application_flag | 0.85 / 0.95 / 0.85 | 66.9 s | 3 tool calls, 55.41 s | Yash Verma, surface `cli`, mode `live`, token `sha256:aac79...`, dry run performed | **fixed**: toggle_flag applied in 2,395 ms (`action_log:37`); error_rate 0.137 -> 0.0 over 182.4 s, 7 samples, 868 requests, load running; no rollback; inject-to-recovery 339.8 s |
+
+Run IDs: `runs/20261024T051446.939966Z-e9d0705b` (manual-r3) and
+`runs/20261024T052911.098886Z-5c0b2462` (cp3-r1, operator run
+`20261024T052453.911601Z-ba5f0b16`). `test_auto_approval` is `false` in the
+cp3-r1 record; the wrapper raised load from 5 to 20 users for charge traffic
+before the baseline and restored it afterwards. Both post-run resets and clean
+observations passed.
+
+Two preparation refusals preceded these runs and are not evidence against the
+code: at 10:30 the baseline sample showed `checkout:p95_ms` above threshold, and
+at 10:35 preflight failed on `cart`/`checkout` p95 and 0.98 GiB free RAM. Host
+memory was the cause (a 13-process browser held 1.7 GB); after it was closed,
+free RAM rose to 2.3 GB and no refusal recurred. Confidence on these two runs
+(0.80, 0.85) sits below the morning's 0.90-0.95; the model number was the
+limiter each time, not the evidence score.
+
+Still not exercised on this head: the browser-approval twin, a STOP drill, a
+fresh clone on a second machine, and the reviewer live.
+
 ## Demo-stable, 24 October: current readiness
 
 Latest preflight: **FAIL 23/26** at 08:24 IST: RAM 0.91 GiB and checkout latency.

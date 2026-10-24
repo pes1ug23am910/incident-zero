@@ -1,0 +1,119 @@
+{
+  "incident_id": "head-payment-manual-r3",
+  "injection_run_id": "20261024T051324.889977Z-9c0e2a",
+  "injection_run_ids": [
+    "20261024T051324.889977Z-9c0e2a"
+  ],
+  "report_path": "D:\\incident-zero-stable\\reports\\head-payment-manual-r3\\report.md",
+  "ok": true,
+  "stage_seconds": {
+    "reset_before": 2.629,
+    "clear_before": 182.501,
+    "baseline": 2.164,
+    "inject": 3.209,
+    "wait_for_alert": 38.598,
+    "agent": 37.747,
+    "validate": 1.026,
+    "print_report": 0.01,
+    "reset_after": 2.144,
+    "clear_after": 182.255
+  },
+  "recovery_verification": {
+    "before": {
+      "verified": true,
+      "elapsed_s": 182.501,
+      "samples": [
+        {
+          "elapsed_s": 2.427,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 31.769,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 61.709,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 92.61,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 122.585,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 152.499,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 182.501,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        }
+      ]
+    },
+    "after": {
+      "verified": true,
+      "elapsed_s": 182.255,
+      "samples": [
+        {
+          "elapsed_s": 2.286,
+          "clean": false,
+          "reason": "checkout error rate 0.0556; frontend error rate 0.0112; frontend-proxy error rate 0.0152; payment error rate 0.1429",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 32.282,
+          "clean": false,
+          "reason": "checkout error rate 0.0755; frontend error rate 0.0215; frontend-proxy error rate 0.0272; payment error rate 0.2222",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 62.235,
+          "clean": false,
+          "reason": "checkout error rate 0.0755; frontend error rate 0.0215; frontend-proxy error rate 0.0272; payment error rate 0.2222",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 92.192,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 122.262,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 152.239,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        },
+        {
+          "elapsed_s": 182.255,
+          "clean": true,
+          "reason": "live traffic, containers running, observed error rates cleared",
+          "evidence_count": 156
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,289 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "head-payment-manual-r3",
+  "run_id": "runs/20261024T051407.384676Z-43429953",
+  "detected_at": "2026-10-24T05:14:05.872259+00:00",
+  "diagnosed_at": "2026-10-24T05:14:38.308823+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "error_rate",
+    "service": "checkout",
+    "observed": 0.05555555555555555,
+    "threshold": 0.05,
+    "window_s": 120,
+    "baseline": null
+  },
+  "symptoms": [
+    {
+      "service": "checkout",
+      "signal": "error_rate",
+      "observed": "0.05555555555555555",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792818847.414=0.05555555555555555",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792818847.414=1040.0000000000005"
+      ]
+    },
+    {
+      "service": "payment",
+      "signal": "error_rate",
+      "observed": "0.14285714285714285",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792818847.414=0.14285714285714285"
+      ]
+    },
+    {
+      "service": "frontend",
+      "signal": "investigation_context",
+      "observed": "Failure observed in evidence collected after the initial health overview.",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792818847.414=0.011235955056179777",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792818847.414=866.2500000000005"
+      ]
+    },
+    {
+      "service": "frontend-proxy",
+      "signal": "investigation_context",
+      "observed": "Failure observed in evidence collected after the initial health overview.",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792818847.414=0.015151515151515154",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792818847.414=869.9999999999993"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "health_table",
+      "query": "{\"lookback_s\": 120}",
+      "why": "Locate every service anomaly before selecting a focused read.",
+      "finding": "Observed 20 service rows; 4 symptom entries.",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792818847.414=0.05555555555555555",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792818847.414=0.011235955056179777",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792818847.414=0.015151515151515154",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792818847.414=0.14285714285714285",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792818847.414=1040.0000000000005",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792818847.414=866.2500000000005",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792818847.414=869.9999999999993"
+      ]
+    },
+    {
+      "step": 2,
+      "tool": "get_traces",
+      "query": "{\"service\": \"checkout\", \"lookback_s\": 120, \"errors_only\": true, \"limit\": 5}",
+      "why": "Inspect checkout error traces to identify the failing operation and whether errors stem from the payment dependency.",
+      "finding": "[{\"trace_id\": \"60fe138af54d3714adc2bdedea7f4e9a\", \"duration_ms\": 8669327.211, \"started_at\": \"2026-10-24T02:49:12.967127+00:00\", \"ended_at\": \"2026-10-24T05:13:42.294338+00:00\", \"root_span\": {\"span_id\": \"54c48c1b4ee1c7e4\", \"service\": \"frontend-proxy\", \"operation\": \"ingress\", \"duration_ms\": 45.007, \"status_message\": \"\", \"exception\": {}}, \"first_error_span\": {\"span_id\": \"d5c17d2ca09c13ef\", \"service\": \"payment\", \"operation\": \"grpc.oteldemo.PaymentService/Charge\", \"duration_ms\": 21.626, \"status_message\": \"\", \"exception\": {\"exception.message\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"exception.stacktrace\": \"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.chargeServiceHandler [as charge] (/usr/src/app/index.js:21:22)\", \"exception.type\": \"Error\"}}, \"origin_error_spans\": [{\"span_id\": \"d5c17d2ca09c13ef\", \"service\": \"payment\", \"operation\": \"grpc.oteldemo.PaymentService/Charge\", \"duration_ms\": 21.626, \"status_message\": \"\", \"exception\": {\"exception.message\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"exception.stacktrace\": \"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.char",
+      "evidence_ids": [
+        "span:60fe138af54d3714adc2bdedea7f4e9a/d5c17d2ca09c13ef"
+      ]
+    },
+    {
+      "step": 3,
+      "tool": "get_logs",
+      "query": "{\"service\": \"payment\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
+      "why": "Corroborate the payment application error seen in traces and confirm it’s a local failure, not a dependency outage.",
+      "finding": "[{\"timestamp\": \"2026-10-24T05:14:13.023085413Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"46c18a9ddeec4b6bf1a3557feb7d25b1\", \"evidence_id\": \"dlog:payment:4f481e799c37521eb9be95d3b738d29d5857bec8b0600fdfdbb2c3762a1b1719\"}, {\"timestamp\": \"2026-10-24T05:13:42.282556071Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"60fe138af54d3714adc2bdedea7f4e9a\", \"evidence_id\": \"dlog:payment:9261cb3e939831163927c08cf3aa0310a64148af2a2192e92d3f588358eb5023\"}]",
+      "evidence_ids": [
+        "dlog:payment:9261cb3e939831163927c08cf3aa0310a64148af2a2192e92d3f588358eb5023"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "payment",
+    "cause": "Payment Charge returns application error: \"Payment request failed. Invalid token\"",
+    "category": "application_flag",
+    "confidence_model": 0.8,
+    "evidence_ids": [
+      "span:60fe138af54d3714adc2bdedea7f4e9a/d5c17d2ca09c13ef",
+      "dlog:payment:9261cb3e939831163927c08cf3aa0310a64148af2a2192e92d3f588358eb5023",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792818847.414=0.14285714285714285"
+    ],
+    "explains_symptoms": [
+      "checkout",
+      "frontend",
+      "frontend-proxy",
+      "payment"
+    ],
+    "alternatives_considered": [
+      "payment dependency_unavailable",
+      "checkout application error"
+    ],
+    "confidence_evidence": 0.95,
+    "confidence": 0.8
+  },
+  "root_causes": [
+    {
+      "component": "payment",
+      "cause": "Payment Charge returns application error: \"Payment request failed. Invalid token\"",
+      "category": "application_flag",
+      "confidence_model": 0.8,
+      "evidence_ids": [
+        "span:60fe138af54d3714adc2bdedea7f4e9a/d5c17d2ca09c13ef",
+        "dlog:payment:9261cb3e939831163927c08cf3aa0310a64148af2a2192e92d3f588358eb5023",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792818847.414=0.14285714285714285"
+      ],
+      "explains_symptoms": [
+        "checkout",
+        "frontend",
+        "frontend-proxy",
+        "payment"
+      ],
+      "alternatives_considered": [
+        "payment dependency_unavailable",
+        "checkout application error"
+      ],
+      "confidence_evidence": 0.95,
+      "confidence": 0.8
+    }
+  ],
+  "evidence": [
+    {
+      "id": "dlog:payment:9261cb3e939831163927c08cf3aa0310a64148af2a2192e92d3f588358eb5023",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-24T05:13:42.282556071Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"60fe138af54d3714adc2bdedea7f4e9a\", \"evidence_id\": \"dlog:payment:9261cb3e939831163927c08cf3aa0310a64148af2a2192e92d3f588358eb5023\", \"original_line\": \"2026-10-24T05:13:42.282556071Z {\\\"level\\\":\\\"warn\\\",\\\"time\\\":1792818822279,\\\"pid\\\":16,\\\"hostname\\\":\\\"c4595978b15c\\\",\\\"trace_id\\\":\\\"60fe138af54d3714adc2bdedea7f4e9a\\\",\\\"span_id\\\":\\\"d5c17d2ca09c13ef\\\",\\\"trace_flags\\\":\\\"01\\\",\\\"service.name\\\":\\\"payment\\\",\\\"err\\\":{\\\"type\\\":\\\"Error\\\",\\\"message\\\":\\\"Payment request failed. Invalid token. app.loyalty.level=gold\\\",\\\"stack\\\":\\\"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\\\n    at asyn",
+      "raw_ref": "python -m tools.resolve 'dlog:payment:9261cb3e939831163927c08cf3aa0310a64148af2a2192e92d3f588358eb5023' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792818847.414=0.05555555555555555",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"checkout\"}, \"timestamp\": 1792818847.414, \"value\": 0.05555555555555555, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792818847.414=0.05555555555555555' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792818847.414=0.011235955056179777",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend\"}, \"timestamp\": 1792818847.414, \"value\": 0.011235955056179777, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792818847.414=0.011235955056179777' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792818847.414=0.015151515151515154",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend-proxy\"}, \"timestamp\": 1792818847.414, \"value\": 0.015151515151515154, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792818847.414=0.015151515151515154' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792818847.414=0.14285714285714285",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"payment\"}, \"timestamp\": 1792818847.414, \"value\": 0.14285714285714285, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792818847.414=0.14285714285714285' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792818847.414=1040.0000000000005",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"checkout\"}, \"timestamp\": 1792818847.414, \"value\": 1040.0000000000005, \"query\": \"named:p95_latency_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792818847.414=1040.0000000000005' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792818847.414=866.2500000000005",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend\"}, \"timestamp\": 1792818847.414, \"value\": 866.2500000000005, \"query\": \"named:p95_latency_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792818847.414=866.2500000000005' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792818847.414=869.9999999999993",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend-proxy\"}, \"timestamp\": 1792818847.414, \"value\": 869.9999999999993, \"query\": \"named:p95_latency_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792818847.414=869.9999999999993' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    },
+    {
+      "id": "span:60fe138af54d3714adc2bdedea7f4e9a/d5c17d2ca09c13ef",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"60fe138af54d3714adc2bdedea7f4e9a\", \"spanID\": \"d5c17d2ca09c13ef\", \"operationName\": \"grpc.oteldemo.PaymentService/Charge\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"60fe138af54d3714adc2bdedea7f4e9a\", \"spanID\": \"b0a5940d0cd3c45f\"}], \"startTime\": 1792818822262000, \"duration\": 21626, \"tags\": [{\"key\": \"app.payment.amount\", \"type\": \"string\", \"value\": \"11127.34\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.error_message\", \"type\": \"string\", \"value\": \"Payment request failed. Invalid token. app.loyalty.level=gold\"}, {\"key\": \"grpc.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-grpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.57.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"rpc.method\", \"type\": \"string\", \"value\": \"Charge",
+      "raw_ref": "python -m tools.resolve 'span:60fe138af54d3714adc2bdedea7f4e9a/d5c17d2ca09c13ef' --run-dir 'runs/20261024T051407.384676Z-43429953'"
+    }
+  ],
+  "proposed_action": {
+    "type": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "reason": "disable the failure switch for payment",
+    "risk": "Configuration change requires human approval and a recorded rollback value.",
+    "dry_run": {
+      "performed": false,
+      "predicted_effect": "Restore normal application behavior in payment; confirm with fresh telemetry."
+    }
+  },
+  "proposed_actions": [
+    {
+      "type": "toggle_flag",
+      "target": "payment",
+      "parameters": {
+        "service": "payment"
+      },
+      "reason": "disable the failure switch for payment",
+      "risk": "Configuration change requires human approval and a recorded rollback value.",
+      "dry_run": {
+        "performed": false,
+        "predicted_effect": "Restore normal application behavior in payment; confirm with fresh telemetry."
+      }
+    }
+  ],
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "error_rate",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "diagnosed",
+  "escalation_note": null,
+  "prevention": "Proposed safeguards; validate timeout, capacity and probe settings against the service SLO before rollout. Alert snippets use the flat numeric format in `detect/thresholds.yaml`.\n\n- payment: Gate canary promotion on error-rate regression and add a contract test for the failing operation. Alert settings: `error_rate: 0.05`, `rate_window_s: 120`, `debounce_s: 180`. Evidence: `span:60fe138af54d3714adc2bdedea7f4e9a/d5c17d2ca09c13ef`, `dlog:payment:9261cb3e939831163927c08cf3aa0310a64148af2a2192e92d3f588358eb5023`, `metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792818847.414=0.14285714285714285`.",
+  "limitations": [
+    "Actions are proposals only. No approval, execution or recovery was performed.",
+    "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
+    "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs."
+  ],
+  "agent": {
+    "model": "openai/gpt-5",
+    "models_used": [
+      "openai/gpt-5"
+    ],
+    "llm_calls": 3,
+    "tokens_input": 29775,
+    "tokens_output": 3684,
+    "estimated_cost_usd": 0.074059,
+    "tool_calls": 3,
+    "elapsed_s": 30.922,
+    "stopped_because": "confident",
+    "prompt_sha256": "359def83037dd7284ffe3d937fb51f938dfcec9ff5d1698445cff54bdc8e1c7f",
+    "framework": "LangGraph StateGraph + SqliteSaver"
+  },
+  "impact": {
+    "business": "critical",
+    "journeys_affected": [
+      "checkout",
+      "payment"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "instant",
+    "data_risk": "none",
+    "confidence": 0.8,
+    "tier": 2,
+    "score": 61.0,
+    "rationale": "A critical service or process restart requires the full evidence table, a reviewer or the independent-source check, and explicit typed yes.",
+    "uncertainty": 0.050000000000000044,
+    "observability_gap": 0.0,
+    "decision": "REQUIRE_HUMAN",
+    "reason_codes": [
+      "CRITICAL_SERVICE"
+    ]
+  }
+}
