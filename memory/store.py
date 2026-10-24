@@ -14,7 +14,6 @@ from schema.validate import validate_report
 from tools.redact import sanitize
 
 ROOT = Path(__file__).resolve().parents[1]
-_SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}\Z")
 _ERROR_KEYS = {"body", "msg", "message", "error", "status_message", "exception.message"}
 
 
@@ -158,7 +157,7 @@ class MemoryStore:
     """One JSON per incident; repeated writes update its observed outcome.
 
     Validation resolves only selected retained evidence unless the caller supplies
-    an explicit resolver. A report_path is provenance; its contents are never read.
+    an explicit resolver. A report_path only locates retained evidence.
     """
 
     def __init__(self, root=None, index=None, *, resolver=None, secrets=()):
@@ -182,15 +181,12 @@ class MemoryStore:
             # Validation messages may contain rejected input, so never echo it.
             raise ValueError(f"Memory requires a validated report ({len(errors)} validation errors)")
         safe = sanitize(scrub(source, self.secrets))
-        identifier = safe["incident_id"]
-        if not _SAFE_ID.fullmatch(identifier) or identifier.endswith(".") or identifier.split(".", 1)[0].upper() in {
-            "CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)), *(f"LPT{i}" for i in range(1, 10)),
-        }:
-            raise ValueError("Incident identifier is not safe for a memory filename")
+        # Stable across response updates, without retaining operator labels or paths.
+        identifier = hashlib.sha256(_canonical([safe["run_id"], safe["incident_id"]]).encode("utf-8")).hexdigest()
         symptom_query = fingerprint(safe, secrets=self.secrets)
         cause, verification = safe["root_cause"], safe["verification"]
         record = {
-            "schema_version": "1.0", "incident_id": identifier, "citation_id": "mem:" + identifier,
+            "schema_version": "1.0", "memory_id": identifier, "citation_id": "mem:" + identifier,
             "symptom_fingerprint": symptom_query,
             "fingerprint_sha256": hashlib.sha256(symptom_query.encode("utf-8")).hexdigest(),
             "services": sorted({item["service"] for item in safe["symptoms"]}),
@@ -203,7 +199,6 @@ class MemoryStore:
             "recovery_time_basis": "detected_at_to_resolved_at",
             "detected_at": safe["detected_at"], "diagnosed_at": safe["diagnosed_at"], "resolved_at": safe["resolved_at"],
             "prompt_sha256": safe["agent"].get("prompt_sha256"),
-            "report_path": str(report_path) if report_path is not None else None,
             "report_sha256": hashlib.sha256(_canonical(safe).encode("utf-8")).hexdigest(),
             "escalation_note": safe.get("escalation_note"),
             "hint_only": True,

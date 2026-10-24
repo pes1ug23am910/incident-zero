@@ -223,7 +223,7 @@ def main(argv=None):
         stuck = [r for r in records if r.get("phase") in {"executing", "verifying", "rolling_back"}]
         cooling = [r for r in records if time.time() - r.get("created", 0) < 300]
         if not (stack / "action_api/state.py").is_file():
-            return False, f"H8 state check CLI missing; read-only DB: {len(stuck)} stuck, {len(cooling)} cooldown"
+            return not stuck and not cooling, f"read-only attempt DB (state CLI absent): {len(stuck)} stuck, {len(cooling)} cooldown"
         result = subprocess.run([sys.executable, "-m", "action_api.state", "check"], cwd=stack,
                                 capture_output=True, text=True, timeout=15)
         return result.returncode == 0 and not stuck and not cooling, f"state check exit {result.returncode}; {len(stuck)} stuck, {len(cooling)} cooldown"

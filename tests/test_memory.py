@@ -36,6 +36,7 @@ def executed_report(example, *, status="fixed"):
                                 cause="Synthetic restart-loop example for outcome bookkeeping.")
     report["proposed_action"] = select_action(report["root_cause"])
     report["approval"].update(approved=True, approved_by="offline-test-operator", token="approval-secret",
+        surface="test", mode="test", token_id="sha256:" + "a" * 64,
         requested_at="2026-10-23T13:00:03+05:30", approved_at="2026-10-23T13:00:03+05:30")
     report["action"].update(executed=True, started_at="2026-10-23T13:00:04+05:30",
                            finished_at="2026-10-23T13:00:05+05:30", action_log_ref="action_log:1")
@@ -51,7 +52,7 @@ def executed_report(example, *, status="fixed"):
 
 def test_validated_report_is_written_and_immediately_searchable(store, example):
     record = store.remember(example, report_path="reports/example/report.json")
-    stored = json.loads((store.root / (example["incident_id"] + ".json")).read_text(encoding="utf-8"))
+    stored = json.loads((store.root / (record["memory_id"] + ".json")).read_text(encoding="utf-8"))
     assert record == stored
     assert record["component"] == "payment" and record["hint_only"] is True
     assert record["action_taken"] == []
@@ -59,7 +60,9 @@ def test_validated_report_is_written_and_immediately_searchable(store, example):
     assert record["verification_outcome"] == "unknown"
     assert record["outcome"] == "escalated" and record["seconds_to_recovery"] is None
     hits = store.similar("payment container_status")
-    assert hits[0]["id"] == "mem:" + example["incident_id"]
+    assert hits[0]["id"] == record["citation_id"]
+    assert example["incident_id"] not in json.dumps(record)
+    assert "report_path" not in record and "incident_id" not in record
     assert hits[0]["score"] > 0
 
 
@@ -138,12 +141,12 @@ def test_action_history_preserves_actual_attempts_and_skips_rejected_proposals(s
 
 
 def test_repeated_incident_updates_one_json_and_one_retrieval_hit(store, example):
-    store.remember(example)
+    original = store.remember(example)
     report = executed_report(example)
     store.remember(report)
     assert len(list(store.root.glob("*.json"))) == 1
     hits = store.similar("payment")
-    assert [hit["id"] for hit in hits] == ["mem:" + example["incident_id"]]
+    assert [hit["id"] for hit in hits] == [original["citation_id"]]
     assert hits[0]["outcome"] == "recovered"
 
 
@@ -248,6 +251,6 @@ def test_retained_bundle_memory_reads_only_exact_evidence_files(tmp_path, monkey
 @pytest.mark.parametrize("identifier", ["../escape", "..\\escape", "CON", "payment."])
 def test_incident_filename_is_confined(store, example, identifier):
     example["incident_id"] = identifier
-    with pytest.raises(ValueError):
-        store.remember(example)
-    assert not store.root.exists()
+    record = store.remember(example)
+    assert len(record["memory_id"]) == 64
+    assert list(store.root.glob("*.json")) == [store.root / (record["memory_id"] + ".json")]

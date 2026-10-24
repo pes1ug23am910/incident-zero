@@ -184,7 +184,6 @@ def test_hint_ids_are_never_telemetry_evidence(identifier):
     assert errors and any("evidence" in e for e in errors)
 
 
-@pytest.mark.xfail(strict=True, reason="fold: Addendum 7 and Knowledge Addendum item 1 opaque memory ids", raises=(ModuleNotFoundError, AssertionError))
 def test_memory_ids_and_index_records_do_not_leak_incident_label(tmp_path):
     from memory.store import MemoryStore
     from schema.validate import fixture_resolver
