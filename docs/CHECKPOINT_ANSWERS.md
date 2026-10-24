@@ -1,8 +1,14 @@
 # Checkpoint answers and evidence
 
 These are presenter answers supported by retained runs or commands. Historical
-bundles are recordings, not evidence that the current fold has passed. Run commands
+bundles are recordings, not evidence that the current demo line has passed. Fresh
+demo-stable results and its deliberate exclusions are in [BUILD_09](../BUILD_09.md). Run commands
 with the installed Python environment; only the stack owner may run rehearsals.
+
+**24 October demo-stable:** source integration passes offline checks, but fresh
+incident runs, CLI approval and BLOCK are not yet verified. Readiness is blocked
+by the occupied UI port and low free RAM. All incident IDs below remain historical;
+fresh run IDs are unavailable until the live verification is unblocked.
 
 ## Checkpoint 1: Eyes (10)
 
@@ -76,9 +82,9 @@ with the installed Python environment; only the stack owner may run rehearsals.
    arbitrary two-target combinations are tested until a retained run proves it.
 3. **How do you guard against reading the answers?** Run
    `python -m pytest -q tests/test_no_flag_reads.py tests/test_agent_isolation.py
-   --basetemp=.build/pytest`. Flag disclosure is rejected. The broad scan currently
-   also flags the new operator-only readiness manifest; its explicit scope
-   exemption needs fold review, without weakening diagnostic scanning.
+   --basetemp=.build/pytest`. Flag disclosure is rejected. The operator-only
+   readiness manifest has an exact-path exemption; diagnostic scanning and
+   import-isolation tests remain enabled and pass on demo-stable.
 4. **Do combinations work?** This snapshot escalates independent causes at tier 3
    with no actions. The fold contract requires separately risked proposals for
    supported pairs, while unsupported or incompletely covered combinations still

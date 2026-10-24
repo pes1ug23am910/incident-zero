@@ -6,28 +6,27 @@ relevant sections into an investigation as cited hints. The diagnosis still need
 observations from the tools. Code selects the remedy from the diagnosed category
 and component; a human must approve execution. No model weights change.
 
-**Integration status:** the separate knowledge branch implements runbooks,
-catalogue, index, memory and optional graph nodes. They are absent from this
-`docsport` source snapshot. The fold owns their merge and corrections. Its
-historical `BUILD_07.md` records 15 runbooks, 23 catalogue entries, 143 chunks and
-694 passing offline tests with 3 skips; these are branch records, not a current
-merged-build or live acceptance result. Verify after merge with the commands below.
+**Demo-stable integration:** the knowledge branch is merged, including optional
+`retrieve_context` and `remember` graph nodes behind `INCIDENT_ZERO_KNOWLEDGE=1`.
+The disabled path retains the integration-state investigation and response logic.
+The local index build produced 15 runbooks, 23 catalogue entries and 143 chunks
+before fresh memory records. See [BUILD_09](../BUILD_09.md) for current live results
+and the selected demo flag. The full fold is deliberately excluded.
 
 | Store / interface | What it contains or does | Required boundary |
 |---|---|---|
 | `knowledge/runbooks/*.md` | Symptoms, checks, confirmation, remediation, rollback, verification, prevention | Written by the team; no incident IDs or control-setting names |
 | `knowledge/services.yaml` | Compose service purposes and dependencies | Dependency catalogue, not a knowledge graph |
-| `knowledge/index.sqlite` | Local section-level search index | Fold target: SQLite FTS5/BM25 only; the older branch used rank-bm25 |
-| `memory/store/*.json` | Telemetry fingerprint, diagnosis, actual action and verification outcome | Opaque IDs; no report paths, run-folder labels or injected-answer IDs |
-| `knowledge_consulted` / citation fields | What was retrieved and whether checked | `confirmed`, `refuted` or `not_checked`; hints cannot increase evidence confidence |
+| `knowledge/index.sqlite` | Local section-level search index | SQLite persistence and rank-bm25 ranking; FTS5 migration is excluded |
+| `memory/store/*.json` | Telemetry fingerprint, diagnosis, actual action and verification outcome | Opaque SHA-256 IDs stable across response updates; source IDs and report paths are not retained |
+| `knowledge_consulted` / citation fields | Retrieved references and limitations | Hints cannot enter telemetry evidence; per-hint verdict fields are not implemented on this line |
 
-Retrieve at observation and proposal: at most three runbook sections and three
-relevant memories, each at most 600 characters, framed as untrusted data. The
-runbook explains and cross-checks the remedy; `agent.policy.select_action()`
-continues to choose it. Disagreement becomes a limitation. `kb:` and `mem:` IDs
-must be rejected in telemetry evidence fields. The existing validator rejection
-is exercised by `tests/test_regressions_oct23.py`; opaque memory storage remains
-a strict expected failure until the fold lands it.
+Retrieve at observation and proposal, with hints framed as untrusted data. The
+merged implementation includes a cited planning call checked against the policy
+allowlist. `kb:` and `mem:` IDs are rejected in telemetry evidence fields. Memory
+storage and retrieval cannot retain the operator's incident label or report path;
+the former opaque-memory expected failure now passes. The remaining knowledge
+addendum, including retrieval sizing changes and verdict rendering, is deferred.
 
 After the merge, with the environment installed:
 
@@ -38,11 +37,10 @@ python -m knowledge explain reports/payment-failure-r6/report.json
 python -m pytest -q -m "not live" --basetemp=.build/pytest
 ```
 
-The first three commands are unavailable before the merge. Build/index timing,
-wrong-hint live behavior, merged report fields and live memory write-back are
-**not verified** here. Keep `INCIDENT_ZERO_KNOWLEDGE=0` until the fold validates
-the three Checkpoint 2 incidents with retrieval enabled. Then the operator may
-set `INCIDENT_ZERO_KNOWLEDGE=1`; no embedding download is required by the target.
+These commands are available on demo-stable. No embedding download is required.
+Wrong-hint live behavior and a controlled retrieval ablation remain **not verified**.
+Use the flag selected from the fresh repetitions in BUILD_09; repeated cases are
+not evidence of improved unseen-incident accuracy.
 
 ## Six mentor questions
 
