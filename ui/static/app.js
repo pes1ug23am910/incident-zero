@@ -12,6 +12,38 @@ const chip = status => `<span class="chip ${esc(status)}">${esc(words(status))}<
 const tier = value => `<span class="chip tier-${esc(value)}">Tier ${esc(value)}</span>`;
 const fact = (label, value) => `<div class="fact"><small>${esc(label)}</small><strong>${esc(value ?? "Not recorded")}</strong></div>`;
 
+function knowledgeGroups(report) {
+  const consulted = report.knowledge_consulted;
+  if (consulted?.enabled === false) return [];
+  return [["Runbook sections", consulted?.runbook_refs ?? report.runbook_refs], ["Prior incidents", consulted?.memory_refs ?? report.memory_refs], ["Service catalogue", consulted?.service_refs]].map(([label, refs]) => ({ label, refs: Array.isArray(refs) ? refs.filter(ref => ref && typeof ref.id === "string") : [] })).filter(group => group.refs.length);
+}
+
+const knowledgeAnchor = id => "knowledge-ref-" + Array.from(id).map(char => char.codePointAt(0).toString(16)).join("-");
+
+function proposalCitations(report) {
+  const refs = knowledgeGroups(report).filter(group => group.label !== "Service catalogue").flatMap(group => group.refs);
+  if (!refs.length) return "";
+  return `<div class="proposal-citations"><p class="eyebrow">RETRIEVED CONTEXT FOR REVIEW</p><div class="citation-links">${refs.map(ref => `<a href="#${knowledgeAnchor(ref.id)}" data-knowledge="${esc(ref.id)}">${esc(ref.id)}</a>`).join("")}</div><p class="muted">These are retrieved hints. The evidence and policy determine the proposed action.</p></div>`;
+}
+
+function knowledgePanel(report) {
+  const consulted = report.knowledge_consulted;
+  const groups = knowledgeGroups(report);
+  let content;
+  if (consulted?.enabled === false) content = '<p class="muted">Knowledge retrieval was disabled for this report.</p>';
+  else if (!consulted && !groups.length) content = '<p class="muted">This report does not record knowledge retrieval.</p>';
+  else {
+    content = `<p class="muted">Retrieved hints must be checked against this incident's evidence. Similarity scores describe retrieval relevance, not diagnosis confidence.</p>${groups.length ? groups.map(group => `<section class="knowledge-group" aria-label="${esc(group.label)}"><h3>${esc(group.label)}</h3>${group.refs.map(ref => {
+      const previous = ref.id.startsWith("mem:") ? ref.id.slice(4) : "";
+      const available = previous && state.incidents.some(incident => incident.id === previous);
+      return `<article class="knowledge-reference" id="${knowledgeAnchor(ref.id)}" tabindex="-1"><div class="knowledge-reference-heading"><h4><a href="#${knowledgeAnchor(ref.id)}" data-knowledge="${esc(ref.id)}">${esc(ref.id)}</a></h4><span class="muted">Similarity ${esc(number(ref.score, 4))}</span></div><p class="knowledge-provenance">${esc(ref.file || "Source file not recorded")}${ref.section ? ` · ${esc(ref.section)}` : ""}${ref.version ? ` · version ${esc(ref.version)}` : ""}</p><pre class="knowledge-snippet">${esc(ref.text || "No snippet recorded.")}</pre>${available ? `<button type="button" class="link-button" data-open="${esc(previous)}">Open prior incident ↗</button>` : ""}${ref.sha256 ? `<details><summary>Source checksum</summary><code>${esc(ref.sha256)}</code></details>` : ""}</article>`;
+    }).join("")}</section>`).join("") : '<p class="muted">No matching context was recorded.</p>'}`;
+    if (Array.isArray(consulted?.queries) && consulted.queries.length) content += `<details><summary>Retrieval queries</summary><ul>${consulted.queries.map(query => `<li>${esc(pretty(query))}</li>`).join("")}</ul></details>`;
+    if (Array.isArray(consulted?.limitations) && consulted.limitations.length) content += `<details open><summary>Knowledge limitations</summary><ul>${consulted.limitations.map(item => `<li>${esc(item)}</li>`).join("")}</ul></details>`;
+  }
+  return `<article class="panel full knowledge-panel" aria-labelledby="knowledge-title"><div class="panel-heading"><h2 id="knowledge-title">What the agent consulted</h2>${consulted?.enabled ? `<span class="chip">${esc(consulted.mode || "retrieval")}</span>` : ""}</div>${content}</article>`;
+}
+
 async function api(path, options = {}) {
   const response = await fetch(path, { cache: "no-store", ...options, headers: { "Content-Type": "application/json", ...options.headers }, signal: options.signal || AbortSignal.timeout(30000) });
   const data = await response.json();
@@ -87,7 +119,8 @@ function renderWar() {
     <article class="panel"><p class="eyebrow">PRIMARY DIAGNOSIS</p><h2 class="diagnosis-title">${esc(root.component || "Undetermined")}</h2><div class="diagnosis-meta">${chip(root.category || "unknown")}<span class="confidence">${percent(root.confidence)} confidence</span></div><p>${esc(root.cause || "Awaiting a diagnosis")}</p><div class="facts">${fact("Evidence confidence", percent(root.confidence_evidence))}${fact("Model confidence", percent(root.confidence_model))}</div>${(report.root_causes || []).slice(1).map(cause => `<h3 class="section-space">Additional cause · ${esc(cause.component)}</h3><p>${esc(cause.cause)} (${percent(cause.confidence)})</p>`).join("")}${root.alternatives_considered?.length ? `<details><summary>Alternatives considered</summary><ul>${root.alternatives_considered.map(item => `<li>${esc(item)}</li>`).join("")}</ul></details>` : ""}</article>
     <article class="panel full"><div class="panel-heading"><h2>Impact & risk</h2>${tier(impact.tier ?? 3)}</div><p>${esc(impact.rationale || "No impact rationale recorded.")}</p><div class="facts">${fact("Business impact", impact.business)}${fact("Journeys affected", impact.journeys_affected?.join(", "))}${fact("Blast radius", words(impact.blast_radius))}${fact("Reversibility / data risk", `${words(impact.reversibility)} / ${words(impact.data_risk)}`)}${fact("Users affected", impact.users_affected_estimate)}${fact("Reason codes", reasons.length ? pretty(reasons) : "Not provided by report")}</div></article>
     <article class="panel full"><div class="panel-heading"><h2>Evidence ledger</h2><span class="eyebrow">${report.evidence?.length || 0} REFERENCES</span></div>${evidenceTable(report.evidence, report.incident_id)}</article>
-    <article class="panel full"><h2>Proposed action</h2>${actions.length ? actions.map(action => `<div class="action-plan"><h3>${esc(action.type)} → ${esc(action.target)}</h3><p>${esc(action.reason)}</p><p class="muted">Predicted effect: ${esc(action.dry_run?.predicted_effect || "Not supplied")}</p><p class="muted">Risk: ${esc(action.risk || "Not supplied")} · Dry run: ${action.dry_run?.performed ? "performed" : "not performed"}</p><details><summary>Plan parameters</summary><pre>${esc(pretty(action.parameters || {}))}</pre></details></div>`).join("") : '<p class="muted">No safe action proposed. Findings remain available for human investigation.</p>'}</article>
+    <article class="panel full"><h2>Proposed action</h2>${actions.length ? actions.map(action => `<div class="action-plan"><h3>${esc(action.type)} → ${esc(action.target)}</h3><p>${esc(action.reason)}</p><p class="muted">Predicted effect: ${esc(action.dry_run?.predicted_effect || "Not supplied")}</p><p class="muted">Risk: ${esc(action.risk || "Not supplied")} · Dry run: ${action.dry_run?.performed ? "performed" : "not performed"}</p><details><summary>Plan parameters</summary><pre>${esc(pretty(action.parameters || {}))}</pre></details></div>`).join("") : '<p class="muted">No safe action proposed. Findings remain available for human investigation.</p>'}${proposalCitations(report)}</article>
+    ${knowledgePanel(report)}
     ${approvalPanel(report, pending)}
     <article class="panel full"><div class="panel-heading"><h2>Execution & verification</h2>${chip(verification.recovered === true ? "fixed" : verification.rolled_back ? "rolled_back" : "awaiting_result")}</div><div class="facts">${fact("Action executed", report.action?.executed ? "Yes · " + date(report.action.finished_at) : "No recorded execution")}${fact("Signal", verification.signal)}${fact("Before", verification.before)}${fact("After", verification.after)}${fact("Recovery", verification.recovered === true ? "Confirmed by report" : verification.recovered === false ? "Not recovered" : "Not yet verified")}${fact("Checked", date(verification.checked_at))}</div>${report.prevention ? `<p class="section-space">Prevention: ${esc(report.prevention)}</p>` : ""}${report.limitations?.length ? `<details><summary>Limitations (${report.limitations.length})</summary><ul>${report.limitations.map(item => `<li>${esc(item)}</li>`).join("")}</ul></details>` : ""}<details><summary>Original report Markdown</summary><pre>${esc(report.markdown || "Markdown is not available for this report.")}</pre></details></article>
     <article class="panel full"><div class="panel-heading"><h2>Investigation feed</h2><span class="eyebrow">LATEST JOURNAL EVENTS</span></div><div id="live-activity"></div></article></div>`;
@@ -177,6 +210,13 @@ async function decide(approved) {
 
 let evidenceRequest = 0;
 document.addEventListener("click", async event => {
+  const citation = event.target.closest("a[data-knowledge]");
+  if (citation) {
+    event.preventDefault();
+    const target = document.getElementById(knowledgeAnchor(citation.dataset.knowledge));
+    if (target) { target.scrollIntoView({ block: "center" }); target.focus({ preventScroll: true }); }
+    return;
+  }
   const button = event.target.closest("button");
   if (!button) return;
   try {

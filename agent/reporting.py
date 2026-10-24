@@ -88,7 +88,7 @@ def build_report(state, model_summary, elapsed):
     elif status in ('needs_human', 'aborted'):
         escalation = 'Inspect the unresolved observations and collect fresh component/dependency evidence.'
     alert = {k: state['alert'][k] for k in ('signal','service','observed','threshold','window_s','baseline') if k in state['alert']}
-    return {'schema_version': '1.0', 'incident_id': state['incident_id'], 'run_id': state['run_id'],
+    report = {'schema_version': '1.0', 'incident_id': state['incident_id'], 'run_id': state['run_id'],
             'detected_at': state['alert'].get('detected_at', now()), 'diagnosed_at': now(), 'resolved_at': None,
             'alert': alert, 'symptoms': symptoms, 'investigation': investigation,
             'root_cause': causes[0], 'root_causes': causes, 'evidence': rows,
@@ -100,6 +100,8 @@ def build_report(state, model_summary, elapsed):
             'prevention': 'Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.',
             'limitations': limitations, 'agent': {**model_summary, 'tool_calls': state.get('tool_calls_used',0),
                 'elapsed_s': round(elapsed, 3), 'stopped_because': stopped, 'prompt_sha256': PROMPT_SHA256, 'framework': 'LangGraph StateGraph + SqliteSaver'}}
+    from .knowledge_context import attach_context
+    return attach_context(report, state)
 
 
 def write_bundle(report, alert, run_dir, output, secrets=(), external_schema=None):

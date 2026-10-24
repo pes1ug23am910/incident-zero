@@ -16,6 +16,7 @@ from .contracts import FUNCTIONS
 from .evidence import registry, validate_causes, uncovered, data_projection, observed_in_window, PlantedEvidence
 from .llm_router import now, ModelUnavailable
 from .prompts import SYSTEM, PROMPT_SHA256
+from . import knowledge_context
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -82,8 +83,7 @@ class Investigation:
         context = {'alert': safe_alert, 'findings': state['findings'], 'current_hypotheses': state.get('hypotheses', []),
                    'unexplained_services': state['unexplained'], 'tool_calls_left': self.max_tools-state['tool_calls_used'],
                    'last_validation_error': state.get('validation_error', '')}
-        messages = [{'role': 'system', 'content': SYSTEM},
-                    {'role': 'user', 'content': '<telemetry>\n' + json.dumps(data_projection(context), separators=(',', ':')) + '\n</telemetry>'}]
+        messages = knowledge_context.investigation_messages(context, state, SYSTEM)
         try:
             functions = [f for f in FUNCTIONS if not state.get('finish_blocked') or f['function']['name'] != 'finish']
             decision = self.router.complete(messages, functions)
@@ -169,7 +169,10 @@ class Investigation:
         return {'report': report, 'impact': report['impact']}
 
     def propose(self, state):
-        report = propose(state['report'])
+        report, selections = knowledge_context.prepare_plan(state['report'], self.router)
+        report = propose(report, knowledge_selections=selections)
+        if report.get('knowledge_consulted', {}).get('enabled'):
+            report['agent'].update(self.router.summary(), elapsed_s=round(time.monotonic()-self.started, 3))
         return {'report': report, 'proposal': report['proposed_actions'], 'status': report['status']}
 
 
@@ -206,7 +209,7 @@ def build_graph(investigation, checkpointer):
                        'verify': verify, 'report': lambda state: {}}.items():
         graph.add_node(name, node)
     graph.add_edge(START, 'observe')
-    graph.add_edge('observe', 'investigate')
+    knowledge_context.wire(graph, END, secrets=getattr(getattr(investigation, 'router', None), 'secrets', ()))
     graph.add_conditional_edges('investigate', route_investigate, {'investigate': 'investigate', 'diagnose': 'diagnose'})
     graph.add_edge('diagnose', 'assess_risk')
     graph.add_edge('assess_risk', 'propose')
@@ -215,5 +218,4 @@ def build_graph(investigation, checkpointer):
     graph.add_edge('approval', 'execute')
     graph.add_edge('execute', 'verify')
     graph.add_edge('verify', 'report')
-    graph.add_edge('report', END)
     return graph.compile(checkpointer=checkpointer)

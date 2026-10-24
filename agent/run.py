@@ -85,7 +85,8 @@ def run(alert, incident_id, output=None, max_tools=12, model=None, run_id=None, 
         config = config_for(run_id)
         if graph.get_state(config).values:
             raise ValueError('Run id already exists; use a fresh run for a new investigation')
-        _stream(graph, {'run_id': run_id, 'incident_id': incident_id, 'alert': alert}, config, run_dir)
+        _stream(graph, {'run_id': run_id, 'incident_id': incident_id, 'alert': alert,
+                        'report_path': str(output)}, config, run_dir)
         state = graph.get_state(config)
         report = state.values['report']
         # Validate against the run's retained evidence before publishing a bundle.

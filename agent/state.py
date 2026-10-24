@@ -36,3 +36,5 @@ class IncidentState(TypedDict, total=False):
     decision: dict
     verification: dict
     status: str
+    knowledge_context: dict
+    report_path: str
