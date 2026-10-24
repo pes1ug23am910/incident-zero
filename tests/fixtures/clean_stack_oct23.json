@@ -1,0 +1,6080 @@
+{
+  "captured_at": "2026-10-23T17:49:11.832952+00:00",
+  "read_only": true,
+  "health": {
+    "tool": "health_table",
+    "source": "prometheus",
+    "query": "named service queries + container health",
+    "window": {
+      "from": "2026-10-23T17:47:13.085166+00:00",
+      "to": "2026-10-23T17:49:13.085166+00:00"
+    },
+    "data": [
+      {
+        "service": "ad",
+        "error_rate": 0.0,
+        "p95_ms": 3.4000000000000004,
+        "rps": 0.10000666711114076,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.2,
+        "memory_mb": 264.45086719999995,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 314572800,
+        "container_health": null
+      },
+      {
+        "service": "cart",
+        "error_rate": 0.0,
+        "p95_ms": 3.8187499999999996,
+        "rps": 1.1500766717781186,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.32,
+        "memory_mb": 80.20557824,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 167772160,
+        "container_health": null
+      },
+      {
+        "service": "checkout",
+        "error_rate": 0.0,
+        "p95_ms": 32.999999999999986,
+        "rps": 1.7001133408893927,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.0,
+        "memory_mb": 16.9345024,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      },
+      {
+        "service": "currency",
+        "error_rate": 0.0,
+        "p95_ms": 1.9,
+        "rps": 0.3833588905927062,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.01,
+        "memory_mb": 6.287261696,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      },
+      {
+        "service": "email",
+        "error_rate": 0.0,
+        "p95_ms": 3.5428571428571423,
+        "rps": 0.5333688912594173,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.01,
+        "memory_mb": 90.65988096,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 104857600,
+        "container_health": null
+      },
+      {
+        "service": "frontend",
+        "error_rate": 0.0,
+        "p95_ms": 34.82608695652171,
+        "rps": 5.81705447029802,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.02,
+        "memory_mb": 115.97250559999999,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 262144000,
+        "container_health": null
+      },
+      {
+        "service": "frontend-proxy",
+        "error_rate": 0.0,
+        "p95_ms": 38.933333333333316,
+        "rps": 2.7668511234082276,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.61,
+        "memory_mb": 47.15446272,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 68157440,
+        "container_health": null
+      },
+      {
+        "service": "grafana",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 2.88,
+        "memory_mb": 109.2616192,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 125829120,
+        "container_health": null
+      },
+      {
+        "service": "image-provider",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.02,
+        "memory_mb": 6.512705536,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 125829120,
+        "container_health": null
+      },
+      {
+        "service": "jaeger",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.18,
+        "memory_mb": 159.48840959999998,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 419430400,
+        "container_health": null
+      },
+      {
+        "service": "load-generator",
+        "error_rate": 0.0,
+        "p95_ms": 44.62499999999999,
+        "rps": 1.433428895259684,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.83,
+        "memory_mb": 56.11978752,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 125829120,
+        "container_health": null
+      },
+      {
+        "service": "opensearch",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 1.42,
+        "memory_mb": 1108.101562368,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 1181116006,
+        "container_health": "healthy"
+      },
+      {
+        "service": "otel-collector",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 1.56,
+        "memory_mb": 161.0612736,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 209715200,
+        "container_health": null
+      },
+      {
+        "service": "payment",
+        "error_rate": 0.0,
+        "p95_ms": 1.9,
+        "rps": 0.26668444562970867,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.0,
+        "memory_mb": 92.58926079999999,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 125829120,
+        "container_health": null
+      },
+      {
+        "service": "product-catalog",
+        "error_rate": 0.0,
+        "p95_ms": 1.9000000000000001,
+        "rps": 1.4000933395559705,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.0,
+        "memory_mb": 14.984151039999999,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      },
+      {
+        "service": "prometheus",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.18,
+        "memory_mb": 97.28688128,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 314572800,
+        "container_health": null
+      },
+      {
+        "service": "quote",
+        "error_rate": 0.0,
+        "p95_ms": 1.9,
+        "rps": 0.400026668444563,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.01,
+        "memory_mb": 30.932992,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 41943040,
+        "container_health": null
+      },
+      {
+        "service": "recommendation",
+        "error_rate": 0.0,
+        "p95_ms": 3.4000000000000004,
+        "rps": 0.2000133342222815,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 1.31,
+        "memory_mb": 43.32716032,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 52428800,
+        "container_health": null
+      },
+      {
+        "service": "shipping",
+        "error_rate": 0.0,
+        "p95_ms": 2.8000000000000007,
+        "rps": 0.400026668444563,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.01,
+        "memory_mb": 6.660554752,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      },
+      {
+        "service": "valkey-cart",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.22,
+        "memory_mb": 3.98983168,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      }
+    ],
+    "evidence_ids": [
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792777753.089=0.0",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792777753.091=3.4000000000000004",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792777753.091=3.8187499999999996",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792777753.091=32.999999999999986",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792777753.091=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792777753.091=3.5428571428571423",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792777753.091=34.82608695652171",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792777753.091=38.933333333333316",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792777753.091=44.62499999999999",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792777753.091=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792777753.091=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792777753.091=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792777753.091=3.4000000000000004",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792777753.091=2.8000000000000007",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792777753.093=0.10000666711114076",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792777753.093=1.1500766717781186",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792777753.093=1.7001133408893927",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792777753.093=0.3833588905927062",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792777753.093=0.5333688912594173",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792777753.093=5.81705447029802",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792777753.093=2.7668511234082276",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792777753.093=1.433428895259684",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792777753.093=0.26668444562970867",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792777753.093=1.4000933395559705",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792777753.093=0.400026668444563",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792777753.093=0.2000133342222815",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792777753.093=0.400026668444563",
+      "container:recommendation:Status=running",
+      "container:recommendation:RestartCount=0",
+      "container:recommendation:OOMKilled=false",
+      "container:recommendation:StartedAt=2026-10-23T16:10:11.434490113Z",
+      "container:recommendation:NanoCpus=0",
+      "container:recommendation:Memory=52428800",
+      "container:valkey-cart:Status=running",
+      "container:valkey-cart:RestartCount=0",
+      "container:valkey-cart:OOMKilled=false",
+      "container:valkey-cart:StartedAt=2026-10-23T14:50:58.196424049Z",
+      "container:valkey-cart:NanoCpus=0",
+      "container:valkey-cart:Memory=20971520",
+      "container:quote:Status=running",
+      "container:quote:RestartCount=0",
+      "container:quote:OOMKilled=false",
+      "container:quote:StartedAt=2026-10-23T08:26:29.477930572Z",
+      "container:quote:NanoCpus=0",
+      "container:quote:Memory=41943040",
+      "container:frontend-proxy:Status=running",
+      "container:frontend-proxy:RestartCount=0",
+      "container:frontend-proxy:OOMKilled=false",
+      "container:frontend-proxy:StartedAt=2026-10-23T08:26:29.349062306Z",
+      "container:frontend-proxy:NanoCpus=0",
+      "container:frontend-proxy:Memory=68157440",
+      "container:load-generator:Status=running",
+      "container:load-generator:RestartCount=0",
+      "container:load-generator:OOMKilled=false",
+      "container:load-generator:StartedAt=2026-10-23T17:32:20.793766503Z",
+      "container:load-generator:NanoCpus=0",
+      "container:load-generator:Memory=125829120",
+      "container:frontend:Status=running",
+      "container:frontend:RestartCount=0",
+      "container:frontend:OOMKilled=false",
+      "container:frontend:StartedAt=2026-10-23T08:26:29.311548414Z",
+      "container:frontend:NanoCpus=0",
+      "container:frontend:Memory=262144000",
+      "container:checkout:Status=running",
+      "container:checkout:RestartCount=0",
+      "container:checkout:OOMKilled=false",
+      "container:checkout:StartedAt=2026-10-23T08:26:28.35551033Z",
+      "container:checkout:NanoCpus=0",
+      "container:checkout:Memory=20971520",
+      "container:image-provider:Status=running",
+      "container:image-provider:RestartCount=0",
+      "container:image-provider:OOMKilled=false",
+      "container:image-provider:StartedAt=2026-10-23T08:26:29.09780768Z",
+      "container:image-provider:NanoCpus=0",
+      "container:image-provider:Memory=125829120",
+      "container:email:Status=running",
+      "container:email:RestartCount=0",
+      "container:email:OOMKilled=false",
+      "container:email:StartedAt=2026-10-23T08:26:29.125225563Z",
+      "container:email:NanoCpus=0",
+      "container:email:Memory=104857600",
+      "container:payment:Status=running",
+      "container:payment:RestartCount=0",
+      "container:payment:OOMKilled=false",
+      "container:payment:StartedAt=2026-10-23T08:26:28.499506526Z",
+      "container:payment:NanoCpus=0",
+      "container:payment:Memory=125829120",
+      "container:ad:Status=running",
+      "container:ad:RestartCount=0",
+      "container:ad:OOMKilled=false",
+      "container:ad:StartedAt=2026-10-23T08:26:28.963099046Z",
+      "container:ad:NanoCpus=0",
+      "container:ad:Memory=314572800",
+      "container:cart:Status=running",
+      "container:cart:RestartCount=0",
+      "container:cart:OOMKilled=false",
+      "container:cart:StartedAt=2026-10-23T08:26:28.708327669Z",
+      "container:cart:NanoCpus=0",
+      "container:cart:Memory=167772160",
+      "container:currency:Status=running",
+      "container:currency:RestartCount=0",
+      "container:currency:OOMKilled=false",
+      "container:currency:StartedAt=2026-10-23T08:26:29.167214092Z",
+      "container:currency:NanoCpus=0",
+      "container:currency:Memory=20971520",
+      "container:product-catalog:Status=running",
+      "container:product-catalog:RestartCount=0",
+      "container:product-catalog:OOMKilled=false",
+      "container:product-catalog:StartedAt=2026-10-23T08:26:28.456561269Z",
+      "container:product-catalog:NanoCpus=0",
+      "container:product-catalog:Memory=20971520",
+      "container:shipping:Status=running",
+      "container:shipping:RestartCount=0",
+      "container:shipping:OOMKilled=false",
+      "container:shipping:StartedAt=2026-10-23T08:26:28.13565142Z",
+      "container:shipping:NanoCpus=0",
+      "container:shipping:Memory=20971520",
+      "container:otel-collector:Status=running",
+      "container:otel-collector:RestartCount=0",
+      "container:otel-collector:OOMKilled=false",
+      "container:otel-collector:StartedAt=2026-10-23T08:26:27.737727095Z",
+      "container:otel-collector:NanoCpus=0",
+      "container:otel-collector:Memory=209715200",
+      "container:opensearch:Status=running",
+      "container:opensearch:RestartCount=0",
+      "container:opensearch:OOMKilled=false",
+      "container:opensearch:StartedAt=2026-10-23T08:26:29.56447477Z",
+      "container:opensearch:NanoCpus=0",
+      "container:opensearch:Memory=1181116006",
+      "container:jaeger:Status=running",
+      "container:jaeger:RestartCount=0",
+      "container:jaeger:OOMKilled=false",
+      "container:jaeger:StartedAt=2026-10-23T08:26:28.898653815Z",
+      "container:jaeger:NanoCpus=0",
+      "container:jaeger:Memory=419430400",
+      "container:prometheus:Status=running",
+      "container:prometheus:RestartCount=0",
+      "container:prometheus:OOMKilled=false",
+      "container:prometheus:StartedAt=2026-10-23T08:26:29.528477315Z",
+      "container:prometheus:NanoCpus=0",
+      "container:prometheus:Memory=314572800",
+      "container:grafana:Status=running",
+      "container:grafana:RestartCount=0",
+      "container:grafana:OOMKilled=false",
+      "container:grafana:StartedAt=2026-10-23T08:26:29.201513885Z",
+      "container:grafana:NanoCpus=0",
+      "container:grafana:Memory=125829120"
+    ],
+    "truncated": false,
+    "warnings": [],
+    "telemetry_available": true,
+    "run_dir": "runs/preflight-20261023T174911.831950Z",
+    "evidence_paths": {
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/69eafddbdde98d004af869d3acbea1e79fcdab6d575ef4725e66588a7a4ddafa.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/80f875f4b713ba4d21a43a3c47d0ec75d8847d4d0efd0f9c87b6c3ce6199a076.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/cef55feacdb4ced24ea691bb45b2cd367ed062dd20260c74e3d83f630ef79106.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/ae3703546fb9fa0f19e6065657150a1033b1b1a5392a9aaa1c9a0b0b0c4ba014.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/a143155edbfd28a2906050391a879f1b5524dd50a1b3ed43e3589560b2f5f0bc.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/dae098b6841723d808a620ab3f02c5c7178ee84bb74613280f72f9ba857cb95b.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/9ca8a9c63b4d7bd747c572a15c649da25cab4ad1c2d8df3700eb218c0e167568.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"load-generator\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/c07961ddca7d0ce778aa77f951f0470e1d3bbd15b2d5d0e56831280335549ddc.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/1717e50a5ef87c489b59c4716f6c5ad6fb84b9d0ea5671fefd5b884999da6923.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/7b4ec614615ff2aa6410e038038745461ce0aadb2c511a56d39cb14d3743149e.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/1d5cdf03aaa26dac481a7925e0277c78acfcfca7d7b21cac2533289f1c9ecc20.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/82368c785335bf3ad5b005066cc1316b484443288e4811cf9375be684c9fa58c.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792777753.089=0.0": "runs/preflight-20261023T174911.831950Z/evidence/df8c821e7647187f54f92bfa0f7dbec2f927e371330e0b411c755fcb21427d25.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792777753.091=3.4000000000000004": "runs/preflight-20261023T174911.831950Z/evidence/f984e3a2b4570d5744714012a8ffabe80cfbe922d8e2aad9b06c5d4c0efbc0d9.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792777753.091=3.8187499999999996": "runs/preflight-20261023T174911.831950Z/evidence/b5fc8e409d892acb98efc198cfc732ece9bcc61c94c96e815218fbc32de401d8.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792777753.091=32.999999999999986": "runs/preflight-20261023T174911.831950Z/evidence/a74d46d4c8d0fade90c377de7e4e36e318a7455cb1b16f98fd993328f820d296.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792777753.091=1.9": "runs/preflight-20261023T174911.831950Z/evidence/77d0ee8027bbc90395af19d4d7aea9981c0ac0f6dd2bbbca42ed2f38f9351dc6.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792777753.091=3.5428571428571423": "runs/preflight-20261023T174911.831950Z/evidence/9c3f5986119f53e5d32e561ab707f7184be926e922a312faa216cfacb6fe8181.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792777753.091=34.82608695652171": "runs/preflight-20261023T174911.831950Z/evidence/662426e45dd0e56b8ca6efe48c293fc551960ad85920403d7b66f39fb2118346.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792777753.091=38.933333333333316": "runs/preflight-20261023T174911.831950Z/evidence/9618aa094938fc7e1b9b6b1d60ded0d51e953dcdfedd1a23ccf12f39543439f1.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792777753.091=44.62499999999999": "runs/preflight-20261023T174911.831950Z/evidence/a79a23ff6ac693ae3c0b4ce811da82ce5139732b1343936b2c4b09628c08026a.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792777753.091=1.9": "runs/preflight-20261023T174911.831950Z/evidence/cfdef54327baff52237a868b55a55c7896abd1cd441c2c6f7432d6727622d850.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792777753.091=1.9000000000000001": "runs/preflight-20261023T174911.831950Z/evidence/e5aba4a1ae2132a253f86d47bad0f12ac038fbc9b00bc962320382143c37da8d.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792777753.091=1.9": "runs/preflight-20261023T174911.831950Z/evidence/051501169db7f4960d9a9f41d115548ea90f235c0e880f71390d0a796a455491.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792777753.091=3.4000000000000004": "runs/preflight-20261023T174911.831950Z/evidence/0675cb04b504f6b5e968ecbdadd2298b7d287743d3de68af55f1ff6d82ca35cd.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792777753.091=2.8000000000000007": "runs/preflight-20261023T174911.831950Z/evidence/eb1867fae3c1cf9bd440061d7a94744cad01cc34219a8d0f0a7fd385287490d5.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792777753.093=0.10000666711114076": "runs/preflight-20261023T174911.831950Z/evidence/438a91f6ef9eafaa1fddd6c7ac431f16ba129277cb49fc4f7173edf5f3d41edc.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792777753.093=1.1500766717781186": "runs/preflight-20261023T174911.831950Z/evidence/68cdff491e147282a8163cb81b89c674e9e783de8aaf26f42f6ff3c1818a34ee.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792777753.093=1.7001133408893927": "runs/preflight-20261023T174911.831950Z/evidence/12e947d499d114834a754402cc591dfcce0e7a81f5f665d7de2a79b40a427bc5.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792777753.093=0.3833588905927062": "runs/preflight-20261023T174911.831950Z/evidence/dc92b9c158405a1a43fffc45cb7fdfc212be0f6daad21c6b6e8077b78e3f65e7.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792777753.093=0.5333688912594173": "runs/preflight-20261023T174911.831950Z/evidence/6e087f2f5e22a42d6d2a46b288ca899bac9e2f111498527ad36ebd21fc5ea686.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792777753.093=5.81705447029802": "runs/preflight-20261023T174911.831950Z/evidence/79d507fccb879fb1b5a0bbbfc41cc4e5ea1ffd741aa63a8f4be39c92ce1ff221.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792777753.093=2.7668511234082276": "runs/preflight-20261023T174911.831950Z/evidence/2772c8994d4bf29751c1147ae4ab06e7f46dc6c1668ae6f28244f3e1b5e77c20.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792777753.093=1.433428895259684": "runs/preflight-20261023T174911.831950Z/evidence/9996bf6551bbbca4d4215bfc79fa8e82aef3b0df46f1a9e7442313de855ac349.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792777753.093=0.26668444562970867": "runs/preflight-20261023T174911.831950Z/evidence/cc7e0dd5569b35207ed0541a4c1d3c28cb3f38bdf6ec1e39e34eee412a6607f9.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792777753.093=1.4000933395559705": "runs/preflight-20261023T174911.831950Z/evidence/d791be40b471957feb42df15233a7748e47d174d9c70d1e433726dddf7fc19e9.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792777753.093=0.400026668444563": "runs/preflight-20261023T174911.831950Z/evidence/26cb6cba679d6223ef2613aeac6e84c422e05279338150d0dffd7f359e83330b.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792777753.093=0.2000133342222815": "runs/preflight-20261023T174911.831950Z/evidence/aec363cf2a930808baf737bca0832f10634e370ffe7daa7b0f2c4e3c0e60e516.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792777753.093=0.400026668444563": "runs/preflight-20261023T174911.831950Z/evidence/11259ebd0c020af63f9fdd6ed9111fe79d3890b14a65b6caee13a99c6882b75e.json",
+      "container:recommendation:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/361d0aa99fdfeef4adf68c6183a3c5c6341c55cd5696230b7db4b20acc82f251.json",
+      "container:recommendation:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/9aee5e60c48e2c7ea71664e49a6b39f78d4226c2d84ccc3f62c339e4fa6dc5cc.json",
+      "container:recommendation:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/aa57f7849d4e3debd34889c7c5d19c6cfe9a47470dc26491c7696f0c0a75926e.json",
+      "container:recommendation:StartedAt=2026-10-23T16:10:11.434490113Z": "runs/preflight-20261023T174911.831950Z/evidence/ce8dde4fa6f64f6651e9e7bee1a8b612e9e5fad3443c569d32a1361618bc83c1.json",
+      "container:recommendation:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/4225129a78641cd01b33b9a58650422b4e3b54efdb23c89b742204f8aed9c379.json",
+      "container:recommendation:Memory=52428800": "runs/preflight-20261023T174911.831950Z/evidence/4bc0551cd60a5201ebafabb9a52cd83659325e0c8c0edd5a096000e08cde9911.json",
+      "container:valkey-cart:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/60bac2f12fafa69b0189cc5cf8935d0aef692bf476e461a67b9d9bb59dd0ba34.json",
+      "container:valkey-cart:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/806f4279820ce5d1cbf9c1152d43de6ab11db14c2728fd262b61cb660b88210a.json",
+      "container:valkey-cart:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/5d4f155883d536ada4bc28a80545b58acf8a0b316be3f305b01b6a3d8004bb42.json",
+      "container:valkey-cart:StartedAt=2026-10-23T14:50:58.196424049Z": "runs/preflight-20261023T174911.831950Z/evidence/2e0f8a9ee619b1b90730c4d39191b50b1ce21dc41c556717d52a1e16f2f989b1.json",
+      "container:valkey-cart:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/995b15bfeb15bfc09e2c009a41c1afa924657c9525ef6f4362daa1acaba0e595.json",
+      "container:valkey-cart:Memory=20971520": "runs/preflight-20261023T174911.831950Z/evidence/0490b867b9ba77981b639e5a86e187a6954f029e681937cd6aa6952bd7a1f95b.json",
+      "container:quote:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/0bc67816039a8aaba661837b38f65d6679289c41c9555f4d98d3399238271ff4.json",
+      "container:quote:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/a47242f520c24f57d503e7316bf477659802c37c09d1a060372009d4ac5e5b82.json",
+      "container:quote:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/aa25d6231339a3ee870592b31d3cf952f03324b4ffad0e0ab19d8ff3f2b23f3d.json",
+      "container:quote:StartedAt=2026-10-23T08:26:29.477930572Z": "runs/preflight-20261023T174911.831950Z/evidence/f7beff0c4e07f4216e3cba8055046ccbc1eec85e7a23d21aec316017155b3f35.json",
+      "container:quote:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/ecbfaa878db9e570cbb7f62fb97caf86741ac3262a0c28790cf52c32b9d92297.json",
+      "container:quote:Memory=41943040": "runs/preflight-20261023T174911.831950Z/evidence/fc02be88b8d92f13488c0225d23c9cebd54216edaa32bc771ba50cc61b5152f8.json",
+      "container:frontend-proxy:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/9f34b3292bc1918b37c3c81d53ec3b484516917d00a76c5889e809c12556b353.json",
+      "container:frontend-proxy:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/112b0bc80713430a3b52df98829e2764a5380189c4b92b3ee534f02c18222b6e.json",
+      "container:frontend-proxy:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/91d3e7f1356c5076695355cff481e019d29b1d28f0d56704568a40400dae157a.json",
+      "container:frontend-proxy:StartedAt=2026-10-23T08:26:29.349062306Z": "runs/preflight-20261023T174911.831950Z/evidence/dc7dbc9e02b7e2e3a385e97385f5428c45c7fbef282b16a688fab15053ba043c.json",
+      "container:frontend-proxy:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/5bc34ed644a5ae21ca6d47be27c95d40cc59dd1afc0832f316c7f742dd2abade.json",
+      "container:frontend-proxy:Memory=68157440": "runs/preflight-20261023T174911.831950Z/evidence/d9ca6785d7bf14a337aa9d6299c62e600dc8a7e3a188f7008f3e2d0b9b255855.json",
+      "container:load-generator:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/0e6f7bd6cc930dfc64c9d8105a1947225ad37e67ef157c48855b11f19680dd42.json",
+      "container:load-generator:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/f3d63114747ca9a194ea898ecbe4b5e16cb54b752785951e444739cb54704071.json",
+      "container:load-generator:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/77c4ba65114a43556d3f74a30c7c9b354c8eb9a71f51b463a4d05ebf19264508.json",
+      "container:load-generator:StartedAt=2026-10-23T17:32:20.793766503Z": "runs/preflight-20261023T174911.831950Z/evidence/ef84aa5782479db9e5b6cbe32c41c903ad7708b23f89e0e9839f978884c7831b.json",
+      "container:load-generator:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/f305b0905387c6c34d2883b15f469e464671c145d558192a7e26a2bc4b483559.json",
+      "container:load-generator:Memory=125829120": "runs/preflight-20261023T174911.831950Z/evidence/29edec9debdac3b10ce67053ef2047ee1766b3a12d53f49304b2058b18fefce5.json",
+      "container:frontend:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/33b4d9b21b9cb3af689353b8448735274c165fb8a85934cbdcebbac2bc32b1da.json",
+      "container:frontend:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/6547f1c594819a8cd2da74279a4b0d90b365e499fb4d83d2c404b7ea1a1b0b6f.json",
+      "container:frontend:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/c54e5b50d45c3a50b9986fb4f7bbf89af9b6827260f363dc03b07387c59d75a6.json",
+      "container:frontend:StartedAt=2026-10-23T08:26:29.311548414Z": "runs/preflight-20261023T174911.831950Z/evidence/baa8efdbefdbfe699cf431c62c215a69a9ddd55d083be419540accda84e2c01c.json",
+      "container:frontend:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/92bc6e8bc94d351ac3b27924243f11710be19f45f85a9c86c04116de07ef8bb2.json",
+      "container:frontend:Memory=262144000": "runs/preflight-20261023T174911.831950Z/evidence/4d28caf8908a8dbf37b36de4685171029afbcd73326c16589085e8b37bab991d.json",
+      "container:checkout:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/8dd2c21bb9202ae088789cfec4de9c3706e00a0cccd8d69d1e053e0d5283e9ff.json",
+      "container:checkout:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/ecc38629fc94d9cfb588645e7c4c1317c96a4d438518cfd26f3a18d5943d5632.json",
+      "container:checkout:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/7b74565a0a6c2a2f9b3e2a26aa49d4081fc570b355c97d154c1edb4e913eb295.json",
+      "container:checkout:StartedAt=2026-10-23T08:26:28.35551033Z": "runs/preflight-20261023T174911.831950Z/evidence/09b0f5e2b0a57bd67cb072a4ea8443ceec6439ac17555ec79e1479a1d1aa9d58.json",
+      "container:checkout:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/f76fec78fb0b861cd72532a191ac2b2980cc629eb3f9dc8a8268be681f2c465c.json",
+      "container:checkout:Memory=20971520": "runs/preflight-20261023T174911.831950Z/evidence/d090d2dc40b140ee3752c6ce830b31a089d34fdd65bbbe0dfe52bde4f639d831.json",
+      "container:image-provider:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/9495f8c137434fede5863ddf4c6de9ae0e1359b4446ebb333fd8d0579ab62ae5.json",
+      "container:image-provider:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/0b54d2c06462dd87b03ea61a477332fdcfabb7cba0e224e536f012bc7fa4c5d6.json",
+      "container:image-provider:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/fe3497ddb84390b92f0a0d59761d8a89ef904965bdfe8e8b08537523fb0deaf7.json",
+      "container:image-provider:StartedAt=2026-10-23T08:26:29.09780768Z": "runs/preflight-20261023T174911.831950Z/evidence/c935dc7ab94fb111808048be46717d1259d4abfe02095007475e86c7a2e286b1.json",
+      "container:image-provider:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/116444c67a3ec92c54a8ef116045704341c6386a9c188bdba1c7f6d616f38622.json",
+      "container:image-provider:Memory=125829120": "runs/preflight-20261023T174911.831950Z/evidence/e1bf6d1474305b347732cc71a638e598157c5d5261d52139d7b8bc9783a4922a.json",
+      "container:email:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/46a30e445757039763b71f70862c117b00284caf736f34c779a13665870b2d76.json",
+      "container:email:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/9674ba4375ca8a43275eee93ab8344e3e129c2a77f0b889eb803d6fb035bad4e.json",
+      "container:email:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/ea512bd2283ed1914bf5fa156839e515f0aaff9ae24f9ad945fe5c46a9b43276.json",
+      "container:email:StartedAt=2026-10-23T08:26:29.125225563Z": "runs/preflight-20261023T174911.831950Z/evidence/4e621d7606ec17737e2a0defcbdebe9de66befc90a047653b9299c13d9d4eb06.json",
+      "container:email:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/11de53038876912291ba1d0f1cea1ee9f74fc3a08a366af9d783a01ca439ce8d.json",
+      "container:email:Memory=104857600": "runs/preflight-20261023T174911.831950Z/evidence/274f8adc770f59ab8e313a152aaec02710cc76560e2ab0d5bafcc5158fe8cbfd.json",
+      "container:payment:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/84064825678e94648644ef1d92a9e456cdce933336e731246c1063986398581b.json",
+      "container:payment:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/451bc4bbe2ca0c01e7dc97c8ce66197e4ccb535476a8b4bf1374705421529353.json",
+      "container:payment:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/54abc003dead575259f2ed1606970123560d566175ec8aeaaca729920cca9bcd.json",
+      "container:payment:StartedAt=2026-10-23T08:26:28.499506526Z": "runs/preflight-20261023T174911.831950Z/evidence/fdcf8c0e671d61b357822025b41c285ea5ef7424ae1d34f3140a05edf2f400b6.json",
+      "container:payment:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/f8e327cb47da82ac1d58165cd5f31af3e70e2c63241d04fe55250a2aa02397d7.json",
+      "container:payment:Memory=125829120": "runs/preflight-20261023T174911.831950Z/evidence/0e68e5d59b69d790464cda13f2d9d7a66051639f0560c3560c545ee5a0a41d19.json",
+      "container:ad:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/6e6f270584a087683f4042e636fe169ed8de024811b65bdef43636d5d4e04c87.json",
+      "container:ad:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/b0e4a0d78d6067bbb521a71e3cf4f5b53148fc045a3ee8ae56448f505d4d30ce.json",
+      "container:ad:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/a395e8f9c101c39334fa187c39f8c98e3b8378a0d5f9b7b84370e77358a17812.json",
+      "container:ad:StartedAt=2026-10-23T08:26:28.963099046Z": "runs/preflight-20261023T174911.831950Z/evidence/e760515bfad28aa0654b1e9ab56a1d563a011a9343f864cdef17da16adbd0f73.json",
+      "container:ad:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/d6e033a0caf750c09318215cd0bafc3ec88394a161a02a43feffa87e4a2c2367.json",
+      "container:ad:Memory=314572800": "runs/preflight-20261023T174911.831950Z/evidence/6c691479aed12fc7c8b219dd5ccf9417d00725405ba8dabb8e9fc845dbe36d05.json",
+      "container:cart:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/9571f76c26cbb8d1c36eaedd2176673fc47784cecea5e0d25cc6ea6b1cad4d18.json",
+      "container:cart:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/1089cc769fa743398cf3cc0714f368ea0236d9c523e026d6a2671224d3a98ff9.json",
+      "container:cart:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/5f4b9cdcdd95fcb25b33b44eda017e1b9d629ecb90ea43858645ee100790f5f6.json",
+      "container:cart:StartedAt=2026-10-23T08:26:28.708327669Z": "runs/preflight-20261023T174911.831950Z/evidence/312e5bc7d3bbd5d6836be5d60782b856bcbfe01d752c6f0015938eba67c69ab3.json",
+      "container:cart:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/f9cd1b16076990c88c9cc4346cc8b8faacebfa4c57f426c73c12f4e49457a506.json",
+      "container:cart:Memory=167772160": "runs/preflight-20261023T174911.831950Z/evidence/fb930d8ce52443936ec3b2947e9a018004e28ae17057cf4b2ea84b7eb53d782c.json",
+      "container:currency:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/5c0da49f5de6bd1c88c9802df982a911990437f46f70b23d705809bf4232e38f.json",
+      "container:currency:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/8470054e9866ecc7f474e274d976e0a4ebda026625d3bd649447cd6357cc44e6.json",
+      "container:currency:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/0e47b4abc554f8fbf375b975e767e1be447f53e6883a1bb6283a5ddac94c1405.json",
+      "container:currency:StartedAt=2026-10-23T08:26:29.167214092Z": "runs/preflight-20261023T174911.831950Z/evidence/8dc3bead148d4314a6911878750d51f24b497efa73517f014de86699431935fb.json",
+      "container:currency:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/c5f254f4a0f7237c68019f962c055d3bf7664dcf55549154e59bc9a16b8276a9.json",
+      "container:currency:Memory=20971520": "runs/preflight-20261023T174911.831950Z/evidence/5ef20a5dba4ccf09882098f4024ef7ae1c68519db8d2328cef7a704469adedd7.json",
+      "container:product-catalog:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/60623af1368c7f2573cdcd3083731daede1eaeade3e2379b2186f4a723f41a1b.json",
+      "container:product-catalog:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/dc31e7a421803aa9cd17724a6e71cf28574ae40eaa4900b44d3f38c96cae6850.json",
+      "container:product-catalog:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/238735237c6fc9c0d74bb2b2e895b1dab4edd780d78a71b7df4ff740df25c915.json",
+      "container:product-catalog:StartedAt=2026-10-23T08:26:28.456561269Z": "runs/preflight-20261023T174911.831950Z/evidence/1460f9f5dced25873d8cec7a4d8a3ceb5bda89ccbca6b30b4b506db16455446b.json",
+      "container:product-catalog:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/30340e4ed606244445aa5dbd7bd78fcb41d205bda16865aef876319774cdbecd.json",
+      "container:product-catalog:Memory=20971520": "runs/preflight-20261023T174911.831950Z/evidence/942baaa35c53e72b2afb1db410c030ab739fd5b050d40d632a0e03402ae660c1.json",
+      "container:shipping:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/df277715962ed4d2dbb38512bd3ac27ec2f7efa31d4b1102dd2aef3211c1317b.json",
+      "container:shipping:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/32398f4e02778f8aa0c5d6a1b71a21ae1cdeefc266f3b4da8e61d5f1375f779b.json",
+      "container:shipping:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/0e5458470a387ec9e89ca9c68b57a7ad72aa878f66c6a5e3461517d6c449a575.json",
+      "container:shipping:StartedAt=2026-10-23T08:26:28.13565142Z": "runs/preflight-20261023T174911.831950Z/evidence/d15d27f6df01069fbbe85f32562b676b7ec34283b04edd2f1c8e46af4716bdf7.json",
+      "container:shipping:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/0243b1383fb131d9ebac87989cfb3c766fca150c4370f3e3aff9c6e0a5368ff0.json",
+      "container:shipping:Memory=20971520": "runs/preflight-20261023T174911.831950Z/evidence/6f54d46e1b216673cade83c91197b7c7f1deee0e5afe3facfbda01a3c70ff4fa.json",
+      "container:otel-collector:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/e1c61c6d992e947f2a5ececabf6b8a3c71da8a51da18ebb7a1cc10ae78bb7dc0.json",
+      "container:otel-collector:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/fc5875b920401f0ac0c326723b8474bc80882154561c7051130b9f0db4965910.json",
+      "container:otel-collector:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/756356d6955b529cc1063c4f089883028b1e295de838f187eda33408883ebf0e.json",
+      "container:otel-collector:StartedAt=2026-10-23T08:26:27.737727095Z": "runs/preflight-20261023T174911.831950Z/evidence/532376c96caaec9c2b82c51160ce914479e55cfa8c0c4cb1057ca322c9b468d5.json",
+      "container:otel-collector:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/c5712e92c3f98675f3273116ce248af87789e7313760bf9e8a6ab3d1aa1a404a.json",
+      "container:otel-collector:Memory=209715200": "runs/preflight-20261023T174911.831950Z/evidence/d8d9d802709d92e073854aaa86fe23b13774331e489c95b7858500fbe68d125f.json",
+      "container:opensearch:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/bf57aa620e07d5894a8905080f2ec7705b72a1363ae226ed97e5c899aa06b94a.json",
+      "container:opensearch:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/ecf1be9d8ac0588bf7910f675c5888debe450ee33b025911750b4ed63cd426ce.json",
+      "container:opensearch:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/f254bb1167d6315625b0a013d26f177b522a8de0803f7edbda5b82acf876892d.json",
+      "container:opensearch:StartedAt=2026-10-23T08:26:29.56447477Z": "runs/preflight-20261023T174911.831950Z/evidence/3a0198cfa5e330d64f78eff1823457e667cef3131155f27e7c8328bd846b9d75.json",
+      "container:opensearch:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/597ef71df307f90b23da96f94ad79423c78911c303d81dde1dfb0474092d5633.json",
+      "container:opensearch:Memory=1181116006": "runs/preflight-20261023T174911.831950Z/evidence/cf7be28cdf978a8d75ce8384d0dd56393308e6f3fc2253480d4f8036eb1a6c98.json",
+      "container:jaeger:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/774555be580c5a4bdb0a157839c1b25b69f1064adfb26a3e9f4de9b052c62692.json",
+      "container:jaeger:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/d547a01f37a3d15077bdd93e2977f412a05186241af112c167dadcf00e14b1e0.json",
+      "container:jaeger:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/d0cf132b85f9f8dc4869191dc84f6f1fcc3892b00881ef453665065a906b825d.json",
+      "container:jaeger:StartedAt=2026-10-23T08:26:28.898653815Z": "runs/preflight-20261023T174911.831950Z/evidence/0cf572692bc3019fb300bc25938a16c04cb157a728682f1f1e794b9d1a3aa746.json",
+      "container:jaeger:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/f4ed79974c9c4cf841154e4a10fd8a70e2ac76bf2afccce4dd2d2ab17d6e0018.json",
+      "container:jaeger:Memory=419430400": "runs/preflight-20261023T174911.831950Z/evidence/59f624b8874b98a5d08464672b4cafce5a082cdb4b61d78c619ab05d2f3aca58.json",
+      "container:prometheus:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/4078ad6661267451848f90672c4fafcbee335529e58e428ccef9883be4d2e8c9.json",
+      "container:prometheus:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/519ec0d835cf5378c3897c52216e9f4ccae730e226865b8fc4eb80b789cf2aa0.json",
+      "container:prometheus:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/302c28ed3683c5ff7e57af4d08617787dfdfebc5ce6b00ca161cc4c478ecb313.json",
+      "container:prometheus:StartedAt=2026-10-23T08:26:29.528477315Z": "runs/preflight-20261023T174911.831950Z/evidence/0cdb5ee3cfdc4e3196baa34b5c7c4aed9116fa5f7759d8f8e8190f9788288c32.json",
+      "container:prometheus:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/ea25358bdeb8552178cba099608325dc3c92a68d42b731ee65c669600fd101e9.json",
+      "container:prometheus:Memory=314572800": "runs/preflight-20261023T174911.831950Z/evidence/6b5c3e4c4f2ac953e9e77411e9a3ae8045b1f4269a9fd006c93eaf5a4737110a.json",
+      "container:grafana:Status=running": "runs/preflight-20261023T174911.831950Z/evidence/1730687a463f98194def7ce1d7045cf0fee8746fcf9570e13b5fba0cb51965de.json",
+      "container:grafana:RestartCount=0": "runs/preflight-20261023T174911.831950Z/evidence/7e35ed0735884efa705a5377477b7a0b55ce53983595726aaa5d6c57e80389fe.json",
+      "container:grafana:OOMKilled=false": "runs/preflight-20261023T174911.831950Z/evidence/7ba9d7debadfa5178bbf0c4ce478471f10dcd098e890c818476b3862c91a0a00.json",
+      "container:grafana:StartedAt=2026-10-23T08:26:29.201513885Z": "runs/preflight-20261023T174911.831950Z/evidence/5ab471e4d36b66562906e39e6ee6980c00790721b40e6137fdbee7b29886588c.json",
+      "container:grafana:NanoCpus=0": "runs/preflight-20261023T174911.831950Z/evidence/df34eed31f23d98cb5d6f06c2f3400e159f1ad0bb0c249cde800cc3b66f057da.json",
+      "container:grafana:Memory=125829120": "runs/preflight-20261023T174911.831950Z/evidence/b401e79a58b1a77b27bb381ada7e9af6c4938ea09224c11414282507c7546a1d.json"
+    },
+    "elapsed_s": 1.813
+  },
+  "baseline_metrics": {
+    "tool": "get_metrics",
+    "source": "prometheus",
+    "query": "named:rps_by_service",
+    "window": {
+      "from": "2026-10-23T17:37:13.025169+00:00",
+      "to": "2026-10-23T17:49:13.025169+00:00"
+    },
+    "data": [
+      {
+        "metric": {
+          "service_name": "ad"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.2333488899259951
+          ],
+          [
+            1792777048.025,
+            0.2333488899259951
+          ],
+          [
+            1792777063.025,
+            0.2333488899259951
+          ],
+          [
+            1792777078.025,
+            0.2333488899259951
+          ],
+          [
+            1792777093.025,
+            0.2000133342222815
+          ],
+          [
+            1792777108.025,
+            0.2000133342222815
+          ],
+          [
+            1792777123.025,
+            0.2000133342222815
+          ],
+          [
+            1792777138.025,
+            0.2000133342222815
+          ],
+          [
+            1792777153.025,
+            0.06667111140742717
+          ],
+          [
+            1792777168.025,
+            0.06667111140742717
+          ],
+          [
+            1792777183.025,
+            0.06667111140742717
+          ],
+          [
+            1792777198.025,
+            0.06667111140742717
+          ],
+          [
+            1792777213.025,
+            0.23335277939828325
+          ],
+          [
+            1792777228.025,
+            0.23335277939828325
+          ],
+          [
+            1792777243.025,
+            0.23335277939828325
+          ],
+          [
+            1792777258.025,
+            0.23335277939828325
+          ],
+          [
+            1792777273.025,
+            0.15000750037501875
+          ],
+          [
+            1792777288.025,
+            0.15000750037501875
+          ],
+          [
+            1792777303.025,
+            0.15000750037501875
+          ],
+          [
+            1792777318.025,
+            0.15000750037501875
+          ],
+          [
+            1792777333.025,
+            0.10000666711114076
+          ],
+          [
+            1792777348.025,
+            0.10000666711114076
+          ],
+          [
+            1792777363.025,
+            0.10000666711114076
+          ],
+          [
+            1792777378.025,
+            0.10000666711114076
+          ],
+          [
+            1792777393.025,
+            0.316693057754813
+          ],
+          [
+            1792777408.025,
+            0.316693057754813
+          ],
+          [
+            1792777423.025,
+            0.316693057754813
+          ],
+          [
+            1792777438.025,
+            0.316693057754813
+          ],
+          [
+            1792777453.025,
+            0.2500166677778519
+          ],
+          [
+            1792777468.025,
+            0.2500166677778519
+          ],
+          [
+            1792777483.025,
+            0.2500166677778519
+          ],
+          [
+            1792777498.025,
+            0.2500166677778519
+          ],
+          [
+            1792777513.025,
+            0.11667250029168122
+          ],
+          [
+            1792777528.025,
+            0.11667250029168125
+          ],
+          [
+            1792777543.025,
+            0.11667250029168125
+          ],
+          [
+            1792777558.025,
+            0.11667250029168125
+          ],
+          [
+            1792777573.025,
+            0.1500125010417535
+          ],
+          [
+            1792777588.025,
+            0.1500125010417535
+          ],
+          [
+            1792777603.025,
+            0.1500125010417535
+          ],
+          [
+            1792777618.025,
+            0.1500125010417535
+          ],
+          [
+            1792777633.025,
+            0.06667111140742717
+          ],
+          [
+            1792777648.025,
+            0.06667111140742717
+          ],
+          [
+            1792777663.025,
+            0.06667111140742717
+          ],
+          [
+            1792777678.025,
+            0.06667111140742717
+          ],
+          [
+            1792777693.025,
+            0.13334222281485433
+          ],
+          [
+            1792777708.025,
+            0.13334222281485433
+          ],
+          [
+            1792777723.025,
+            0.13334222281485433
+          ],
+          [
+            1792777738.025,
+            0.13334222281485433
+          ],
+          [
+            1792777753.025,
+            0.10000666711114076
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792777393.025=0.316693057754813",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792777753.025=0.10000666711114076"
+      },
+      {
+        "metric": {
+          "service_name": "cart"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.7000466697779852
+          ],
+          [
+            1792777048.025,
+            0.7000466697779852
+          ],
+          [
+            1792777063.025,
+            0.7000466697779852
+          ],
+          [
+            1792777078.025,
+            0.7000466697779852
+          ],
+          [
+            1792777093.025,
+            0.3333555570371358
+          ],
+          [
+            1792777108.025,
+            0.3333555570371358
+          ],
+          [
+            1792777123.025,
+            0.3333555570371358
+          ],
+          [
+            1792777138.025,
+            0.3333555570371358
+          ],
+          [
+            1792777153.025,
+            0.7333822254816988
+          ],
+          [
+            1792777168.025,
+            0.7333822254816988
+          ],
+          [
+            1792777183.025,
+            0.7333822254816988
+          ],
+          [
+            1792777198.025,
+            0.7333822254816988
+          ],
+          [
+            1792777213.025,
+            0.33336111342611896
+          ],
+          [
+            1792777228.025,
+            0.33336111342611896
+          ],
+          [
+            1792777243.025,
+            0.33336111342611896
+          ],
+          [
+            1792777258.025,
+            0.33336111342611896
+          ],
+          [
+            1792777273.025,
+            0.7667050019167625
+          ],
+          [
+            1792777288.025,
+            0.7667050019167625
+          ],
+          [
+            1792777303.025,
+            0.7667050019167625
+          ],
+          [
+            1792777318.025,
+            0.7667050019167625
+          ],
+          [
+            1792777333.025,
+            0.41669444629641983
+          ],
+          [
+            1792777348.025,
+            0.41669444629641983
+          ],
+          [
+            1792777363.025,
+            0.41669444629641983
+          ],
+          [
+            1792777378.025,
+            0.41669444629641983
+          ],
+          [
+            1792777393.025,
+            0.36669722476873085
+          ],
+          [
+            1792777408.025,
+            0.36669722476873085
+          ],
+          [
+            1792777423.025,
+            0.36669722476873085
+          ],
+          [
+            1792777438.025,
+            0.36669722476873085
+          ],
+          [
+            1792777453.025,
+            0.5167011134075605
+          ],
+          [
+            1792777468.025,
+            0.5167011134075605
+          ],
+          [
+            1792777483.025,
+            0.5167011134075605
+          ],
+          [
+            1792777498.025,
+            0.5167011134075605
+          ],
+          [
+            1792777513.025,
+            0.8167075020417686
+          ],
+          [
+            1792777528.025,
+            0.8167075020417688
+          ],
+          [
+            1792777543.025,
+            0.8167075020417688
+          ],
+          [
+            1792777558.025,
+            0.8167075020417688
+          ],
+          [
+            1792777573.025,
+            0.4833736144678724
+          ],
+          [
+            1792777588.025,
+            0.4833736144678724
+          ],
+          [
+            1792777603.025,
+            0.4833736144678724
+          ],
+          [
+            1792777618.025,
+            0.4833736144678724
+          ],
+          [
+            1792777633.025,
+            0.7000466697779852
+          ],
+          [
+            1792777648.025,
+            0.7000466697779852
+          ],
+          [
+            1792777663.025,
+            0.7000466697779852
+          ],
+          [
+            1792777678.025,
+            0.7000466697779852
+          ],
+          [
+            1792777693.025,
+            0.7667177811854125
+          ],
+          [
+            1792777708.025,
+            0.7667177811854125
+          ],
+          [
+            1792777723.025,
+            0.7667177811854125
+          ],
+          [
+            1792777738.025,
+            0.7667177811854125
+          ],
+          [
+            1792777753.025,
+            1.1500766717781186
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792777753.025=1.1500766717781186",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792777753.025=1.1500766717781186"
+      },
+      {
+        "metric": {
+          "service_name": "checkout"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.650043336222415
+          ],
+          [
+            1792777048.025,
+            0.650043336222415
+          ],
+          [
+            1792777063.025,
+            0.650043336222415
+          ],
+          [
+            1792777078.025,
+            0.650043336222415
+          ],
+          [
+            1792777093.025,
+            0.650043336222415
+          ],
+          [
+            1792777108.025,
+            0.650043336222415
+          ],
+          [
+            1792777123.025,
+            0.650043336222415
+          ],
+          [
+            1792777138.025,
+            0.650043336222415
+          ],
+          [
+            1792777153.025,
+            0.400026668444563
+          ],
+          [
+            1792777168.025,
+            0.400026668444563
+          ],
+          [
+            1792777183.025,
+            0.400026668444563
+          ],
+          [
+            1792777198.025,
+            0.400026668444563
+          ],
+          [
+            1792777213.025,
+            0.5500458371530963
+          ],
+          [
+            1792777228.025,
+            0.5500458371530963
+          ],
+          [
+            1792777243.025,
+            0.5500458371530963
+          ],
+          [
+            1792777258.025,
+            0.5500458371530963
+          ],
+          [
+            1792777273.025,
+            0.9833825024584563
+          ],
+          [
+            1792777288.025,
+            0.9833825024584563
+          ],
+          [
+            1792777303.025,
+            0.9833825024584563
+          ],
+          [
+            1792777318.025,
+            0.9833825024584563
+          ],
+          [
+            1792777333.025,
+            0.2166811120741383
+          ],
+          [
+            1792777348.025,
+            0.2166811120741383
+          ],
+          [
+            1792777363.025,
+            0.2166811120741383
+          ],
+          [
+            1792777378.025,
+            0.2166811120741383
+          ],
+          [
+            1792777393.025,
+            0.1833486123843654
+          ],
+          [
+            1792777408.025,
+            0.1833486123843654
+          ],
+          [
+            1792777423.025,
+            0.1833486123843654
+          ],
+          [
+            1792777438.025,
+            0.1833486123843654
+          ],
+          [
+            1792777453.025,
+            0.9333955597039804
+          ],
+          [
+            1792777468.025,
+            0.9333955597039804
+          ],
+          [
+            1792777483.025,
+            0.9333955597039804
+          ],
+          [
+            1792777498.025,
+            0.9333955597039804
+          ],
+          [
+            1792777513.025,
+            0.7667050019167624
+          ],
+          [
+            1792777528.025,
+            0.7667050019167625
+          ],
+          [
+            1792777543.025,
+            0.7667050019167625
+          ],
+          [
+            1792777558.025,
+            0.7667050019167625
+          ],
+          [
+            1792777573.025,
+            0.6167180598383201
+          ],
+          [
+            1792777588.025,
+            0.6167180598383201
+          ],
+          [
+            1792777603.025,
+            0.6167180598383201
+          ],
+          [
+            1792777618.025,
+            0.6167180598383201
+          ],
+          [
+            1792777633.025,
+            0.6167077805187013
+          ],
+          [
+            1792777648.025,
+            0.6167077805187013
+          ],
+          [
+            1792777663.025,
+            0.6167077805187013
+          ],
+          [
+            1792777678.025,
+            0.6167077805187013
+          ],
+          [
+            1792777693.025,
+            1.0167344489632644
+          ],
+          [
+            1792777708.025,
+            1.0167344489632644
+          ],
+          [
+            1792777723.025,
+            1.0167344489632644
+          ],
+          [
+            1792777738.025,
+            1.0167344489632644
+          ],
+          [
+            1792777753.025,
+            1.7001133408893927
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792777753.025=1.7001133408893927",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792777753.025=1.7001133408893927"
+      },
+      {
+        "metric": {
+          "service_name": "currency"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.15001000066671114
+          ],
+          [
+            1792777048.025,
+            0.15001000066671114
+          ],
+          [
+            1792777063.025,
+            0.15001000066671114
+          ],
+          [
+            1792777078.025,
+            0.15001000066671114
+          ],
+          [
+            1792777093.025,
+            0.15001000066671114
+          ],
+          [
+            1792777108.025,
+            0.15001000066671114
+          ],
+          [
+            1792777123.025,
+            0.15001000066671114
+          ],
+          [
+            1792777138.025,
+            0.15001000066671114
+          ],
+          [
+            1792777153.025,
+            0.08333888925928395
+          ],
+          [
+            1792777168.025,
+            0.08333888925928395
+          ],
+          [
+            1792777183.025,
+            0.08333888925928395
+          ],
+          [
+            1792777198.025,
+            0.08333888925928395
+          ],
+          [
+            1792777213.025,
+            0.10000833402783568
+          ],
+          [
+            1792777228.025,
+            0.10000833402783568
+          ],
+          [
+            1792777243.025,
+            0.10000833402783568
+          ],
+          [
+            1792777258.025,
+            0.10000833402783568
+          ],
+          [
+            1792777273.025,
+            0.200010000500025
+          ],
+          [
+            1792777288.025,
+            0.200010000500025
+          ],
+          [
+            1792777303.025,
+            0.200010000500025
+          ],
+          [
+            1792777318.025,
+            0.200010000500025
+          ],
+          [
+            1792777333.025,
+            0.05000333355557038
+          ],
+          [
+            1792777348.025,
+            0.05000333355557038
+          ],
+          [
+            1792777363.025,
+            0.05000333355557038
+          ],
+          [
+            1792777378.025,
+            0.05000333355557038
+          ],
+          [
+            1792777393.025,
+            0.03333611134261189
+          ],
+          [
+            1792777408.025,
+            0.03333611134261189
+          ],
+          [
+            1792777423.025,
+            0.03333611134261189
+          ],
+          [
+            1792777438.025,
+            0.03333611134261189
+          ],
+          [
+            1792777453.025,
+            0.2333488899259951
+          ],
+          [
+            1792777468.025,
+            0.2333488899259951
+          ],
+          [
+            1792777483.025,
+            0.2333488899259951
+          ],
+          [
+            1792777498.025,
+            0.2333488899259951
+          ],
+          [
+            1792777513.025,
+            0.15000750037501873
+          ],
+          [
+            1792777528.025,
+            0.15000750037501875
+          ],
+          [
+            1792777543.025,
+            0.15000750037501875
+          ],
+          [
+            1792777558.025,
+            0.15000750037501875
+          ],
+          [
+            1792777573.025,
+            0.13334444537044757
+          ],
+          [
+            1792777588.025,
+            0.13334444537044757
+          ],
+          [
+            1792777603.025,
+            0.13334444537044757
+          ],
+          [
+            1792777618.025,
+            0.13334444537044757
+          ],
+          [
+            1792777633.025,
+            0.13334222281485433
+          ],
+          [
+            1792777648.025,
+            0.13334222281485433
+          ],
+          [
+            1792777663.025,
+            0.13334222281485433
+          ],
+          [
+            1792777678.025,
+            0.13334222281485433
+          ],
+          [
+            1792777693.025,
+            0.2166811120741383
+          ],
+          [
+            1792777708.025,
+            0.2166811120741383
+          ],
+          [
+            1792777723.025,
+            0.2166811120741383
+          ],
+          [
+            1792777738.025,
+            0.2166811120741383
+          ],
+          [
+            1792777753.025,
+            0.3833588905927062
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792777753.025=0.3833588905927062",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792777753.025=0.3833588905927062"
+      },
+      {
+        "metric": {
+          "service_name": "email"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.26668444562970867
+          ],
+          [
+            1792777048.025,
+            0.26668444562970867
+          ],
+          [
+            1792777063.025,
+            0.26668444562970867
+          ],
+          [
+            1792777078.025,
+            0.26668444562970867
+          ],
+          [
+            1792777093.025,
+            0.13334222281485433
+          ],
+          [
+            1792777108.025,
+            0.13334222281485433
+          ],
+          [
+            1792777123.025,
+            0.13334222281485433
+          ],
+          [
+            1792777138.025,
+            0.13334222281485433
+          ],
+          [
+            1792777153.025,
+            0.2000133342222815
+          ],
+          [
+            1792777168.025,
+            0.2000133342222815
+          ],
+          [
+            1792777183.025,
+            0.2000133342222815
+          ],
+          [
+            1792777198.025,
+            0.2000133342222815
+          ],
+          [
+            1792777213.025,
+            0.13334444537044757
+          ],
+          [
+            1792777228.025,
+            0.13334444537044757
+          ],
+          [
+            1792777243.025,
+            0.13334444537044757
+          ],
+          [
+            1792777258.025,
+            0.13334444537044757
+          ],
+          [
+            1792777273.025,
+            0.333350000833375
+          ],
+          [
+            1792777288.025,
+            0.333350000833375
+          ],
+          [
+            1792777303.025,
+            0.333350000833375
+          ],
+          [
+            1792777318.025,
+            0.333350000833375
+          ],
+          [
+            1792777333.025,
+            0.13334222281485433
+          ],
+          [
+            1792777348.025,
+            0.13334222281485433
+          ],
+          [
+            1792777363.025,
+            0.13334222281485433
+          ],
+          [
+            1792777378.025,
+            0.13334222281485433
+          ],
+          [
+            1792777393.025,
+            0.06667222268522378
+          ],
+          [
+            1792777408.025,
+            0.06667222268522378
+          ],
+          [
+            1792777423.025,
+            0.06667222268522378
+          ],
+          [
+            1792777438.025,
+            0.06667222268522378
+          ],
+          [
+            1792777453.025,
+            0.2000133342222815
+          ],
+          [
+            1792777468.025,
+            0.2000133342222815
+          ],
+          [
+            1792777483.025,
+            0.2000133342222815
+          ],
+          [
+            1792777498.025,
+            0.2000133342222815
+          ],
+          [
+            1792777513.025,
+            0.33335000083337496
+          ],
+          [
+            1792777528.025,
+            0.333350000833375
+          ],
+          [
+            1792777543.025,
+            0.333350000833375
+          ],
+          [
+            1792777558.025,
+            0.333350000833375
+          ],
+          [
+            1792777573.025,
+            0.20001666805567136
+          ],
+          [
+            1792777588.025,
+            0.20001666805567136
+          ],
+          [
+            1792777603.025,
+            0.20001666805567136
+          ],
+          [
+            1792777618.025,
+            0.20001666805567136
+          ],
+          [
+            1792777633.025,
+            0.2000133342222815
+          ],
+          [
+            1792777648.025,
+            0.2000133342222815
+          ],
+          [
+            1792777663.025,
+            0.2000133342222815
+          ],
+          [
+            1792777678.025,
+            0.2000133342222815
+          ],
+          [
+            1792777693.025,
+            0.3333555570371358
+          ],
+          [
+            1792777708.025,
+            0.3333555570371358
+          ],
+          [
+            1792777723.025,
+            0.3333555570371358
+          ],
+          [
+            1792777738.025,
+            0.3333555570371358
+          ],
+          [
+            1792777753.025,
+            0.5333688912594173
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792777753.025=0.5333688912594173",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792777753.025=0.5333688912594173"
+      },
+      {
+        "metric": {
+          "service_name": "frontend"
+        },
+        "values": [
+          [
+            1792777033.025,
+            6.217081138742584
+          ],
+          [
+            1792777048.025,
+            6.217081138742584
+          ],
+          [
+            1792777063.025,
+            6.217081138742584
+          ],
+          [
+            1792777078.025,
+            6.217081138742584
+          ],
+          [
+            1792777093.025,
+            4.750316687779185
+          ],
+          [
+            1792777108.025,
+            4.750316687779185
+          ],
+          [
+            1792777123.025,
+            4.750316687779185
+          ],
+          [
+            1792777138.025,
+            4.750316687779185
+          ],
+          [
+            1792777153.025,
+            4.700313354223615
+          ],
+          [
+            1792777168.025,
+            4.700313354223615
+          ],
+          [
+            1792777183.025,
+            4.700313354223615
+          ],
+          [
+            1792777198.025,
+            4.700313354223615
+          ],
+          [
+            1792777213.025,
+            4.85040420035003
+          ],
+          [
+            1792777228.025,
+            4.85040420035003
+          ],
+          [
+            1792777243.025,
+            4.85040420035003
+          ],
+          [
+            1792777258.025,
+            4.85040420035003
+          ],
+          [
+            1792777273.025,
+            5.633615014084038
+          ],
+          [
+            1792777288.025,
+            5.633615014084038
+          ],
+          [
+            1792777303.025,
+            5.633615014084038
+          ],
+          [
+            1792777318.025,
+            5.633615014084038
+          ],
+          [
+            1792777333.025,
+            4.400293352890193
+          ],
+          [
+            1792777348.025,
+            4.400293352890193
+          ],
+          [
+            1792777363.025,
+            4.400293352890193
+          ],
+          [
+            1792777378.025,
+            4.400293352890193
+          ],
+          [
+            1792777393.025,
+            4.183681973497793
+          ],
+          [
+            1792777408.025,
+            4.183681973497793
+          ],
+          [
+            1792777423.025,
+            4.183681973497793
+          ],
+          [
+            1792777438.025,
+            4.183681973497793
+          ],
+          [
+            1792777453.025,
+            4.733648909927329
+          ],
+          [
+            1792777468.025,
+            4.733648909927329
+          ],
+          [
+            1792777483.025,
+            4.733648909927329
+          ],
+          [
+            1792777498.025,
+            4.733648909927329
+          ],
+          [
+            1792777513.025,
+            5.3002650132506615
+          ],
+          [
+            1792777528.025,
+            5.300265013250662
+          ],
+          [
+            1792777543.025,
+            5.300265013250662
+          ],
+          [
+            1792777558.025,
+            5.300265013250662
+          ],
+          [
+            1792777573.025,
+            3.6003000250020842
+          ],
+          [
+            1792777588.025,
+            3.6003000250020842
+          ],
+          [
+            1792777603.025,
+            3.6003000250020842
+          ],
+          [
+            1792777618.025,
+            3.6003000250020842
+          ],
+          [
+            1792777633.025,
+            5.067004466964464
+          ],
+          [
+            1792777648.025,
+            5.067004466964464
+          ],
+          [
+            1792777663.025,
+            5.067004466964464
+          ],
+          [
+            1792777678.025,
+            5.067004466964464
+          ],
+          [
+            1792777693.025,
+            5.4670311354090275
+          ],
+          [
+            1792777708.025,
+            5.4670311354090275
+          ],
+          [
+            1792777723.025,
+            5.4670311354090275
+          ],
+          [
+            1792777738.025,
+            5.4670311354090275
+          ],
+          [
+            1792777753.025,
+            5.81705447029802
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792777033.025=6.217081138742584",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792777753.025=5.81705447029802"
+      },
+      {
+        "metric": {
+          "service_name": "frontend-proxy"
+        },
+        "values": [
+          [
+            1792777033.025,
+            2.2001466764450965
+          ],
+          [
+            1792777048.025,
+            2.2001466764450965
+          ],
+          [
+            1792777063.025,
+            2.2001466764450965
+          ],
+          [
+            1792777078.025,
+            2.2001466764450965
+          ],
+          [
+            1792777093.025,
+            2.1668111207413827
+          ],
+          [
+            1792777108.025,
+            2.1668111207413827
+          ],
+          [
+            1792777123.025,
+            2.1668111207413827
+          ],
+          [
+            1792777138.025,
+            2.1668111207413827
+          ],
+          [
+            1792777153.025,
+            2.1334755650376693
+          ],
+          [
+            1792777168.025,
+            2.1334755650376693
+          ],
+          [
+            1792777183.025,
+            2.1334755650376693
+          ],
+          [
+            1792777198.025,
+            2.1334755650376693
+          ],
+          [
+            1792777213.025,
+            2.3335277939828325
+          ],
+          [
+            1792777228.025,
+            2.3335277939828325
+          ],
+          [
+            1792777243.025,
+            2.3335277939828325
+          ],
+          [
+            1792777258.025,
+            2.3335277939828325
+          ],
+          [
+            1792777273.025,
+            2.600130006500325
+          ],
+          [
+            1792777288.025,
+            2.600130006500325
+          ],
+          [
+            1792777303.025,
+            2.600130006500325
+          ],
+          [
+            1792777318.025,
+            2.600130006500325
+          ],
+          [
+            1792777333.025,
+            2.0334688979265287
+          ],
+          [
+            1792777348.025,
+            2.0334688979265287
+          ],
+          [
+            1792777363.025,
+            2.0334688979265287
+          ],
+          [
+            1792777378.025,
+            2.0334688979265287
+          ],
+          [
+            1792777393.025,
+            1.9668305692141017
+          ],
+          [
+            1792777408.025,
+            1.9668305692141017
+          ],
+          [
+            1792777423.025,
+            1.9668305692141017
+          ],
+          [
+            1792777438.025,
+            1.9668305692141017
+          ],
+          [
+            1792777453.025,
+            2.2668177878525237
+          ],
+          [
+            1792777468.025,
+            2.2668177878525237
+          ],
+          [
+            1792777483.025,
+            2.2668177878525237
+          ],
+          [
+            1792777498.025,
+            2.2668177878525237
+          ],
+          [
+            1792777513.025,
+            2.033435005083587
+          ],
+          [
+            1792777528.025,
+            2.0334350050835877
+          ],
+          [
+            1792777543.025,
+            2.0334350050835877
+          ],
+          [
+            1792777558.025,
+            2.0334350050835877
+          ],
+          [
+            1792777573.025,
+            2.0001666805567133
+          ],
+          [
+            1792777588.025,
+            2.0001666805567133
+          ],
+          [
+            1792777603.025,
+            2.0001666805567133
+          ],
+          [
+            1792777618.025,
+            2.0001666805567133
+          ],
+          [
+            1792777633.025,
+            2.1168077871858126
+          ],
+          [
+            1792777648.025,
+            2.1168077871858126
+          ],
+          [
+            1792777663.025,
+            2.1168077871858126
+          ],
+          [
+            1792777678.025,
+            2.1168077871858126
+          ],
+          [
+            1792777693.025,
+            2.4334955663710915
+          ],
+          [
+            1792777708.025,
+            2.4334955663710915
+          ],
+          [
+            1792777723.025,
+            2.4334955663710915
+          ],
+          [
+            1792777738.025,
+            2.4334955663710915
+          ],
+          [
+            1792777753.025,
+            2.7668511234082276
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792777753.025=2.7668511234082276",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792777753.025=2.7668511234082276"
+      },
+      {
+        "metric": {
+          "service_name": "load-generator"
+        },
+        "values": [
+          [
+            1792777033.025,
+            1.3334222281485433
+          ],
+          [
+            1792777048.025,
+            1.3334222281485433
+          ],
+          [
+            1792777063.025,
+            1.3334222281485433
+          ],
+          [
+            1792777078.025,
+            1.3334222281485433
+          ],
+          [
+            1792777093.025,
+            1.0834055603706916
+          ],
+          [
+            1792777108.025,
+            1.0834055603706916
+          ],
+          [
+            1792777123.025,
+            1.0834055603706916
+          ],
+          [
+            1792777138.025,
+            1.0834055603706916
+          ],
+          [
+            1792777153.025,
+            1.2334155610374027
+          ],
+          [
+            1792777168.025,
+            1.2334155610374027
+          ],
+          [
+            1792777183.025,
+            1.2334155610374027
+          ],
+          [
+            1792777198.025,
+            1.2334155610374027
+          ],
+          [
+            1792777213.025,
+            1.1000916743061924
+          ],
+          [
+            1792777228.025,
+            1.1000916743061924
+          ],
+          [
+            1792777243.025,
+            1.1000916743061924
+          ],
+          [
+            1792777258.025,
+            1.1000916743061924
+          ],
+          [
+            1792777273.025,
+            1.2833975032084939
+          ],
+          [
+            1792777288.025,
+            1.2833975032084939
+          ],
+          [
+            1792777303.025,
+            1.2833975032084939
+          ],
+          [
+            1792777318.025,
+            1.2833975032084939
+          ],
+          [
+            1792777333.025,
+            1.1000733382225483
+          ],
+          [
+            1792777348.025,
+            1.1000733382225483
+          ],
+          [
+            1792777363.025,
+            1.1000733382225483
+          ],
+          [
+            1792777378.025,
+            1.1000733382225483
+          ],
+          [
+            1792777393.025,
+            1.1167597299774985
+          ],
+          [
+            1792777408.025,
+            1.1167597299774985
+          ],
+          [
+            1792777423.025,
+            1.1167597299774985
+          ],
+          [
+            1792777438.025,
+            1.1167597299774985
+          ],
+          [
+            1792777453.025,
+            1.116741116074405
+          ],
+          [
+            1792777468.025,
+            1.116741116074405
+          ],
+          [
+            1792777483.025,
+            1.116741116074405
+          ],
+          [
+            1792777498.025,
+            1.116741116074405
+          ],
+          [
+            1792777513.025,
+            1.183392502958481
+          ],
+          [
+            1792777528.025,
+            1.1833925029584813
+          ],
+          [
+            1792777543.025,
+            1.1833925029584813
+          ],
+          [
+            1792777558.025,
+            1.1833925029584813
+          ],
+          [
+            1792777573.025,
+            1.1000916743061926
+          ],
+          [
+            1792777588.025,
+            1.1000916743061926
+          ],
+          [
+            1792777603.025,
+            1.1000916743061926
+          ],
+          [
+            1792777618.025,
+            1.1000916743061926
+          ],
+          [
+            1792777633.025,
+            1.2167477831855458
+          ],
+          [
+            1792777648.025,
+            1.2167477831855458
+          ],
+          [
+            1792777663.025,
+            1.2167477831855458
+          ],
+          [
+            1792777678.025,
+            1.2167477831855458
+          ],
+          [
+            1792777693.025,
+            1.2167477831855458
+          ],
+          [
+            1792777708.025,
+            1.2167477831855458
+          ],
+          [
+            1792777723.025,
+            1.2167477831855458
+          ],
+          [
+            1792777738.025,
+            1.2167477831855458
+          ],
+          [
+            1792777753.025,
+            1.433428895259684
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792777753.025=1.433428895259684",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792777753.025=1.433428895259684"
+      },
+      {
+        "metric": {
+          "service_name": "payment"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.13334222281485433
+          ],
+          [
+            1792777048.025,
+            0.13334222281485433
+          ],
+          [
+            1792777063.025,
+            0.13334222281485433
+          ],
+          [
+            1792777078.025,
+            0.13334222281485433
+          ],
+          [
+            1792777093.025,
+            0.06667111140742717
+          ],
+          [
+            1792777108.025,
+            0.06667111140742717
+          ],
+          [
+            1792777123.025,
+            0.06667111140742717
+          ],
+          [
+            1792777138.025,
+            0.06667111140742717
+          ],
+          [
+            1792777153.025,
+            0.10000666711114076
+          ],
+          [
+            1792777168.025,
+            0.10000666711114076
+          ],
+          [
+            1792777183.025,
+            0.10000666711114076
+          ],
+          [
+            1792777198.025,
+            0.10000666711114076
+          ],
+          [
+            1792777213.025,
+            0.10000833402783568
+          ],
+          [
+            1792777228.025,
+            0.10000833402783568
+          ],
+          [
+            1792777243.025,
+            0.10000833402783568
+          ],
+          [
+            1792777258.025,
+            0.10000833402783568
+          ],
+          [
+            1792777273.025,
+            0.13334000033335
+          ],
+          [
+            1792777288.025,
+            0.13334000033335
+          ],
+          [
+            1792777303.025,
+            0.13334000033335
+          ],
+          [
+            1792777318.025,
+            0.13334000033335
+          ],
+          [
+            1792777333.025,
+            0.06667111140742717
+          ],
+          [
+            1792777348.025,
+            0.06667111140742717
+          ],
+          [
+            1792777363.025,
+            0.06667111140742717
+          ],
+          [
+            1792777378.025,
+            0.06667111140742717
+          ],
+          [
+            1792777393.025,
+            0.03333611134261189
+          ],
+          [
+            1792777408.025,
+            0.03333611134261189
+          ],
+          [
+            1792777423.025,
+            0.03333611134261189
+          ],
+          [
+            1792777438.025,
+            0.03333611134261189
+          ],
+          [
+            1792777453.025,
+            0.10000666711114076
+          ],
+          [
+            1792777468.025,
+            0.10000666711114076
+          ],
+          [
+            1792777483.025,
+            0.10000666711114076
+          ],
+          [
+            1792777498.025,
+            0.10000666711114076
+          ],
+          [
+            1792777513.025,
+            0.16667500041668748
+          ],
+          [
+            1792777528.025,
+            0.1666750004166875
+          ],
+          [
+            1792777543.025,
+            0.1666750004166875
+          ],
+          [
+            1792777558.025,
+            0.1666750004166875
+          ],
+          [
+            1792777573.025,
+            0.10000833402783568
+          ],
+          [
+            1792777588.025,
+            0.10000833402783568
+          ],
+          [
+            1792777603.025,
+            0.10000833402783568
+          ],
+          [
+            1792777618.025,
+            0.10000833402783568
+          ],
+          [
+            1792777633.025,
+            0.10000666711114076
+          ],
+          [
+            1792777648.025,
+            0.10000666711114076
+          ],
+          [
+            1792777663.025,
+            0.10000666711114076
+          ],
+          [
+            1792777678.025,
+            0.10000666711114076
+          ],
+          [
+            1792777693.025,
+            0.1666777785185679
+          ],
+          [
+            1792777708.025,
+            0.1666777785185679
+          ],
+          [
+            1792777723.025,
+            0.1666777785185679
+          ],
+          [
+            1792777738.025,
+            0.1666777785185679
+          ],
+          [
+            1792777753.025,
+            0.26668444562970867
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792777753.025=0.26668444562970867",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792777753.025=0.26668444562970867"
+      },
+      {
+        "metric": {
+          "service_name": "product-catalog"
+        },
+        "values": [
+          [
+            1792777033.025,
+            1.4834322288152544
+          ],
+          [
+            1792777048.025,
+            1.4834322288152544
+          ],
+          [
+            1792777063.025,
+            1.4834322288152544
+          ],
+          [
+            1792777078.025,
+            1.4834322288152544
+          ],
+          [
+            1792777093.025,
+            1.2334155610374027
+          ],
+          [
+            1792777108.025,
+            1.2334155610374027
+          ],
+          [
+            1792777123.025,
+            1.2334155610374027
+          ],
+          [
+            1792777138.025,
+            1.2334155610374027
+          ],
+          [
+            1792777153.025,
+            1.3334222281485433
+          ],
+          [
+            1792777168.025,
+            1.3334222281485433
+          ],
+          [
+            1792777183.025,
+            1.3334222281485433
+          ],
+          [
+            1792777198.025,
+            1.3334222281485433
+          ],
+          [
+            1792777213.025,
+            1.1167597299774983
+          ],
+          [
+            1792777228.025,
+            1.1167597299774983
+          ],
+          [
+            1792777243.025,
+            1.1167597299774983
+          ],
+          [
+            1792777258.025,
+            1.1167597299774983
+          ],
+          [
+            1792777273.025,
+            1.3834025034585062
+          ],
+          [
+            1792777288.025,
+            1.3834025034585062
+          ],
+          [
+            1792777303.025,
+            1.3834025034585062
+          ],
+          [
+            1792777318.025,
+            1.3834025034585062
+          ],
+          [
+            1792777333.025,
+            1.1500766717781188
+          ],
+          [
+            1792777348.025,
+            1.1500766717781188
+          ],
+          [
+            1792777363.025,
+            1.1500766717781188
+          ],
+          [
+            1792777378.025,
+            1.1500766717781188
+          ],
+          [
+            1792777393.025,
+            0.933411117593133
+          ],
+          [
+            1792777408.025,
+            0.933411117593133
+          ],
+          [
+            1792777423.025,
+            0.933411117593133
+          ],
+          [
+            1792777438.025,
+            0.933411117593133
+          ],
+          [
+            1792777453.025,
+            1.3834255617041136
+          ],
+          [
+            1792777468.025,
+            1.3834255617041136
+          ],
+          [
+            1792777483.025,
+            1.3834255617041136
+          ],
+          [
+            1792777498.025,
+            1.3834255617041136
+          ],
+          [
+            1792777513.025,
+            1.0333850025834623
+          ],
+          [
+            1792777528.025,
+            1.0333850025834626
+          ],
+          [
+            1792777543.025,
+            1.0333850025834626
+          ],
+          [
+            1792777558.025,
+            1.0333850025834626
+          ],
+          [
+            1792777573.025,
+            0.8334027835652973
+          ],
+          [
+            1792777588.025,
+            0.8334027835652973
+          ],
+          [
+            1792777603.025,
+            0.8334027835652973
+          ],
+          [
+            1792777618.025,
+            0.8334027835652973
+          ],
+          [
+            1792777633.025,
+            1.0167344489632644
+          ],
+          [
+            1792777648.025,
+            1.0167344489632644
+          ],
+          [
+            1792777663.025,
+            1.0167344489632644
+          ],
+          [
+            1792777678.025,
+            1.0167344489632644
+          ],
+          [
+            1792777693.025,
+            1.2167477831855458
+          ],
+          [
+            1792777708.025,
+            1.2167477831855458
+          ],
+          [
+            1792777723.025,
+            1.2167477831855458
+          ],
+          [
+            1792777738.025,
+            1.2167477831855458
+          ],
+          [
+            1792777753.025,
+            1.4000933395559705
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792777033.025=1.4834322288152544",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792777753.025=1.4000933395559705"
+      },
+      {
+        "metric": {
+          "service_name": "quote"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.15001000066671114
+          ],
+          [
+            1792777048.025,
+            0.15001000066671114
+          ],
+          [
+            1792777063.025,
+            0.15001000066671114
+          ],
+          [
+            1792777078.025,
+            0.15001000066671114
+          ],
+          [
+            1792777093.025,
+            0.15001000066671114
+          ],
+          [
+            1792777108.025,
+            0.15001000066671114
+          ],
+          [
+            1792777123.025,
+            0.15001000066671114
+          ],
+          [
+            1792777138.025,
+            0.15001000066671114
+          ],
+          [
+            1792777153.025,
+            0.10000666711114076
+          ],
+          [
+            1792777168.025,
+            0.10000666711114076
+          ],
+          [
+            1792777183.025,
+            0.10000666711114076
+          ],
+          [
+            1792777198.025,
+            0.10000666711114076
+          ],
+          [
+            1792777213.025,
+            0.1500125010417535
+          ],
+          [
+            1792777228.025,
+            0.1500125010417535
+          ],
+          [
+            1792777243.025,
+            0.1500125010417535
+          ],
+          [
+            1792777258.025,
+            0.1500125010417535
+          ],
+          [
+            1792777273.025,
+            0.2500125006250313
+          ],
+          [
+            1792777288.025,
+            0.2500125006250313
+          ],
+          [
+            1792777303.025,
+            0.2500125006250313
+          ],
+          [
+            1792777318.025,
+            0.2500125006250313
+          ],
+          [
+            1792777333.025,
+            0.05000333355557038
+          ],
+          [
+            1792777348.025,
+            0.05000333355557038
+          ],
+          [
+            1792777363.025,
+            0.05000333355557038
+          ],
+          [
+            1792777378.025,
+            0.05000333355557038
+          ],
+          [
+            1792777393.025,
+            0.05000416701391784
+          ],
+          [
+            1792777408.025,
+            0.05000416701391784
+          ],
+          [
+            1792777423.025,
+            0.05000416701391784
+          ],
+          [
+            1792777438.025,
+            0.05000416701391784
+          ],
+          [
+            1792777453.025,
+            0.15001000066671114
+          ],
+          [
+            1792777468.025,
+            0.15001000066671114
+          ],
+          [
+            1792777483.025,
+            0.15001000066671114
+          ],
+          [
+            1792777498.025,
+            0.15001000066671114
+          ],
+          [
+            1792777513.025,
+            0.2500125006250312
+          ],
+          [
+            1792777528.025,
+            0.2500125006250313
+          ],
+          [
+            1792777543.025,
+            0.2500125006250313
+          ],
+          [
+            1792777558.025,
+            0.2500125006250313
+          ],
+          [
+            1792777573.025,
+            0.1500125010417535
+          ],
+          [
+            1792777588.025,
+            0.1500125010417535
+          ],
+          [
+            1792777603.025,
+            0.1500125010417535
+          ],
+          [
+            1792777618.025,
+            0.1500125010417535
+          ],
+          [
+            1792777633.025,
+            0.15001000066671114
+          ],
+          [
+            1792777648.025,
+            0.15001000066671114
+          ],
+          [
+            1792777663.025,
+            0.15001000066671114
+          ],
+          [
+            1792777678.025,
+            0.15001000066671114
+          ],
+          [
+            1792777693.025,
+            0.25001666777785186
+          ],
+          [
+            1792777708.025,
+            0.25001666777785186
+          ],
+          [
+            1792777723.025,
+            0.25001666777785186
+          ],
+          [
+            1792777738.025,
+            0.25001666777785186
+          ],
+          [
+            1792777753.025,
+            0.400026668444563
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792777753.025=0.400026668444563",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792777753.025=0.400026668444563"
+      },
+      {
+        "metric": {
+          "service_name": "recommendation"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.5000333355557037
+          ],
+          [
+            1792777048.025,
+            0.5000333355557037
+          ],
+          [
+            1792777063.025,
+            0.5000333355557037
+          ],
+          [
+            1792777078.025,
+            0.5000333355557037
+          ],
+          [
+            1792777093.025,
+            0.30002000133342227
+          ],
+          [
+            1792777108.025,
+            0.30002000133342227
+          ],
+          [
+            1792777123.025,
+            0.30002000133342227
+          ],
+          [
+            1792777138.025,
+            0.30002000133342227
+          ],
+          [
+            1792777153.025,
+            0.45003000200013343
+          ],
+          [
+            1792777168.025,
+            0.45003000200013343
+          ],
+          [
+            1792777183.025,
+            0.45003000200013343
+          ],
+          [
+            1792777198.025,
+            0.45003000200013343
+          ],
+          [
+            1792777213.025,
+            0.3500291690974249
+          ],
+          [
+            1792777228.025,
+            0.3500291690974249
+          ],
+          [
+            1792777243.025,
+            0.3500291690974249
+          ],
+          [
+            1792777258.025,
+            0.3500291690974249
+          ],
+          [
+            1792777273.025,
+            0.35001750087504374
+          ],
+          [
+            1792777288.025,
+            0.35001750087504374
+          ],
+          [
+            1792777303.025,
+            0.35001750087504374
+          ],
+          [
+            1792777318.025,
+            0.35001750087504374
+          ],
+          [
+            1792777333.025,
+            0.30002000133342227
+          ],
+          [
+            1792777348.025,
+            0.30002000133342227
+          ],
+          [
+            1792777363.025,
+            0.30002000133342227
+          ],
+          [
+            1792777378.025,
+            0.30002000133342227
+          ],
+          [
+            1792777393.025,
+            0.3500291690974249
+          ],
+          [
+            1792777408.025,
+            0.3500291690974249
+          ],
+          [
+            1792777423.025,
+            0.3500291690974249
+          ],
+          [
+            1792777438.025,
+            0.3500291690974249
+          ],
+          [
+            1792777453.025,
+            0.3500233348889926
+          ],
+          [
+            1792777468.025,
+            0.3500233348889926
+          ],
+          [
+            1792777483.025,
+            0.3500233348889926
+          ],
+          [
+            1792777498.025,
+            0.3500233348889926
+          ],
+          [
+            1792777513.025,
+            0.30001500075003745
+          ],
+          [
+            1792777528.025,
+            0.3000150007500375
+          ],
+          [
+            1792777543.025,
+            0.3000150007500375
+          ],
+          [
+            1792777558.025,
+            0.3000150007500375
+          ],
+          [
+            1792777573.025,
+            0.1500125010417535
+          ],
+          [
+            1792777588.025,
+            0.1500125010417535
+          ],
+          [
+            1792777603.025,
+            0.1500125010417535
+          ],
+          [
+            1792777618.025,
+            0.1500125010417535
+          ],
+          [
+            1792777633.025,
+            0.2000133342222815
+          ],
+          [
+            1792777648.025,
+            0.2000133342222815
+          ],
+          [
+            1792777663.025,
+            0.2000133342222815
+          ],
+          [
+            1792777678.025,
+            0.2000133342222815
+          ],
+          [
+            1792777693.025,
+            0.2000133342222815
+          ],
+          [
+            1792777708.025,
+            0.2000133342222815
+          ],
+          [
+            1792777723.025,
+            0.2000133342222815
+          ],
+          [
+            1792777738.025,
+            0.2000133342222815
+          ],
+          [
+            1792777753.025,
+            0.2000133342222815
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792777033.025=0.5000333355557037",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792777753.025=0.2000133342222815"
+      },
+      {
+        "metric": {
+          "service_name": "shipping"
+        },
+        "values": [
+          [
+            1792777033.025,
+            0.15001000066671114
+          ],
+          [
+            1792777048.025,
+            0.15001000066671114
+          ],
+          [
+            1792777063.025,
+            0.15001000066671114
+          ],
+          [
+            1792777078.025,
+            0.15001000066671114
+          ],
+          [
+            1792777093.025,
+            0.15001000066671114
+          ],
+          [
+            1792777108.025,
+            0.15001000066671114
+          ],
+          [
+            1792777123.025,
+            0.15001000066671114
+          ],
+          [
+            1792777138.025,
+            0.15001000066671114
+          ],
+          [
+            1792777153.025,
+            0.10000666711114076
+          ],
+          [
+            1792777168.025,
+            0.10000666711114076
+          ],
+          [
+            1792777183.025,
+            0.10000666711114076
+          ],
+          [
+            1792777198.025,
+            0.10000666711114076
+          ],
+          [
+            1792777213.025,
+            0.1500125010417535
+          ],
+          [
+            1792777228.025,
+            0.1500125010417535
+          ],
+          [
+            1792777243.025,
+            0.1500125010417535
+          ],
+          [
+            1792777258.025,
+            0.1500125010417535
+          ],
+          [
+            1792777273.025,
+            0.2500125006250313
+          ],
+          [
+            1792777288.025,
+            0.2500125006250313
+          ],
+          [
+            1792777303.025,
+            0.2500125006250313
+          ],
+          [
+            1792777318.025,
+            0.2500125006250313
+          ],
+          [
+            1792777333.025,
+            0.05000333355557038
+          ],
+          [
+            1792777348.025,
+            0.05000333355557038
+          ],
+          [
+            1792777363.025,
+            0.05000333355557038
+          ],
+          [
+            1792777378.025,
+            0.05000333355557038
+          ],
+          [
+            1792777393.025,
+            0.05000416701391784
+          ],
+          [
+            1792777408.025,
+            0.05000416701391784
+          ],
+          [
+            1792777423.025,
+            0.05000416701391784
+          ],
+          [
+            1792777438.025,
+            0.05000416701391784
+          ],
+          [
+            1792777453.025,
+            0.15001000066671114
+          ],
+          [
+            1792777468.025,
+            0.15001000066671114
+          ],
+          [
+            1792777483.025,
+            0.15001000066671114
+          ],
+          [
+            1792777498.025,
+            0.15001000066671114
+          ],
+          [
+            1792777513.025,
+            0.2500125006250312
+          ],
+          [
+            1792777528.025,
+            0.2500125006250313
+          ],
+          [
+            1792777543.025,
+            0.2500125006250313
+          ],
+          [
+            1792777558.025,
+            0.2500125006250313
+          ],
+          [
+            1792777573.025,
+            0.1500125010417535
+          ],
+          [
+            1792777588.025,
+            0.1500125010417535
+          ],
+          [
+            1792777603.025,
+            0.1500125010417535
+          ],
+          [
+            1792777618.025,
+            0.1500125010417535
+          ],
+          [
+            1792777633.025,
+            0.15001000066671114
+          ],
+          [
+            1792777648.025,
+            0.15001000066671114
+          ],
+          [
+            1792777663.025,
+            0.15001000066671114
+          ],
+          [
+            1792777678.025,
+            0.15001000066671114
+          ],
+          [
+            1792777693.025,
+            0.25001666777785186
+          ],
+          [
+            1792777708.025,
+            0.25001666777785186
+          ],
+          [
+            1792777723.025,
+            0.25001666777785186
+          ],
+          [
+            1792777738.025,
+            0.25001666777785186
+          ],
+          [
+            1792777753.025,
+            0.400026668444563
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792777753.025=0.400026668444563",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792777753.025=0.400026668444563"
+      }
+    ],
+    "evidence_ids": [
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792777393.025=0.316693057754813",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792777753.025=0.10000666711114076",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792777753.025=1.1500766717781186",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792777753.025=1.7001133408893927",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792777753.025=0.3833588905927062",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792777753.025=0.5333688912594173",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792777033.025=6.217081138742584",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792777753.025=5.81705447029802",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792777753.025=2.7668511234082276",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792777753.025=1.433428895259684",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792777753.025=0.26668444562970867",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792777033.025=1.4834322288152544",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792777753.025=1.4000933395559705",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792777753.025=0.400026668444563",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792777033.025=0.5000333355557037",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792777753.025=0.2000133342222815",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792777753.025=0.400026668444563"
+    ],
+    "truncated": false,
+    "run_dir": "runs/preflight-20261023T174911.831950Z",
+    "evidence_paths": {
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792777393.025=0.316693057754813": "runs/preflight-20261023T174911.831950Z/evidence/0874da40303e5b0d262e5f585b53a2c60a7558140251b47c7ab45cece2f444d3.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792777753.025=0.10000666711114076": "runs/preflight-20261023T174911.831950Z/evidence/0f813b5078f0d71d7fb14c07d6f66cca80634ecdb86ebce5fdb1c178a5685859.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792777753.025=1.1500766717781186": "runs/preflight-20261023T174911.831950Z/evidence/2e90d169fcc9267c6b70d30b37c2f192a5f6ee65a9b955a97d90ac148d8388ef.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792777753.025=1.7001133408893927": "runs/preflight-20261023T174911.831950Z/evidence/ed69e67d5bab3268b0b299560766a42253e7892d2b6615b92b03a28ba428f7bc.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792777753.025=0.3833588905927062": "runs/preflight-20261023T174911.831950Z/evidence/89c8a3ae80758ca754bcf7337dcd5a421ce0f6ab638c7c616ceb04b362176ff4.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792777753.025=0.5333688912594173": "runs/preflight-20261023T174911.831950Z/evidence/e862682a56da3a9edb69d9e0de25ffe2cf9fb9adf5765b840c0ecf87d273781b.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792777033.025=6.217081138742584": "runs/preflight-20261023T174911.831950Z/evidence/954120a56b97b145a021e9393e65fdf47bca5b3418874296cac6778964aceec1.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792777753.025=5.81705447029802": "runs/preflight-20261023T174911.831950Z/evidence/d34304332a1ee66d35656dd7d786e9aecc4f234304f7fc670bf73e3ef238d4ca.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792777753.025=2.7668511234082276": "runs/preflight-20261023T174911.831950Z/evidence/f3ae3fb6bdf94940339f612f7bc3020a28811a4c5ff9d2ca9e0e39317a1ab147.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"load-generator\"}@1792777753.025=1.433428895259684": "runs/preflight-20261023T174911.831950Z/evidence/fb9f7f0e060a157967491d52a8aa0098df8681b9fd8d57770a29cbc75080bf9f.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792777753.025=0.26668444562970867": "runs/preflight-20261023T174911.831950Z/evidence/5f586f9953c9b0a35d0ae655984a056b05088ca71e3a1c8db8b6eab8ae1c3e57.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792777033.025=1.4834322288152544": "runs/preflight-20261023T174911.831950Z/evidence/d7ef87744370073602a5bc89d5806d2c0a4418630806db3814aec203d6f41a11.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792777753.025=1.4000933395559705": "runs/preflight-20261023T174911.831950Z/evidence/5dce64e7980882608c7dc8836df8f40a444b7592e0d8e71367d769112cf55161.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792777753.025=0.400026668444563": "runs/preflight-20261023T174911.831950Z/evidence/83cc7594eac0ea0b38cee372dcb827ac0042186a180d40f4810fe910aec45f84.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792777033.025=0.5000333355557037": "runs/preflight-20261023T174911.831950Z/evidence/64ad39db3e7f3df5f16986e38fe6b9fa7e758472ca348e0e9ffd18e50b73d63e.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792777753.025=0.2000133342222815": "runs/preflight-20261023T174911.831950Z/evidence/ce7201e51d0a9bc65e6c774eef0f5a28fcdd716d6818ceffefffdcd35fcfb738.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792777753.025=0.400026668444563": "runs/preflight-20261023T174911.831950Z/evidence/f682bc21312f572fd59158b7ddd3fc0c047337be0d0078ee4523a01e7b1ddac9.json"
+    },
+    "elapsed_s": 0.046
+  },
+  "latency_baseline_metrics": {
+    "tool": "get_metrics",
+    "source": "prometheus",
+    "query": "named:p95_latency_by_service",
+    "window": {
+      "from": "2026-10-23T17:37:14.904053+00:00",
+      "to": "2026-10-23T17:49:14.904053+00:00"
+    },
+    "data": [
+      {
+        "metric": {
+          "service_name": "ad"
+        },
+        "values": [
+          [
+            1792777034.904,
+            4.599999999999998
+          ],
+          [
+            1792777049.904,
+            4.599999999999998
+          ],
+          [
+            1792777064.904,
+            4.599999999999998
+          ],
+          [
+            1792777079.904,
+            2.8000000000000007
+          ],
+          [
+            1792777094.904,
+            2.8000000000000007
+          ],
+          [
+            1792777109.904,
+            2.8000000000000007
+          ],
+          [
+            1792777124.904,
+            2.8000000000000007
+          ],
+          [
+            1792777139.904,
+            9.6
+          ],
+          [
+            1792777154.904,
+            9.6
+          ],
+          [
+            1792777169.904,
+            9.6
+          ],
+          [
+            1792777184.904,
+            9.6
+          ],
+          [
+            1792777199.904,
+            3.5333333333333323
+          ],
+          [
+            1792777214.904,
+            3.5333333333333323
+          ],
+          [
+            1792777229.904,
+            3.5333333333333323
+          ],
+          [
+            1792777244.904,
+            3.5333333333333323
+          ],
+          [
+            1792777259.904,
+            3.0999999999999988
+          ],
+          [
+            1792777274.904,
+            3.0999999999999988
+          ],
+          [
+            1792777289.904,
+            3.0999999999999988
+          ],
+          [
+            1792777304.904,
+            3.0999999999999988
+          ],
+          [
+            1792777319.904,
+            1.9
+          ],
+          [
+            1792777334.904,
+            1.9
+          ],
+          [
+            1792777349.904,
+            1.9
+          ],
+          [
+            1792777364.904,
+            1.9
+          ],
+          [
+            1792777379.904,
+            3.049999999999999
+          ],
+          [
+            1792777394.904,
+            3.049999999999999
+          ],
+          [
+            1792777409.904,
+            3.049999999999999
+          ],
+          [
+            1792777424.904,
+            3.049999999999999
+          ],
+          [
+            1792777439.904,
+            1.9
+          ],
+          [
+            1792777454.904,
+            1.9
+          ],
+          [
+            1792777469.904,
+            1.9
+          ],
+          [
+            1792777484.904,
+            1.9
+          ],
+          [
+            1792777499.904,
+            1.9
+          ],
+          [
+            1792777514.904,
+            1.9
+          ],
+          [
+            1792777529.904,
+            1.9
+          ],
+          [
+            1792777544.904,
+            1.9
+          ],
+          [
+            1792777559.904,
+            5.1
+          ],
+          [
+            1792777574.904,
+            5.1
+          ],
+          [
+            1792777589.904,
+            5.1
+          ],
+          [
+            1792777604.904,
+            5.1
+          ],
+          [
+            1792777619.904,
+            1.9
+          ],
+          [
+            1792777634.904,
+            1.9
+          ],
+          [
+            1792777649.904,
+            1.9
+          ],
+          [
+            1792777664.904,
+            1.9
+          ],
+          [
+            1792777679.904,
+            3.1999999999999984
+          ],
+          [
+            1792777694.904,
+            3.1999999999999984
+          ],
+          [
+            1792777709.904,
+            3.1999999999999984
+          ],
+          [
+            1792777724.904,
+            3.1999999999999984
+          ],
+          [
+            1792777739.904,
+            3.4000000000000004
+          ],
+          [
+            1792777754.904,
+            3.4000000000000004
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792777139.904=9.6",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792777754.904=3.4000000000000004"
+      },
+      {
+        "metric": {
+          "service_name": "cart"
+        },
+        "values": [
+          [
+            1792777034.904,
+            3.9818181818181824
+          ],
+          [
+            1792777049.904,
+            3.9818181818181824
+          ],
+          [
+            1792777064.904,
+            3.9818181818181824
+          ],
+          [
+            1792777079.904,
+            4.0
+          ],
+          [
+            1792777094.904,
+            4.0
+          ],
+          [
+            1792777109.904,
+            4.0
+          ],
+          [
+            1792777124.904,
+            4.0
+          ],
+          [
+            1792777139.904,
+            3.963636363636363
+          ],
+          [
+            1792777154.904,
+            3.963636363636363
+          ],
+          [
+            1792777169.904,
+            3.963636363636363
+          ],
+          [
+            1792777184.904,
+            3.963636363636363
+          ],
+          [
+            1792777199.904,
+            3.5999999999999996
+          ],
+          [
+            1792777214.904,
+            3.5999999999999996
+          ],
+          [
+            1792777229.904,
+            3.5999999999999996
+          ],
+          [
+            1792777244.904,
+            3.5999999999999996
+          ],
+          [
+            1792777259.904,
+            3.783333333333334
+          ],
+          [
+            1792777274.904,
+            3.783333333333334
+          ],
+          [
+            1792777289.904,
+            3.7833333333333328
+          ],
+          [
+            1792777304.904,
+            3.7833333333333328
+          ],
+          [
+            1792777319.904,
+            3.499999999999999
+          ],
+          [
+            1792777334.904,
+            3.499999999999999
+          ],
+          [
+            1792777349.904,
+            3.499999999999999
+          ],
+          [
+            1792777364.904,
+            3.499999999999999
+          ],
+          [
+            1792777379.904,
+            3.685714285714285
+          ],
+          [
+            1792777394.904,
+            3.685714285714285
+          ],
+          [
+            1792777409.904,
+            3.685714285714285
+          ],
+          [
+            1792777424.904,
+            3.685714285714285
+          ],
+          [
+            1792777439.904,
+            3.8625
+          ],
+          [
+            1792777454.904,
+            3.8625
+          ],
+          [
+            1792777469.904,
+            3.8625
+          ],
+          [
+            1792777484.904,
+            3.8625
+          ],
+          [
+            1792777499.904,
+            3.736363636363637
+          ],
+          [
+            1792777514.904,
+            3.736363636363637
+          ],
+          [
+            1792777529.904,
+            3.736363636363637
+          ],
+          [
+            1792777544.904,
+            3.736363636363637
+          ],
+          [
+            1792777559.904,
+            3.677777777777778
+          ],
+          [
+            1792777574.904,
+            3.677777777777778
+          ],
+          [
+            1792777589.904,
+            3.677777777777778
+          ],
+          [
+            1792777604.904,
+            3.677777777777778
+          ],
+          [
+            1792777619.904,
+            3.9818181818181824
+          ],
+          [
+            1792777634.904,
+            3.9818181818181824
+          ],
+          [
+            1792777649.904,
+            3.9818181818181824
+          ],
+          [
+            1792777664.904,
+            3.9818181818181824
+          ],
+          [
+            1792777679.904,
+            3.9454545454545453
+          ],
+          [
+            1792777694.904,
+            3.9454545454545453
+          ],
+          [
+            1792777709.904,
+            3.9454545454545453
+          ],
+          [
+            1792777724.904,
+            3.9454545454545453
+          ],
+          [
+            1792777739.904,
+            3.8187499999999996
+          ],
+          [
+            1792777754.904,
+            3.8187499999999996
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792777079.904=4.0",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792777754.904=3.8187499999999996"
+      },
+      {
+        "metric": {
+          "service_name": "checkout"
+        },
+        "values": [
+          [
+            1792777034.904,
+            37.000000000000014
+          ],
+          [
+            1792777049.904,
+            37.000000000000014
+          ],
+          [
+            1792777064.904,
+            37.000000000000014
+          ],
+          [
+            1792777079.904,
+            30.500000000000025
+          ],
+          [
+            1792777094.904,
+            30.500000000000025
+          ],
+          [
+            1792777109.904,
+            30.500000000000025
+          ],
+          [
+            1792777124.904,
+            30.500000000000025
+          ],
+          [
+            1792777139.904,
+            34.00000000000001
+          ],
+          [
+            1792777154.904,
+            34.00000000000001
+          ],
+          [
+            1792777169.904,
+            34.00000000000001
+          ],
+          [
+            1792777184.904,
+            34.00000000000001
+          ],
+          [
+            1792777199.904,
+            27.99999999999998
+          ],
+          [
+            1792777214.904,
+            27.99999999999998
+          ],
+          [
+            1792777229.904,
+            27.99999999999998
+          ],
+          [
+            1792777244.904,
+            27.99999999999998
+          ],
+          [
+            1792777259.904,
+            33.14285714285715
+          ],
+          [
+            1792777274.904,
+            33.14285714285715
+          ],
+          [
+            1792777289.904,
+            33.14285714285715
+          ],
+          [
+            1792777304.904,
+            33.14285714285715
+          ],
+          [
+            1792777319.904,
+            36.999999999999986
+          ],
+          [
+            1792777334.904,
+            36.999999999999986
+          ],
+          [
+            1792777349.904,
+            36.999999999999986
+          ],
+          [
+            1792777364.904,
+            36.999999999999986
+          ],
+          [
+            1792777379.904,
+            28.00000000000001
+          ],
+          [
+            1792777394.904,
+            28.00000000000001
+          ],
+          [
+            1792777409.904,
+            28.00000000000001
+          ],
+          [
+            1792777424.904,
+            28.00000000000001
+          ],
+          [
+            1792777439.904,
+            33.99999999999998
+          ],
+          [
+            1792777454.904,
+            33.99999999999998
+          ],
+          [
+            1792777469.904,
+            33.99999999999998
+          ],
+          [
+            1792777484.904,
+            33.99999999999998
+          ],
+          [
+            1792777499.904,
+            31.599999999999984
+          ],
+          [
+            1792777514.904,
+            31.599999999999984
+          ],
+          [
+            1792777529.904,
+            31.599999999999984
+          ],
+          [
+            1792777544.904,
+            31.599999999999984
+          ],
+          [
+            1792777559.904,
+            31.499999999999982
+          ],
+          [
+            1792777574.904,
+            31.499999999999982
+          ],
+          [
+            1792777589.904,
+            31.499999999999982
+          ],
+          [
+            1792777604.904,
+            31.499999999999982
+          ],
+          [
+            1792777619.904,
+            31.500000000000004
+          ],
+          [
+            1792777634.904,
+            31.500000000000004
+          ],
+          [
+            1792777649.904,
+            31.500000000000004
+          ],
+          [
+            1792777664.904,
+            31.500000000000004
+          ],
+          [
+            1792777679.904,
+            32.571428571428555
+          ],
+          [
+            1792777694.904,
+            32.571428571428555
+          ],
+          [
+            1792777709.904,
+            32.571428571428555
+          ],
+          [
+            1792777724.904,
+            32.571428571428555
+          ],
+          [
+            1792777739.904,
+            32.999999999999986
+          ],
+          [
+            1792777754.904,
+            32.999999999999986
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792777034.904=37.000000000000014",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792777754.904=32.999999999999986"
+      },
+      {
+        "metric": {
+          "service_name": "currency"
+        },
+        "values": [
+          [
+            1792777034.904,
+            1.9000000000000001
+          ],
+          [
+            1792777049.904,
+            1.9000000000000001
+          ],
+          [
+            1792777064.904,
+            1.9000000000000001
+          ],
+          [
+            1792777079.904,
+            1.9000000000000001
+          ],
+          [
+            1792777094.904,
+            1.9000000000000001
+          ],
+          [
+            1792777109.904,
+            1.9000000000000001
+          ],
+          [
+            1792777124.904,
+            1.9000000000000001
+          ],
+          [
+            1792777139.904,
+            1.9
+          ],
+          [
+            1792777154.904,
+            1.9
+          ],
+          [
+            1792777169.904,
+            1.9
+          ],
+          [
+            1792777184.904,
+            1.9
+          ],
+          [
+            1792777199.904,
+            1.9
+          ],
+          [
+            1792777214.904,
+            1.9
+          ],
+          [
+            1792777229.904,
+            1.9
+          ],
+          [
+            1792777244.904,
+            1.9
+          ],
+          [
+            1792777259.904,
+            1.9
+          ],
+          [
+            1792777274.904,
+            1.9
+          ],
+          [
+            1792777289.904,
+            1.9000000000000001
+          ],
+          [
+            1792777304.904,
+            1.9000000000000001
+          ],
+          [
+            1792777319.904,
+            1.9
+          ],
+          [
+            1792777334.904,
+            1.9
+          ],
+          [
+            1792777349.904,
+            1.9
+          ],
+          [
+            1792777364.904,
+            1.9
+          ],
+          [
+            1792777379.904,
+            1.9000000000000001
+          ],
+          [
+            1792777394.904,
+            1.9000000000000001
+          ],
+          [
+            1792777409.904,
+            1.9000000000000001
+          ],
+          [
+            1792777424.904,
+            1.9000000000000001
+          ],
+          [
+            1792777439.904,
+            1.8999999999999997
+          ],
+          [
+            1792777454.904,
+            1.8999999999999997
+          ],
+          [
+            1792777469.904,
+            1.8999999999999997
+          ],
+          [
+            1792777484.904,
+            1.8999999999999997
+          ],
+          [
+            1792777499.904,
+            1.9
+          ],
+          [
+            1792777514.904,
+            1.9
+          ],
+          [
+            1792777529.904,
+            1.9
+          ],
+          [
+            1792777544.904,
+            1.9
+          ],
+          [
+            1792777559.904,
+            1.9000000000000001
+          ],
+          [
+            1792777574.904,
+            1.9000000000000001
+          ],
+          [
+            1792777589.904,
+            1.9000000000000001
+          ],
+          [
+            1792777604.904,
+            1.9000000000000001
+          ],
+          [
+            1792777619.904,
+            1.9
+          ],
+          [
+            1792777634.904,
+            1.9
+          ],
+          [
+            1792777649.904,
+            1.9
+          ],
+          [
+            1792777664.904,
+            1.9
+          ],
+          [
+            1792777679.904,
+            1.9
+          ],
+          [
+            1792777694.904,
+            1.9
+          ],
+          [
+            1792777709.904,
+            1.9
+          ],
+          [
+            1792777724.904,
+            1.9
+          ],
+          [
+            1792777739.904,
+            1.9
+          ],
+          [
+            1792777754.904,
+            1.9
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792777034.904=1.9000000000000001",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792777754.904=1.9"
+      },
+      {
+        "metric": {
+          "service_name": "email"
+        },
+        "values": [
+          [
+            1792777034.904,
+            3.1999999999999984
+          ],
+          [
+            1792777049.904,
+            3.1999999999999984
+          ],
+          [
+            1792777064.904,
+            3.1999999999999984
+          ],
+          [
+            1792777079.904,
+            3.1999999999999984
+          ],
+          [
+            1792777094.904,
+            3.1999999999999984
+          ],
+          [
+            1792777109.904,
+            3.1999999999999984
+          ],
+          [
+            1792777124.904,
+            3.1999999999999984
+          ],
+          [
+            1792777139.904,
+            8.8
+          ],
+          [
+            1792777154.904,
+            8.8
+          ],
+          [
+            1792777169.904,
+            8.8
+          ],
+          [
+            1792777184.904,
+            8.8
+          ],
+          [
+            1792777199.904,
+            1.9000000000000001
+          ],
+          [
+            1792777214.904,
+            1.9000000000000001
+          ],
+          [
+            1792777229.904,
+            1.9000000000000001
+          ],
+          [
+            1792777244.904,
+            1.9000000000000001
+          ],
+          [
+            1792777259.904,
+            3.9999999999999987
+          ],
+          [
+            1792777274.904,
+            3.9999999999999987
+          ],
+          [
+            1792777289.904,
+            4.0
+          ],
+          [
+            1792777304.904,
+            4.0
+          ],
+          [
+            1792777319.904,
+            3.5999999999999996
+          ],
+          [
+            1792777334.904,
+            3.5999999999999996
+          ],
+          [
+            1792777349.904,
+            3.5999999999999996
+          ],
+          [
+            1792777364.904,
+            3.5999999999999996
+          ],
+          [
+            1792777379.904,
+            1.9000000000000001
+          ],
+          [
+            1792777394.904,
+            1.9000000000000001
+          ],
+          [
+            1792777409.904,
+            1.9000000000000001
+          ],
+          [
+            1792777424.904,
+            1.9000000000000001
+          ],
+          [
+            1792777439.904,
+            3.76
+          ],
+          [
+            1792777454.904,
+            3.76
+          ],
+          [
+            1792777469.904,
+            3.76
+          ],
+          [
+            1792777484.904,
+            3.76
+          ],
+          [
+            1792777499.904,
+            3.599999999999999
+          ],
+          [
+            1792777514.904,
+            3.599999999999999
+          ],
+          [
+            1792777529.904,
+            3.599999999999999
+          ],
+          [
+            1792777544.904,
+            3.599999999999999
+          ],
+          [
+            1792777559.904,
+            2.7999999999999994
+          ],
+          [
+            1792777574.904,
+            2.7999999999999994
+          ],
+          [
+            1792777589.904,
+            2.7999999999999994
+          ],
+          [
+            1792777604.904,
+            2.7999999999999994
+          ],
+          [
+            1792777619.904,
+            3.4000000000000004
+          ],
+          [
+            1792777634.904,
+            3.4000000000000004
+          ],
+          [
+            1792777649.904,
+            3.4000000000000004
+          ],
+          [
+            1792777664.904,
+            3.4000000000000004
+          ],
+          [
+            1792777679.904,
+            4.0
+          ],
+          [
+            1792777694.904,
+            4.0
+          ],
+          [
+            1792777709.904,
+            4.0
+          ],
+          [
+            1792777724.904,
+            4.0
+          ],
+          [
+            1792777739.904,
+            3.5428571428571423
+          ],
+          [
+            1792777754.904,
+            3.5428571428571423
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792777139.904=8.8",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792777754.904=3.5428571428571423"
+      },
+      {
+        "metric": {
+          "service_name": "frontend"
+        },
+        "values": [
+          [
+            1792777034.904,
+            36.185185185185176
+          ],
+          [
+            1792777049.904,
+            36.185185185185176
+          ],
+          [
+            1792777064.904,
+            36.185185185185176
+          ],
+          [
+            1792777079.904,
+            34.16666666666663
+          ],
+          [
+            1792777094.904,
+            34.16666666666663
+          ],
+          [
+            1792777109.904,
+            34.16666666666663
+          ],
+          [
+            1792777124.904,
+            34.16666666666663
+          ],
+          [
+            1792777139.904,
+            37.739130434782595
+          ],
+          [
+            1792777154.904,
+            37.739130434782595
+          ],
+          [
+            1792777169.904,
+            37.739130434782595
+          ],
+          [
+            1792777184.904,
+            37.739130434782595
+          ],
+          [
+            1792777199.904,
+            34.27027027027024
+          ],
+          [
+            1792777214.904,
+            34.27027027027024
+          ],
+          [
+            1792777229.904,
+            34.27027027027024
+          ],
+          [
+            1792777244.904,
+            34.27027027027024
+          ],
+          [
+            1792777259.904,
+            33.51219512195122
+          ],
+          [
+            1792777274.904,
+            33.51219512195122
+          ],
+          [
+            1792777289.904,
+            33.512195121951194
+          ],
+          [
+            1792777304.904,
+            33.512195121951194
+          ],
+          [
+            1792777319.904,
+            16.999999999999925
+          ],
+          [
+            1792777334.904,
+            16.999999999999925
+          ],
+          [
+            1792777349.904,
+            16.999999999999925
+          ],
+          [
+            1792777364.904,
+            16.999999999999925
+          ],
+          [
+            1792777379.904,
+            28.17391304347827
+          ],
+          [
+            1792777394.904,
+            28.17391304347827
+          ],
+          [
+            1792777409.904,
+            28.17391304347827
+          ],
+          [
+            1792777424.904,
+            28.17391304347827
+          ],
+          [
+            1792777439.904,
+            27.27999999999996
+          ],
+          [
+            1792777454.904,
+            27.27999999999996
+          ],
+          [
+            1792777469.904,
+            27.27999999999996
+          ],
+          [
+            1792777484.904,
+            27.27999999999996
+          ],
+          [
+            1792777499.904,
+            29.48387096774195
+          ],
+          [
+            1792777514.904,
+            29.48387096774195
+          ],
+          [
+            1792777529.904,
+            29.48387096774195
+          ],
+          [
+            1792777544.904,
+            29.48387096774195
+          ],
+          [
+            1792777559.904,
+            29.428571428571384
+          ],
+          [
+            1792777574.904,
+            29.428571428571384
+          ],
+          [
+            1792777589.904,
+            29.428571428571384
+          ],
+          [
+            1792777604.904,
+            29.428571428571384
+          ],
+          [
+            1792777619.904,
+            31.575757575757525
+          ],
+          [
+            1792777634.904,
+            31.575757575757525
+          ],
+          [
+            1792777649.904,
+            31.575757575757525
+          ],
+          [
+            1792777664.904,
+            31.575757575757525
+          ],
+          [
+            1792777679.904,
+            27.379310344827534
+          ],
+          [
+            1792777694.904,
+            27.379310344827534
+          ],
+          [
+            1792777709.904,
+            27.379310344827534
+          ],
+          [
+            1792777724.904,
+            27.379310344827534
+          ],
+          [
+            1792777739.904,
+            34.82608695652171
+          ],
+          [
+            1792777754.904,
+            34.82608695652171
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792777139.904=37.739130434782595",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792777754.904=34.82608695652171"
+      },
+      {
+        "metric": {
+          "service_name": "frontend-proxy"
+        },
+        "values": [
+          [
+            1792777034.904,
+            42.66666666666664
+          ],
+          [
+            1792777049.904,
+            42.66666666666664
+          ],
+          [
+            1792777064.904,
+            42.66666666666664
+          ],
+          [
+            1792777079.904,
+            39.16666666666664
+          ],
+          [
+            1792777094.904,
+            39.16666666666664
+          ],
+          [
+            1792777109.904,
+            39.16666666666664
+          ],
+          [
+            1792777124.904,
+            39.16666666666664
+          ],
+          [
+            1792777139.904,
+            43.43589743589743
+          ],
+          [
+            1792777154.904,
+            43.43589743589743
+          ],
+          [
+            1792777169.904,
+            43.43589743589743
+          ],
+          [
+            1792777184.904,
+            43.43589743589743
+          ],
+          [
+            1792777199.904,
+            40.66666666666665
+          ],
+          [
+            1792777214.904,
+            40.66666666666665
+          ],
+          [
+            1792777229.904,
+            40.66666666666665
+          ],
+          [
+            1792777244.904,
+            40.66666666666665
+          ],
+          [
+            1792777259.904,
+            41.085714285714275
+          ],
+          [
+            1792777274.904,
+            41.085714285714275
+          ],
+          [
+            1792777289.904,
+            41.085714285714275
+          ],
+          [
+            1792777304.904,
+            41.085714285714275
+          ],
+          [
+            1792777319.904,
+            34.749999999999986
+          ],
+          [
+            1792777334.904,
+            34.749999999999986
+          ],
+          [
+            1792777349.904,
+            34.749999999999986
+          ],
+          [
+            1792777364.904,
+            34.749999999999986
+          ],
+          [
+            1792777379.904,
+            36.88888888888888
+          ],
+          [
+            1792777394.904,
+            36.88888888888888
+          ],
+          [
+            1792777409.904,
+            36.88888888888888
+          ],
+          [
+            1792777424.904,
+            36.88888888888888
+          ],
+          [
+            1792777439.904,
+            37.63636363636363
+          ],
+          [
+            1792777454.904,
+            37.63636363636363
+          ],
+          [
+            1792777469.904,
+            37.63636363636363
+          ],
+          [
+            1792777484.904,
+            37.63636363636363
+          ],
+          [
+            1792777499.904,
+            40.23999999999999
+          ],
+          [
+            1792777514.904,
+            40.23999999999999
+          ],
+          [
+            1792777529.904,
+            40.23999999999999
+          ],
+          [
+            1792777544.904,
+            40.23999999999999
+          ],
+          [
+            1792777559.904,
+            39.56521739130434
+          ],
+          [
+            1792777574.904,
+            39.56521739130434
+          ],
+          [
+            1792777589.904,
+            39.56521739130434
+          ],
+          [
+            1792777604.904,
+            39.56521739130434
+          ],
+          [
+            1792777619.904,
+            40.928571428571416
+          ],
+          [
+            1792777634.904,
+            40.928571428571416
+          ],
+          [
+            1792777649.904,
+            40.928571428571416
+          ],
+          [
+            1792777664.904,
+            40.928571428571416
+          ],
+          [
+            1792777679.904,
+            38.769230769230774
+          ],
+          [
+            1792777694.904,
+            38.769230769230774
+          ],
+          [
+            1792777709.904,
+            38.769230769230774
+          ],
+          [
+            1792777724.904,
+            38.769230769230774
+          ],
+          [
+            1792777739.904,
+            38.933333333333316
+          ],
+          [
+            1792777754.904,
+            38.933333333333316
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792777139.904=43.43589743589743",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792777754.904=38.933333333333316"
+      },
+      {
+        "metric": {
+          "service_name": "load-generator"
+        },
+        "values": [
+          [
+            1792777034.904,
+            45.55555555555556
+          ],
+          [
+            1792777049.904,
+            45.55555555555556
+          ],
+          [
+            1792777064.904,
+            45.55555555555556
+          ],
+          [
+            1792777079.904,
+            43.499999999999986
+          ],
+          [
+            1792777094.904,
+            43.499999999999986
+          ],
+          [
+            1792777109.904,
+            43.499999999999986
+          ],
+          [
+            1792777124.904,
+            43.499999999999986
+          ],
+          [
+            1792777139.904,
+            44.71428571428571
+          ],
+          [
+            1792777154.904,
+            44.71428571428571
+          ],
+          [
+            1792777169.904,
+            44.71428571428571
+          ],
+          [
+            1792777184.904,
+            44.71428571428571
+          ],
+          [
+            1792777199.904,
+            43.99999999999999
+          ],
+          [
+            1792777214.904,
+            43.99999999999999
+          ],
+          [
+            1792777229.904,
+            43.99999999999999
+          ],
+          [
+            1792777244.904,
+            43.99999999999999
+          ],
+          [
+            1792777259.904,
+            44.68965517241379
+          ],
+          [
+            1792777274.904,
+            44.68965517241379
+          ],
+          [
+            1792777289.904,
+            44.689655172413794
+          ],
+          [
+            1792777304.904,
+            44.689655172413794
+          ],
+          [
+            1792777319.904,
+            40.57142857142855
+          ],
+          [
+            1792777334.904,
+            40.57142857142855
+          ],
+          [
+            1792777349.904,
+            40.57142857142855
+          ],
+          [
+            1792777364.904,
+            40.57142857142855
+          ],
+          [
+            1792777379.904,
+            41.625
+          ],
+          [
+            1792777394.904,
+            41.625
+          ],
+          [
+            1792777409.904,
+            41.625
+          ],
+          [
+            1792777424.904,
+            41.625
+          ],
+          [
+            1792777439.904,
+            43.3
+          ],
+          [
+            1792777454.904,
+            43.3
+          ],
+          [
+            1792777469.904,
+            43.3
+          ],
+          [
+            1792777484.904,
+            43.3
+          ],
+          [
+            1792777499.904,
+            42.11111111111111
+          ],
+          [
+            1792777514.904,
+            42.11111111111111
+          ],
+          [
+            1792777529.904,
+            42.11111111111111
+          ],
+          [
+            1792777544.904,
+            42.11111111111111
+          ],
+          [
+            1792777559.904,
+            41.74999999999999
+          ],
+          [
+            1792777574.904,
+            41.74999999999999
+          ],
+          [
+            1792777589.904,
+            41.74999999999999
+          ],
+          [
+            1792777604.904,
+            41.74999999999999
+          ],
+          [
+            1792777619.904,
+            44.592592592592595
+          ],
+          [
+            1792777634.904,
+            44.592592592592595
+          ],
+          [
+            1792777649.904,
+            44.592592592592595
+          ],
+          [
+            1792777664.904,
+            44.592592592592595
+          ],
+          [
+            1792777679.904,
+            44.16
+          ],
+          [
+            1792777694.904,
+            44.16
+          ],
+          [
+            1792777709.904,
+            44.16
+          ],
+          [
+            1792777724.904,
+            44.16
+          ],
+          [
+            1792777739.904,
+            44.62499999999999
+          ],
+          [
+            1792777754.904,
+            44.62499999999999
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792777034.904=45.55555555555556",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792777754.904=44.62499999999999"
+      },
+      {
+        "metric": {
+          "service_name": "payment"
+        },
+        "values": [
+          [
+            1792777034.904,
+            1.9
+          ],
+          [
+            1792777049.904,
+            1.9
+          ],
+          [
+            1792777064.904,
+            1.9
+          ],
+          [
+            1792777079.904,
+            1.9
+          ],
+          [
+            1792777094.904,
+            1.9
+          ],
+          [
+            1792777109.904,
+            1.9
+          ],
+          [
+            1792777124.904,
+            1.9
+          ],
+          [
+            1792777139.904,
+            1.9
+          ],
+          [
+            1792777154.904,
+            1.9
+          ],
+          [
+            1792777169.904,
+            1.9
+          ],
+          [
+            1792777184.904,
+            1.9
+          ],
+          [
+            1792777199.904,
+            1.9
+          ],
+          [
+            1792777214.904,
+            1.9
+          ],
+          [
+            1792777229.904,
+            1.9
+          ],
+          [
+            1792777244.904,
+            1.9
+          ],
+          [
+            1792777259.904,
+            1.9
+          ],
+          [
+            1792777274.904,
+            1.9
+          ],
+          [
+            1792777289.904,
+            1.9
+          ],
+          [
+            1792777304.904,
+            1.9
+          ],
+          [
+            1792777319.904,
+            1.9
+          ],
+          [
+            1792777334.904,
+            1.9
+          ],
+          [
+            1792777349.904,
+            1.9
+          ],
+          [
+            1792777364.904,
+            1.9
+          ],
+          [
+            1792777379.904,
+            1.9000000000000001
+          ],
+          [
+            1792777394.904,
+            1.9000000000000001
+          ],
+          [
+            1792777409.904,
+            1.9000000000000001
+          ],
+          [
+            1792777424.904,
+            1.9000000000000001
+          ],
+          [
+            1792777439.904,
+            1.9
+          ],
+          [
+            1792777454.904,
+            1.9
+          ],
+          [
+            1792777469.904,
+            1.9
+          ],
+          [
+            1792777484.904,
+            1.9
+          ],
+          [
+            1792777499.904,
+            1.9
+          ],
+          [
+            1792777514.904,
+            1.9
+          ],
+          [
+            1792777529.904,
+            1.9
+          ],
+          [
+            1792777544.904,
+            1.9
+          ],
+          [
+            1792777559.904,
+            1.9
+          ],
+          [
+            1792777574.904,
+            1.9
+          ],
+          [
+            1792777589.904,
+            1.9
+          ],
+          [
+            1792777604.904,
+            1.9
+          ],
+          [
+            1792777619.904,
+            1.9
+          ],
+          [
+            1792777634.904,
+            1.9
+          ],
+          [
+            1792777649.904,
+            1.9
+          ],
+          [
+            1792777664.904,
+            1.9
+          ],
+          [
+            1792777679.904,
+            1.9
+          ],
+          [
+            1792777694.904,
+            1.9
+          ],
+          [
+            1792777709.904,
+            1.9
+          ],
+          [
+            1792777724.904,
+            1.9
+          ],
+          [
+            1792777739.904,
+            1.9
+          ],
+          [
+            1792777754.904,
+            1.9
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792777379.904=1.9000000000000001",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792777754.904=1.9"
+      },
+      {
+        "metric": {
+          "service_name": "product-catalog"
+        },
+        "values": [
+          [
+            1792777034.904,
+            1.9000000000000001
+          ],
+          [
+            1792777049.904,
+            1.9000000000000001
+          ],
+          [
+            1792777064.904,
+            1.9000000000000001
+          ],
+          [
+            1792777079.904,
+            1.9
+          ],
+          [
+            1792777094.904,
+            1.9
+          ],
+          [
+            1792777109.904,
+            1.9
+          ],
+          [
+            1792777124.904,
+            1.9
+          ],
+          [
+            1792777139.904,
+            1.9
+          ],
+          [
+            1792777154.904,
+            1.9
+          ],
+          [
+            1792777169.904,
+            1.9
+          ],
+          [
+            1792777184.904,
+            1.9
+          ],
+          [
+            1792777199.904,
+            1.9
+          ],
+          [
+            1792777214.904,
+            1.9
+          ],
+          [
+            1792777229.904,
+            1.9
+          ],
+          [
+            1792777244.904,
+            1.9
+          ],
+          [
+            1792777259.904,
+            1.9
+          ],
+          [
+            1792777274.904,
+            1.9
+          ],
+          [
+            1792777289.904,
+            1.9
+          ],
+          [
+            1792777304.904,
+            1.9
+          ],
+          [
+            1792777319.904,
+            1.9
+          ],
+          [
+            1792777334.904,
+            1.9
+          ],
+          [
+            1792777349.904,
+            1.9
+          ],
+          [
+            1792777364.904,
+            1.9
+          ],
+          [
+            1792777379.904,
+            1.9
+          ],
+          [
+            1792777394.904,
+            1.9
+          ],
+          [
+            1792777409.904,
+            1.9
+          ],
+          [
+            1792777424.904,
+            1.9
+          ],
+          [
+            1792777439.904,
+            1.8999999999999997
+          ],
+          [
+            1792777454.904,
+            1.8999999999999997
+          ],
+          [
+            1792777469.904,
+            1.8999999999999997
+          ],
+          [
+            1792777484.904,
+            1.8999999999999997
+          ],
+          [
+            1792777499.904,
+            1.9
+          ],
+          [
+            1792777514.904,
+            1.9
+          ],
+          [
+            1792777529.904,
+            1.9
+          ],
+          [
+            1792777544.904,
+            1.9
+          ],
+          [
+            1792777559.904,
+            1.9387755102040816
+          ],
+          [
+            1792777574.904,
+            1.9387755102040816
+          ],
+          [
+            1792777589.904,
+            1.9387755102040816
+          ],
+          [
+            1792777604.904,
+            1.9387755102040816
+          ],
+          [
+            1792777619.904,
+            1.9
+          ],
+          [
+            1792777634.904,
+            1.9
+          ],
+          [
+            1792777649.904,
+            1.9
+          ],
+          [
+            1792777664.904,
+            1.9
+          ],
+          [
+            1792777679.904,
+            1.9
+          ],
+          [
+            1792777694.904,
+            1.9
+          ],
+          [
+            1792777709.904,
+            1.9
+          ],
+          [
+            1792777724.904,
+            1.9
+          ],
+          [
+            1792777739.904,
+            1.9000000000000001
+          ],
+          [
+            1792777754.904,
+            1.9000000000000001
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792777559.904=1.9387755102040816",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792777754.904=1.9000000000000001"
+      },
+      {
+        "metric": {
+          "service_name": "quote"
+        },
+        "values": [
+          [
+            1792777034.904,
+            1.9000000000000001
+          ],
+          [
+            1792777049.904,
+            1.9000000000000001
+          ],
+          [
+            1792777064.904,
+            1.9000000000000001
+          ],
+          [
+            1792777079.904,
+            1.9000000000000001
+          ],
+          [
+            1792777094.904,
+            1.9000000000000001
+          ],
+          [
+            1792777109.904,
+            1.9000000000000001
+          ],
+          [
+            1792777124.904,
+            1.9000000000000001
+          ],
+          [
+            1792777139.904,
+            1.9
+          ],
+          [
+            1792777154.904,
+            1.9
+          ],
+          [
+            1792777169.904,
+            1.9
+          ],
+          [
+            1792777184.904,
+            1.9
+          ],
+          [
+            1792777199.904,
+            1.9
+          ],
+          [
+            1792777214.904,
+            1.9
+          ],
+          [
+            1792777229.904,
+            1.9
+          ],
+          [
+            1792777244.904,
+            1.9
+          ],
+          [
+            1792777259.904,
+            1.9
+          ],
+          [
+            1792777274.904,
+            1.9
+          ],
+          [
+            1792777289.904,
+            1.9
+          ],
+          [
+            1792777304.904,
+            1.9
+          ],
+          [
+            1792777319.904,
+            1.9
+          ],
+          [
+            1792777334.904,
+            1.9
+          ],
+          [
+            1792777349.904,
+            1.9
+          ],
+          [
+            1792777364.904,
+            1.9
+          ],
+          [
+            1792777379.904,
+            1.9
+          ],
+          [
+            1792777394.904,
+            1.9
+          ],
+          [
+            1792777409.904,
+            1.9
+          ],
+          [
+            1792777424.904,
+            1.9
+          ],
+          [
+            1792777439.904,
+            1.9000000000000001
+          ],
+          [
+            1792777454.904,
+            1.9000000000000001
+          ],
+          [
+            1792777469.904,
+            1.9000000000000001
+          ],
+          [
+            1792777484.904,
+            1.9000000000000001
+          ],
+          [
+            1792777499.904,
+            1.9
+          ],
+          [
+            1792777514.904,
+            1.9
+          ],
+          [
+            1792777529.904,
+            1.9
+          ],
+          [
+            1792777544.904,
+            1.9
+          ],
+          [
+            1792777559.904,
+            1.9
+          ],
+          [
+            1792777574.904,
+            1.9
+          ],
+          [
+            1792777589.904,
+            1.9
+          ],
+          [
+            1792777604.904,
+            1.9
+          ],
+          [
+            1792777619.904,
+            1.9000000000000001
+          ],
+          [
+            1792777634.904,
+            1.9000000000000001
+          ],
+          [
+            1792777649.904,
+            1.9000000000000001
+          ],
+          [
+            1792777664.904,
+            1.9000000000000001
+          ],
+          [
+            1792777679.904,
+            1.9
+          ],
+          [
+            1792777694.904,
+            1.9
+          ],
+          [
+            1792777709.904,
+            1.9
+          ],
+          [
+            1792777724.904,
+            1.9
+          ],
+          [
+            1792777739.904,
+            1.9
+          ],
+          [
+            1792777754.904,
+            1.9
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792777034.904=1.9000000000000001",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792777754.904=1.9"
+      },
+      {
+        "metric": {
+          "service_name": "recommendation"
+        },
+        "values": [
+          [
+            1792777034.904,
+            3.9375
+          ],
+          [
+            1792777049.904,
+            3.9375
+          ],
+          [
+            1792777064.904,
+            3.9375
+          ],
+          [
+            1792777079.904,
+            3.8875
+          ],
+          [
+            1792777094.904,
+            3.8875
+          ],
+          [
+            1792777109.904,
+            3.8875
+          ],
+          [
+            1792777124.904,
+            3.8875
+          ],
+          [
+            1792777139.904,
+            3.8578947368421046
+          ],
+          [
+            1792777154.904,
+            3.8578947368421046
+          ],
+          [
+            1792777169.904,
+            3.8578947368421046
+          ],
+          [
+            1792777184.904,
+            3.8578947368421046
+          ],
+          [
+            1792777199.904,
+            3.8764705882352937
+          ],
+          [
+            1792777214.904,
+            3.8764705882352937
+          ],
+          [
+            1792777229.904,
+            3.8764705882352937
+          ],
+          [
+            1792777244.904,
+            3.8764705882352937
+          ],
+          [
+            1792777259.904,
+            3.9875000000000003
+          ],
+          [
+            1792777274.904,
+            3.9875000000000003
+          ],
+          [
+            1792777289.904,
+            3.9875000000000003
+          ],
+          [
+            1792777304.904,
+            3.9875000000000003
+          ],
+          [
+            1792777319.904,
+            3.8000000000000003
+          ],
+          [
+            1792777334.904,
+            3.8000000000000003
+          ],
+          [
+            1792777349.904,
+            3.8000000000000003
+          ],
+          [
+            1792777364.904,
+            3.8000000000000003
+          ],
+          [
+            1792777379.904,
+            3.6999999999999993
+          ],
+          [
+            1792777394.904,
+            3.6999999999999993
+          ],
+          [
+            1792777409.904,
+            3.6999999999999993
+          ],
+          [
+            1792777424.904,
+            3.6999999999999993
+          ],
+          [
+            1792777439.904,
+            3.7375
+          ],
+          [
+            1792777454.904,
+            3.7375
+          ],
+          [
+            1792777469.904,
+            3.7375
+          ],
+          [
+            1792777484.904,
+            3.7375
+          ],
+          [
+            1792777499.904,
+            3.82
+          ],
+          [
+            1792777514.904,
+            3.82
+          ],
+          [
+            1792777529.904,
+            3.82
+          ],
+          [
+            1792777544.904,
+            3.82
+          ],
+          [
+            1792777559.904,
+            3.8499999999999996
+          ],
+          [
+            1792777574.904,
+            3.8499999999999996
+          ],
+          [
+            1792777589.904,
+            3.8499999999999996
+          ],
+          [
+            1792777604.904,
+            3.8499999999999996
+          ],
+          [
+            1792777619.904,
+            3.8666666666666667
+          ],
+          [
+            1792777634.904,
+            3.8666666666666667
+          ],
+          [
+            1792777649.904,
+            3.8666666666666667
+          ],
+          [
+            1792777664.904,
+            3.8666666666666667
+          ],
+          [
+            1792777679.904,
+            3.76
+          ],
+          [
+            1792777694.904,
+            3.76
+          ],
+          [
+            1792777709.904,
+            3.76
+          ],
+          [
+            1792777724.904,
+            3.76
+          ],
+          [
+            1792777739.904,
+            3.4000000000000004
+          ],
+          [
+            1792777754.904,
+            3.4000000000000004
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792777259.904=3.9875000000000003",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792777754.904=3.4000000000000004"
+      },
+      {
+        "metric": {
+          "service_name": "shipping"
+        },
+        "values": [
+          [
+            1792777034.904,
+            3.85
+          ],
+          [
+            1792777049.904,
+            3.85
+          ],
+          [
+            1792777064.904,
+            3.85
+          ],
+          [
+            1792777079.904,
+            3.5500000000000007
+          ],
+          [
+            1792777094.904,
+            3.5500000000000007
+          ],
+          [
+            1792777109.904,
+            3.5500000000000007
+          ],
+          [
+            1792777124.904,
+            3.5500000000000007
+          ],
+          [
+            1792777139.904,
+            3.8
+          ],
+          [
+            1792777154.904,
+            3.8
+          ],
+          [
+            1792777169.904,
+            3.8
+          ],
+          [
+            1792777184.904,
+            3.8
+          ],
+          [
+            1792777199.904,
+            3.0999999999999996
+          ],
+          [
+            1792777214.904,
+            3.0999999999999996
+          ],
+          [
+            1792777229.904,
+            3.0999999999999996
+          ],
+          [
+            1792777244.904,
+            3.0999999999999996
+          ],
+          [
+            1792777259.904,
+            3.5
+          ],
+          [
+            1792777274.904,
+            3.5
+          ],
+          [
+            1792777289.904,
+            3.5
+          ],
+          [
+            1792777304.904,
+            3.5
+          ],
+          [
+            1792777319.904,
+            1.9
+          ],
+          [
+            1792777334.904,
+            1.9
+          ],
+          [
+            1792777349.904,
+            1.9
+          ],
+          [
+            1792777364.904,
+            1.9
+          ],
+          [
+            1792777379.904,
+            3.7
+          ],
+          [
+            1792777394.904,
+            3.7
+          ],
+          [
+            1792777409.904,
+            3.7
+          ],
+          [
+            1792777424.904,
+            3.7
+          ],
+          [
+            1792777439.904,
+            3.7
+          ],
+          [
+            1792777454.904,
+            3.7
+          ],
+          [
+            1792777469.904,
+            3.7
+          ],
+          [
+            1792777484.904,
+            3.7
+          ],
+          [
+            1792777499.904,
+            3.625
+          ],
+          [
+            1792777514.904,
+            3.625
+          ],
+          [
+            1792777529.904,
+            3.625
+          ],
+          [
+            1792777544.904,
+            3.625
+          ],
+          [
+            1792777559.904,
+            3.0999999999999996
+          ],
+          [
+            1792777574.904,
+            3.0999999999999996
+          ],
+          [
+            1792777589.904,
+            3.0999999999999996
+          ],
+          [
+            1792777604.904,
+            3.0999999999999996
+          ],
+          [
+            1792777619.904,
+            3.5500000000000007
+          ],
+          [
+            1792777634.904,
+            3.5500000000000007
+          ],
+          [
+            1792777649.904,
+            3.5500000000000007
+          ],
+          [
+            1792777664.904,
+            3.5500000000000007
+          ],
+          [
+            1792777679.904,
+            3.625
+          ],
+          [
+            1792777694.904,
+            3.625
+          ],
+          [
+            1792777709.904,
+            3.625
+          ],
+          [
+            1792777724.904,
+            3.625
+          ],
+          [
+            1792777739.904,
+            2.8000000000000007
+          ],
+          [
+            1792777754.904,
+            2.8000000000000007
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792777034.904=3.85",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792777754.904=2.8000000000000007"
+      }
+    ],
+    "evidence_ids": [
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792777139.904=9.6",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792777754.904=3.4000000000000004",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792777079.904=4.0",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792777754.904=3.8187499999999996",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792777034.904=37.000000000000014",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792777754.904=32.999999999999986",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792777034.904=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792777754.904=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792777139.904=8.8",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792777754.904=3.5428571428571423",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792777139.904=37.739130434782595",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792777754.904=34.82608695652171",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792777139.904=43.43589743589743",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792777754.904=38.933333333333316",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792777034.904=45.55555555555556",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792777754.904=44.62499999999999",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792777379.904=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792777754.904=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792777559.904=1.9387755102040816",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792777754.904=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792777034.904=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792777754.904=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792777259.904=3.9875000000000003",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792777754.904=3.4000000000000004",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792777034.904=3.85",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792777754.904=2.8000000000000007"
+    ],
+    "truncated": false,
+    "run_dir": "runs/preflight-20261023T174911.831950Z",
+    "evidence_paths": {
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792777139.904=9.6": "runs/preflight-20261023T174911.831950Z/evidence/357674b3cb29a03c7ea62c3cae24b748023210ce4c825fedc6e386a4166e363f.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792777754.904=3.4000000000000004": "runs/preflight-20261023T174911.831950Z/evidence/ee2c655417e5486a8ca6cd7027a72db522533b9063f3d65d771a3223b496bee3.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792777079.904=4.0": "runs/preflight-20261023T174911.831950Z/evidence/058dbaf5326137b8d788fc48920770f3c95b8e6f5b7a90a129f79eec56b46a0a.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792777754.904=3.8187499999999996": "runs/preflight-20261023T174911.831950Z/evidence/d6b4d72f1777b0e5332e39f9cc48402058fbc31cd13064d2824ba3785e8eea42.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792777034.904=37.000000000000014": "runs/preflight-20261023T174911.831950Z/evidence/316891072fd316cd3ff2e99bada0d966d64f75265ac58b88e3647955110e8cf9.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792777754.904=32.999999999999986": "runs/preflight-20261023T174911.831950Z/evidence/7271e73badff4f427ba798f5ee0bf7ac0874ec8454a654fe8c55c304a3821511.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792777034.904=1.9000000000000001": "runs/preflight-20261023T174911.831950Z/evidence/c18a0afe57c2eb2d288874c94d6270afa84721a81ffb4ae18b70e459c5dea069.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792777754.904=1.9": "runs/preflight-20261023T174911.831950Z/evidence/b297d8fc3185646810f3e4834d8e9658fde3cf405f3fe943103ba797ff939292.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792777139.904=8.8": "runs/preflight-20261023T174911.831950Z/evidence/f00fca35a7b8f66d21b9f65436c034a9397547f731b6200f46606a5710dbd483.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792777754.904=3.5428571428571423": "runs/preflight-20261023T174911.831950Z/evidence/47f0e8d50b9e9c89ad6138ac024bdb91683d153faf096cfe28d286c9d8ab15dc.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792777139.904=37.739130434782595": "runs/preflight-20261023T174911.831950Z/evidence/3aa33ef5e2c1b701e5178def934281a9f1b681c7d45e04ca4c3d0adda065138f.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792777754.904=34.82608695652171": "runs/preflight-20261023T174911.831950Z/evidence/afb35ec7a704c08a34df2958f5852402ca7251b9edc9a6b891a3f10503d0dff1.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792777139.904=43.43589743589743": "runs/preflight-20261023T174911.831950Z/evidence/fb231f13e4be95852a86f20c183f41ae18c97c98ca43579ff94c88902988b8db.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792777754.904=38.933333333333316": "runs/preflight-20261023T174911.831950Z/evidence/1d9c4dacc019191d2adf5fae7b7c6d449e2e56681c18f91aa2615a9cfc2689f3.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792777034.904=45.55555555555556": "runs/preflight-20261023T174911.831950Z/evidence/127fc3194aa1a8927482d4eae2a050b36bdbdd605debf2d02c33357e3b57e6f5.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"load-generator\"}@1792777754.904=44.62499999999999": "runs/preflight-20261023T174911.831950Z/evidence/c15f587c244d0f7fb2a54f05dec99510202ba6ba462abb08307b2d1b0c7d46f5.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792777379.904=1.9000000000000001": "runs/preflight-20261023T174911.831950Z/evidence/de0dae861243a15131c9f90f5262bcf6b2fc9711e2c67839b14b75911ac7048b.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792777754.904=1.9": "runs/preflight-20261023T174911.831950Z/evidence/e0fc6de9958cf9a8bf41b0b9c9d6729904a867b488a20eb05ff530c6e7e1b224.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792777559.904=1.9387755102040816": "runs/preflight-20261023T174911.831950Z/evidence/5f1cd1738b0e428a54e00452123e800f3fe19238b3addefa84d8a47ef0d9af72.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792777754.904=1.9000000000000001": "runs/preflight-20261023T174911.831950Z/evidence/211b1377a2f8c9ff3b8a61ee39c0129157de9f6b7e34e38bba08e69009c05278.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792777034.904=1.9000000000000001": "runs/preflight-20261023T174911.831950Z/evidence/7a911d12a82d50c51b4fb7b9b858d0df9aab89a2944eca1e1436415a6e7f53f3.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792777754.904=1.9": "runs/preflight-20261023T174911.831950Z/evidence/10aba4d8f558699f3ef4d5cb5db7bc8ddde08e4bd9b75fe0dc25574290f18f94.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792777259.904=3.9875000000000003": "runs/preflight-20261023T174911.831950Z/evidence/517562bda14bbfcace96d4063b4e6629b84063e16cbb1ad808fef62515b8b889.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792777754.904=3.4000000000000004": "runs/preflight-20261023T174911.831950Z/evidence/bf727e6383fa49abf870cf3a68f0b88c81b9279382a119e03c0bbb463e7f01a0.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792777034.904=3.85": "runs/preflight-20261023T174911.831950Z/evidence/bdbc11b2b8f293829c68706a16b35b3fea5a121d0791c2ae3765b9560b8edba8.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792777754.904=2.8000000000000007": "runs/preflight-20261023T174911.831950Z/evidence/34a1ff6aa19034497b31a184d0088f7e6826ee97a23d9faf9c3ecdcc8900757f.json"
+    },
+    "elapsed_s": 0.078
+  },
+  "detector_alert": null,
+  "provenance": {
+    "command": "scripts/preflight.ps1 -StackRoot D:/incident-zero",
+    "stack_changed": false,
+    "qualification": "21 running containers; pristine overlay; 12 traffic services error_rate=0; detector no_alert. Overall preflight failed independent readiness gates."
+  }
+}

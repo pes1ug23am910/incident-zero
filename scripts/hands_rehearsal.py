@@ -294,6 +294,7 @@ def main(argv=None):
     parser.add_argument("--live", action="store_true", required=True)
     parser.add_argument("--svc")
     parser.add_argument("--report-id")
+    parser.add_argument("--alert-timeout", type=float, default=150, help="seconds to wait for telemetry alert")
     parser.add_argument("--operator", default="Yash Verma")
     parser.add_argument("--reject", action="store_true")
     parser.add_argument("--auto-approve-for-tests", action="store_true")
@@ -328,7 +329,8 @@ def main(argv=None):
         parser.error("Forced non-recovery requires explicit test approval and cannot be combined with STOP")
     if args.approval_mode == "browser" and (args.auto_approve_for_tests or args.reject):
         parser.error("Browser mode collects the real browser decision; do not combine it with terminal test/rejection switches")
-    os.environ.setdefault("DOCKER_HOST", "tcp://localhost:2375")
+    from scripts.platform_support import environment
+    environment()
     os.environ.setdefault("DOCKER_CONFIG", str(ROOT / ".build/docker"))
     os.environ.setdefault("DEMO_VERSION", "2.0.2")
     directory = run_path(create=True)
@@ -380,7 +382,7 @@ def main(argv=None):
             injection += ["--svc", args.svc]
         with timed("injection", timings):
             command(injection, structured=True)
-        alert = wait_for_alert(detector, run_dir=directory, timeout_s=90)
+        alert = wait_for_alert(detector, run_dir=directory, timeout_s=args.alert_timeout)
         if alert is None:
             raise RuntimeError("No alert within 90 seconds; no diagnosis or recovery claimed")
         path = write_alert(alert, directory)
