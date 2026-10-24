@@ -126,6 +126,27 @@ fold gate. Aggregate metrics hide rare operations. The detector can misclassify
 synthetic-client latency and unavailable telemetry; one clean recording is not
 proof for every laptop. Ten strict xfails document outstanding regressions.
 
+The optional reviewer is **built, not live-verified**. It is off by default;
+`INCIDENT_ZERO_REVIEWER=1` enables it before risk assessment and proposals.
+`REVIEWER_MODEL` comes from the environment / `.env` and must be a vendor-qualified
+OpenRouter model from a different vendor than every primary model used. No model
+ID is hardcoded and reviewer fallback is disabled. It can request up to three
+additional reads through the existing telemetry tools (separate from the primary
+12-call investigation budget), then records
+`review {verdict, objections, extra_evidence}` in JSON and Markdown. An
+evidence-citing objection that stands caps the affected cause below 0.60 and
+suppresses proposals; review never raises confidence or overwrites original model
+and evidence scores. Reviewer model requests are retained in `review-llm.jsonl`;
+additional snapshots are retained with the bundle. An unavailable or invalid
+review is disclosed, with confidence unchanged. Primary offline replay disables
+new reviewer calls; replay of reviewer decisions is not implemented. The live
+session must enable the switch, verify the configured vendor differs, run a fresh
+diagnosis without approving execution, and inspect the reviewer transcript,
+at-most-three reads, resolvable evidence, schema-valid bundle and non-increasing
+confidence. Exercise a supported objection to confirm escalation/no proposal,
+and a no-objection case to confirm confidence stays unchanged; record latency and
+provider failures before claiming live verification.
+
 The allowlist cannot remove packet loss, resource caps or external restart loops.
 A toggle can affect several switches for one service; restart has irreversible
 process effects. Snapshots prove retained observations, not present health. The
