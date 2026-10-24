@@ -1,253 +1,160 @@
-# Incident Zero — AI On-Call Engineer
+# Incident Zero - AI On-Call Engineer
 
-Incident Zero detects anomalies in the unmodified OpenTelemetry Demo, diagnoses
-them from read-only telemetry, asks a person to approve a concrete remedy, then
-executes and measures recovery. The brain, Action API and Control Room share one
-persisted LangGraph run and one approval boundary.
+This is the integrated team repository for an AI on-call engineer on the official
+OpenTelemetry Astronomy Shop demo: telemetry tools, detector, investigation,
+Action API, approval interface, operator scripts and retained reports. The earlier
+GitHub **agent-only subset** lacks the hands/Action API, integrated Control Room,
+retained reports and this setup guide; it cannot demonstrate the full
+approval-to-recovery loop. Use the integrated checkout for the demo.
 
-Measured results and failures belong in [BUILD_04.md](BUILD_04.md),
-[BUILD_05.md](BUILD_05.md), [BUILD_06.md](BUILD_06.md) and the
-[evaluation ledger](docs/EVALUATION_NOTE.md). Unit tests establish specific
-properties; they do not establish live diagnostic accuracy or recovery.
+Historical outcomes and failures are in [the evaluation note](docs/EVALUATION_NOTE.md).
+Live recoveries so far were approved through the test harness; a human-approved
+run is scheduled at 09:30. The later browser run was automated acceptance, not a
+person approving. Real human CLI and browser approval remain **not verified**.
 
-## Setup
+## Setup and run
 
-Use Python 3.11+, Docker Desktop with Linux containers, and the official demo
-2.0.2 checkout at `D:\opentelemetry-demo`. Keep that checkout unmodified. Reuse
-the existing local environment; if it is missing, follow a storage-cleanup notice
-when present, otherwise recreate it:
+Use Python 3.11, Docker with Compose v2, and PowerShell 7 or bash. The official
+demo is a sibling checkout at tag `2.0.2`, using `docker-compose.minimal.yml`.
+Pin `DEMO_VERSION=2.0.2`: the tag's `latest` setting can select incompatible 3.x
+images. The measured minimal stack has 21 containers ([BUILD_01B](BUILD_01B.md)).
+Preflight requires more than 5 GiB free disk and 2 GiB available RAM.
+
+**Docker daemon prerequisite:** if the collector reports that API 1.25 is too
+old, merge `"min-api-version": "1.24"` into the Docker Engine `daemon.json`
+settings and apply/restart Docker before starting the stack. Preserve other
+settings. This is a host prerequisite, not a demo configuration edit. Confirm
+the venue's allowance with the mentor. Never restart Docker while another
+session owns the stack.
+
+PowerShell, from the integrated checkout:
 
 ```powershell
-cd D:\incident-zero
-$env:DOCKER_HOST = 'tcp://localhost:2375'
-$env:DEMO_VERSION = '2.0.2'
+git clone --branch 2.0.2 --depth 1 https://github.com/open-telemetry/opentelemetry-demo ../opentelemetry-demo
 py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e '.[test]'
-.\.venv\Scripts\python.exe -m faultctl up
-.\.venv\Scripts\python.exe -m faultctl build-netem
-.\.venv\Scripts\python.exe -m faultctl status
-```
-
-An existing `uv` environment may have no `pip` module. In that case install with
-`uv pip install --python .venv/Scripts/python.exe -e '.[test]'` instead of the
-`python -m pip` line; the environment need not be recreated.
-
-`scripts/up.ps1` automates setup and readiness. `INCIDENT_ZERO_DEMO_DIR` selects
-a different official demo checkout. The minimal stack has 21 services. The
-collector's Docker API compatibility fix for this laptop is recorded in
-[BUILD_01B.md](BUILD_01B.md); the repository does not change daemon settings.
-
-Checkpoint 3 and demo wrappers capture the existing Locust swarm, set 20 users
-at spawn rate 5 before the baseline, and restore the captured settings during
-cleanup. Override with `-LoadUsers`; this is recorded operator setup, not an
-agent remedy. The standalone Python driver leaves load unchanged unless
-`--load-users` is supplied. For that deliberate workload change, the frontend
-traffic baseline is the median of the final two qualified clean-window samples;
-the bundle retains its prior value and metric evidence. All other anomaly checks
-and thresholds remain active. The first integrated payment run at five users
-produced no detector crossing within 90 seconds; sparse charge calls and metric
-flushing delayed visibility. The runner still requires observed traffic and
-never lengthens the alert deadline or fabricates recovery.
-
-Keep keys and model identifiers in ignored `.env` or the process environment.
-Process values take precedence. `OPENROUTER_MODEL` selects the primary;
-`OPENROUTER_FALLBACK_MODEL` selects its fallback. Direct Gemini requires both
-`GEMINI_API_KEY` and `GEMINI_MODEL`. No hidden default supplies a model ID.
-`OPENROUTER_FAST_MODEL` and `REVIEWER_MODEL` are reserved; no reviewer runs today.
-The sanitized report identifies the model that actually succeeded, token usage
-and a reference cost estimate, which is not a provider invoice. Never print keys.
-
-## Checkpoint 3: one full loop
-
-```powershell
-cd D:\incident-zero
+./.venv/Scripts/python.exe -m pip install -e '.[test]'
+$env:DEMO_VERSION = '2.0.2'
+# This laptop's already-configured endpoint only:
+$env:DOCKER_HOST = 'tcp://localhost:2375'
 Remove-Item Env:INCIDENT_ZERO_TEST -ErrorAction SilentlyContinue
-.\scripts\checkpoint3.ps1 payment-failure
-# Another supported rehearsal:
-.\scripts\checkpoint3.ps1 container-stopped -Service recommendation
+./scripts/up.ps1 -DemoDir ../opentelemetry-demo
+# Separate terminal; start a fresh process after code changes:
+./scripts/ui.ps1 -Mode real -Port 8787
 ```
 
-The command starts or reuses the real Control Room at
-**http://127.0.0.1:8787**, resets the stack, measures a clean baseline, injects,
-waits up to 90 seconds for an alert, investigates, writes the report and pauses
-for approval. Review the same pending plan in the terminal and Control Room;
-approve once on either surface. `-BrowserApproval` waits exclusively for the
-browser decision. Execution and verification update the checkpoint and saved
-report. The final Markdown and action-log excerpt print in the terminal.
+Bash:
 
-The runner then resets and measures clean traffic again, even after an error.
-Before/after windows and action verification are at least 180 seconds, with two
-consecutive qualified samples, at least 20 measured frontend requests in the
-two-minute window, and a running load generator. The initial and final clearance
-windows make the complete mentor command longer than five minutes.
-
-Load qualification checks both the container and current Locust state:
-`state = running` and `user_count > 0`. A live container with a stopped swarm,
-unknown swarm state, or stale/unavailable observations cannot prove recovery,
-even if trailing request counters remain positive.
-
-Bundles use `reports/<incident>-loop-r<n>/`, or a fresh `-ReportId`. They retain
-JSON/Markdown reports, alert, sanitized model journal, evidence snapshots,
-action-log excerpt, timings, and `verification-before-after.json`. Existing
-bundles are never overwritten. A non-actionable diagnosis remains an escalation.
-
-For organiser incidents, start the real UI and telemetry watcher without an
-injector:
-
-```powershell
-.\.venv\Scripts\python.exe -m ui.serve --mode real
-# In a second terminal:
-.\.venv\Scripts\python.exe -m detect.watch --interval 10 --thresholds detect/thresholds.yaml
+```bash
+git clone --branch 2.0.2 --depth 1 https://github.com/open-telemetry/opentelemetry-demo ../opentelemetry-demo
+python3.11 -m venv .venv
+.venv/bin/python -m pip install -e '.[test]'
+export DEMO_VERSION=2.0.2
+unset INCIDENT_ZERO_TEST
+# Git Bash on this demo laptop only: export DOCKER_HOST=tcp://localhost:2375
+bash scripts/up.sh --demo-dir ../opentelemetry-demo
+# Separate terminal:
+bash scripts/ui.sh --mode real --port 8787
 ```
 
-The watcher writes alerts and starts investigations. Approve from the UI, or
-resume a specific report in a terminal:
+For Git Bash on Windows, create/install the venv using the PowerShell block;
+wrappers find `.venv/Scripts/python.exe`. On Unix they find `.venv/bin/python`.
+`INCIDENT_ZERO_PYTHON` overrides the bash interpreter. For an existing uv venv
+without pip, install with `uv pip install --python .venv/Scripts/python.exe -e
+'.[test]'`. `INCIDENT_ZERO_DEMO_DIR` overrides the sibling demo path. All wrappers
+preserve `DOCKER_HOST`; when unset they choose the Windows named pipe or Unix
+Docker socket. They do not enable a Docker listener.
 
-```powershell
-.\.venv\Scripts\python.exe -m agent.respond --report reports/<id>/report.json --operator 'Yash Verma'
-.\.venv\Scripts\python.exe -m agent.respond --report reports/<id>/report.json --operator 'Yash Verma' --reject
-```
+Keep keys and model IDs in ignored `.env` or process variables:
+`OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `OPENROUTER_FALLBACK_MODEL`; optional
+direct Gemini uses `GEMINI_API_KEY` and `GEMINI_MODEL`. Process values take
+precedence. Preflight checks the configured models without printing keys.
 
-For diagnosis-only rehearsals, `scripts/checkpoint2.ps1 <incident>` remains
-available. It resets after diagnosis, so its paused proposal must not be reused
-as authority to remediate a later incident. The response checks the current world.
+After the real Control Room is listening at **http://127.0.0.1:8787**:
 
-## Approval and STOP
+| Purpose | PowerShell | bash |
+|---|---|---|
+| Read-only readiness | `scripts/preflight.ps1` | `bash scripts/preflight.sh` |
+| Morning without injection | `scripts/morning.ps1 -NoSmoke` | `bash scripts/morning.sh --no-smoke` |
+| Morning with payment smoke | `scripts/morning.ps1` | `bash scripts/morning.sh` |
+| Payment diagnosis | `scripts/checkpoint2.ps1 payment-failure` | `bash scripts/checkpoint2.sh payment-failure` |
+| Stopped recommendation | `scripts/checkpoint2.ps1 container-stopped -Service recommendation` | `bash scripts/checkpoint2.sh container-stopped --svc recommendation` |
+| Human-approved loop | `scripts/checkpoint3.ps1 payment-failure` | `bash scripts/checkpoint3.sh payment-failure` |
+| Browser approval | add `-BrowserApproval` | add `--browser-approval` |
+| Demo preview / execute | `scripts/demo.ps1` / add `-Live` | `bash scripts/demo.sh` / add `--live` |
+| Linux offline suite | `scripts/crossplatform_check.ps1` | `bash scripts/crossplatform_check.sh` |
 
-Tier 1 shows the operation, target and expected effect and asks for `y`. Tier 2
-shows the evidence, independent-source check, alternatives, uncertainty,
-parameters, side effects and rollback limits, and requires typed `yes`.
-Critical services and all restarts require tier 2. Tier 3 has no action proposal.
-`auto_approve_tiers` stays empty in `action_api/policy.yaml`.
+Checkpoints reset and inject real incidents: exclusive stack ownership is required.
+Preflight never repairs failures. `morning --no-smoke` skips its only stack-changing
+step; it still probes the model, validates reports and launches an isolated Linux
+test container. Every entry point accepts `-Help`, `--help` and `-h` with exit 0.
+For organiser-injected incidents run `python -m detect.watch --interval 10`;
+duplicate-investigation handling still needs the fold regression fix.
 
-Ten-minute tokens bind the exact plan, report, operator and world state. A changed
-plan or world invalidates approval. Durable idempotency prevents replayed writes;
-one mutation/verification sequence is allowed at a time, with a five-minute target
-cooldown. Terminal and browser decisions share a response lock. A crash or an
-uncertain attempt does not trigger an automatic retry. Raw tokens remain private.
-Diagnoses older than ten minutes require a fresh investigation; a new token does
-not extend an old diagnosis.
+**Last complete preflight PASS: not verified.** The read-only morning run at
+18:24 UTC on 2026-10-23 passed 24/26 checks. Failures: unverified fresh Control
+Room and available RAM of 0.60 GiB, below 2 GiB. The fold's H8 state command
+now passes (earlier checks failed before it landed). Clean detection, five tool
+timings and model access passed. Records are in ignored `.build/preflight/`;
+no partial result is promoted to a complete PASS.
 
-```powershell
-.\.venv\Scripts\python.exe -m action_api stop --operator 'Yash Verma'
-# After review, clear the latch with the exact phrase:
-.\.venv\Scripts\python.exe -m action_api clear-stop --operator 'Yash Verma'
-# Prompt: I confirm the incident is over
-```
+## Approval gate and kill switch
 
-The Control Room STOP button, `POST /stop`, or a root `STOP` file latches the
-same kill switch. It blocks new actions and interrupts verification; rollback
-also obeys it. A pending approval becomes a saved `aborted` report without an
-execution attempt; an active response keeps ownership while cancelling safely.
-Operator reset remains available. STOP does not undo an operation
-already accepted by Docker. Clearing requires the exact phrase above.
+The Action API allowlists `restart_service`, `toggle_flag` and `throttle_load`.
+Scaling returns `NOT_AVAILABLE_ON_COMPOSE`. Preview shows the target, predicted
+effect and risk. Approval binds a single-use, expiring token to the plan, report,
+operator and world; execution rechecks it. Tier 2 requires typed `yes`. Wrappers
+refuse `INCIDENT_ZERO_TEST=1`. Removing the legacy ability for test approval to
+drive live writes and correcting approval provenance are fold safety gates.
 
-The Action API binds only to loopback. `python -m action_api serve` and
-`python -m ui.serve --mode real` serve the same app on 8787; run one instance.
-Its allowlist is `toggle_flag`, `restart_service`, `throttle_load`.
-Other operations return BLOCK with a reason code; Compose scaling is unavailable.
+Set STOP with `python -m action_api stop --operator "Yash Verma"`, or create the
+root file (`New-Item STOP` / `touch STOP`) when the API is unavailable. Clear it
+after reviewing the incident with `python -m action_api clear-stop --operator
+"Yash Verma"` and the phrase `I confirm the incident is over`. STOP blocks new
+changes and interrupts waits; it cannot undo a command already accepted by Docker.
 
-## Control Room and five-minute demo
+Verification lasts at least 180 seconds and requires two fresh healthy samples
+with traffic. Baseline-relative traffic and actual sample-age checks are fold
+requirements; merged live behavior is not verified. Unknown verification must
+escalate without automatically re-enabling a failure switch. Historical rollback
+bundles used older behavior. Approval records must include operator, surface
+(`cli`, `browser`, `test`), mode (`live`, `test`), timestamp and token ID.
 
-The static HTML/CSS/JavaScript UI has War Room, Incidents, Services, Approvals and
-Safety views. No Node, frontend build, CDN or login is required. Evidence drawers
-label live versus retained observations. Real browser approval resumes the same
-checkpoint, executes through the Action API and updates the saved JSON/Markdown.
-The API contract is [ui/API.md](ui/API.md).
+## Knowledge and limitations
 
-```powershell
-# Read-only rehearsal UI with process-local mock decisions; no real actions:
-.\.venv\Scripts\python.exe -m ui.serve --mode mock --port 8788
-# Preview the timed sequence without touching the stack:
-.\scripts\demo.ps1
-# Real prompt, live recovery, then BLOCK and STOP demonstrations:
-.\scripts\demo.ps1 -Live
-# Or approve from the browser:
-.\scripts\demo.ps1 -Live -BrowserApproval
-```
+[KNOWLEDGE.md](docs/KNOWLEDGE.md) explains runbooks, the service catalogue and
+incident memory. That branch exists; its corrected FTS5/BM25 integration is fold
+work. No retrieval accuracy improvement is claimed; the nine-run ablation is empty.
 
-Preparation includes reset/clearance, **live injection, alert and diagnosis**.
-Start the five-minute presentation clock at the `PRESENTATION READY` banner,
-when the real plan is waiting for approval. Review the retained live alert and
-evidence for about 45 seconds, approve, observe at least 180 seconds of execution
-verification, then show a forbidden operation returning
-`403 / FORBIDDEN_OPERATION`, STOP, and an allowed operation refused with
-`423 / STOP_LATCHED`. The script does not claim injection-to-recovery fits five
-minutes; initial preparation and final cleanup are outside that clock.
-Verification is never shortened. An optional `-RejectedReport <path>` demonstrates
-rejection of an existing real tier-2 checkpoint. Cleanup retains its measured
-window and asks the operator to clear STOP explicitly.
+Confidence is heuristic, not calibrated probability. Spanmetrics and traces share
+the same source observations; correcting historical independence scoring is a
+fold gate. Aggregate metrics hide rare operations. The detector can misclassify
+synthetic-client latency and unavailable telemetry; one clean recording is not
+proof for every laptop. Ten strict xfails document outstanding regressions.
 
-The developer acceptance driver supports `--auto-approve-for-tests` only together
-with `INCIDENT_ZERO_TEST=1`, printing that no human approval was collected.
-Tonight's automated live acceptance uses this explicit exception, recorded per
-bundle. The mentor and demo wrappers refuse that environment. The HTTP approval
-endpoint cannot enable it. Test-only `--force-nonrecovery` stops the real Locust
-swarm after execution and restores it in cleanup; it tests verification and
-rollback when the workload is stopped, using unmodified telemetry. It does not
-establish persistent application failure.
-The operator control records response uncertainty and confirms stopped state,
-retaining the reported remaining-user count. An HTTP timeout alone does not
-establish that the swarm stopped.
+The allowlist cannot remove packet loss, resource caps or external restart loops.
+A toggle can affect several switches for one service; restart has irreversible
+process effects. Snapshots prove retained observations, not present health. The
+API trusts the same user on localhost, not a multi-user identity service. One-time
+browser codes, unknown-verification handling and stuck-attempt recovery need fold
+fixes. Organiser schema, hidden-test accuracy, second-laptop setup and a complete
+timed live presentation are not verified.
 
-## Diagnosis, evidence and injection boundaries
+| Symptom | Check / next step |
+|---|---|
+| Collector restart-loop / old API | `docker logs otel-collector`; apply the daemon prerequisite before starting |
+| Jaeger proxy-only | Set `JAEGER_URL=http://localhost:8080/jaeger/ui/api`; tools try the published port first |
+| OpenSearch ephemeral port | `docker port opensearch 9200`; tools discover it, or set `OPENSEARCH_URL` |
+| Images/attributes differ | Pin `DEMO_VERSION=2.0.2`; do not use 3.x `latest` |
+| Missing venv/imports | Install `.[test]`; respect any local storage-cleanup notice |
+| Stuck attempt/cooldown | After the fold: `python -m action_api.state check`; review/resolve or wait, never delete the DB |
+| Fresh Control Room unverified | Restart real mode after source changes; preflight checks Windows listener start time or API revision/start metadata |
+| No alert/provider unavailable | Retain failure; show a labelled recorded bundle, never lower thresholds or invent output |
+| Public-image credential helper error | Use an isolated anonymous Docker configuration; preserve normal credentials |
+| Fresh pytest needs ignored `.build` | Create `.build` and use `--basetemp=.build/pytest`, or the Linux gate's `/tmp` base; plain fresh-clone pytest remains H13 fold work |
+| Slow Linux gate copy | Many retained evidence files are copied from the read-only mount before testing |
 
-The first tool is `health_table`; each later model step selects one read with a
-reason. The budget is 12 tool calls. The model sees telemetry, not the incident ID
-or injection settings. Redaction strips control disclosures before prompting or
-snapshotting. Evidence IDs must exist and support the named component; final
-confidence is the minimum of model and evidence confidence. Two Docker liveness
-fields remain one source. Caller connection errors and a dependency's exited
-container are independent observations even when stdout supplies those errors.
-
-A stopped dependency is `container_down`: `valkey-cart` is the cause component
-and `cart` owns the downstream symptoms. `dependency_unavailable` remains for
-dependency failures without an established stopped-container cause. Multiple
-independent failures, insufficient confidence, unsupported fixes and data risk
-escalate. Distinct users affected are not inferred from span rates.
-
-The operator injector mounts a repository-owned overlay and performs scoped
-Docker changes. It never edits `D:\opentelemetry-demo`. Reset restores mounts,
-limits, liveness and network state; the runner checks that checkout remains clean.
-Only the Action API's narrow setting adapter reads settings for approved writes,
-rollback and world-state hashing. Diagnosis cannot read those settings.
-
-Every reported payload is retained with a checksum. Resolve or validate it with:
-
-```powershell
-.\.venv\Scripts\python.exe -m tools.resolve '<evidence-id>' --run-dir runs/<run-id> --bundle-dir reports/<id>
-.\.venv\Scripts\python.exe -m schema.validate reports/<id>/report.json
-.\.venv\Scripts\python.exe -m pytest -q
-```
-
-See [architecture](docs/ARCHITECTURE.md), [control rationale](docs/WHY.md),
-[schema](schema/README.md), [metrics](tools/METRICS.md), and
-[logs](tools/LOGS.md). The external schema adapter preserves the internal report
-and validates an additional export when a schema is supplied.
-
-## Known limitations
-
-- The complete practice set, unseen combinations and no-fault calibration have
-  not been measured. Consult the evaluation table for actual runs; synthetic
-  `reports/mock-*` bundles do not count as live accuracy or latency.
-- Restart cannot restore interrupted requests or previous process state.
-  Failed restart verification escalates; settings rollback requires an unchanged
-  relevant world. An in-flight Docker/HTTP operation may finish before STOP.
-- Missing telemetry, unsupported verification signals and insufficient traffic
-  prevent `fixed`. Old evidence snapshots establish history, never recovery.
-- Throttling needs readable previous users/spawn rate. Switch writes need the
-  operator overlay. There is no network/resource-repair or Kubernetes executor.
-- Snapshot checksums do not prove complete telemetry. The bundle manifest marks
-  absent completeness proof false. No reviewer model or autonomous memory-based
-  remediation is implemented.
-- The API trusts the local same-user boundary. Ignored `runs/` contains checkpoints,
-  tokens and rollback material; it is required to resume, and must remain private.
-
-## Prior work
-
-The mentors permitted Yash Verma's declared unpublished prior code. Only the
-environment-loading and provider/retry structure from the earlier router was
-adapted; the hands and UI add no template ports. See
-[PRIOR_WORK.md](docs/PRIOR_WORK.md) and [TEAM_FORM.md](docs/TEAM_FORM.md).
-Credentials, runtime state, injection journals and environments remain ignored;
-sanitized report bundles are retained for review.
+Deliverables: [architecture](docs/ARCHITECTURE.md), [reports](reports/),
+[evaluation](docs/EVALUATION_NOTE.md), [team form](docs/TEAM_FORM.md).
+Also see [release gates](docs/RELEASE_CHECKLIST.md),
+[checkpoint answers](docs/CHECKPOINT_ANSWERS.md), [demo](docs/DEMO_SCRIPT.md),
+[fault grammar](docs/FAULTCTL.md) and [prior work](docs/PRIOR_WORK.md).
