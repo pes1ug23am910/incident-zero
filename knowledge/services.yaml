@@ -1,0 +1,415 @@
+version: 1
+source:
+  command: docker compose config --format json
+  directory: D:\opentelemetry-demo
+  generated_date: '2026-10-23'
+  topology_sha256: 2e5733239552c1a7c179db67e191b264bc33412632ea48225f79fd42317d7d0e
+  scope: Default Compose configuration; not proof that every configured service is
+    running
+  dependency_semantics: Compose startup dependencies, not a complete runtime RPC graph
+  exclusions: Diagnostic control-plane services and their edges omitted; no settings
+    retained
+services:
+  accounting:
+    purpose: Consumes order events for accounting processing.
+    dependencies:
+    - kafka
+    - otel-collector
+    criticality: core
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  ad:
+    purpose: Supplies advertisements for storefront pages.
+    dependencies:
+    - otel-collector
+    criticality: auxiliary
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  cart:
+    purpose: Stores and retrieves shopping carts through the cache.
+    dependencies:
+    - otel-collector
+    - valkey-cart
+    criticality: critical
+    typical_operations:
+    - GetCart
+    - AddItem
+    - EmptyCart
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - cache
+    - cart
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  checkout:
+    purpose: Coordinates cart, prices, payment, shipping and order completion.
+    dependencies:
+    - cart
+    - currency
+    - email
+    - kafka
+    - otel-collector
+    - payment
+    - product-catalog
+    - shipping
+    criticality: critical
+    typical_operations:
+    - PlaceOrder
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - checkout
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  currency:
+    purpose: Converts prices between supported currencies.
+    dependencies:
+    - otel-collector
+    criticality: core
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  email:
+    purpose: Sends order confirmation messages.
+    dependencies:
+    - otel-collector
+    criticality: auxiliary
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  fraud-detection:
+    purpose: Consumes order events for fraud analysis.
+    dependencies:
+    - kafka
+    - otel-collector
+    criticality: auxiliary
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  frontend:
+    purpose: Serves the storefront and calls shopping services.
+    dependencies:
+    - ad
+    - cart
+    - checkout
+    - currency
+    - image-provider
+    - otel-collector
+    - product-catalog
+    - quote
+    - recommendation
+    - shipping
+    criticality: critical
+    typical_operations:
+    - GET /
+    - GET /api/cart
+    - POST /api/checkout
+    - GET /api/products/{productId}
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - frontend
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+    - load
+  frontend-proxy:
+    purpose: Routes incoming storefront and observability HTTP requests.
+    dependencies:
+    - frontend
+    - grafana
+    - jaeger
+    - load-generator
+    criticality: critical
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+    - load
+  grafana:
+    purpose: Displays operational dashboards from telemetry backends.
+    dependencies: []
+    criticality: auxiliary
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - telemetry-outage
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  image-provider:
+    purpose: Serves product images.
+    dependencies:
+    - otel-collector
+    criticality: auxiliary
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  jaeger:
+    purpose: Stores and queries request traces.
+    dependencies: []
+    criticality: core
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - telemetry-outage
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  kafka:
+    purpose: Carries asynchronous order events in the full deployment.
+    dependencies: []
+    criticality: core
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  load-generator:
+    purpose: Generates synthetic shopping requests.
+    dependencies:
+    - frontend
+    criticality: auxiliary
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+    - load
+  opensearch:
+    purpose: Stores and searches application logs.
+    dependencies: []
+    criticality: core
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - telemetry-outage
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  otel-collector:
+    purpose: Receives and exports application and container telemetry.
+    dependencies:
+    - jaeger
+    - opensearch
+    criticality: core
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - telemetry-outage
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  payment:
+    purpose: Handles order payment charges.
+    dependencies:
+    - otel-collector
+    criticality: critical
+    typical_operations:
+    - Charge
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - payment
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  product-catalog:
+    purpose: Lists products and returns product details.
+    dependencies:
+    - otel-collector
+    criticality: core
+    typical_operations:
+    - GetProduct
+    - ListProducts
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - product-catalog
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  prometheus:
+    purpose: Stores and queries metrics.
+    dependencies: []
+    criticality: core
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - telemetry-outage
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  quote:
+    purpose: Calculates shipment price quotations.
+    dependencies:
+    - otel-collector
+    criticality: auxiliary
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  recommendation:
+    purpose: Recommends related products using catalogue data.
+    dependencies:
+    - otel-collector
+    - product-catalog
+    criticality: auxiliary
+    typical_operations:
+    - ListRecommendations
+    - get_product_list
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - recommendation
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  shipping:
+    purpose: Quotes and schedules shipments.
+    dependencies:
+    - otel-collector
+    criticality: core
+    typical_operations:
+    - Service availability
+    - Dependency requests
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - container-down
+    - restart-loop
+    - dependency-unavailable
+  valkey-cart:
+    purpose: Holds cart state in a Redis-compatible cache.
+    dependencies: []
+    criticality: critical
+    typical_operations:
+    - Cart read/write
+    - Connection availability
+    telemetry_hints:
+    - get_container_health for lifecycle and resource limits
+    - error_rate_by_service, p95_latency_by_service and rps_by_service
+    - Use fresh traces and logs when the service emits them; missing data is unknown
+    runbooks:
+    - cache
+    - container-down
+    - restart-loop
+    - dependency-unavailable

@@ -68,6 +68,17 @@ def render_report(report: dict) -> str:
             lines += ["Approve and execute each action separately in the listed impact order. Rejecting one does not approve or cancel another."]
     else:
         lines += ["No action proposed."]
+    consulted = report.get('knowledge_consulted')
+    if consulted:
+        lines += ['', '## What the agent consulted', '',
+                  f"Retrieval: {_cell(consulted.get('mode'))}. Runbooks and memories are hints, not evidence.", '']
+        for key in ('runbook_refs', 'memory_refs', 'service_refs'):
+            for ref in consulted.get(key, []):
+                lines += [f"### {_cell(ref['id'])}", '',
+                          f"Score: {ref['score']:.3f}; source: `{_cell(ref['file'])}`; version: {_cell(ref['version'])}; SHA-256: `{_cell(ref['sha256'])}`.", '',
+                          '> ' + _cell(ref['text']), '']
+        if not any(consulted.get(key) for key in ('runbook_refs', 'memory_refs', 'service_refs')):
+            lines += ['No matching knowledge was retrieved.', '']
     lines += ["", "## Approval record", ""]
     lines += _table(["Field", "Value"], [("Required", approval["required"]), ("Approved", approval["approved"]), ("Approved by", approval["approved_by"]), ("Approved at", approval["approved_at"]), ("Token", "present (redacted)" if approval["token"] else "absent"), ("Executed", action["executed"]), ("Action log", action["action_log_ref"])])
     lines += ["", "## Verification", ""]
