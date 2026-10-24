@@ -55,6 +55,19 @@ def render_report(report: dict) -> str:
     lines += ["", "## Evidence", ""]
     lines += _table(["ID", "Source", "Summary", "Reproduce"], [(e["id"], e["source"], e["summary"], e["raw_ref"]) for e in report["evidence"]])
     lines += ["", f"Resolve an ID with `python -m tools.resolve '<evidence-id>' --run-dir '{_cell(report['run_id'])}'`; add `--bundle-dir reports/<incident-id>` to use the retained report bundle after run expiry. The resolver identifies live evidence, run snapshots, or bundle snapshots."]
+    review = report.get('review')
+    if review:
+        lines += ['', '## Independent review', '',
+                  f"Verdict: {_cell(review['verdict'])}; model: {_cell(review['model'])}; "
+                  f"{review['tool_calls']}/3 additional reads. Review can only lower confidence.", '']
+        if review.get('error'):
+            lines += [_cell(review['error']), '']
+        lines += _table(['Cause index (0-based)', 'Objection', 'Stands', 'Evidence'], [
+            (item['cause_index'], item['objection'], item['stands'], ', '.join(item['evidence_ids']))
+            for item in review['objections']])
+        lines += ['', 'Additional evidence:', '']
+        lines += _table(['Tool', 'Why', 'Evidence'], [
+            (item['tool'], item['why'], ', '.join(item['evidence_ids'])) for item in review['extra_evidence']])
     impact = report.get("impact")
     if impact:
         lines += ["", "## Impact", ""]
@@ -107,7 +120,9 @@ def render_report(report: dict) -> str:
              r['verification'].get('outcome'), ', '.join(r['error'].get('reason_codes', []))) for r in report['action_history']])
     lines += ["", "## Alternatives and escalation", ""]
     lines += [f"- {_cell(item)}" for item in root.get("alternatives_considered", [])] or ["No alternatives recorded."]
-    lines += ["", _cell(report["escalation_note"]), "", "## Prevention", "", _cell(report["prevention"]), "", "## Limitations", ""]
+    lines += ["", _cell(report["escalation_note"]), "", "## Prevention", ""]
+    lines += [_cell(line) for line in (report["prevention"] or 'No prevention recommendation recorded.').splitlines()]
+    lines += ["", "## Limitations", ""]
     lines += [f"- {_cell(item)}" for item in report["limitations"]] or ["No limitations recorded."]
     agent = report["agent"]
     lines += ["", "## Investigation budget", "", f"Model: {_cell(agent['model'])}; {agent['tool_calls']} tool calls; {agent['elapsed_s']:.2f} s; stopped because {_cell(agent['stopped_because'])}.", ""]
