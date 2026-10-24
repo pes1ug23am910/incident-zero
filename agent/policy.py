@@ -25,7 +25,7 @@ CAUSE_CATEGORIES = (
 def effective_confidence(cause: dict[str, Any]) -> float:
     """Fail closed on invalid or contradictory confidence fields."""
     values = [cause.get("confidence", 0)]
-    values.extend(cause[key] for key in ("confidence_model", "confidence_evidence") if key in cause)
+    values.extend(cause[key] for key in ("confidence_model", "confidence_evidence", "confidence_review") if key in cause)
     try:
         numbers = [float(value) for value in values]
         if any(not 0 <= value <= 1 for value in numbers):
