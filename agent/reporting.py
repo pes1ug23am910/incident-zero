@@ -150,7 +150,7 @@ def write_bundle(report, alert, run_dir, output, secrets=(), external_schema=Non
     safe_alert['anomalies'] = [a for a in alert.get('anomalies',[]) if a.get('service') in SERVICES]
     (bundle / 'alert.json').write_text(json.dumps(scrub(safe_alert,secrets),indent=2)+'\n',encoding='utf-8')
     (bundle / 'action-log.jsonl').write_text('',encoding='utf-8')
-    for name in ('llm.jsonl','graph_updates.jsonl'):
+    for name in ('llm.jsonl','graph_updates.jsonl','review-llm.jsonl'):
         source = run_dir / name
         (bundle / name).write_text(scrub(source.read_text(encoding='utf-8'),secrets) if source.exists() else '',encoding='utf-8')
     (bundle / 'evidence').mkdir(exist_ok=True)
