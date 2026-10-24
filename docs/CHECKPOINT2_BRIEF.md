@@ -2,12 +2,21 @@
 
 Format agreed with the mentor: we pick three practice incidents from the slide, explain the problem, the objective and the expected result, then run the agent live and it must produce that result. The retained diagnosis runs below are historical evidence. The integration round adds the separate full-loop command `scripts/checkpoint3.ps1 <incident>`; measured recovery and approval paths belong in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).
 
+**24 October demo-stable:** fresh runs have not started because readiness is
+blocked by the occupied UI port and low free RAM. No fresh run IDs can be listed;
+do not present the historical IDs below as this branch's acceptance. Source/tests
+and exact morning commands are in [BUILD_09](../BUILD_09.md).
+
 ## Why these three
 They cover an application fault, a stopped application container, and a stopped dependency container. They also exercise different evidence paths: traces plus logs, container state plus upstream errors, and errors that point past their emitting service to a dependency. **All three expected proposals are tier 2**: payment is critical, and every restart requires tier 2 review. The CPU backup is intended to demonstrate tier 3 abstention; it has not been rehearsed live. Checkpoint 2 runs diagnose and propose; Checkpoint 3 uses the integrated Action API to collect approval, execute and verify.
 
-Run the three cases in the order below and require three consecutive correct live diagnoses for each before moving to the CPU backup and remaining practice incidents. Each run uses a fresh bundle. Do not fill the rehearsal entries from unit tests or from an injection read-back alone.
+For demo-stable, run payment twice, stopped recommendation twice, and cache once.
+Payment and recommendation require confidence >=0.75, status `diagnosed`, and
+agent time below 120 seconds. Retry a failed core case once, then test knowledge
+off if the retry fails. Cache is allowed to be intermittent and must be disclosed.
+Each attempt uses a fresh bundle; unit tests cannot fill the live table.
 
-The one-command sequence is `scripts/checkpoint2.ps1 <incident>` (bash twin available): preflight, reset, verify clean telemetry, inject, wait for an alert, diagnose, validate, print, reset and verify clean telemetry. Wrappers request a 150-second alert budget; `detect.watch` still needs the fold's cap extension (strict regression xfail). The direct Python module keeps its historical 90-second default. Reset clearance takes at least 180 seconds, sampled every 30 seconds. Under-90-second diagnosis is a presentation target, not an assumed result. All run results below are historical; approval modes and rollback limitations are qualified in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).
+The one-command sequence is `scripts/checkpoint2.ps1 <incident>` (bash twin available): preflight, reset, verify clean telemetry, inject, wait for an alert, diagnose, validate, print, reset and verify clean telemetry. Wrappers request a 150-second alert budget; the current watcher still caps it at 90 seconds (strict regression xfail). Reset clearance takes at least 180 seconds, sampled every 30 seconds. The fresh demo-stable table is in [BUILD_09](../BUILD_09.md); older results below remain historical. Approval modes and rollback limitations are qualified in [EVALUATION_NOTE.md](EVALUATION_NOTE.md).
 
 ## 1. `payment-failure` (the payment service fails when charging)
 
