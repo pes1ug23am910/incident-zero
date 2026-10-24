@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "example-unconfirmed-payment",
+  "run_id": "runs/example-offline",
+  "detected_at": "2026-10-23T13:00:00+05:30",
+  "diagnosed_at": "2026-10-23T13:00:02+05:30",
+  "resolved_at": null,
+  "alert": {
+    "signal": "container_health",
+    "service": "payment",
+    "observed": 1,
+    "threshold": 1,
+    "window_s": 120
+  },
+  "symptoms": [
+    {
+      "service": "payment",
+      "signal": "container_status",
+      "observed": "The example payment container is running; this alone does not establish application health.",
+      "evidence_ids": [
+        "container:payment:Status=running"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "get_container_health",
+      "query": "payment",
+      "why": "Check whether the suspected service has stopped.",
+      "finding": "The illustrative fixture reports payment running; application telemetry is still required.",
+      "evidence_ids": [
+        "container:payment:Status=running"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "payment",
+    "cause": "The available container state is insufficient to identify an application failure.",
+    "category": "unknown",
+    "confidence": 0.3,
+    "alternatives_considered": [
+      "The payment application may be healthy.",
+      "An application or dependency error can occur while the process remains running."
+    ]
+  },
+  "evidence": [
+    {
+      "id": "container:payment:Status=running",
+      "source": "docker",
+      "summary": "The illustrative offline fixture reports payment with Status=running.",
+      "raw_ref": "python -m tools.resolve 'container:payment:Status=running'"
+    }
+  ],
+  "proposed_action": null,
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null,
+    "surface": null,
+    "mode": null,
+    "token_id": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "container_health",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "needs_human",
+  "escalation_note": "The payment process appears running in the example fixture. Application health and root cause remain uncertain. A human should inspect recent error traces and payment logs before proposing a change.",
+  "prevention": null,
+  "limitations": [
+    "ILLUSTRATIVE OFFLINE EXAMPLE: this report is hand-authored, uses an explicit evidence fixture, and is not a measured incident investigation.",
+    "No system action or recovery was performed."
+  ],
+  "agent": {
+    "model": "none (hand-authored example)",
+    "tool_calls": 1,
+    "elapsed_s": 2,
+    "stopped_because": "budget"
+  }
+}
