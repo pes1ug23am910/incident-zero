@@ -1,10 +1,27 @@
 # Evaluation note: retained evidence, not hidden-test accuracy
 
-This inventory was read directly from the report bundles in the docsport snapshot.
-Tuning cases, live writes with automated approval, and synthetic fixtures are
-separate. No table row below is a new live rehearsal. The only deliberately empty
-measurement rows are the pre-registered ablation. A schema-valid report is not
-automatically a correct diagnosis or a valid recovery claim.
+The historical inventory came from the docsport snapshot. Current demo-stable
+repetitions are recorded separately in [BUILD_09](../BUILD_09.md). Tuning cases,
+live writes with automated approval, and synthetic fixtures remain separate.
+A schema-valid report is not automatically a correct diagnosis or recovery claim.
+
+## Demo-stable, 24 October: current readiness
+
+No fresh incident run IDs exist yet. All requested live repetitions are blocked
+before injection by the occupied real-UI port and insufficient free RAM; see
+[BUILD_09](../BUILD_09.md). These are preparation failures, not model failures.
+
+| Requested verification | Fresh result | Approval surface |
+|---|---|---|
+| Payment diagnosis, twice, knowledge ON | Not run | No decision |
+| Stopped recommendation diagnosis, twice, knowledge ON | Not run | No decision |
+| Cache diagnosis, once, knowledge ON | Not run; intermittency not remeasured | No decision |
+| Payment full loop | Not run; fixed/recovery not reverified | No decision |
+| Forbidden-operation BLOCK | Not run against demo-stable UI | No decision |
+
+Offline suite: 770 passed, 3 skipped, 9 xfailed. Initial preflight: FAIL, 22/26.
+Knowledge remains OFF by default pending live acceptance. The Linux morning gate
+was time-boxed during setup and has no passing test result.
 
 ## Historical diagnosis runs
 
@@ -60,8 +77,9 @@ guarantee repeatable model output.
 
 The approval surface below is reconstructed from `hands-rehearsal.json`, the
 action log and the recorded browser acceptance in BUILD_06. Older report approval
-fields omit mode/surface and can misleadingly say a person approved. They must be
-re-rendered by the fold; no history was rewritten here. Browser r9 had a real
+fields originally omitted mode/surface and could misleadingly say a person
+approved. The approval-provenance cherry-pick corrected these retained reports
+and their rendering on demo-stable. Browser r9 had a real
 endpoint but an automated operator decision, and is not human-approval evidence.
 Elapsed time is `timings.inject_to_finished_s`; a dash means unrecorded, not zero.
 
@@ -151,7 +169,8 @@ memory live safety rehearsals are also not verified. No weight updates occur.
   roughly four-second synthetic-client false alarm.
 - **Approval honesty:** test-auto and automated browser decisions do not prove a
   human said yes. CLI rejection flags do not prove a person typed no. Report-mode
-  propagation, browser one-time codes and live-test-bypass removal require fold.
+  propagation is included on demo-stable; browser one-time codes and
+  live-test-bypass removal remain deferred fold work.
 - **Verification/rollback:** r6's fixed report accompanied failed acceptance and
   only 56/70 estimated frontend requests in final samples. R7/r8 rolled back on
   stopped traffic, re-enabling failure settings: H3 must replace this with unknown
@@ -159,7 +178,9 @@ memory live safety rehearsals are also not verified. No weight updates occur.
   sample age and >=30% affected-service baseline traffic must qualify recovery.
 - **Operator readiness:** bounded audit locks, cached previews, crash-safe attempt
   check/resolve, typo re-prompts and stable world hashes are required before the
-  demo. Current preflight fails on missing state-check support and server freshness.
+  broader hardened release. Demo-stable checks stuck attempts and cooldowns by
+  reading the existing database when the fold-only state CLI is unavailable;
+  the final measured preflight is recorded in BUILD_09.
 - **Coverage:** cart-intermittent, catalog-one-product, recommendation leak, ad CPU,
   homepage flood, generic network/resource diagnosis and all six held-out combined
   rehearsals have no accepted fresh bundle in this snapshot. Their operator
