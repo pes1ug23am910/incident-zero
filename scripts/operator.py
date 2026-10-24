@@ -22,7 +22,7 @@ def main(argv=None):
     cp2.add_argument("--combo")
     cp2.add_argument("--svc")
     cp2.add_argument("--report-id")
-    cp2.add_argument("--alert-timeout", type=int, default=150)
+    cp2.add_argument("--alert-timeout", type=int, choices=range(91), default=90, metavar="0..90")
     cp2.add_argument("--clean-timeout", type=int, default=360)
     cp3 = commands.add_parser("checkpoint3", help="full loop with real approval; CHANGES STACK")
     cp3.add_argument("incident")

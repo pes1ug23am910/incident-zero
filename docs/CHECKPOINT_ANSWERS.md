@@ -5,10 +5,14 @@ bundles are recordings, not evidence that the current demo line has passed. Fres
 demo-stable results and its deliberate exclusions are in [BUILD_09](../BUILD_09.md). Run commands
 with the installed Python environment; only the stack owner may run rehearsals.
 
-**24 October demo-stable:** source integration passes offline checks, but fresh
-incident runs, CLI approval and BLOCK are not yet verified. Readiness is blocked
-by the occupied UI port and low free RAM. All incident IDs below remain historical;
-fresh run IDs are unavailable until the live verification is unblocked.
+**24 October demo-stable:** fresh retained runs are below; knowledge demo default **OFF**, provisional and not freshly validated. See [BUILD_09](../BUILD_09.md) for failed preparations, complete wrapper times, cleanup and uncompleted checks. Checkpoint 3 and typed CLI/live approval were not exercised in this session.
+
+| Fresh bundle | Diagnosis run ID | Result |
+|---|---|---|
+| [stable09-payment-on-r2](../reports/stable09-payment-on-r2/report.json) | `runs/20261024T020607.182583Z-3fd181d4` | diagnosed; 0.90; 56.851 s agent |
+| [stable09-payment-on-r4](../reports/stable09-payment-on-r4/report.json) | `runs/20261024T022402.665842Z-6bf15653` | diagnosed; 0.95; 38.891 s agent |
+| [stable09-recommendation-on-r1](../reports/stable09-recommendation-on-r1/report.json) | `runs/20261024T023315.758052Z-0903788b` | diagnosed; 0.80; 56.537 s agent |
+| [stable09-recommendation-on-r2](../reports/stable09-recommendation-on-r2/report.json) | `runs/20261024T024152.039733Z-dc7d26df` | diagnosed; 0.90; 172.794 s agent |
 
 ## Checkpoint 1: Eyes (10)
 
@@ -19,7 +23,7 @@ fresh run IDs are unavailable until the live verification is unblocked.
 2. **Can you inject and reset?** The historical payment rehearsal
    [payment-failure-r6](../reports/payment-failure-r6/checkpoint2.json) records
    operator reset/injection/cleanup. Its run is
-   `runs/20261023T114143.041886Z-68a917d4`. We have not injected in this session.
+   `runs/20261023T114143.041886Z-68a917d4`. Fresh injection and reset records are linked in the table above.
 3. **What can the agent read?** Metrics, traces, logs, container health and action
    history. `python -m tools.cli --help` lists the tools; the five calls passed
    the under-five-second checks in the read-only preflight.

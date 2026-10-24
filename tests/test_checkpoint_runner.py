@@ -182,6 +182,7 @@ def test_cleanup_interrupt_records_failure_before_propagating(rehearsal, monkeyp
 
 
 @pytest.mark.parametrize("arguments", [[], ["no-fault", "--svc", "recommendation"],
+    ["payment-failure", "--alert-timeout", "150"],
     ["no-fault", "--combo", "payment-failure,container-stopped"],
     ["--combo", "payment-failure,"], ["--combo", "payment-failure,payment-failure"]])
 def test_invalid_modes_refuse_before_operator_commands(rehearsal, arguments):
