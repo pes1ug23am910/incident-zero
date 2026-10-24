@@ -66,7 +66,7 @@ labelled CLI rejection; that flag is not proof of a human answering a prompt.
 
 | Failure risk | Operator response and disclosure |
 |---|---|
-| No alert within budget | Default wrappers request 150s; detector support is a fold xfail. Inspect `python -m detect.once`; retain timeout. Never lower thresholds on stage |
+| No alert within budget | Default wrappers use 90s; 150s detector support remains a fold xfail. Inspect `python -m detect.once`; retain timeout. Never lower thresholds on stage |
 | Diagnosis/token expires | Approve within eight minutes of the report; obtain a fresh report/preview after expiry. Do not reuse a token |
 | Tier-2 input typo | Read the prompt; H9 must re-ask up to three times. Old snapshot rejects typos; do not pretend it accepted |
 | Stuck attempt or cooldown | `python -m action_api.state check` after H8 lands; review and resolve through that interface, or wait. Do not delete attempt state |

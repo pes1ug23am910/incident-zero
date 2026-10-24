@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792809252.321=0.027027027027027025",
+  "source": "prometheus",
+  "data": {
+    "metric": {
+      "service_name": "frontend-proxy"
+    },
+    "timestamp": 1792809252.321,
+    "value": 0.027027027027027025,
+    "query": "named:error_rate_by_service"
+  },
+  "captured_at": "2026-10-24T02:34:12.366927+00:00",
+  "checksum": "298b9ed53a1721911f1d0b0e6fc5c9a77564705f2f9013f6d54a1c6cfba26383"
+}

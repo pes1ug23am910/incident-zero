@@ -81,3 +81,18 @@ def test_failed_preflight_refuses_smoke_but_runs_read_only_gates(monkeypatch, tm
     monkeypatch.setattr(morning, "run_module", lambda *a: calls.append(a) or int(a[0] == "scripts.preflight"))
     assert morning.main([]) == 1
     assert not any(a[0] == "scripts.operator" for a in calls)
+
+
+def test_checkpoint_wrapper_uses_supported_alert_budget(monkeypatch):
+    from scripts import operator
+    monkeypatch.delenv("INCIDENT_ZERO_TEST", raising=False)
+    calls = []
+    monkeypatch.setattr(operator, "run_module", lambda *a: calls.append(a) or 0)
+    assert operator.main(["checkpoint2", "payment-failure"]) == 0
+    forwarded = calls[-1]
+    assert forwarded[forwarded.index("--alert-timeout") + 1] == "90"
+    calls.clear()
+    with pytest.raises(SystemExit) as result:
+        operator.main(["checkpoint2", "payment-failure", "--alert-timeout", "150"])
+    assert result.value.code == 2
+    assert calls == []

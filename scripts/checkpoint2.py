@@ -84,8 +84,7 @@ def main(argv=None):
     parser.add_argument("--combo", help="Comma-separated operator incidents applied together before observation")
     parser.add_argument("--svc")
     parser.add_argument("--thresholds")
-    # Preserve the direct module's recorded 90s contract. Both operator wrappers
-    # explicitly request the new 150s budget; detect.watch support lands in fold.
+    # Keep wrappers and the direct module within this branch's watcher contract.
     parser.add_argument("--alert-timeout", type=float, default=90)
     parser.add_argument("--clean-timeout", type=float, default=360)
     parser.add_argument("--report-id", help="Optional unique report bundle name; existing bundles are never replaced")
@@ -99,8 +98,8 @@ def main(argv=None):
         parser.error("--combo requires at least two distinct nonempty incident names")
     if args.incident == "no-fault" and args.svc:
         parser.error("no-fault does not select an injection service")
-    if not 0 <= args.alert_timeout <= 600 or args.clean_timeout < 180:
-        parser.error("Alert timeout must be 0..600s and clean timeout at least 180s")
+    if not 0 <= args.alert_timeout <= 90 or args.clean_timeout < 180:
+        parser.error("Alert timeout must be 0..90s and clean timeout at least 180s")
     from scripts.platform_support import environment
     environment()
     os.environ.setdefault("DEMO_VERSION", "2.0.2")

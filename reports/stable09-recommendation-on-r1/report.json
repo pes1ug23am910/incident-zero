@@ -1,0 +1,529 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "stable09-recommendation-on-r1",
+  "run_id": "runs/20261024T023315.758052Z-0903788b",
+  "detected_at": "2026-10-24T02:33:14.002506+00:00",
+  "diagnosed_at": "2026-10-24T02:34:01.200785+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "container_health",
+    "service": "recommendation",
+    "observed": 1,
+    "threshold": 0,
+    "window_s": 120,
+    "baseline": null
+  },
+  "symptoms": [
+    {
+      "service": "recommendation",
+      "signal": "container_status",
+      "observed": "exited",
+      "evidence_ids": [
+        "container:recommendation:Status=exited"
+      ]
+    },
+    {
+      "service": "frontend",
+      "signal": "investigation_context",
+      "observed": "Failure observed in evidence collected after the initial health overview.",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792809195.808=575.0000000000049",
+        "trace:e50c7a53683338a227d600fc4f6b49cc"
+      ]
+    },
+    {
+      "service": "frontend-proxy",
+      "signal": "investigation_context",
+      "observed": "Failure observed in evidence collected after the initial health overview.",
+      "evidence_ids": [
+        "trace:e50c7a53683338a227d600fc4f6b49cc",
+        "span:e50c7a53683338a227d600fc4f6b49cc/83a5bd19abe3c374"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "health_table",
+      "query": "{\"lookback_s\": 120}",
+      "why": "Locate every service anomaly before selecting a focused read.",
+      "finding": "Observed 20 service rows; 3 symptom entries.",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792809195.808=575.0000000000049",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792809195.808=404.99999999999613",
+        "container:recommendation:Status=exited"
+      ]
+    },
+    {
+      "step": 2,
+      "tool": "get_logs",
+      "query": "{\"service\": \"frontend\", \"lookback_s\": 120, \"severity_min\": \"INFO\"}",
+      "why": "Corroborate that the exited recommendation container is impacting callers by checking fresh frontend connection errors to recommendation within the last 120s.",
+      "finding": "[]",
+      "evidence_ids": []
+    },
+    {
+      "step": 3,
+      "tool": "get_traces",
+      "query": "{\"service\": \"frontend\", \"lookback_s\": 600, \"errors_only\": true, \"limit\": 5}",
+      "why": "Inspect frontend error traces in the last 600s to corroborate caller connection failures to the exited recommendation container and strengthen the container_down hypothesis.",
+      "finding": "[{\"trace_id\": \"e50c7a53683338a227d600fc4f6b49cc\", \"duration_ms\": 8359068.031, \"started_at\": \"2026-10-24T00:05:16.735073+00:00\", \"ended_at\": \"2026-10-24T02:24:35.803104+00:00\", \"root_span\": {\"span_id\": \"2d4f7279014313a4\", \"service\": \"frontend-proxy\", \"operation\": \"ingress\", \"duration_ms\": 26.331, \"status_message\": \"\", \"exception\": {}}, \"first_error_span\": {\"span_id\": \"52aed96295de7ff3\", \"service\": \"payment\", \"operation\": \"grpc.oteldemo.PaymentService/Charge\", \"duration_ms\": 0.776, \"status_message\": \"\", \"exception\": {\"exception.message\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"exception.stacktrace\": \"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.chargeServiceHandler [as charge] (/usr/src/app/index.js:21:22)\", \"exception.type\": \"Error\"}}, \"origin_error_spans\": [{\"span_id\": \"52aed96295de7ff3\", \"service\": \"payment\", \"operation\": \"grpc.oteldemo.PaymentService/Charge\", \"duration_ms\": 0.776, \"status_message\": \"\", \"exception\": {\"exception.message\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"exception.stacktrace\": \"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.charge",
+      "evidence_ids": [
+        "trace:e50c7a53683338a227d600fc4f6b49cc",
+        "span:e50c7a53683338a227d600fc4f6b49cc/83a5bd19abe3c374",
+        "span:d15f24d1ca3262f8ea03b72ae69ae5b7/f5123f34bc5a5d47",
+        "span:d15f24d1ca3262f8ea03b72ae69ae5b7/3a6656f2cd733c98"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "recommendation",
+    "cause": "recommendation container exited; callers encounter DNS/connection failures to recommendation, inflating frontend and proxy latency",
+    "category": "container_down",
+    "confidence_model": 0.8,
+    "evidence_ids": [
+      "container:recommendation:Status=exited",
+      "span:d15f24d1ca3262f8ea03b72ae69ae5b7/3a6656f2cd733c98",
+      "span:d15f24d1ca3262f8ea03b72ae69ae5b7/f5123f34bc5a5d47",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792809195.808=575.0000000000049",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792809195.808=404.99999999999613"
+    ],
+    "explains_symptoms": [
+      "frontend",
+      "frontend-proxy",
+      "recommendation"
+    ],
+    "alternatives_considered": [
+      "dependency_unavailable: recommendation",
+      "network: transient DNS",
+      "application_flag: frontend"
+    ],
+    "confidence_evidence": 0.9,
+    "confidence": 0.8
+  },
+  "root_causes": [
+    {
+      "component": "recommendation",
+      "cause": "recommendation container exited; callers encounter DNS/connection failures to recommendation, inflating frontend and proxy latency",
+      "category": "container_down",
+      "confidence_model": 0.8,
+      "evidence_ids": [
+        "container:recommendation:Status=exited",
+        "span:d15f24d1ca3262f8ea03b72ae69ae5b7/3a6656f2cd733c98",
+        "span:d15f24d1ca3262f8ea03b72ae69ae5b7/f5123f34bc5a5d47",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792809195.808=575.0000000000049",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792809195.808=404.99999999999613"
+      ],
+      "explains_symptoms": [
+        "frontend",
+        "frontend-proxy",
+        "recommendation"
+      ],
+      "alternatives_considered": [
+        "dependency_unavailable: recommendation",
+        "network: transient DNS",
+        "application_flag: frontend"
+      ],
+      "confidence_evidence": 0.9,
+      "confidence": 0.8
+    }
+  ],
+  "evidence": [
+    {
+      "id": "container:recommendation:Status=exited",
+      "source": "docker",
+      "summary": "{\"name\": \"recommendation\", \"field\": \"Status\", \"value\": \"exited\"}",
+      "raw_ref": "python -m tools.resolve 'container:recommendation:Status=exited' --run-dir 'runs/20261024T023315.758052Z-0903788b'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792809195.808=575.0000000000049",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend\"}, \"timestamp\": 1792809195.808, \"value\": 575.0000000000049, \"query\": \"named:p95_latency_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792809195.808=575.0000000000049' --run-dir 'runs/20261024T023315.758052Z-0903788b'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792809195.808=404.99999999999613",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend-proxy\"}, \"timestamp\": 1792809195.808, \"value\": 404.99999999999613, \"query\": \"named:p95_latency_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792809195.808=404.99999999999613' --run-dir 'runs/20261024T023315.758052Z-0903788b'"
+    },
+    {
+      "id": "span:d15f24d1ca3262f8ea03b72ae69ae5b7/3a6656f2cd733c98",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"d15f24d1ca3262f8ea03b72ae69ae5b7\", \"spanID\": \"3a6656f2cd733c98\", \"operationName\": \"dns.lookup\", \"references\": [], \"startTime\": 1792809192691000, \"duration\": 5007258, \"tags\": [{\"key\": \"dns.error_message\", \"type\": \"string\", \"value\": \"getaddrinfo EAI_AGAIN recommendation\"}, {\"key\": \"dns.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-dns\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.43.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"otel.status_description\", \"type\": \"string\", \"value\": \"getaddrinfo EAI_AGAIN recommendation\"}, {\"key\": \"span.kind\", \"type\": \"string\", \"value\": \"client\"}], \"logs\": [], \"processID\": \"p1\", \"warnings\": [\"invalid parent span IDs=be69158ef83b3989; skipping clock skew adjustm",
+      "raw_ref": "python -m tools.resolve 'span:d15f24d1ca3262f8ea03b72ae69ae5b7/3a6656f2cd733c98' --run-dir 'runs/20261024T023315.758052Z-0903788b'"
+    },
+    {
+      "id": "span:d15f24d1ca3262f8ea03b72ae69ae5b7/f5123f34bc5a5d47",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"d15f24d1ca3262f8ea03b72ae69ae5b7\", \"spanID\": \"f5123f34bc5a5d47\", \"operationName\": \"router frontend egress\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"d15f24d1ca3262f8ea03b72ae69ae5b7\", \"spanID\": \"be79550eeb5e4f16\"}], \"startTime\": 1792809192688446, \"duration\": 14998172, \"tags\": [{\"key\": \"canceled\", \"type\": \"string\", \"value\": \"true\"}, {\"key\": \"component\", \"type\": \"string\", \"value\": \"proxy\"}, {\"key\": \"error\", \"type\": \"string\", \"value\": \"true\"}, {\"key\": \"http.protocol\", \"type\": \"string\", \"value\": \"HTTP/1.1\"}, {\"key\": \"http.status_code\", \"type\": \"string\", \"value\": \"0\"}, {\"key\": \"peer.address\", \"type\": \"string\", \"value\": \"172.23.0.14:8080\"}, {\"key\": \"response_flags\", \"type\": \"string\", \"value\": \"-\"}, {\"key\": \"span.kind\", \"type\": \"string\", \"value\": \"client\"}, {\"key\": \"upstream_address\", \"type\": \"string\", \"value\": \"172.23.0.14:8080\"}, {\"key\": \"upstream_cluster\", \"type\": \"str",
+      "raw_ref": "python -m tools.resolve 'span:d15f24d1ca3262f8ea03b72ae69ae5b7/f5123f34bc5a5d47' --run-dir 'runs/20261024T023315.758052Z-0903788b'"
+    },
+    {
+      "id": "span:e50c7a53683338a227d600fc4f6b49cc/83a5bd19abe3c374",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"e50c7a53683338a227d600fc4f6b49cc\", \"spanID\": \"83a5bd19abe3c374\", \"operationName\": \"POST\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"e50c7a53683338a227d600fc4f6b49cc\", \"spanID\": \"afba4302e13cf497\"}], \"startTime\": 1792808675776000, \"duration\": 26384, \"tags\": [{\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"http.flavor\", \"type\": \"string\", \"value\": \"1.1\"}, {\"key\": \"http.host\", \"type\": \"string\", \"value\": \"frontend-proxy:8080\"}, {\"key\": \"http.method\", \"type\": \"string\", \"value\": \"POST\"}, {\"key\": \"http.request_content_length_uncompressed\", \"type\": \"int64\", \"value\": 372}, {\"key\": \"http.scheme\", \"type\": \"string\", \"value\": \"http\"}, {\"key\": \"http.status_code\", \"type\": \"int64\", \"value\": 500}, {\"key\": \"http.status_text\", \"type\": \"string\", \"value\": \"INTERNAL SERVER ERROR\"}, {\"key\": \"http.target\", \"type\": \"string\", \"value\": \"/api/checkout\"}, {\"key\": \"http.url\", \"type\": \"s",
+      "raw_ref": "python -m tools.resolve 'span:e50c7a53683338a227d600fc4f6b49cc/83a5bd19abe3c374' --run-dir 'runs/20261024T023315.758052Z-0903788b'"
+    },
+    {
+      "id": "trace:e50c7a53683338a227d600fc4f6b49cc",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"e50c7a53683338a227d600fc4f6b49cc\", \"warnings\": null, \"spans\": [{\"traceID\": \"e50c7a53683338a227d600fc4f6b49cc\", \"spanID\": \"839837bd1db9dc98\", \"operationName\": \"oteldemo.ShippingService/GetQuote\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"e50c7a53683338a227d600fc4f6b49cc\", \"spanID\": \"22af64c39b366ae7\"}], \"startTime\": 1792808675794082, \"duration\": 2110, \"tags\": [{\"key\": \"net.sock.peer.addr\", \"type\": \"string\", \"value\": \"172.23.0.3\"}, {\"key\": \"net.sock.peer.port\", \"type\": \"int64\", \"value\": 50050}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.60.0\"}, {\"key\": \"rpc.grpc.status_code\", \"type\": \"int64\", \"value\": 0}, {\"key\": \"rpc.method\", \"type\": \"string\", \"value\": \"GetQuote\"}, {\"key\": \"rpc.service\", \"type\": \"string\", \"value\": \"ote",
+      "raw_ref": "python -m tools.resolve 'trace:e50c7a53683338a227d600fc4f6b49cc' --run-dir 'runs/20261024T023315.758052Z-0903788b'"
+    }
+  ],
+  "proposed_action": {
+    "type": "restart_service",
+    "target": "recommendation",
+    "parameters": {
+      "service": "recommendation"
+    },
+    "reason": "Restore the diagnosed unavailable component recommendation. Runbook: kb:container-down#remediation; validated against the action allowlist.",
+    "risk": "Restart may interrupt in-flight work; review state and evidence before approval.",
+    "dry_run": {
+      "performed": false,
+      "predicted_effect": "Start a fresh recommendation process and restore its availability to callers."
+    }
+  },
+  "proposed_actions": [
+    {
+      "type": "restart_service",
+      "target": "recommendation",
+      "parameters": {
+        "service": "recommendation"
+      },
+      "reason": "Restore the diagnosed unavailable component recommendation. Runbook: kb:container-down#remediation; validated against the action allowlist.",
+      "risk": "Restart may interrupt in-flight work; review state and evidence before approval.",
+      "dry_run": {
+        "performed": false,
+        "predicted_effect": "Start a fresh recommendation process and restore its availability to callers."
+      }
+    }
+  ],
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "container_health",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "diagnosed",
+  "escalation_note": null,
+  "prevention": "Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.",
+  "limitations": [
+    "Actions are proposals only. No approval, execution or recovery was performed.",
+    "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
+    "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs."
+  ],
+  "agent": {
+    "model": "openai/gpt-5",
+    "models_used": [
+      "openai/gpt-5"
+    ],
+    "llm_calls": 4,
+    "tokens_input": 37500,
+    "tokens_output": 6269,
+    "estimated_cost_usd": 0.109565,
+    "tool_calls": 3,
+    "elapsed_s": 56.537,
+    "stopped_because": "confident",
+    "prompt_sha256": "18de85b29245a1cbf2671af59ae620143dbb556c62e7beba7d0fa8a7eced6429",
+    "framework": "LangGraph StateGraph + SqliteSaver"
+  },
+  "knowledge_consulted": {
+    "mode": "bm25",
+    "runbook_refs": [
+      {
+        "id": "kb:recommendation#investigation",
+        "kind": "runbook",
+        "text": "# Recommendation availability and memory growth\n\n## What to check first\nRead `get_container_health(names=[\"recommendation\", \"product-catalog\"])`, `get_metrics(promql=\"container_memory\", lookback_s=900)` and `get_metrics(promql=\"p95_latency_by_service\", lookback_s=900)`. Use `get_traces(service=\"recommendation\", errors_only=False, lookback_s=300)` for internal work and product-list counts, and `get_logs(service=\"recommendation\", severity_min=\"INFO\", lookback_s=300)` for cache hit/miss and startup patterns.",
+        "file": "knowledge/runbooks/recommendation.md",
+        "section": "investigation",
+        "version": "1",
+        "sha256": "cfbb47d7764d7321e723577341825c90f9164d6c98ab5f009555f24798a056a0",
+        "score": 2.905345,
+        "action_types": [
+          "toggle_flag",
+          "restart_service"
+        ],
+        "applies_to": [
+          "recommendation"
+        ],
+        "category": "service"
+      },
+      {
+        "id": "kb:resource-starvation#investigation",
+        "kind": "runbook",
+        "text": "# CPU or memory starvation\n\n## What to check first\nUse `get_container_health(names=[<suspect>])` for NanoCpus, Memory, RestartCount and current usage. Read `get_metrics(promql=\"container_cpu\", lookback_s=600)`, `get_metrics(promql=\"container_memory\", lookback_s=600)` and `get_metrics(promql=\"p95_latency_by_service\", lookback_s=600)`. Compare `get_traces(service=<suspect>, errors_only=False, lookback_s=300)` with startup/error logs.",
+        "file": "knowledge/runbooks/resource-starvation.md",
+        "section": "investigation",
+        "version": "1",
+        "sha256": "c74f25b5b7d7d12be267422856c8740a8fa42d9832bfad3ffb68d77eab39500c",
+        "score": 2.04932,
+        "action_types": [],
+        "applies_to": [
+          "ad",
+          "recommendation",
+          "frontend",
+          "checkout",
+          "cart"
+        ],
+        "category": "resource_starvation"
+      },
+      {
+        "id": "kb:restart-loop#investigation",
+        "kind": "runbook",
+        "text": "# Repeated container restarts\n\n## What to check first\nCompare repeated `get_container_health(names=[<suspect>])` observations. Use `get_logs(service=<suspect>, severity_min=\"INFO\", lookback_s=600)` for startup and failure messages, `get_metrics(promql=\"container_memory\", lookback_s=600)` for memory shape, and `get_deploy_history(lookback_s=3600)` for recent starts. Check caller failures with `get_traces(service=<caller>, errors_only=True, lookback_s=600)`.",
+        "file": "knowledge/runbooks/restart-loop.md",
+        "section": "investigation",
+        "version": "1",
+        "sha256": "4f248e1c1c4826036a86f8cd3de65c8ba060fd3c86c738bc28a93b79def9d00f",
+        "score": 2.005621,
+        "action_types": [
+          "restart_service"
+        ],
+        "applies_to": [
+          "recommendation",
+          "cart",
+          "payment",
+          "frontend",
+          "ad"
+        ],
+        "category": "restart_loop"
+      },
+      {
+        "id": "kb:container-down#remediation",
+        "kind": "runbook",
+        "text": "# A service container is down\n\n## Allowed remediation\nPropose Action API `restart_service` with `service=<down component>`, after the policy checks target and risk. Obtain a dry run and human approval. Stateful dependencies need review of persistence and interruption risk before any restart is approved.",
+        "file": "knowledge/runbooks/container-down.md",
+        "section": "remediation",
+        "version": "1",
+        "sha256": "6c4dbbadd9b843bbdfeb0cbec97ac3c8ff9b641dcb78f5758f442a129e7bc2e2",
+        "score": 4.854179,
+        "action_types": [
+          "restart_service"
+        ],
+        "applies_to": [
+          "frontend",
+          "checkout",
+          "payment",
+          "cart",
+          "product-catalog",
+          "recommendation",
+          "valkey-cart"
+        ],
+        "category": "container_down"
+      },
+      {
+        "id": "kb:telemetry-outage#remediation",
+        "kind": "runbook",
+        "text": "# Telemetry is missing or stale\n\n## Allowed remediation\nEscalate the observability gap and preserve partial evidence. Do not propose an application fix from missing data. If an independent diagnosis later establishes a stopped, allowlisted telemetry component, apply the container-down runbook with its own risk review and approval.",
+        "file": "knowledge/runbooks/telemetry-outage.md",
+        "section": "remediation",
+        "version": "1",
+        "sha256": "fffb4093dd1d073babd03b58220dfa053bb6c64e53f369f0d833c706d91b4bc7",
+        "score": 1.307594,
+        "action_types": [],
+        "applies_to": [
+          "otel-collector",
+          "prometheus",
+          "jaeger",
+          "opensearch"
+        ],
+        "category": "unknown"
+      },
+      {
+        "id": "kb:recommendation#remediation",
+        "kind": "runbook",
+        "text": "# Recommendation availability and memory growth\n\n## Allowed remediation\nFor an evidenced local application workload fault, propose Action API `toggle_flag` with `service=recommendation`. For a stopped component, propose `restart_service` after checking dependencies. Resource-limit repair is outside the allowlist and escalates. Every proposal requires policy validation, dry run and human approval.",
+        "file": "knowledge/runbooks/recommendation.md",
+        "section": "remediation",
+        "version": "1",
+        "sha256": "cfbb47d7764d7321e723577341825c90f9164d6c98ab5f009555f24798a056a0",
+        "score": 0.583449,
+        "action_types": [
+          "toggle_flag",
+          "restart_service"
+        ],
+        "applies_to": [
+          "recommendation"
+        ],
+        "category": "service"
+      }
+    ],
+    "memory_refs": [],
+    "service_refs": [
+      {
+        "id": "kb:service-recommendation#overview",
+        "kind": "service",
+        "text": "{\"criticality\":\"auxiliary\",\"dependencies\":[\"otel-collector\",\"product-catalog\"],\"purpose\":\"Recommends related products using catalogue data.\",\"runbooks\":[\"recommendation\",\"container-down\",\"restart-loop\",\"dependency-unavailable\"],\"service\":\"recommendation\",\"telemetry_hints\":[\"get_container_health for lifecycle and resource limits\",\"error_rate_by_service, p95_latency_by_service and rps_by_service\",\"Use fresh traces and logs when the service emits them; missing data is unknown\"],\"typical_operations\":[\"ListRecommendations\",\"get_product_list\"]}",
+        "file": "knowledge/services.yaml",
+        "section": "overview",
+        "version": "1",
+        "sha256": "b22ecaa530ca5eeaaf9c804a6946892266afebe1168a63c8ec075c4a51f37416",
+        "score": 1.707315
+      }
+    ],
+    "limitations": [],
+    "enabled": true,
+    "queries": [
+      "recommendation | recommendation container_health <number> | recommendation container_status exited",
+      "recommendation container_down"
+    ]
+  },
+  "runbook_refs": [
+    {
+      "id": "kb:recommendation#investigation",
+      "kind": "runbook",
+      "text": "# Recommendation availability and memory growth\n\n## What to check first\nRead `get_container_health(names=[\"recommendation\", \"product-catalog\"])`, `get_metrics(promql=\"container_memory\", lookback_s=900)` and `get_metrics(promql=\"p95_latency_by_service\", lookback_s=900)`. Use `get_traces(service=\"recommendation\", errors_only=False, lookback_s=300)` for internal work and product-list counts, and `get_logs(service=\"recommendation\", severity_min=\"INFO\", lookback_s=300)` for cache hit/miss and startup patterns.",
+      "file": "knowledge/runbooks/recommendation.md",
+      "section": "investigation",
+      "version": "1",
+      "sha256": "cfbb47d7764d7321e723577341825c90f9164d6c98ab5f009555f24798a056a0",
+      "score": 2.905345,
+      "action_types": [
+        "toggle_flag",
+        "restart_service"
+      ],
+      "applies_to": [
+        "recommendation"
+      ],
+      "category": "service"
+    },
+    {
+      "id": "kb:resource-starvation#investigation",
+      "kind": "runbook",
+      "text": "# CPU or memory starvation\n\n## What to check first\nUse `get_container_health(names=[<suspect>])` for NanoCpus, Memory, RestartCount and current usage. Read `get_metrics(promql=\"container_cpu\", lookback_s=600)`, `get_metrics(promql=\"container_memory\", lookback_s=600)` and `get_metrics(promql=\"p95_latency_by_service\", lookback_s=600)`. Compare `get_traces(service=<suspect>, errors_only=False, lookback_s=300)` with startup/error logs.",
+      "file": "knowledge/runbooks/resource-starvation.md",
+      "section": "investigation",
+      "version": "1",
+      "sha256": "c74f25b5b7d7d12be267422856c8740a8fa42d9832bfad3ffb68d77eab39500c",
+      "score": 2.04932,
+      "action_types": [],
+      "applies_to": [
+        "ad",
+        "recommendation",
+        "frontend",
+        "checkout",
+        "cart"
+      ],
+      "category": "resource_starvation"
+    },
+    {
+      "id": "kb:restart-loop#investigation",
+      "kind": "runbook",
+      "text": "# Repeated container restarts\n\n## What to check first\nCompare repeated `get_container_health(names=[<suspect>])` observations. Use `get_logs(service=<suspect>, severity_min=\"INFO\", lookback_s=600)` for startup and failure messages, `get_metrics(promql=\"container_memory\", lookback_s=600)` for memory shape, and `get_deploy_history(lookback_s=3600)` for recent starts. Check caller failures with `get_traces(service=<caller>, errors_only=True, lookback_s=600)`.",
+      "file": "knowledge/runbooks/restart-loop.md",
+      "section": "investigation",
+      "version": "1",
+      "sha256": "4f248e1c1c4826036a86f8cd3de65c8ba060fd3c86c738bc28a93b79def9d00f",
+      "score": 2.005621,
+      "action_types": [
+        "restart_service"
+      ],
+      "applies_to": [
+        "recommendation",
+        "cart",
+        "payment",
+        "frontend",
+        "ad"
+      ],
+      "category": "restart_loop"
+    },
+    {
+      "id": "kb:container-down#remediation",
+      "kind": "runbook",
+      "text": "# A service container is down\n\n## Allowed remediation\nPropose Action API `restart_service` with `service=<down component>`, after the policy checks target and risk. Obtain a dry run and human approval. Stateful dependencies need review of persistence and interruption risk before any restart is approved.",
+      "file": "knowledge/runbooks/container-down.md",
+      "section": "remediation",
+      "version": "1",
+      "sha256": "6c4dbbadd9b843bbdfeb0cbec97ac3c8ff9b641dcb78f5758f442a129e7bc2e2",
+      "score": 4.854179,
+      "action_types": [
+        "restart_service"
+      ],
+      "applies_to": [
+        "frontend",
+        "checkout",
+        "payment",
+        "cart",
+        "product-catalog",
+        "recommendation",
+        "valkey-cart"
+      ],
+      "category": "container_down"
+    },
+    {
+      "id": "kb:telemetry-outage#remediation",
+      "kind": "runbook",
+      "text": "# Telemetry is missing or stale\n\n## Allowed remediation\nEscalate the observability gap and preserve partial evidence. Do not propose an application fix from missing data. If an independent diagnosis later establishes a stopped, allowlisted telemetry component, apply the container-down runbook with its own risk review and approval.",
+      "file": "knowledge/runbooks/telemetry-outage.md",
+      "section": "remediation",
+      "version": "1",
+      "sha256": "fffb4093dd1d073babd03b58220dfa053bb6c64e53f369f0d833c706d91b4bc7",
+      "score": 1.307594,
+      "action_types": [],
+      "applies_to": [
+        "otel-collector",
+        "prometheus",
+        "jaeger",
+        "opensearch"
+      ],
+      "category": "unknown"
+    },
+    {
+      "id": "kb:recommendation#remediation",
+      "kind": "runbook",
+      "text": "# Recommendation availability and memory growth\n\n## Allowed remediation\nFor an evidenced local application workload fault, propose Action API `toggle_flag` with `service=recommendation`. For a stopped component, propose `restart_service` after checking dependencies. Resource-limit repair is outside the allowlist and escalates. Every proposal requires policy validation, dry run and human approval.",
+      "file": "knowledge/runbooks/recommendation.md",
+      "section": "remediation",
+      "version": "1",
+      "sha256": "cfbb47d7764d7321e723577341825c90f9164d6c98ab5f009555f24798a056a0",
+      "score": 0.583449,
+      "action_types": [
+        "toggle_flag",
+        "restart_service"
+      ],
+      "applies_to": [
+        "recommendation"
+      ],
+      "category": "service"
+    }
+  ],
+  "memory_refs": [],
+  "impact": {
+    "business": "auxiliary",
+    "journeys_affected": [
+      "recommendations"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "self_healing",
+    "data_risk": "none",
+    "confidence": 0.8,
+    "tier": 2,
+    "score": 51.0,
+    "rationale": "A critical service or process restart requires the full evidence table, a reviewer or the independent-source check, and explicit typed yes.",
+    "uncertainty": 0.09999999999999998,
+    "observability_gap": 0.2,
+    "decision": "REQUIRE_HUMAN",
+    "reason_codes": [
+      "RESTART_REQUIRES_HUMAN"
+    ]
+  }
+}

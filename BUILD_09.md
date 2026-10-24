@@ -48,25 +48,23 @@ The opaque-memory regression is now a passing test, not an expected failure.
 
 ## Fresh live verification
 
-Blocked before injection. Record every attempt, including failed preparations and retries. Agent
-seconds and whole-wrapper seconds are distinct. Checkpoint 2 acceptance requires
-the expected component/category, confidence >=0.75, status `diagnosed`, and agent
-time below 120 seconds. Cache is recorded without claiming reliable acceptance.
-
 | Bundle | Knowledge | Component / category | Confidence | Agent s | Wrapper s | Status | Approval | Cleanup |
 |---|---|---|---|---|---|---|---|---|
-| Payment, repetitions 1 and 2 | Planned ON | Not measured | — | — | — | Not run: readiness blocked | None | No injection |
-| Recommendation, repetitions 1 and 2 | Planned ON | Not measured | — | — | — | Not run: readiness blocked | None | No injection |
-| Cache, repetition 1 | Planned ON | Not measured | — | — | — | Not run: readiness blocked | None | No injection |
-| Payment Checkpoint 3 | Not selected | Not measured | — | — | — | Not run: readiness blocked | None | No injection |
-| BLOCK demonstration | N/A | Not measured | — | — | — | Not run: correct UI unavailable | None | No mutation |
+| [stable09-payment-on-r1](reports/stable09-payment-on-r1/checkpoint2.json) | ON | Not measured | — | — | 385.541 | Runner failed before diagnosis | None | Verified |
+| [stable09-payment-on-r2](reports/stable09-payment-on-r2/report.json) | ON | payment / application_flag | 0.90 | 56.851 | 540.461 | diagnosed | None | Verified |
+| [stable09-payment-on-r3](reports/stable09-payment-on-r3/checkpoint2.json) | ON | Not measured | — | — | 383.041 | Preparation refused: frontend:rps | None | Verified |
+| [stable09-payment-on-r4](reports/stable09-payment-on-r4/report.json) | ON | payment / application_flag | 0.95 | 38.891 | 488.305 | diagnosed | None | Verified |
+| [stable09-recommendation-on-r1](reports/stable09-recommendation-on-r1/report.json) | ON | recommendation / container_down | 0.80 | 56.537 | 457.257 | diagnosed | None | Verified |
+| [stable09-recommendation-on-r2](reports/stable09-recommendation-on-r2/report.json) | ON | recommendation / container_down | 0.90 | 172.794 | 571.972 | diagnosed; FAIL time limit | None | Verified |
+| Cache repetition 1 | Planned ON | Not measured | — | — | — | Not run within time budget | None | No injection |
+| Payment Checkpoint 3 1 | Not selected | Not measured | — | — | — | Not run within time budget | None | No injection |
+| [BLOCK](reports/stable09-block/block.json) | N/A | delete_database refused | — | — | — | HTTP 403 / FORBIDDEN_OPERATION | None | No mutation |
 
-There are no fresh incident run IDs to substitute into presenter documents yet.
-The source default remains knowledge **OFF** until the required live repetitions
-establish a demo default; this is a provisional choice, not a fresh live pass.
+Source/demo command default remains knowledge **OFF** (`INCIDENT_ZERO_KNOWLEDGE=0`), **provisional**. All fresh diagnosis runs used ON; no fresh OFF comparison was completed, so the retained OFF default is not a live-certified selection. These practice cases do not establish retrieval improvement or hidden-test accuracy. Sequential knowledge-ON runs can consult memory from earlier runs.
 
-No retrieval-improvement or unseen-family claim follows from repeated cases.
-The pre-registered nine-arm ablation remains a separate, unexecuted protocol.
+Agent seconds are `report.agent.elapsed_s`; wrapper seconds include preflight, reset, the clean windows, alert wait and validation. Acceptance requires the expected component/category, confidence >=0.75, `diagnosed`, and agent <120 s. Cache reliability is assessed separately.
+
+Preparation is intermittent near the RAM floor. The 150s/90s wrapper mismatch was corrected; a deliberate load increase also caused a temporary `frontend:rps` baseline refusal. Neither preparation failure is evidence against the model or knowledge mode. Recommendation repetition 2 exceeded the 120-second agent limit despite a correct diagnosis; its required retry and conditional knowledge-OFF comparison were not completed. Cache was not rerun, so its current reliability is unmeasured. Overall live acceptance is **partial**, not a full pass.
 
 ## Environment and operational records
 
@@ -82,24 +80,34 @@ This machine's HTTPS interception requires Windows certificate trust. A local
 this environment-only file is ignored, and must be recreated if the venv is rebuilt.
 The provider catalogue then returned HTTP 200. This did not change router logic.
 
-Initial preflight: 22/26, with failures for the old UI process, a new/empty action
-database, certificate trust, and less than 2 GiB free host RAM. These are recorded
-as preparation failures, not diagnosis runs. The certificate fix is verified and
-demo-stable's action database has been initialized. Final readiness remains
-blocked: PID 8624 owns port 8787 and serves the excluded worktree; free host RAM
-was 0.78 GiB after stopping the optional Linux check (required: >2 GiB).
+Earlier preparation finished at 22/26: the stale UI, empty action database,
+certificate trust and the former 2 GiB RAM floor blocked readiness. The previous
+session's review rejection concerned stopping a process in the excluded worktree;
+that process was already gone when this acceptance started. This session did not
+stop or edit anything in that worktree.
 
-Automatic approval review rejected stopping PID 8624 because the user excluded
-its worktree. Explicit permission to replace that process was requested; the old
-server has been left running; no source files in the other worktree were edited. A separate request
-asks the operator to free RAM or name an app that may be closed. No readiness
-threshold or live approval gate has been bypassed.
+The real UI was started through `scripts/ui.ps1 -Mode real -Port 8787`, hidden in
+the background (launcher PID 21380, server PID 34060). The RAM gate was changed
+to **at least 1 GiB**, as authorized; all other readiness gates are unchanged.
+Initial live attempts measured 0.75 and 0.71 GiB; the second also observed a
+checkout p95 spike (1880 ms, zero application errors). Operator reset and a full
+clean observation completed in **182.4 s**. No incident had been injected.
 
-Final operator reset and clean observation completed successfully: **182.617 s**,
-all sampled error rates cleared with live traffic and running containers.
-There are **21 running containers** and no `STOP` file. The ignored local record
-is `.build/stable09-clean-preparation.json`; this is a cleanup observation, not
-an incident diagnosis or remediation acceptance run.
+Preflight **26/26 PASS** at **07:21 IST** (`20261024T015143.044701Z`, 1.04 GiB
+free). The first checkpoint preparations then failed RAM at 0.76 and 0.95 GiB,
+before reset/injection. Removing redundant launcher shells reduced memory use;
+the unchanged wrapper preflight passed **26/26** at **07:24 IST**
+(`20261024T015420.816260Z`, 1.08 GiB free). These preparation attempts are retained
+in [preparations.json](reports/stable09-preflight/preparations.json), separate
+from incident outcomes. Existing wrapper/readiness tests: **22 passed**.
+
+The first injected payment attempt exposed an entry-point mismatch: wrappers
+requested 150 seconds, while this branch's watcher accepts at most 90 seconds.
+It failed before diagnosis and reset cleanly; its full wrapper time was
+**385.541 s**, with **181.774 s** verified cleanup. Checkpoint 2, Checkpoint 3
+and the shell help now use 90 seconds; unsupported explicit budgets are rejected
+before mutation. The 150-second watcher extension remains deferred. Affected
+wrapper, checkpoint and hands tests: **73 passed**, including the new regression.
 
 ## Deliberately excluded from the fold
 
@@ -122,36 +130,61 @@ The two requested knowledge boundaries are the only addendum features added here
 
 ## Hygiene and morning commands
 
-History check before the live runs: zero `Co-Authored-By` trailers; all author and
-committer identities are `Yash Verma <pes1ug23am910@pesu.pes.edu>`. No tracked
-`.env`, `.specs`, `.build` or `runs` paths. Live flag selection is still blocked.
+All work remains local; nothing is pushed. The demo command's knowledge mode
+remains OFF provisionally because the required retry/OFF comparison is unfinished. The real
+Control Room must be running from this worktree, with test mode unset.
 
-After replacing the old UI with permission and freeing >2 GiB RAM, run from
-`D:\incident-zero-stable`. In a separate PowerShell terminal:
-
-```powershell
-Set-Location D:\incident-zero-stable
-$env:DOCKER_HOST = 'tcp://localhost:2375'
-$env:DOCKER_CONFIG = "$PWD/.build/docker"
-$env:INCIDENT_ZERO_KNOWLEDGE = '0' # provisional; replace only after live acceptance
-Remove-Item Env:INCIDENT_ZERO_TEST -ErrorAction SilentlyContinue
-scripts/ui.ps1 -Mode real
-```
-
-At 08:15 in the operator terminal:
+At 08:15, from the operator terminal (the Control Room is already running):
 
 ```powershell
 Set-Location D:\incident-zero-stable
 $env:DOCKER_HOST = 'tcp://localhost:2375'
 $env:DOCKER_CONFIG = "$PWD/.build/docker"
-$env:INCIDENT_ZERO_KNOWLEDGE = '0' # provisional, not live-certified
+$env:INCIDENT_ZERO_KNOWLEDGE = '0' # provisional; fresh OFF comparison is unfinished
 Remove-Item Env:INCIDENT_ZERO_TEST -ErrorAction SilentlyContinue
-scripts/morning.ps1 -NoSmoke
-if ($LASTEXITCODE -ne 0) { throw 'Morning checks failed; inspect their records.' }
+foreach ($name in 'OPENROUTER_MODEL','OPENROUTER_FALLBACK_MODEL','GEMINI_MODEL') {
+    Remove-Item "Env:$name" -ErrorAction SilentlyContinue
+}
+scripts/preflight.ps1
+if ($LASTEXITCODE -ne 0) { throw 'Preflight failed; inspect its record.' }
 scripts/checkpoint2.ps1 payment-failure
 if ($LASTEXITCODE -ne 0) { throw 'Checkpoint 2 failed; inspect the report.' }
 scripts/checkpoint3.ps1 payment-failure
+if ($LASTEXITCODE -ne 0) { throw 'Checkpoint 3 failed; inspect the report.' }
 ```
 
-Type `yes` only after reviewing the actual dry-run plan. These scripts include
-measured clean/recovery windows; runtime exceeds the agent investigation time.
+Review the actual plan, then type `yes` at the Checkpoint 3 prompt. A person
+entering this decision is human CLI approval; automated terminal input in an
+acceptance run must be labelled separately. Do not substitute test approval.
+The wrappers use a supported 90-second alert wait and retain full clean/recovery
+windows; total runtime is longer than agent investigation time.
+
+If the UI needs starting, use a separate PowerShell terminal with the same
+Docker/knowledge environment and test mode unset:
+
+```powershell
+Set-Location D:\incident-zero-stable
+$env:DOCKER_HOST = 'tcp://localhost:2375'
+$env:DOCKER_CONFIG = "$PWD/.build/docker"
+$env:INCIDENT_ZERO_KNOWLEDGE = '0' # provisional; fresh OFF comparison is unfinished
+Remove-Item Env:INCIDENT_ZERO_TEST -ErrorAction SilentlyContinue
+scripts/ui.ps1 -Mode real -Port 8787
+```
+
+Do not change load immediately before the demonstration: a large increase
+needs its ten-minute detector history to settle. Checkpoint 3 measures its own
+20-user baseline and restores the prior workload during cleanup.
+The 70-minute run stopped short of Checkpoint 3: its three separate minimum
+180-second windows would not fit the remaining time after recommendation cleanup.
+No typed CLI approval, execution or live repair recovery is claimed. Only the
+forbidden-operation BLOCK was exercised. The source default remains OFF, without
+a new OFF acceptance result. The Control Room was restarted with this provisional
+OFF mode (launcher PID 45740); only its verified worktree-owned predecessor was stopped.
+
+## Final acceptance state
+
+**PARTIAL.** Latest preflight: **FAIL preflight 20261024T025443.856202Z: 23/26 checks**. clean detector: alerts: checkout:p95_ms; traffic health and baseline: 12 traffic services; nonzero errors/missing baseline/high p95: ['checkout']; RAM: 0.91 GiB free; needs >=1
+
+Final reset/clean observation: **182.547 s**, verified. Original load (5 users, spawn rate 1) restored; 21 containers running, pristine flags and no STOP. The clean observation checks traffic, containers and error rates; it does not override the final RAM/latency readiness failures. The real Control Room remains running in provisional knowledge-OFF mode (server PID 25576).
+
+Affected tests: **73 passed**. Retained report validation: **29/29 passed**. No approval token or repair execution was created in this session. BLOCK returned HTTP 403 with `FORBIDDEN_OPERATION` on both real-UI checks; its action-log excerpt is [retained here](reports/stable09-block/action-log.jsonl). Recommendation retry, conditional OFF comparison, cache and Checkpoint 3 remain unfinished.

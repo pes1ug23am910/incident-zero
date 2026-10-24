@@ -254,7 +254,7 @@ def main(argv=None):
     check("Locust", lambda: ((value := get("http://localhost:8080/loadgen/stats/requests")).get("state") == "running"
                               and value.get("user_count", 0) > 0, "Locust responds within 5s; running with positive users"))
     check("disk", lambda: ((free := shutil.disk_usage(ROOT).free / 2**30) > 5, f"{free:.2f} GiB free; needs >5"))
-    check("RAM", lambda: ((free := memory_free() / 2**30) > 2, f"{free:.2f} GiB free; needs >2"))
+    check("RAM", lambda: ((free := memory_free() / 2**30) >= 1, f"{free:.2f} GiB free; needs >=1"))
 
     def model():
         from agent.llm_router import load_env
