@@ -1,0 +1,48 @@
+{
+  "detected_at": "2026-10-24T02:41:51.011326+00:00",
+  "signal": "container_health",
+  "service": "recommendation",
+  "observed": 1,
+  "threshold": 0,
+  "window_s": 120,
+  "baseline": null,
+  "evidence_ids": [
+    "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792809708.901=0.0",
+    "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792809708.902=3.8636363636363633",
+    "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792809708.903=1.2500833388892594",
+    "container:recommendation:Status=exited",
+    "container:recommendation:RestartCount=0",
+    "container:recommendation:OOMKilled=false",
+    "container:recommendation:StartedAt=2026-10-24T02:34:21.13518642Z",
+    "container:recommendation:NanoCpus=0",
+    "container:recommendation:Memory=52428800"
+  ],
+  "details": {
+    "signal": "container_status",
+    "observed": "exited"
+  },
+  "anomalies": [
+    {
+      "signal": "container_status",
+      "service": "recommendation",
+      "observed": "exited",
+      "threshold": "running",
+      "window_s": 120,
+      "baseline": null,
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792809708.901=0.0",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792809708.902=3.8636363636363633",
+        "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792809708.903=1.2500833388892594",
+        "container:recommendation:Status=exited",
+        "container:recommendation:RestartCount=0",
+        "container:recommendation:OOMKilled=false",
+        "container:recommendation:StartedAt=2026-10-24T02:34:21.13518642Z",
+        "container:recommendation:NanoCpus=0",
+        "container:recommendation:Memory=52428800"
+      ]
+    }
+  ],
+  "telemetry_available": true,
+  "warnings": [],
+  "run_id": "20261024T024145.195789Z-70b0dc"
+}

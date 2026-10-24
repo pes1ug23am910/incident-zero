@@ -1,0 +1,615 @@
+{
+  "schema_version": "1.0",
+  "incident_id": "stable09-payment-on-r2",
+  "run_id": "runs/20261024T020607.182583Z-3fd181d4",
+  "detected_at": "2026-10-24T02:06:05.725435+00:00",
+  "diagnosed_at": "2026-10-24T02:06:51.684866+00:00",
+  "resolved_at": null,
+  "alert": {
+    "signal": "error_rate",
+    "service": "checkout",
+    "observed": 0.19999999999999998,
+    "threshold": 0.05,
+    "window_s": 120,
+    "baseline": null
+  },
+  "symptoms": [
+    {
+      "service": "checkout",
+      "signal": "error_rate",
+      "observed": "0.19999999999999998",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792807567.248=0.19999999999999998"
+      ]
+    },
+    {
+      "service": "frontend",
+      "signal": "error_rate",
+      "observed": "0.0608108108108108",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792807567.248=0.0608108108108108",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792807567.251=1579.9999999999984"
+      ]
+    },
+    {
+      "service": "frontend",
+      "signal": "p95_ms",
+      "observed": "1579.9999999999984",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792807567.248=0.0608108108108108",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792807567.251=1579.9999999999984"
+      ]
+    },
+    {
+      "service": "frontend-proxy",
+      "signal": "error_rate",
+      "observed": "0.07894736842105263",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792807567.248=0.07894736842105263",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792807567.251=1520.0000000000016"
+      ]
+    },
+    {
+      "service": "frontend-proxy",
+      "signal": "p95_ms",
+      "observed": "1520.0000000000016",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792807567.248=0.07894736842105263",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792807567.251=1520.0000000000016"
+      ]
+    },
+    {
+      "service": "payment",
+      "signal": "error_rate",
+      "observed": "0.46153846153846156",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792807567.248=0.46153846153846156"
+      ]
+    }
+  ],
+  "investigation": [
+    {
+      "step": 1,
+      "tool": "health_table",
+      "query": "{\"lookback_s\": 120}",
+      "why": "Locate every service anomaly before selecting a focused read.",
+      "finding": "Observed 20 service rows; 6 symptom entries.",
+      "evidence_ids": [
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792807567.248=0.19999999999999998",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792807567.248=0.0608108108108108",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792807567.248=0.07894736842105263",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792807567.248=0.46153846153846156",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792807567.251=1579.9999999999984",
+        "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792807567.251=1520.0000000000016"
+      ]
+    },
+    {
+      "step": 2,
+      "tool": "get_traces",
+      "query": "{\"service\": \"checkout\", \"lookback_s\": 120, \"errors_only\": true, \"limit\": 5}",
+      "why": "Identify the concrete failing checkout operation and whether errors are local or from a dependency (e.g., payment), to target the root cause behind elevated checkout and frontend errors.",
+      "finding": "[{\"trace_id\": \"e9345413c0cf8473843ee827f0d1a18d\", \"duration_ms\": 8359149.59, \"started_at\": \"2026-10-23T23:46:15.167880+00:00\", \"ended_at\": \"2026-10-24T02:05:34.317470+00:00\", \"root_span\": {\"span_id\": \"10f52f5af9e5786d\", \"service\": \"frontend-proxy\", \"operation\": \"ingress\", \"duration_ms\": 21.477, \"status_message\": \"\", \"exception\": {}}, \"first_error_span\": {\"span_id\": \"90eec95220740795\", \"service\": \"payment\", \"operation\": \"grpc.oteldemo.PaymentService/Charge\", \"duration_ms\": 0.704, \"status_message\": \"\", \"exception\": {\"exception.message\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"exception.stacktrace\": \"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.chargeServiceHandler [as charge] (/usr/src/app/index.js:21:22)\", \"exception.type\": \"Error\"}}, \"origin_error_spans\": [{\"span_id\": \"90eec95220740795\", \"service\": \"payment\", \"operation\": \"grpc.oteldemo.PaymentService/Charge\", \"duration_ms\": 0.704, \"status_message\": \"\", \"exception\": {\"exception.message\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"exception.stacktrace\": \"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\n    at async Object.chargeS",
+      "evidence_ids": [
+        "span:e9345413c0cf8473843ee827f0d1a18d/90eec95220740795",
+        "span:0b1ba0aed87c08576e375847659a7232/321ad61a040c47c1",
+        "span:838ffafbdeb83851f76f99165193f25a/67b375edb8371cae",
+        "span:fe2b59440dfd596fd6e7b74a6781e50b/cfc096fd527e84a9"
+      ]
+    },
+    {
+      "step": 3,
+      "tool": "get_logs",
+      "query": "{\"service\": \"payment\", \"lookback_s\": 120, \"severity_min\": \"WARN\"}",
+      "why": "Confirm that payment is returning application errors (invalid token) causing checkout failures seen in traces, and rule out dependency outages or container restarts.",
+      "finding": "[{\"timestamp\": \"2026-10-24T02:06:13.502896610Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"82f0be7b96de6d4dfbcba7df5d6d9fba\", \"evidence_id\": \"dlog:payment:16eb08c1583fcdf6ce9242c2bff671351e8acb45230d68536a8c1d5d757ed17b\"}, {\"timestamp\": \"2026-10-24T02:06:02.043728657Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"dd02d5b58e19bda1de07b210b0363ccf\", \"evidence_id\": \"dlog:payment:31550271b8d182d37bf0eff18e0a85bd933ca03b1e10b57543605690b2cdd1e8\"}, {\"timestamp\": \"2026-10-24T02:05:57.491819359Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"fe2b59440dfd596fd6e7b74a6781e50b\", \"evidence_id\": \"dlog:payment:dcc7a9508789fdecfe0e929819d1ac699c624f98b077dc081ff2464fe745880d\"}, {\"timestamp\": \"2026-10-24T02:05:45.007172233Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"838ffafbdeb83851f76f99165193f25a\", \"evidence_id\": \"dlog:payment:5621faf40805c6b7a3738b956d5d15471b984a47b092b2c40cd429931a0f0300\"}, {\"timestamp\": \"2026-10-24T02:05:36.451341883Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"0b1ba0aed87c08576e375847659a7232\", \"evidence_id\": \"dlog:payment:301bc02ebe4d0418a0bbe5088e1129c393531073dfc93494a2783778f8cfed09\"}, {\"timestamp\": \"2026-10-24T02:05:34.313641465Z\", \"severity\": \"WARN\", \"",
+      "evidence_ids": [
+        "dlog:payment:31550271b8d182d37bf0eff18e0a85bd933ca03b1e10b57543605690b2cdd1e8",
+        "dlog:payment:dcc7a9508789fdecfe0e929819d1ac699c624f98b077dc081ff2464fe745880d",
+        "dlog:payment:5621faf40805c6b7a3738b956d5d15471b984a47b092b2c40cd429931a0f0300"
+      ]
+    }
+  ],
+  "root_cause": {
+    "component": "payment",
+    "cause": "PaymentService returns application errors on grpc.oteldemo.PaymentService/Charge: \"Payment request failed. Invalid token\"; checkout PlaceOrder then fails with \"failed to charge card... rpc error\".",
+    "category": "application_flag",
+    "confidence_model": 0.9,
+    "evidence_ids": [
+      "span:e9345413c0cf8473843ee827f0d1a18d/90eec95220740795",
+      "span:0b1ba0aed87c08576e375847659a7232/321ad61a040c47c1",
+      "span:838ffafbdeb83851f76f99165193f25a/67b375edb8371cae",
+      "span:fe2b59440dfd596fd6e7b74a6781e50b/cfc096fd527e84a9",
+      "dlog:payment:31550271b8d182d37bf0eff18e0a85bd933ca03b1e10b57543605690b2cdd1e8",
+      "dlog:payment:dcc7a9508789fdecfe0e929819d1ac699c624f98b077dc081ff2464fe745880d",
+      "dlog:payment:5621faf40805c6b7a3738b956d5d15471b984a47b092b2c40cd429931a0f0300",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792807567.248=0.46153846153846156"
+    ],
+    "explains_symptoms": [
+      "checkout",
+      "frontend",
+      "frontend-proxy",
+      "payment"
+    ],
+    "alternatives_considered": [
+      "dependency_unavailable",
+      "container_down",
+      "network"
+    ],
+    "confidence_evidence": 0.95,
+    "confidence": 0.9
+  },
+  "root_causes": [
+    {
+      "component": "payment",
+      "cause": "PaymentService returns application errors on grpc.oteldemo.PaymentService/Charge: \"Payment request failed. Invalid token\"; checkout PlaceOrder then fails with \"failed to charge card... rpc error\".",
+      "category": "application_flag",
+      "confidence_model": 0.9,
+      "evidence_ids": [
+        "span:e9345413c0cf8473843ee827f0d1a18d/90eec95220740795",
+        "span:0b1ba0aed87c08576e375847659a7232/321ad61a040c47c1",
+        "span:838ffafbdeb83851f76f99165193f25a/67b375edb8371cae",
+        "span:fe2b59440dfd596fd6e7b74a6781e50b/cfc096fd527e84a9",
+        "dlog:payment:31550271b8d182d37bf0eff18e0a85bd933ca03b1e10b57543605690b2cdd1e8",
+        "dlog:payment:dcc7a9508789fdecfe0e929819d1ac699c624f98b077dc081ff2464fe745880d",
+        "dlog:payment:5621faf40805c6b7a3738b956d5d15471b984a47b092b2c40cd429931a0f0300",
+        "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792807567.248=0.46153846153846156"
+      ],
+      "explains_symptoms": [
+        "checkout",
+        "frontend",
+        "frontend-proxy",
+        "payment"
+      ],
+      "alternatives_considered": [
+        "dependency_unavailable",
+        "container_down",
+        "network"
+      ],
+      "confidence_evidence": 0.95,
+      "confidence": 0.9
+    }
+  ],
+  "evidence": [
+    {
+      "id": "dlog:payment:31550271b8d182d37bf0eff18e0a85bd933ca03b1e10b57543605690b2cdd1e8",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-24T02:06:02.043728657Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"dd02d5b58e19bda1de07b210b0363ccf\", \"evidence_id\": \"dlog:payment:31550271b8d182d37bf0eff18e0a85bd933ca03b1e10b57543605690b2cdd1e8\", \"original_line\": \"2026-10-24T02:06:02.043728657Z {\\\"level\\\":\\\"warn\\\",\\\"time\\\":1792807562042,\\\"pid\\\":16,\\\"hostname\\\":\\\"c4595978b15c\\\",\\\"trace_id\\\":\\\"dd02d5b58e19bda1de07b210b0363ccf\\\",\\\"span_id\\\":\\\"6f55662730315236\\\",\\\"trace_flags\\\":\\\"01\\\",\\\"service.name\\\":\\\"payment\\\",\\\"err\\\":{\\\"type\\\":\\\"Error\\\",\\\"message\\\":\\\"Payment request failed. Invalid token. app.loyalty.level=gold\\\",\\\"stack\\\":\\\"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\\\n    at asyn",
+      "raw_ref": "python -m tools.resolve 'dlog:payment:31550271b8d182d37bf0eff18e0a85bd933ca03b1e10b57543605690b2cdd1e8' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "dlog:payment:5621faf40805c6b7a3738b956d5d15471b984a47b092b2c40cd429931a0f0300",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-24T02:05:45.007172233Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"838ffafbdeb83851f76f99165193f25a\", \"evidence_id\": \"dlog:payment:5621faf40805c6b7a3738b956d5d15471b984a47b092b2c40cd429931a0f0300\", \"original_line\": \"2026-10-24T02:05:45.007172233Z {\\\"level\\\":\\\"warn\\\",\\\"time\\\":1792807545006,\\\"pid\\\":16,\\\"hostname\\\":\\\"c4595978b15c\\\",\\\"trace_id\\\":\\\"838ffafbdeb83851f76f99165193f25a\\\",\\\"span_id\\\":\\\"67b375edb8371cae\\\",\\\"trace_flags\\\":\\\"01\\\",\\\"service.name\\\":\\\"payment\\\",\\\"err\\\":{\\\"type\\\":\\\"Error\\\",\\\"message\\\":\\\"Payment request failed. Invalid token. app.loyalty.level=gold\\\",\\\"stack\\\":\\\"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\\\n    at asyn",
+      "raw_ref": "python -m tools.resolve 'dlog:payment:5621faf40805c6b7a3738b956d5d15471b984a47b092b2c40cd429931a0f0300' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "dlog:payment:dcc7a9508789fdecfe0e929819d1ac699c624f98b077dc081ff2464fe745880d",
+      "source": "docker",
+      "summary": "{\"timestamp\": \"2026-10-24T02:05:57.491819359Z\", \"severity\": \"WARN\", \"body\": \"Payment request failed. Invalid token. app.loyalty.level=gold\", \"trace_id\": \"fe2b59440dfd596fd6e7b74a6781e50b\", \"evidence_id\": \"dlog:payment:dcc7a9508789fdecfe0e929819d1ac699c624f98b077dc081ff2464fe745880d\", \"original_line\": \"2026-10-24T02:05:57.491819359Z {\\\"level\\\":\\\"warn\\\",\\\"time\\\":1792807557490,\\\"pid\\\":16,\\\"hostname\\\":\\\"c4595978b15c\\\",\\\"trace_id\\\":\\\"fe2b59440dfd596fd6e7b74a6781e50b\\\",\\\"span_id\\\":\\\"cfc096fd527e84a9\\\",\\\"trace_flags\\\":\\\"01\\\",\\\"service.name\\\":\\\"payment\\\",\\\"err\\\":{\\\"type\\\":\\\"Error\\\",\\\"message\\\":\\\"Payment request failed. Invalid token. app.loyalty.level=gold\\\",\\\"stack\\\":\\\"Error: Payment request failed. Invalid token. app.loyalty.level=gold\\\\n    at module.exports.charge (/usr/src/app/charge.js:37:13)\\\\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\\\\n    at asyn",
+      "raw_ref": "python -m tools.resolve 'dlog:payment:dcc7a9508789fdecfe0e929819d1ac699c624f98b077dc081ff2464fe745880d' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792807567.248=0.19999999999999998",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"checkout\"}, \"timestamp\": 1792807567.248, \"value\": 0.19999999999999998, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792807567.248=0.19999999999999998' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792807567.248=0.0608108108108108",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend\"}, \"timestamp\": 1792807567.248, \"value\": 0.0608108108108108, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792807567.248=0.0608108108108108' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792807567.248=0.07894736842105263",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend-proxy\"}, \"timestamp\": 1792807567.248, \"value\": 0.07894736842105263, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792807567.248=0.07894736842105263' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792807567.248=0.46153846153846156",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"payment\"}, \"timestamp\": 1792807567.248, \"value\": 0.46153846153846156, \"query\": \"named:error_rate_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792807567.248=0.46153846153846156' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792807567.251=1579.9999999999984",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend\"}, \"timestamp\": 1792807567.251, \"value\": 1579.9999999999984, \"query\": \"named:p95_latency_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792807567.251=1579.9999999999984' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792807567.251=1520.0000000000016",
+      "source": "prometheus",
+      "summary": "{\"metric\": {\"service_name\": \"frontend-proxy\"}, \"timestamp\": 1792807567.251, \"value\": 1520.0000000000016, \"query\": \"named:p95_latency_by_service\"}",
+      "raw_ref": "python -m tools.resolve 'metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792807567.251=1520.0000000000016' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "span:0b1ba0aed87c08576e375847659a7232/321ad61a040c47c1",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"0b1ba0aed87c08576e375847659a7232\", \"spanID\": \"321ad61a040c47c1\", \"operationName\": \"grpc.oteldemo.PaymentService/Charge\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"0b1ba0aed87c08576e375847659a7232\", \"spanID\": \"7ab8ab55b4b646ff\"}], \"startTime\": 1792807536449000, \"duration\": 889, \"tags\": [{\"key\": \"app.payment.amount\", \"type\": \"string\", \"value\": \"363.45\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.error_message\", \"type\": \"string\", \"value\": \"Payment request failed. Invalid token. app.loyalty.level=gold\"}, {\"key\": \"grpc.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-grpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.57.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"rpc.method\", \"type\": \"string\", \"value\": \"Charge\"}, ",
+      "raw_ref": "python -m tools.resolve 'span:0b1ba0aed87c08576e375847659a7232/321ad61a040c47c1' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "span:838ffafbdeb83851f76f99165193f25a/67b375edb8371cae",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"838ffafbdeb83851f76f99165193f25a\", \"spanID\": \"67b375edb8371cae\", \"operationName\": \"grpc.oteldemo.PaymentService/Charge\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"838ffafbdeb83851f76f99165193f25a\", \"spanID\": \"f3f08beda5ea9859\"}], \"startTime\": 1792807545006000, \"duration\": 640, \"tags\": [{\"key\": \"app.payment.amount\", \"type\": \"string\", \"value\": \"10583.80\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.error_message\", \"type\": \"string\", \"value\": \"Payment request failed. Invalid token. app.loyalty.level=gold\"}, {\"key\": \"grpc.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-grpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.57.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"rpc.method\", \"type\": \"string\", \"value\": \"Charge\"}",
+      "raw_ref": "python -m tools.resolve 'span:838ffafbdeb83851f76f99165193f25a/67b375edb8371cae' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "span:e9345413c0cf8473843ee827f0d1a18d/90eec95220740795",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"e9345413c0cf8473843ee827f0d1a18d\", \"spanID\": \"90eec95220740795\", \"operationName\": \"grpc.oteldemo.PaymentService/Charge\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"e9345413c0cf8473843ee827f0d1a18d\", \"spanID\": \"08c2fddc4e5a0438\"}], \"startTime\": 1792807534312000, \"duration\": 704, \"tags\": [{\"key\": \"app.payment.amount\", \"type\": \"string\", \"value\": \"623.50\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.error_message\", \"type\": \"string\", \"value\": \"Payment request failed. Invalid token. app.loyalty.level=gold\"}, {\"key\": \"grpc.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-grpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.57.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"rpc.method\", \"type\": \"string\", \"value\": \"Charge\"}, ",
+      "raw_ref": "python -m tools.resolve 'span:e9345413c0cf8473843ee827f0d1a18d/90eec95220740795' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    },
+    {
+      "id": "span:fe2b59440dfd596fd6e7b74a6781e50b/cfc096fd527e84a9",
+      "source": "jaeger",
+      "summary": "{\"traceID\": \"fe2b59440dfd596fd6e7b74a6781e50b\", \"spanID\": \"cfc096fd527e84a9\", \"operationName\": \"grpc.oteldemo.PaymentService/Charge\", \"references\": [{\"refType\": \"CHILD_OF\", \"traceID\": \"fe2b59440dfd596fd6e7b74a6781e50b\", \"spanID\": \"b018cee4350924a1\"}], \"startTime\": 1792807557489000, \"duration\": 1148, \"tags\": [{\"key\": \"app.payment.amount\", \"type\": \"string\", \"value\": \"532.35\"}, {\"key\": \"error\", \"type\": \"bool\", \"value\": true}, {\"key\": \"grpc.error_message\", \"type\": \"string\", \"value\": \"Payment request failed. Invalid token. app.loyalty.level=gold\"}, {\"key\": \"grpc.error_name\", \"type\": \"string\", \"value\": \"Error\"}, {\"key\": \"otel.scope.name\", \"type\": \"string\", \"value\": \"@opentelemetry/instrumentation-grpc\"}, {\"key\": \"otel.scope.version\", \"type\": \"string\", \"value\": \"0.57.1\"}, {\"key\": \"otel.status_code\", \"type\": \"string\", \"value\": \"ERROR\"}, {\"key\": \"rpc.method\", \"type\": \"string\", \"value\": \"Charge\"},",
+      "raw_ref": "python -m tools.resolve 'span:fe2b59440dfd596fd6e7b74a6781e50b/cfc096fd527e84a9' --run-dir 'runs/20261024T020607.182583Z-3fd181d4'"
+    }
+  ],
+  "proposed_action": {
+    "type": "toggle_flag",
+    "target": "payment",
+    "parameters": {
+      "service": "payment"
+    },
+    "reason": "disable the failure switch for payment Runbook: kb:application-fault#remediation; validated against the action allowlist.",
+    "risk": "Configuration change requires human approval and a recorded rollback value.",
+    "dry_run": {
+      "performed": false,
+      "predicted_effect": "Restore normal application behavior in payment; confirm with fresh telemetry."
+    }
+  },
+  "proposed_actions": [
+    {
+      "type": "toggle_flag",
+      "target": "payment",
+      "parameters": {
+        "service": "payment"
+      },
+      "reason": "disable the failure switch for payment Runbook: kb:application-fault#remediation; validated against the action allowlist.",
+      "risk": "Configuration change requires human approval and a recorded rollback value.",
+      "dry_run": {
+        "performed": false,
+        "predicted_effect": "Restore normal application behavior in payment; confirm with fresh telemetry."
+      }
+    }
+  ],
+  "approval": {
+    "required": true,
+    "requested_at": null,
+    "approved": null,
+    "approved_by": null,
+    "approved_at": null,
+    "token": null
+  },
+  "action": {
+    "executed": false,
+    "started_at": null,
+    "finished_at": null,
+    "action_log_ref": null
+  },
+  "verification": {
+    "checked_at": null,
+    "signal": "error_rate",
+    "before": null,
+    "after": null,
+    "recovered": null,
+    "rolled_back": false
+  },
+  "status": "diagnosed",
+  "escalation_note": null,
+  "prevention": "Monitor component error rate, latency and container lifecycle; alert on sustained resource pressure.",
+  "limitations": [
+    "Actions are proposals only. No approval, execution or recovery was performed.",
+    "Metrics may lag by about 60 seconds; a two-minute rate window retains older observations.",
+    "Temperature 0 and logged prompts make runs reproducible in inputs, not outputs."
+  ],
+  "agent": {
+    "model": "openai/gpt-5",
+    "models_used": [
+      "openai/gpt-5"
+    ],
+    "llm_calls": 4,
+    "tokens_input": 46378,
+    "tokens_output": 5149,
+    "estimated_cost_usd": 0.109463,
+    "tool_calls": 3,
+    "elapsed_s": 56.851,
+    "stopped_because": "confident",
+    "prompt_sha256": "18de85b29245a1cbf2671af59ae620143dbb556c62e7beba7d0fa8a7eced6429",
+    "framework": "LangGraph StateGraph + SqliteSaver"
+  },
+  "knowledge_consulted": {
+    "mode": "bm25",
+    "runbook_refs": [
+      {
+        "id": "kb:frontend#investigation",
+        "kind": "runbook",
+        "text": "# Frontend and request entry\n\n## What to check first\nRead `get_metrics(promql=\"error_rate_by_service\", lookback_s=300)` and `get_metrics(promql=\"rps_by_service\", lookback_s=600)`. Use `get_traces(service=\"frontend\", errors_only=True, lookback_s=120)` to follow failing calls, `get_logs(service=\"frontend-proxy\", severity_min=\"TRACE\", lookback_s=120)` for affected routes, and `get_container_health(names=[\"frontend\", \"frontend-proxy\"])` for local availability.",
+        "file": "knowledge/runbooks/frontend.md",
+        "section": "investigation",
+        "version": "1",
+        "sha256": "0ae9547793f7d6f0cedcf8b22538e1d2c70e496787742a5d19c8e283e2c3de69",
+        "score": 37.244786,
+        "action_types": [
+          "toggle_flag",
+          "restart_service",
+          "throttle_load"
+        ],
+        "applies_to": [
+          "frontend",
+          "frontend-proxy"
+        ],
+        "category": "service"
+      },
+      {
+        "id": "kb:load#investigation",
+        "kind": "runbook",
+        "text": "# Excess generated traffic\n\n## What to check first\nUse `get_metrics(promql=\"rps_by_service\", lookback_s=600)`, `get_metrics(promql=\"container_cpu\", lookback_s=600)` and `get_metrics(promql=\"p95_latency_by_service\", lookback_s=600)`. Compare `get_traces(service=\"frontend\", errors_only=False, lookback_s=300)` by route and `get_logs(service=\"frontend-proxy\", severity_min=\"TRACE\", lookback_s=300)` for access patterns. Check `get_container_health(names=[\"load-generator\", \"frontend\"])`.",
+        "file": "knowledge/runbooks/load.md",
+        "section": "investigation",
+        "version": "1",
+        "sha256": "be83c03075813ae8a7f7c777250627d1d8ccbefe549ec25173e15da20f584234",
+        "score": 27.788756,
+        "action_types": [
+          "throttle_load"
+        ],
+        "applies_to": [
+          "frontend",
+          "frontend-proxy",
+          "load-generator"
+        ],
+        "category": "load"
+      },
+      {
+        "id": "kb:telemetry-outage#investigation",
+        "kind": "runbook",
+        "text": "# Telemetry is missing or stale\n\n## What to check first\nUse `get_container_health(names=[\"otel-collector\", \"prometheus\", \"jaeger\", \"opensearch\"])` and `get_metrics(promql=\"rps_by_service\", lookback_s=300)`. Compare a known active application's `get_traces(service=\"frontend\", errors_only=False, lookback_s=300)` and `get_logs(service=\"frontend-proxy\", severity_min=\"TRACE\", lookback_s=300)`. Check response timestamps and backend warnings.",
+        "file": "knowledge/runbooks/telemetry-outage.md",
+        "section": "investigation",
+        "version": "1",
+        "sha256": "fffb4093dd1d073babd03b58220dfa053bb6c64e53f369f0d833c706d91b4bc7",
+        "score": 22.349303,
+        "action_types": [],
+        "applies_to": [
+          "otel-collector",
+          "prometheus",
+          "jaeger",
+          "opensearch"
+        ],
+        "category": "unknown"
+      },
+      {
+        "id": "kb:application-fault#remediation",
+        "kind": "runbook",
+        "text": "# Application fault in a running service\n\n## Allowed remediation\nFor a confidently diagnosed application fault, propose Action API `toggle_flag` with `service=<diagnosed service>`: disable the failure switch for that service. The Action API resolves the setting internally. The proposal must pass the category and service allowlist, a dry run and explicit human approval. Do not use a remembered action as proof of diagnosis.",
+        "file": "knowledge/runbooks/application-fault.md",
+        "section": "remediation",
+        "version": "1",
+        "sha256": "097d5ab7b3daf918f9df3c39fa695838b8336807af47bfc8e3b7dd279d100e1d",
+        "score": 5.360552,
+        "action_types": [
+          "toggle_flag"
+        ],
+        "applies_to": [
+          "payment",
+          "cart",
+          "product-catalog",
+          "recommendation",
+          "ad",
+          "checkout",
+          "frontend"
+        ],
+        "category": "application_flag"
+      },
+      {
+        "id": "kb:payment#remediation",
+        "kind": "runbook",
+        "text": "# Payment charge failures\n\n## Allowed remediation\nFor a local payment application fault, use the application-fault runbook: propose Action API `toggle_flag` with `service=payment`, disabling the failure switch for payment. For a proved stopped payment, propose `restart_service`. Both require policy/risk review, a dry run and explicit approval; payment is critical.",
+        "file": "knowledge/runbooks/payment.md",
+        "section": "remediation",
+        "version": "1",
+        "sha256": "4c702b3b1f056763d71cc1167b93fc0defed309b7d634410b873f32d48171643",
+        "score": 2.981934,
+        "action_types": [
+          "toggle_flag",
+          "restart_service"
+        ],
+        "applies_to": [
+          "payment"
+        ],
+        "category": "service"
+      },
+      {
+        "id": "kb:checkout#remediation",
+        "kind": "runbook",
+        "text": "# Checkout order orchestration\n\n## Allowed remediation\nFor a proved local checkout application fault, propose Action API `toggle_flag` with `service=checkout`; for a stopped checkout, propose `restart_service`. A proved dependency failure uses that dependency's runbook. Policy checks, dry run and explicit approval apply before any action.",
+        "file": "knowledge/runbooks/checkout.md",
+        "section": "remediation",
+        "version": "1",
+        "sha256": "923807511930a9ff8d2eb93aaeeb45ab2d6d5f27324bf878149c949e1e82f61d",
+        "score": 1.616778,
+        "action_types": [
+          "toggle_flag",
+          "restart_service"
+        ],
+        "applies_to": [
+          "checkout"
+        ],
+        "category": "service"
+      }
+    ],
+    "memory_refs": [],
+    "service_refs": [
+      {
+        "id": "kb:service-frontend-proxy#overview",
+        "kind": "service",
+        "text": "{\"criticality\":\"critical\",\"dependencies\":[\"frontend\",\"grafana\",\"jaeger\",\"load-generator\"],\"purpose\":\"Routes incoming storefront and observability HTTP requests.\",\"runbooks\":[\"container-down\",\"restart-loop\",\"dependency-unavailable\",\"load\"],\"service\":\"frontend-proxy\",\"telemetry_hints\":[\"get_container_health for lifecycle and resource limits\",\"error_rate_by_service, p95_latency_by_service and rps_by_service\",\"Use fresh traces and logs when the service emits them; missing data is unknown\"],\"typical_operations\":[\"Service availability\",\"Dependency requests\"]}",
+        "file": "knowledge/services.yaml",
+        "section": "overview",
+        "version": "1",
+        "sha256": "079eccfb0754d54e1e7c17ed9ce86442a6d73a623ae8d868e5e575b49da4fdc6",
+        "score": 25.311116
+      },
+      {
+        "id": "kb:service-opensearch#overview",
+        "kind": "service",
+        "text": "{\"criticality\":\"core\",\"dependencies\":[],\"purpose\":\"Stores and searches application logs.\",\"runbooks\":[\"telemetry-outage\",\"container-down\",\"restart-loop\",\"dependency-unavailable\"],\"service\":\"opensearch\",\"telemetry_hints\":[\"get_container_health for lifecycle and resource limits\",\"error_rate_by_service, p95_latency_by_service and rps_by_service\",\"Use fresh traces and logs when the service emits them; missing data is unknown\"],\"typical_operations\":[\"Service availability\",\"Dependency requests\"]}",
+        "file": "knowledge/services.yaml",
+        "section": "overview",
+        "version": "1",
+        "sha256": "78132766fa039cf4a270105db8abfe133cff807253c30b2fe63d981f94603dd6",
+        "score": 0.964251
+      }
+    ],
+    "limitations": [],
+    "enabled": true,
+    "queries": [
+      "checkout | checkout error_rate <number>.<id> | frontend | frontend error_rate <number>.<id> | frontend p9<number>_ms <number> | frontend-proxy | frontend-proxy error_rate <number>.<id> | frontend-proxy p9<number>_ms <number> | payment | payment error_rate <number>.<id>",
+      "payment application_flag"
+    ]
+  },
+  "runbook_refs": [
+    {
+      "id": "kb:frontend#investigation",
+      "kind": "runbook",
+      "text": "# Frontend and request entry\n\n## What to check first\nRead `get_metrics(promql=\"error_rate_by_service\", lookback_s=300)` and `get_metrics(promql=\"rps_by_service\", lookback_s=600)`. Use `get_traces(service=\"frontend\", errors_only=True, lookback_s=120)` to follow failing calls, `get_logs(service=\"frontend-proxy\", severity_min=\"TRACE\", lookback_s=120)` for affected routes, and `get_container_health(names=[\"frontend\", \"frontend-proxy\"])` for local availability.",
+      "file": "knowledge/runbooks/frontend.md",
+      "section": "investigation",
+      "version": "1",
+      "sha256": "0ae9547793f7d6f0cedcf8b22538e1d2c70e496787742a5d19c8e283e2c3de69",
+      "score": 37.244786,
+      "action_types": [
+        "toggle_flag",
+        "restart_service",
+        "throttle_load"
+      ],
+      "applies_to": [
+        "frontend",
+        "frontend-proxy"
+      ],
+      "category": "service"
+    },
+    {
+      "id": "kb:load#investigation",
+      "kind": "runbook",
+      "text": "# Excess generated traffic\n\n## What to check first\nUse `get_metrics(promql=\"rps_by_service\", lookback_s=600)`, `get_metrics(promql=\"container_cpu\", lookback_s=600)` and `get_metrics(promql=\"p95_latency_by_service\", lookback_s=600)`. Compare `get_traces(service=\"frontend\", errors_only=False, lookback_s=300)` by route and `get_logs(service=\"frontend-proxy\", severity_min=\"TRACE\", lookback_s=300)` for access patterns. Check `get_container_health(names=[\"load-generator\", \"frontend\"])`.",
+      "file": "knowledge/runbooks/load.md",
+      "section": "investigation",
+      "version": "1",
+      "sha256": "be83c03075813ae8a7f7c777250627d1d8ccbefe549ec25173e15da20f584234",
+      "score": 27.788756,
+      "action_types": [
+        "throttle_load"
+      ],
+      "applies_to": [
+        "frontend",
+        "frontend-proxy",
+        "load-generator"
+      ],
+      "category": "load"
+    },
+    {
+      "id": "kb:telemetry-outage#investigation",
+      "kind": "runbook",
+      "text": "# Telemetry is missing or stale\n\n## What to check first\nUse `get_container_health(names=[\"otel-collector\", \"prometheus\", \"jaeger\", \"opensearch\"])` and `get_metrics(promql=\"rps_by_service\", lookback_s=300)`. Compare a known active application's `get_traces(service=\"frontend\", errors_only=False, lookback_s=300)` and `get_logs(service=\"frontend-proxy\", severity_min=\"TRACE\", lookback_s=300)`. Check response timestamps and backend warnings.",
+      "file": "knowledge/runbooks/telemetry-outage.md",
+      "section": "investigation",
+      "version": "1",
+      "sha256": "fffb4093dd1d073babd03b58220dfa053bb6c64e53f369f0d833c706d91b4bc7",
+      "score": 22.349303,
+      "action_types": [],
+      "applies_to": [
+        "otel-collector",
+        "prometheus",
+        "jaeger",
+        "opensearch"
+      ],
+      "category": "unknown"
+    },
+    {
+      "id": "kb:application-fault#remediation",
+      "kind": "runbook",
+      "text": "# Application fault in a running service\n\n## Allowed remediation\nFor a confidently diagnosed application fault, propose Action API `toggle_flag` with `service=<diagnosed service>`: disable the failure switch for that service. The Action API resolves the setting internally. The proposal must pass the category and service allowlist, a dry run and explicit human approval. Do not use a remembered action as proof of diagnosis.",
+      "file": "knowledge/runbooks/application-fault.md",
+      "section": "remediation",
+      "version": "1",
+      "sha256": "097d5ab7b3daf918f9df3c39fa695838b8336807af47bfc8e3b7dd279d100e1d",
+      "score": 5.360552,
+      "action_types": [
+        "toggle_flag"
+      ],
+      "applies_to": [
+        "payment",
+        "cart",
+        "product-catalog",
+        "recommendation",
+        "ad",
+        "checkout",
+        "frontend"
+      ],
+      "category": "application_flag"
+    },
+    {
+      "id": "kb:payment#remediation",
+      "kind": "runbook",
+      "text": "# Payment charge failures\n\n## Allowed remediation\nFor a local payment application fault, use the application-fault runbook: propose Action API `toggle_flag` with `service=payment`, disabling the failure switch for payment. For a proved stopped payment, propose `restart_service`. Both require policy/risk review, a dry run and explicit approval; payment is critical.",
+      "file": "knowledge/runbooks/payment.md",
+      "section": "remediation",
+      "version": "1",
+      "sha256": "4c702b3b1f056763d71cc1167b93fc0defed309b7d634410b873f32d48171643",
+      "score": 2.981934,
+      "action_types": [
+        "toggle_flag",
+        "restart_service"
+      ],
+      "applies_to": [
+        "payment"
+      ],
+      "category": "service"
+    },
+    {
+      "id": "kb:checkout#remediation",
+      "kind": "runbook",
+      "text": "# Checkout order orchestration\n\n## Allowed remediation\nFor a proved local checkout application fault, propose Action API `toggle_flag` with `service=checkout`; for a stopped checkout, propose `restart_service`. A proved dependency failure uses that dependency's runbook. Policy checks, dry run and explicit approval apply before any action.",
+      "file": "knowledge/runbooks/checkout.md",
+      "section": "remediation",
+      "version": "1",
+      "sha256": "923807511930a9ff8d2eb93aaeeb45ab2d6d5f27324bf878149c949e1e82f61d",
+      "score": 1.616778,
+      "action_types": [
+        "toggle_flag",
+        "restart_service"
+      ],
+      "applies_to": [
+        "checkout"
+      ],
+      "category": "service"
+    }
+  ],
+  "memory_refs": [],
+  "impact": {
+    "business": "critical",
+    "journeys_affected": [
+      "checkout",
+      "payment"
+    ],
+    "users_affected_estimate": "Not measured: telemetry counts spans and requests, not distinct users.",
+    "blast_radius": "single_service",
+    "reversibility": "instant",
+    "data_risk": "none",
+    "confidence": 0.9,
+    "tier": 2,
+    "score": 61.0,
+    "rationale": "A critical service or process restart requires the full evidence table, a reviewer or the independent-source check, and explicit typed yes.",
+    "uncertainty": 0.050000000000000044,
+    "observability_gap": 0.0,
+    "decision": "REQUIRE_HUMAN",
+    "reason_codes": [
+      "CRITICAL_SERVICE"
+    ]
+  }
+}

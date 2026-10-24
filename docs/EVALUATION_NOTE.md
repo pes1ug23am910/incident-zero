@@ -7,21 +7,37 @@ A schema-valid report is not automatically a correct diagnosis or recovery claim
 
 ## Demo-stable, 24 October: current readiness
 
-No fresh incident run IDs exist yet. All requested live repetitions are blocked
-before injection by the occupied real-UI port and insufficient free RAM; see
-[BUILD_09](../BUILD_09.md). These are preparation failures, not model failures.
+Latest preflight: **FAIL 23/26** at 08:24 IST: RAM 0.91 GiB and checkout latency.
+Earlier fresh preflights passed 26/26. Final reset/clean observation passed in
+182.547 s; 21 containers, pristine flags, no STOP, original five-user load.
+This does not override the latest readiness failures.
 
-| Requested verification | Fresh result | Approval surface |
+| Bundle | Knowledge | Component / category | Confidence | Agent s | Wrapper s | Status | Approval | Cleanup |
+|---|---|---|---|---|---|---|---|---|
+| [stable09-payment-on-r1](../reports/stable09-payment-on-r1/checkpoint2.json) | ON | Not measured | — | — | 385.541 | Runner failed before diagnosis | None | Verified |
+| [stable09-payment-on-r2](../reports/stable09-payment-on-r2/report.json) | ON | payment / application_flag | 0.90 | 56.851 | 540.461 | diagnosed | None | Verified |
+| [stable09-payment-on-r3](../reports/stable09-payment-on-r3/checkpoint2.json) | ON | Not measured | — | — | 383.041 | Preparation refused: frontend:rps | None | Verified |
+| [stable09-payment-on-r4](../reports/stable09-payment-on-r4/report.json) | ON | payment / application_flag | 0.95 | 38.891 | 488.305 | diagnosed | None | Verified |
+| [stable09-recommendation-on-r1](../reports/stable09-recommendation-on-r1/report.json) | ON | recommendation / container_down | 0.80 | 56.537 | 457.257 | diagnosed | None | Verified |
+| [stable09-recommendation-on-r2](../reports/stable09-recommendation-on-r2/report.json) | ON | recommendation / container_down | 0.90 | 172.794 | 571.972 | diagnosed; FAIL time limit | None | Verified |
+| Cache repetition 1 | Planned ON | Not measured | — | — | — | Not run within time budget | None | No injection |
+| Payment Checkpoint 3 1 | Not selected | Not measured | — | — | — | Not run within time budget | None | No injection |
+| [BLOCK](../reports/stable09-block/block.json) | N/A | delete_database refused | — | — | — | HTTP 403 / FORBIDDEN_OPERATION | None | No mutation |
+
+Source/demo command default remains knowledge **OFF** (`INCIDENT_ZERO_KNOWLEDGE=0`), **provisional**. All fresh diagnosis runs used ON; no fresh OFF comparison was completed, so the retained OFF default is not a live-certified selection. These practice cases do not establish retrieval improvement or hidden-test accuracy. Sequential knowledge-ON runs can consult memory from earlier runs.
+
+Agent seconds are `report.agent.elapsed_s`; wrapper seconds include preflight, reset, the clean windows, alert wait and validation. Acceptance requires the expected component/category, confidence >=0.75, `diagnosed`, and agent <120 s. Cache reliability is assessed separately.
+
+Preparation is intermittent near the RAM floor. The 150s/90s wrapper mismatch was corrected; a deliberate load increase also caused a temporary `frontend:rps` baseline refusal. Neither preparation failure is evidence against the model or knowledge mode. Recommendation repetition 2 exceeded the 120-second agent limit despite a correct diagnosis; its required retry and conditional knowledge-OFF comparison were not completed. Cache was not rerun, so its current reliability is unmeasured. Overall live acceptance is **partial**, not a full pass.
+
+Affected wrapper/checkpoint/hands checks: **73 passed**. The previously recorded full suite remains 770 passed, 3 skipped, 9 xfailed; it was not repeated for these live runs. Linux portability remains unverified.
+
+| Fresh bundle | Diagnosis run ID | Result |
 |---|---|---|
-| Payment diagnosis, twice, knowledge ON | Not run | No decision |
-| Stopped recommendation diagnosis, twice, knowledge ON | Not run | No decision |
-| Cache diagnosis, once, knowledge ON | Not run; intermittency not remeasured | No decision |
-| Payment full loop | Not run; fixed/recovery not reverified | No decision |
-| Forbidden-operation BLOCK | Not run against demo-stable UI | No decision |
-
-Offline suite: 770 passed, 3 skipped, 9 xfailed. Initial preflight: FAIL, 22/26.
-Knowledge remains OFF by default pending live acceptance. The Linux morning gate
-was time-boxed during setup and has no passing test result.
+| [stable09-payment-on-r2](../reports/stable09-payment-on-r2/report.json) | `runs/20261024T020607.182583Z-3fd181d4` | diagnosed; 0.90; 56.851 s agent |
+| [stable09-payment-on-r4](../reports/stable09-payment-on-r4/report.json) | `runs/20261024T022402.665842Z-6bf15653` | diagnosed; 0.95; 38.891 s agent |
+| [stable09-recommendation-on-r1](../reports/stable09-recommendation-on-r1/report.json) | `runs/20261024T023315.758052Z-0903788b` | diagnosed; 0.80; 56.537 s agent |
+| [stable09-recommendation-on-r2](../reports/stable09-recommendation-on-r2/report.json) | `runs/20261024T024152.039733Z-dc7d26df` | diagnosed; 0.90; 172.794 s agent |
 
 ## Historical diagnosis runs
 

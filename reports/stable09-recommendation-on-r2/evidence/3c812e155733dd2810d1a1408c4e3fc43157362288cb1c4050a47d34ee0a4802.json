@@ -1,0 +1,901 @@
+{
+  "version": 1,
+  "id": "trace:7d312d8f4bacc158a6c1c6a3b5970cd9",
+  "source": "jaeger",
+  "data": {
+    "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+    "warnings": null,
+    "spans": [
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "160fdbf72e94d494",
+        "operationName": "grpc.oteldemo.CartService/GetCart",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+            "spanID": "b47c9d22621f2514"
+          }
+        ],
+        "startTime": 1792809718542000,
+        "duration": 2881,
+        "tags": [
+          {
+            "key": "net.peer.name",
+            "type": "string",
+            "value": "cart"
+          },
+          {
+            "key": "net.peer.port",
+            "type": "int64",
+            "value": 7070
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "@opentelemetry/instrumentation-grpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.57.1"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "GetCart"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CartService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p1",
+        "warnings": null
+      },
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "d3d466a86144406a",
+        "operationName": "POST /oteldemo.CartService/AddItem",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+            "spanID": "9f033a9272ca131f"
+          }
+        ],
+        "startTime": 1792809718535510,
+        "duration": 5164,
+        "tags": [
+          {
+            "key": "app.product.id",
+            "type": "string",
+            "value": "9SIQT8TOJO"
+          },
+          {
+            "key": "app.product.quantity",
+            "type": "int64",
+            "value": 1
+          },
+          {
+            "key": "app.user.id",
+            "type": "string",
+            "value": "7bba236c-cf54-11f1-bb4b-92d932595c95"
+          },
+          {
+            "key": "grpc.method",
+            "type": "string",
+            "value": "/oteldemo.CartService/AddItem"
+          },
+          {
+            "key": "grpc.status_code",
+            "type": "string",
+            "value": "0"
+          },
+          {
+            "key": "http.request.method",
+            "type": "string",
+            "value": "POST"
+          },
+          {
+            "key": "http.response.status_code",
+            "type": "int64",
+            "value": 200
+          },
+          {
+            "key": "http.route",
+            "type": "string",
+            "value": "/oteldemo.CartService/AddItem"
+          },
+          {
+            "key": "network.protocol.version",
+            "type": "string",
+            "value": "2"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "Microsoft.AspNetCore"
+          },
+          {
+            "key": "server.address",
+            "type": "string",
+            "value": "cart"
+          },
+          {
+            "key": "server.port",
+            "type": "int64",
+            "value": 7070
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          },
+          {
+            "key": "url.path",
+            "type": "string",
+            "value": "/oteldemo.CartService/AddItem"
+          },
+          {
+            "key": "url.scheme",
+            "type": "string",
+            "value": "http"
+          },
+          {
+            "key": "user_agent.original",
+            "type": "string",
+            "value": "grpc-node-js/1.12.6"
+          }
+        ],
+        "logs": [],
+        "processID": "p2",
+        "warnings": null
+      },
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "1f8329791b5b382e",
+        "operationName": "POST /oteldemo.CartService/GetCart",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+            "spanID": "160fdbf72e94d494"
+          }
+        ],
+        "startTime": 1792809718543706,
+        "duration": 1215,
+        "tags": [
+          {
+            "key": "app.cart.items.count",
+            "type": "int64",
+            "value": 1
+          },
+          {
+            "key": "app.user.id",
+            "type": "string",
+            "value": "7bba236c-cf54-11f1-bb4b-92d932595c95"
+          },
+          {
+            "key": "grpc.method",
+            "type": "string",
+            "value": "/oteldemo.CartService/GetCart"
+          },
+          {
+            "key": "grpc.status_code",
+            "type": "string",
+            "value": "0"
+          },
+          {
+            "key": "http.request.method",
+            "type": "string",
+            "value": "POST"
+          },
+          {
+            "key": "http.response.status_code",
+            "type": "int64",
+            "value": 200
+          },
+          {
+            "key": "http.route",
+            "type": "string",
+            "value": "/oteldemo.CartService/GetCart"
+          },
+          {
+            "key": "network.protocol.version",
+            "type": "string",
+            "value": "2"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "Microsoft.AspNetCore"
+          },
+          {
+            "key": "server.address",
+            "type": "string",
+            "value": "cart"
+          },
+          {
+            "key": "server.port",
+            "type": "int64",
+            "value": 7070
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          },
+          {
+            "key": "url.path",
+            "type": "string",
+            "value": "/oteldemo.CartService/GetCart"
+          },
+          {
+            "key": "url.scheme",
+            "type": "string",
+            "value": "http"
+          },
+          {
+            "key": "user_agent.original",
+            "type": "string",
+            "value": "grpc-node-js/1.12.6"
+          }
+        ],
+        "logs": [
+          {
+            "timestamp": 1792809718543863,
+            "fields": [
+              {
+                "key": "event",
+                "type": "string",
+                "value": "Fetch cart"
+              }
+            ]
+          }
+        ],
+        "processID": "p2",
+        "warnings": [
+          "clock skew adjustment disabled; not applying calculated delta of -873.648µs"
+        ]
+      },
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "079eafc9782519e5",
+        "operationName": "router frontend egress",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+            "spanID": "2788ecc85aacf09d"
+          }
+        ],
+        "startTime": 1792809718532438,
+        "duration": 13674,
+        "tags": [
+          {
+            "key": "component",
+            "type": "string",
+            "value": "proxy"
+          },
+          {
+            "key": "http.protocol",
+            "type": "string",
+            "value": "HTTP/1.1"
+          },
+          {
+            "key": "http.status_code",
+            "type": "string",
+            "value": "200"
+          },
+          {
+            "key": "peer.address",
+            "type": "string",
+            "value": "172.23.0.14:8080"
+          },
+          {
+            "key": "response_flags",
+            "type": "string",
+            "value": "-"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          },
+          {
+            "key": "upstream_address",
+            "type": "string",
+            "value": "172.23.0.14:8080"
+          },
+          {
+            "key": "upstream_cluster",
+            "type": "string",
+            "value": "frontend"
+          },
+          {
+            "key": "upstream_cluster.name",
+            "type": "string",
+            "value": "frontend"
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": null
+      },
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "9f033a9272ca131f",
+        "operationName": "grpc.oteldemo.CartService/AddItem",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+            "spanID": "b47c9d22621f2514"
+          }
+        ],
+        "startTime": 1792809718534000,
+        "duration": 8080,
+        "tags": [
+          {
+            "key": "net.peer.name",
+            "type": "string",
+            "value": "cart"
+          },
+          {
+            "key": "net.peer.port",
+            "type": "int64",
+            "value": 7070
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "@opentelemetry/instrumentation-grpc"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.57.1"
+          },
+          {
+            "key": "rpc.grpc.status_code",
+            "type": "int64",
+            "value": 0
+          },
+          {
+            "key": "rpc.method",
+            "type": "string",
+            "value": "AddItem"
+          },
+          {
+            "key": "rpc.service",
+            "type": "string",
+            "value": "oteldemo.CartService"
+          },
+          {
+            "key": "rpc.system",
+            "type": "string",
+            "value": "grpc"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "client"
+          }
+        ],
+        "logs": [],
+        "processID": "p1",
+        "warnings": null
+      },
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "795e896b5c3e3b37",
+        "operationName": "POST /api/cart",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+            "spanID": "720ffadebeffcebe"
+          }
+        ],
+        "startTime": 1792809718533000,
+        "duration": 12499,
+        "tags": [
+          {
+            "key": "http.method",
+            "type": "string",
+            "value": "POST"
+          },
+          {
+            "key": "http.status_code",
+            "type": "int64",
+            "value": 200
+          },
+          {
+            "key": "http.target",
+            "type": "string",
+            "value": "/api/cart"
+          },
+          {
+            "key": "next.rsc",
+            "type": "bool",
+            "value": false
+          },
+          {
+            "key": "next.span_name",
+            "type": "string",
+            "value": "POST /api/cart"
+          },
+          {
+            "key": "next.span_type",
+            "type": "string",
+            "value": "BaseServer.handleRequest"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "next.js"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.0.1"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [],
+        "processID": "p1",
+        "warnings": [
+          "clock skew adjustment disabled; not applying calculated delta of -822.89µs"
+        ]
+      },
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "720ffadebeffcebe",
+        "operationName": "POST",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+            "spanID": "079eafc9782519e5"
+          }
+        ],
+        "startTime": 1792809718532000,
+        "duration": 12854,
+        "tags": [
+          {
+            "key": "http.flavor",
+            "type": "string",
+            "value": "1.1"
+          },
+          {
+            "key": "http.host",
+            "type": "string",
+            "value": "frontend-proxy:8080"
+          },
+          {
+            "key": "http.method",
+            "type": "string",
+            "value": "POST"
+          },
+          {
+            "key": "http.request_content_length_uncompressed",
+            "type": "int64",
+            "value": 102
+          },
+          {
+            "key": "http.scheme",
+            "type": "string",
+            "value": "http"
+          },
+          {
+            "key": "http.status_code",
+            "type": "int64",
+            "value": 200
+          },
+          {
+            "key": "http.status_text",
+            "type": "string",
+            "value": "OK"
+          },
+          {
+            "key": "http.target",
+            "type": "string",
+            "value": "/api/cart"
+          },
+          {
+            "key": "http.url",
+            "type": "string",
+            "value": "http://frontend-proxy:8080/api/cart"
+          },
+          {
+            "key": "http.user_agent",
+            "type": "string",
+            "value": "python-requests/2.32.3"
+          },
+          {
+            "key": "net.host.ip",
+            "type": "string",
+            "value": "172.23.0.14"
+          },
+          {
+            "key": "net.host.name",
+            "type": "string",
+            "value": "frontend-proxy"
+          },
+          {
+            "key": "net.host.port",
+            "type": "int64",
+            "value": 8080
+          },
+          {
+            "key": "net.peer.ip",
+            "type": "string",
+            "value": "172.23.0.18"
+          },
+          {
+            "key": "net.peer.port",
+            "type": "int64",
+            "value": 46484
+          },
+          {
+            "key": "net.transport",
+            "type": "string",
+            "value": "ip_tcp"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "@opentelemetry/instrumentation-http"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.57.1"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          }
+        ],
+        "logs": [],
+        "processID": "p1",
+        "warnings": [
+          "clock skew adjustment disabled; not applying calculated delta of 847.946µs"
+        ]
+      },
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "2788ecc85aacf09d",
+        "operationName": "ingress",
+        "references": [],
+        "startTime": 1792809718532216,
+        "duration": 13933,
+        "tags": [
+          {
+            "key": "component",
+            "type": "string",
+            "value": "proxy"
+          },
+          {
+            "key": "downstream_cluster",
+            "type": "string",
+            "value": "-"
+          },
+          {
+            "key": "guid:x-request-id",
+            "type": "string",
+            "value": "71741c83-4aef-903d-b481-7c2c3da8d4a7"
+          },
+          {
+            "key": "http.method",
+            "type": "string",
+            "value": "POST"
+          },
+          {
+            "key": "http.protocol",
+            "type": "string",
+            "value": "HTTP/1.1"
+          },
+          {
+            "key": "http.status_code",
+            "type": "string",
+            "value": "200"
+          },
+          {
+            "key": "http.url",
+            "type": "string",
+            "value": "http://frontend-proxy:8080/api/cart"
+          },
+          {
+            "key": "node_id",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "key": "peer.address",
+            "type": "string",
+            "value": "172.23.0.15"
+          },
+          {
+            "key": "request_size",
+            "type": "string",
+            "value": "102"
+          },
+          {
+            "key": "response_flags",
+            "type": "string",
+            "value": "-"
+          },
+          {
+            "key": "response_size",
+            "type": "string",
+            "value": "99"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "server"
+          },
+          {
+            "key": "upstream_cluster",
+            "type": "string",
+            "value": "frontend"
+          },
+          {
+            "key": "upstream_cluster.name",
+            "type": "string",
+            "value": "frontend"
+          },
+          {
+            "key": "user_agent",
+            "type": "string",
+            "value": "python-requests/2.32.3"
+          },
+          {
+            "key": "zone",
+            "type": "string",
+            "value": ""
+          }
+        ],
+        "logs": [],
+        "processID": "p3",
+        "warnings": [
+          "invalid parent span IDs=2d4239ca370eca57; skipping clock skew adjustment"
+        ]
+      },
+      {
+        "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+        "spanID": "b47c9d22621f2514",
+        "operationName": "executing api route (pages) /api/cart",
+        "references": [
+          {
+            "refType": "CHILD_OF",
+            "traceID": "7d312d8f4bacc158a6c1c6a3b5970cd9",
+            "spanID": "795e896b5c3e3b37"
+          }
+        ],
+        "startTime": 1792809718534000,
+        "duration": 11592,
+        "tags": [
+          {
+            "key": "http.status_code",
+            "type": "int64",
+            "value": 200
+          },
+          {
+            "key": "next.span_name",
+            "type": "string",
+            "value": "executing api route (pages) /api/cart"
+          },
+          {
+            "key": "next.span_type",
+            "type": "string",
+            "value": "Node.runHandler"
+          },
+          {
+            "key": "otel.scope.name",
+            "type": "string",
+            "value": "next.js"
+          },
+          {
+            "key": "otel.scope.version",
+            "type": "string",
+            "value": "0.0.1"
+          },
+          {
+            "key": "span.kind",
+            "type": "string",
+            "value": "internal"
+          }
+        ],
+        "logs": [],
+        "processID": "p1",
+        "warnings": [
+          "clock skew adjustment disabled; not applying calculated delta of -546.26µs"
+        ]
+      }
+    ],
+    "processes": {
+      "p1": {
+        "serviceName": "frontend",
+        "tags": [
+          {
+            "key": "container.id",
+            "type": "string",
+            "value": "47d4ddd3e3055a57893a60dd1b479cc2eee922cd29938fe67dbebae87a82fd46"
+          },
+          {
+            "key": "host.arch",
+            "type": "string",
+            "value": "amd64"
+          },
+          {
+            "key": "host.name",
+            "type": "string",
+            "value": "47d4ddd3e305"
+          },
+          {
+            "key": "os.type",
+            "type": "string",
+            "value": "linux"
+          },
+          {
+            "key": "os.version",
+            "type": "string",
+            "value": "6.6.87.2-microsoft-standard-WSL2"
+          },
+          {
+            "key": "process.command",
+            "type": "string",
+            "value": "/app/server.js"
+          },
+          {
+            "key": "process.command_args",
+            "type": "string",
+            "value": "[\"/usr/local/bin/node\",\"--require\",\"./Instrumentation.js\",\"/app/server.js\"]"
+          },
+          {
+            "key": "process.executable.name",
+            "type": "string",
+            "value": "node"
+          },
+          {
+            "key": "process.executable.path",
+            "type": "string",
+            "value": "/usr/local/bin/node"
+          },
+          {
+            "key": "process.owner",
+            "type": "string",
+            "value": "nextjs"
+          },
+          {
+            "key": "process.pid",
+            "type": "int64",
+            "value": 16
+          },
+          {
+            "key": "process.runtime.description",
+            "type": "string",
+            "value": "Node.js"
+          },
+          {
+            "key": "process.runtime.name",
+            "type": "string",
+            "value": "nodejs"
+          },
+          {
+            "key": "process.runtime.version",
+            "type": "string",
+            "value": "22.14.0"
+          },
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "nodejs"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.30.1"
+          }
+        ]
+      },
+      "p2": {
+        "serviceName": "cart",
+        "tags": [
+          {
+            "key": "container.id",
+            "type": "string",
+            "value": "897bfeb378fdf4ef681fa0748d3109e75c630cddd80ac9906f874bfcae56228f"
+          },
+          {
+            "key": "host.name",
+            "type": "string",
+            "value": "897bfeb378fd"
+          },
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          },
+          {
+            "key": "telemetry.sdk.language",
+            "type": "string",
+            "value": "dotnet"
+          },
+          {
+            "key": "telemetry.sdk.name",
+            "type": "string",
+            "value": "opentelemetry"
+          },
+          {
+            "key": "telemetry.sdk.version",
+            "type": "string",
+            "value": "1.11.2"
+          }
+        ]
+      },
+      "p3": {
+        "serviceName": "frontend-proxy",
+        "tags": [
+          {
+            "key": "service.namespace",
+            "type": "string",
+            "value": "opentelemetry-demo"
+          },
+          {
+            "key": "service.version",
+            "type": "string",
+            "value": "2.0.2"
+          }
+        ]
+      }
+    }
+  },
+  "captured_at": "2026-10-24T02:42:05.631740+00:00",
+  "checksum": "ab836ca7c237893fc5a94aca6134350a1ec58d5f0e46bde23c4ecb0aaf857243"
+}

@@ -294,7 +294,7 @@ def main(argv=None):
     parser.add_argument("--live", action="store_true", required=True)
     parser.add_argument("--svc")
     parser.add_argument("--report-id")
-    parser.add_argument("--alert-timeout", type=float, default=150, help="seconds to wait for telemetry alert")
+    parser.add_argument("--alert-timeout", type=float, default=90, help="seconds to wait for telemetry alert (0..90)")
     parser.add_argument("--operator", default="Yash Verma")
     parser.add_argument("--reject", action="store_true")
     parser.add_argument("--auto-approve-for-tests", action="store_true")
@@ -307,6 +307,8 @@ def main(argv=None):
     parser.add_argument("--prepared-stack", action="store_true", help="Outer demo driver already verified a complete clean window")
     parser.add_argument("--defer-cleanup", action="store_true", help="Outer demo driver owns reset and clean verification in finally")
     args = parser.parse_args(argv)
+    if not 0 <= args.alert_timeout <= 90:
+        parser.error("Alert timeout must be 0..90 seconds")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,119}", args.incident):
         parser.error("incident must be a safe metadata slug")
     args.report_id = args.report_id or next_report_id(args.incident, ROOT)

@@ -1,0 +1,2492 @@
+[
+  {
+    "record": "20261024T014600.959337Z",
+    "captured_at": "2026-10-24T01:46:00.959551+00:00",
+    "passed": false,
+    "summary": "FAIL preflight 20261024T014600.959337Z: 25/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 13390s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 8.9s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.072s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.179s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "0.652s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.205s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.290s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.89 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "FAIL",
+        "0.75 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.152,
+      "collector": 0.0,
+      "official demo unchanged": 0.044,
+      "application metrics": 0.014,
+      "Prometheus freshness": 0.003,
+      "Jaeger": 0.096,
+      "OpenSearch": 0.099,
+      "clean detector": 2.323,
+      "traffic health and baseline": 0.078,
+      "tool metrics": 0.072,
+      "tool traces": 0.179,
+      "tool logs": 0.652,
+      "tool containers": 2.205,
+      "tool history": 0.29,
+      "evidence resolver": 0.235,
+      "pristine overlay": 0.001,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.123,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.471,
+      "Locust": 0.037,
+      "disk": 0.001,
+      "RAM": 0.001,
+      "models and OpenRouter": 2.156
+    }
+  },
+  {
+    "record": "20261024T014655.630816Z",
+    "captured_at": "2026-10-24T01:46:55.631022+00:00",
+    "passed": false,
+    "summary": "FAIL preflight 20261024T014655.630816Z: 23/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 13445s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 3.6s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "FAIL",
+        "alerts: checkout:p95_ms"
+      ],
+      [
+        "traffic health and baseline",
+        "FAIL",
+        "12 traffic services; nonzero errors/missing baseline/high p95: ['checkout']"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.075s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.241s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "0.735s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.491s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.279s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.89 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "FAIL",
+        "0.71 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.152,
+      "collector": 0.0,
+      "official demo unchanged": 0.038,
+      "application metrics": 0.01,
+      "Prometheus freshness": 0.003,
+      "Jaeger": 0.107,
+      "OpenSearch": 0.088,
+      "clean detector": 1.828,
+      "traffic health and baseline": 0.063,
+      "tool metrics": 0.075,
+      "tool traces": 0.241,
+      "tool logs": 0.735,
+      "tool containers": 2.491,
+      "tool history": 0.279,
+      "evidence resolver": 0.214,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.047,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.647,
+      "Locust": 0.012,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.218
+    }
+  },
+  {
+    "record": "20261024T015143.044701Z",
+    "captured_at": "2026-10-24T01:51:43.044860+00:00",
+    "passed": true,
+    "summary": "PASS preflight 20261024T015143.044701Z: 26/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 13733s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 51.0s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.077s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.207s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "0.991s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "1.811s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.297s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.90 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "PASS",
+        "1.04 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.146,
+      "collector": 0.0,
+      "official demo unchanged": 0.038,
+      "application metrics": 0.01,
+      "Prometheus freshness": 0.005,
+      "Jaeger": 0.085,
+      "OpenSearch": 0.097,
+      "clean detector": 1.567,
+      "traffic health and baseline": 0.108,
+      "tool metrics": 0.077,
+      "tool traces": 0.207,
+      "tool logs": 0.991,
+      "tool containers": 1.811,
+      "tool history": 0.297,
+      "evidence resolver": 0.231,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.064,
+      "attempts and cooldown": 0.003,
+      "fresh real Control Room": 1.838,
+      "Locust": 0.012,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.215
+    }
+  },
+  {
+    "record": "20261024T015236.095665Z",
+    "captured_at": "2026-10-24T01:52:36.095795+00:00",
+    "passed": false,
+    "summary": "FAIL preflight 20261024T015236.095665Z: 25/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 13786s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 44.1s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.071s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.153s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "1.309s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.503s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.297s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.90 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "FAIL",
+        "0.76 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.146,
+      "collector": 0.0,
+      "official demo unchanged": 0.036,
+      "application metrics": 0.033,
+      "Prometheus freshness": 0.005,
+      "Jaeger": 0.101,
+      "OpenSearch": 0.105,
+      "clean detector": 1.597,
+      "traffic health and baseline": 0.108,
+      "tool metrics": 0.071,
+      "tool traces": 0.153,
+      "tool logs": 1.309,
+      "tool containers": 2.503,
+      "tool history": 0.298,
+      "evidence resolver": 0.211,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.02,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.534,
+      "Locust": 0.011,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.041
+    }
+  },
+  {
+    "record": "20261024T015318.198250Z",
+    "captured_at": "2026-10-24T01:53:18.198865+00:00",
+    "passed": false,
+    "summary": "FAIL preflight 20261024T015318.198250Z: 25/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 13828s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 26.2s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.063s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.215s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "1.337s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.535s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.313s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.90 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "FAIL",
+        "0.95 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.18,
+      "collector": 0.0,
+      "official demo unchanged": 0.038,
+      "application metrics": 0.016,
+      "Prometheus freshness": 0.004,
+      "Jaeger": 0.123,
+      "OpenSearch": 0.11,
+      "clean detector": 2.658,
+      "traffic health and baseline": 0.116,
+      "tool metrics": 0.063,
+      "tool traces": 0.215,
+      "tool logs": 1.337,
+      "tool containers": 2.535,
+      "tool history": 0.313,
+      "evidence resolver": 0.223,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.023,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.382,
+      "Locust": 0.012,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.181
+    }
+  },
+  {
+    "record": "20261024T015420.816260Z",
+    "captured_at": "2026-10-24T01:54:20.816395+00:00",
+    "passed": true,
+    "summary": "PASS preflight 20261024T015420.816260Z: 26/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 13890s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 28.8s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.056s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.155s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "1.362s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "1.500s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.327s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.90 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "PASS",
+        "1.08 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.163,
+      "collector": 0.0,
+      "official demo unchanged": 0.035,
+      "application metrics": 0.009,
+      "Prometheus freshness": 0.003,
+      "Jaeger": 0.089,
+      "OpenSearch": 0.094,
+      "clean detector": 2.532,
+      "traffic health and baseline": 0.076,
+      "tool metrics": 0.056,
+      "tool traces": 0.155,
+      "tool logs": 1.362,
+      "tool containers": 1.5,
+      "tool history": 0.327,
+      "evidence resolver": 0.23,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.037,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.361,
+      "Locust": 0.032,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.569
+    }
+  },
+  {
+    "record": "20261024T020116.309705Z",
+    "captured_at": "2026-10-24T02:01:16.309841+00:00",
+    "passed": true,
+    "summary": "PASS preflight 20261024T020116.309705Z: 26/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 14306s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 24.3s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.068s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.161s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "1.103s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.480s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.289s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.89 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "PASS",
+        "1.14 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.158,
+      "collector": 0.0,
+      "official demo unchanged": 0.044,
+      "application metrics": 0.011,
+      "Prometheus freshness": 0.002,
+      "Jaeger": 0.102,
+      "OpenSearch": 0.107,
+      "clean detector": 1.711,
+      "traffic health and baseline": 0.081,
+      "tool metrics": 0.068,
+      "tool traces": 0.161,
+      "tool logs": 1.104,
+      "tool containers": 2.481,
+      "tool history": 0.289,
+      "evidence resolver": 0.223,
+      "pristine overlay": 0.001,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.023,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.452,
+      "Locust": 0.03,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.577
+    }
+  },
+  {
+    "record": "20261024T021046.927712Z",
+    "captured_at": "2026-10-24T02:10:46.927869+00:00",
+    "passed": true,
+    "summary": "PASS preflight 20261024T021046.927712Z: 26/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 14876s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 55.0s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.086s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.179s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "0.568s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.539s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.289s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.88 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "PASS",
+        "1.07 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.174,
+      "collector": 0.0,
+      "official demo unchanged": 0.053,
+      "application metrics": 0.012,
+      "Prometheus freshness": 0.002,
+      "Jaeger": 0.081,
+      "OpenSearch": 0.082,
+      "clean detector": 1.535,
+      "traffic health and baseline": 0.079,
+      "tool metrics": 0.086,
+      "tool traces": 0.179,
+      "tool logs": 0.568,
+      "tool containers": 2.539,
+      "tool history": 0.289,
+      "evidence resolver": 0.217,
+      "pristine overlay": 0.002,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.024,
+      "attempts and cooldown": 0.002,
+      "fresh real Control Room": 1.841,
+      "Locust": 0.014,
+      "disk": 0.001,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.197
+    }
+  },
+  {
+    "record": "20261024T021812.803516Z",
+    "captured_at": "2026-10-24T02:18:12.803694+00:00",
+    "passed": false,
+    "summary": "FAIL preflight 20261024T021812.803516Z: 24/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 15322s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 20.9s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "FAIL",
+        "alerts: frontend:rps"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.060s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.182s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "0.971s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "1.893s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.323s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.88 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "FAIL",
+        "0.95 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.151,
+      "collector": 0.0,
+      "official demo unchanged": 0.041,
+      "application metrics": 0.01,
+      "Prometheus freshness": 0.002,
+      "Jaeger": 0.089,
+      "OpenSearch": 0.093,
+      "clean detector": 1.906,
+      "traffic health and baseline": 0.087,
+      "tool metrics": 0.06,
+      "tool traces": 0.182,
+      "tool logs": 0.971,
+      "tool containers": 1.893,
+      "tool history": 0.323,
+      "evidence resolver": 0.231,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.021,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.393,
+      "Locust": 0.015,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.27
+    }
+  },
+  {
+    "record": "20261024T021947.544091Z",
+    "captured_at": "2026-10-24T02:19:47.544226+00:00",
+    "passed": true,
+    "summary": "PASS preflight 20261024T021947.544091Z: 26/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 15417s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 55.6s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.045s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.218s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "1.018s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.553s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.331s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.88 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "PASS",
+        "1.39 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.158,
+      "collector": 0.0,
+      "official demo unchanged": 0.037,
+      "application metrics": 0.011,
+      "Prometheus freshness": 0.003,
+      "Jaeger": 0.097,
+      "OpenSearch": 0.12,
+      "clean detector": 2.575,
+      "traffic health and baseline": 0.074,
+      "tool metrics": 0.045,
+      "tool traces": 0.218,
+      "tool logs": 1.018,
+      "tool containers": 2.553,
+      "tool history": 0.331,
+      "evidence resolver": 0.25,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.022,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.43,
+      "Locust": 0.014,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.132
+    }
+  },
+  {
+    "record": "20261024T022813.411536Z",
+    "captured_at": "2026-10-24T02:28:13.411741+00:00",
+    "passed": false,
+    "summary": "FAIL preflight 20261024T022813.411536Z: 24/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 15923s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 21.5s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "FAIL",
+        "alerts: frontend-proxy:p95_ms"
+      ],
+      [
+        "traffic health and baseline",
+        "FAIL",
+        "12 traffic services; nonzero errors/missing baseline/high p95: ['frontend-proxy']"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.073s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.167s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "1.201s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.706s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.323s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.86 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "PASS",
+        "1.30 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.15,
+      "collector": 0.0,
+      "official demo unchanged": 0.063,
+      "application metrics": 0.013,
+      "Prometheus freshness": 0.004,
+      "Jaeger": 0.1,
+      "OpenSearch": 0.097,
+      "clean detector": 1.739,
+      "traffic health and baseline": 0.112,
+      "tool metrics": 0.073,
+      "tool traces": 0.167,
+      "tool logs": 1.201,
+      "tool containers": 2.706,
+      "tool history": 0.323,
+      "evidence resolver": 0.219,
+      "pristine overlay": 0.001,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.03,
+      "attempts and cooldown": 0.002,
+      "fresh real Control Room": 1.757,
+      "Locust": 0.013,
+      "disk": 0.001,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.111
+    }
+  },
+  {
+    "record": "20261024T022949.225011Z",
+    "captured_at": "2026-10-24T02:29:49.225344+00:00",
+    "passed": true,
+    "summary": "PASS preflight 20261024T022949.225011Z: 26/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 16019s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 57.3s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.049s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.213s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "1.149s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.013s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.302s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.86 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "PASS",
+        "1.12 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.154,
+      "collector": 0.0,
+      "official demo unchanged": 0.038,
+      "application metrics": 0.008,
+      "Prometheus freshness": 0.002,
+      "Jaeger": 0.095,
+      "OpenSearch": 0.111,
+      "clean detector": 2.509,
+      "traffic health and baseline": 0.069,
+      "tool metrics": 0.049,
+      "tool traces": 0.213,
+      "tool logs": 1.149,
+      "tool containers": 2.013,
+      "tool history": 0.302,
+      "evidence resolver": 0.22,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.023,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.493,
+      "Locust": 0.015,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 1.849
+    }
+  },
+  {
+    "record": "20261024T023827.566763Z",
+    "captured_at": "2026-10-24T02:38:27.566929+00:00",
+    "passed": true,
+    "summary": "PASS preflight 20261024T023827.566763Z: 26/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 16537s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 35.7s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.081s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.184s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "0.690s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.496s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.336s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.85 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "PASS",
+        "1.14 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.159,
+      "collector": 0.0,
+      "official demo unchanged": 0.035,
+      "application metrics": 0.01,
+      "Prometheus freshness": 0.002,
+      "Jaeger": 0.115,
+      "OpenSearch": 0.106,
+      "clean detector": 1.698,
+      "traffic health and baseline": 0.11,
+      "tool metrics": 0.081,
+      "tool traces": 0.184,
+      "tool logs": 0.69,
+      "tool containers": 2.496,
+      "tool history": 0.336,
+      "evidence resolver": 0.23,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.028,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.387,
+      "Locust": 0.011,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.11
+    }
+  },
+  {
+    "record": "20261024T025323.265158Z",
+    "captured_at": "2026-10-24T02:53:23.265395+00:00",
+    "passed": false,
+    "summary": "FAIL preflight 20261024T025323.265158Z: 25/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 17433s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 31.5s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "PASS",
+        "detect.once path: no_alert for every service"
+      ],
+      [
+        "traffic health and baseline",
+        "PASS",
+        "12 traffic services; nonzero errors/missing baseline/high p95: []"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.080s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.166s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "1.057s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "1.736s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.305s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.83 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "FAIL",
+        "0.72 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.16,
+      "collector": 0.0,
+      "official demo unchanged": 0.034,
+      "application metrics": 0.021,
+      "Prometheus freshness": 0.003,
+      "Jaeger": 0.104,
+      "OpenSearch": 0.097,
+      "clean detector": 1.817,
+      "traffic health and baseline": 0.081,
+      "tool metrics": 0.08,
+      "tool traces": 0.166,
+      "tool logs": 1.057,
+      "tool containers": 1.736,
+      "tool history": 0.305,
+      "evidence resolver": 0.221,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.026,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.4,
+      "Locust": 0.013,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.185
+    }
+  },
+  {
+    "record": "20261024T025443.856202Z",
+    "captured_at": "2026-10-24T02:54:43.856401+00:00",
+    "passed": false,
+    "summary": "FAIL preflight 20261024T025443.856202Z: 23/26 checks",
+    "rows": [
+      [
+        "stack",
+        "PASS",
+        "21/21 expected containers running"
+      ],
+      [
+        "collector",
+        "PASS",
+        "collector uptime 17513s; needs >120s"
+      ],
+      [
+        "official demo unchanged",
+        "PASS",
+        "official demo Git working tree must be unchanged"
+      ],
+      [
+        "application metrics",
+        "PASS",
+        "frontend SERVER application series must exist"
+      ],
+      [
+        "Prometheus freshness",
+        "PASS",
+        "actual newest sample age 52.0s; needs <90s"
+      ],
+      [
+        "Jaeger",
+        "PASS",
+        "15 services; needs >=10"
+      ],
+      [
+        "OpenSearch",
+        "PASS",
+        "otel index exists via published HTTP port"
+      ],
+      [
+        "clean detector",
+        "FAIL",
+        "alerts: checkout:p95_ms"
+      ],
+      [
+        "traffic health and baseline",
+        "FAIL",
+        "12 traffic services; nonzero errors/missing baseline/high p95: ['checkout']"
+      ],
+      [
+        "tool metrics",
+        "PASS",
+        "0.053s; needs <5s and no error"
+      ],
+      [
+        "tool traces",
+        "PASS",
+        "0.175s; needs <5s and no error"
+      ],
+      [
+        "tool logs",
+        "PASS",
+        "0.494s; needs <5s and no error"
+      ],
+      [
+        "tool containers",
+        "PASS",
+        "2.385s; needs <5s and no error"
+      ],
+      [
+        "tool history",
+        "PASS",
+        "0.304s; needs <5s and no error"
+      ],
+      [
+        "evidence resolver",
+        "PASS",
+        "tools.resolve: live"
+      ],
+      [
+        "pristine overlay",
+        "PASS",
+        "operator-only byte comparison; settings never enter diagnosis"
+      ],
+      [
+        "control overlay mount",
+        "PASS",
+        "repository-owned control overlay is mounted"
+      ],
+      [
+        "STOP absent",
+        "PASS",
+        "checked stack owner's STOP file"
+      ],
+      [
+        "test mode absent",
+        "PASS",
+        "INCIDENT_ZERO_TEST must not be 1"
+      ],
+      [
+        "Action API",
+        "PASS",
+        "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+      ],
+      [
+        "attempts and cooldown",
+        "PASS",
+        "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+      ],
+      [
+        "fresh real Control Room",
+        "PASS",
+        "real server loaded after source changes (or matching API revision)"
+      ],
+      [
+        "Locust",
+        "PASS",
+        "Locust responds within 5s; running with positive users"
+      ],
+      [
+        "disk",
+        "PASS",
+        "99.83 GiB free; needs >5"
+      ],
+      [
+        "RAM",
+        "FAIL",
+        "0.91 GiB free; needs >=1"
+      ],
+      [
+        "models and OpenRouter",
+        "PASS",
+        "model ids resolved; authenticated inference HTTP 200; no key logged"
+      ]
+    ],
+    "timings": {
+      "stack": 0.141,
+      "collector": 0.0,
+      "official demo unchanged": 0.031,
+      "application metrics": 0.008,
+      "Prometheus freshness": 0.002,
+      "Jaeger": 0.099,
+      "OpenSearch": 0.102,
+      "clean detector": 2.268,
+      "traffic health and baseline": 0.097,
+      "tool metrics": 0.053,
+      "tool traces": 0.175,
+      "tool logs": 0.494,
+      "tool containers": 2.385,
+      "tool history": 0.304,
+      "evidence resolver": 0.202,
+      "pristine overlay": 0.0,
+      "control overlay mount": 0.0,
+      "STOP absent": 0.0,
+      "test mode absent": 0.0,
+      "Action API": 0.046,
+      "attempts and cooldown": 0.001,
+      "fresh real Control Room": 1.335,
+      "Locust": 0.03,
+      "disk": 0.0,
+      "RAM": 0.0,
+      "models and OpenRouter": 2.098
+    }
+  }
+]

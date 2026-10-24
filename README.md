@@ -18,7 +18,7 @@ Use Python 3.11, Docker with Compose v2, and PowerShell 7 or bash. The official
 demo is a sibling checkout at tag `2.0.2`, using `docker-compose.minimal.yml`.
 Pin `DEMO_VERSION=2.0.2`: the tag's `latest` setting can select incompatible 3.x
 images. The measured minimal stack has 21 containers ([BUILD_01B](BUILD_01B.md)).
-Preflight requires more than 5 GiB free disk and 2 GiB available RAM.
+Preflight requires more than 5 GiB free disk and at least 1 GiB available RAM.
 
 **Docker daemon prerequisite:** if the collector reports that API 1.25 is too
 old, merge `"min-api-version": "1.24"` into the Docker Engine `daemon.json`
@@ -90,12 +90,7 @@ test container. Every entry point accepts `-Help`, `--help` and `-h` with exit 0
 For organiser-injected incidents run `python -m detect.watch --interval 10`;
 duplicate-investigation handling still needs the fold regression fix.
 
-**Last complete preflight PASS: not verified.** The read-only morning run at
-18:24 UTC on 2026-10-23 passed 24/26 checks. Failures: unverified fresh Control
-Room and available RAM of 0.60 GiB, below 2 GiB. The fold's H8 state command
-now passes (earlier checks failed before it landed). Clean detection, five tool
-timings and model access passed. Records are in ignored `.build/preflight/`;
-no partial result is promoted to a complete PASS.
+**Latest acceptance preflight: FAIL.** clean detector: alerts: checkout:p95_ms; traffic health and baseline: 12 traffic services; nonzero errors/missing baseline/high p95: ['checkout']; RAM: 0.91 GiB free; needs >=1 Earlier fresh checks passed 26/26 at the authorized 1 GiB RAM floor. Recommendation repetition 2 also missed the 120-second agent target. See [BUILD_09](BUILD_09.md) for the partial live table and unfinished checks. Knowledge remains OFF provisionally; no fresh OFF comparison or CLI repair was completed.
 
 ## Approval gate and kill switch
 
@@ -141,6 +136,7 @@ timed live presentation are not verified.
 
 | Symptom | Check / next step |
 |---|---|
+| Low free RAM | 16 GB laptop with Docker Desktop: 1 GiB free is the realistic floor; below that, close browsers |
 | Collector restart-loop / old API | `docker logs otel-collector`; apply the daemon prerequisite before starting |
 | Jaeger proxy-only | Set `JAEGER_URL=http://localhost:8080/jaeger/ui/api`; tools try the published port first |
 | OpenSearch ephemeral port | `docker port opensearch 9200`; tools discover it, or set `OPENSEARCH_URL` |
