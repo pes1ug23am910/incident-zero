@@ -1,0 +1,5218 @@
+{
+  "captured_at": "2026-10-24T03:56:16.880283+00:00",
+  "read_only": true,
+  "containers": [
+    {
+      "name": "ad",
+      "status": "running",
+      "started_at": "2026-10-23T22:51:02.497117643Z"
+    },
+    {
+      "name": "cart",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:28.708327669Z"
+    },
+    {
+      "name": "checkout",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:28.35551033Z"
+    },
+    {
+      "name": "currency",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:29.167214092Z"
+    },
+    {
+      "name": "email",
+      "status": "running",
+      "started_at": "2026-10-24T00:16:44.392688303Z"
+    },
+    {
+      "name": "frontend",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:29.311548414Z"
+    },
+    {
+      "name": "frontend-proxy",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:29.349062306Z"
+    },
+    {
+      "name": "image-provider",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:29.09780768Z"
+    },
+    {
+      "name": "load-generator",
+      "status": "running",
+      "started_at": "2026-10-23T17:32:20.793766503Z"
+    },
+    {
+      "name": "payment",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:28.499506526Z"
+    },
+    {
+      "name": "product-catalog",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:28.456561269Z"
+    },
+    {
+      "name": "quote",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:29.477930572Z"
+    },
+    {
+      "name": "recommendation",
+      "status": "running",
+      "started_at": "2026-10-24T03:20:19.94576125Z"
+    },
+    {
+      "name": "shipping",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:28.13565142Z"
+    },
+    {
+      "name": "flagd",
+      "status": "running",
+      "started_at": "2026-10-24T01:27:29.606581901Z"
+    },
+    {
+      "name": "valkey-cart",
+      "status": "running",
+      "started_at": "2026-10-24T01:07:46.419911647Z"
+    },
+    {
+      "name": "jaeger",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:28.898653815Z"
+    },
+    {
+      "name": "grafana",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:29.201513885Z"
+    },
+    {
+      "name": "otel-collector",
+      "status": "running",
+      "started_at": "2026-10-23T22:02:50.673261731Z"
+    },
+    {
+      "name": "prometheus",
+      "status": "running",
+      "started_at": "2026-10-23T08:26:29.528477315Z"
+    },
+    {
+      "name": "opensearch",
+      "status": "running",
+      "started_at": "2026-10-23T22:26:29.765291055Z"
+    }
+  ],
+  "timings": {
+    "stack": 0.28,
+    "collector": 0.0,
+    "official demo unchanged": 0.064,
+    "application metrics": 0.016,
+    "Prometheus freshness": 0.003,
+    "Jaeger": 0.161,
+    "OpenSearch": 0.152,
+    "clean detector": 2.98,
+    "traffic health and baseline": 0.165,
+    "tool metrics": 0.117,
+    "tool traces": 0.269,
+    "tool logs": 1.193,
+    "tool containers": 2.696,
+    "tool history": 0.568,
+    "evidence resolver": 0.437,
+    "pristine overlay": 0.0,
+    "control overlay mount": 0.0,
+    "STOP absent": 0.0,
+    "test mode absent": 0.0,
+    "Action API": 0.052,
+    "attempts and cooldown": 0.001,
+    "fresh real Control Room": 2.094,
+    "Locust": 0.017,
+    "disk": 0.0,
+    "RAM": 0.0,
+    "models and OpenRouter": 2.306
+  },
+  "health": {
+    "tool": "health_table",
+    "source": "prometheus",
+    "query": "named service queries + container health",
+    "window": {
+      "from": "2026-10-24T03:54:17.741694+00:00",
+      "to": "2026-10-24T03:56:17.741694+00:00"
+    },
+    "data": [
+      {
+        "service": "ad",
+        "error_rate": 0.0,
+        "p95_ms": 4.699999999999999,
+        "rps": 0.21668833550021668,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.18,
+        "memory_mb": 228.27499519999998,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 314572800,
+        "container_health": null
+      },
+      {
+        "service": "cart",
+        "error_rate": 0.0,
+        "p95_ms": 4.799999999999999,
+        "rps": 0.6000600060006,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.81,
+        "memory_mb": 132.120576,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 167772160,
+        "container_health": null
+      },
+      {
+        "service": "checkout",
+        "error_rate": 0.0,
+        "p95_ms": 48.99999999999999,
+        "rps": 0.7334066740007333,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.0,
+        "memory_mb": 16.169041919999998,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      },
+      {
+        "service": "currency",
+        "error_rate": 0.0,
+        "p95_ms": 1.9000000000000001,
+        "rps": 0.13334666800013334,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.03,
+        "memory_mb": 10.043260927999999,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      },
+      {
+        "service": "email",
+        "error_rate": 0.0,
+        "p95_ms": 3.68,
+        "rps": 0.2666933360002667,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.03,
+        "memory_mb": 67.18226431999999,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 104857600,
+        "container_health": null
+      },
+      {
+        "service": "frontend",
+        "error_rate": 0.0,
+        "p95_ms": 45.96078431372546,
+        "rps": 4.383771710504384,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.0,
+        "memory_mb": 132.5400064,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 262144000,
+        "container_health": null
+      },
+      {
+        "service": "frontend-proxy",
+        "error_rate": 0.0,
+        "p95_ms": 47.77777777777777,
+        "rps": 2.1668833550021667,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.7,
+        "memory_mb": 47.82555136,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 68157440,
+        "container_health": null
+      },
+      {
+        "service": "grafana",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 1.84,
+        "memory_mb": 111.35877119999999,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 125829120,
+        "container_health": null
+      },
+      {
+        "service": "image-provider",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.02,
+        "memory_mb": 8.867807232,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 125829120,
+        "container_health": null
+      },
+      {
+        "service": "jaeger",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.38,
+        "memory_mb": 173.9587584,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 419430400,
+        "container_health": null
+      },
+      {
+        "service": "load-generator",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.2,
+        "memory_mb": 80.07974912,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 125829120,
+        "container_health": null
+      },
+      {
+        "service": "opensearch",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.83,
+        "memory_mb": 990.0654592,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 1181116006,
+        "container_health": "healthy"
+      },
+      {
+        "service": "otel-collector",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.52,
+        "memory_mb": 154.5601024,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 209715200,
+        "container_health": null
+      },
+      {
+        "service": "payment",
+        "error_rate": 0.0,
+        "p95_ms": 1.9000000000000001,
+        "rps": 0.13334666800013334,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.0,
+        "memory_mb": 94.64446976,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 125829120,
+        "container_health": null
+      },
+      {
+        "service": "product-catalog",
+        "error_rate": 0.0,
+        "p95_ms": 1.9,
+        "rps": 1.000100010001,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.0,
+        "memory_mb": 16.2004992,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      },
+      {
+        "service": "prometheus",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.05,
+        "memory_mb": 126.2485504,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 314572800,
+        "container_health": null
+      },
+      {
+        "service": "quote",
+        "error_rate": 0.0,
+        "p95_ms": 1.9,
+        "rps": 0.2000200020002,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.03,
+        "memory_mb": 29.24478464,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 41943040,
+        "container_health": null
+      },
+      {
+        "service": "recommendation",
+        "error_rate": 0.0,
+        "p95_ms": 32.00000000000001,
+        "rps": 0.3000300030003,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 1.66,
+        "memory_mb": 42.71898624,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 52428800,
+        "container_health": null
+      },
+      {
+        "service": "shipping",
+        "error_rate": 0.0,
+        "p95_ms": 4.799999999999999,
+        "rps": 0.2000200020002,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.02,
+        "memory_mb": 7.45013248,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      },
+      {
+        "service": "valkey-cart",
+        "error_rate": null,
+        "p95_ms": null,
+        "rps": null,
+        "restarts": 0,
+        "status": "running",
+        "cpu_percent": 0.32,
+        "memory_mb": 9.453961216,
+        "oom_killed": false,
+        "cpu_limit_nanos": 0,
+        "memory_limit_bytes": 20971520,
+        "container_health": null
+      }
+    ],
+    "evidence_ids": [
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792814177.742=0.0",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792814177.743=4.699999999999999",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792814177.743=4.799999999999999",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792814177.743=48.99999999999999",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792814177.743=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792814177.743=3.68",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792814177.743=45.96078431372546",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792814177.743=47.77777777777777",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792814177.743=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792814177.743=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792814177.743=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792814177.743=32.00000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792814177.743=4.799999999999999",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792814177.744=0.21668833550021668",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792814177.744=0.6000600060006",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792814177.744=0.7334066740007333",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792814177.744=0.13334666800013334",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792814177.744=0.2666933360002667",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792814177.744=4.383771710504384",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792814177.744=2.1668833550021667",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792814177.744=0.13334666800013334",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792814177.744=1.000100010001",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792814177.744=0.2000200020002",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792814177.744=0.3000300030003",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792814177.744=0.2000200020002",
+      "container:recommendation:Status=running",
+      "container:recommendation:RestartCount=0",
+      "container:recommendation:OOMKilled=false",
+      "container:recommendation:StartedAt=2026-10-24T03:20:19.94576125Z",
+      "container:recommendation:NanoCpus=0",
+      "container:recommendation:Memory=52428800",
+      "container:valkey-cart:Status=running",
+      "container:valkey-cart:RestartCount=0",
+      "container:valkey-cart:OOMKilled=false",
+      "container:valkey-cart:StartedAt=2026-10-24T01:07:46.419911647Z",
+      "container:valkey-cart:NanoCpus=0",
+      "container:valkey-cart:Memory=20971520",
+      "container:ad:Status=running",
+      "container:ad:RestartCount=0",
+      "container:ad:OOMKilled=false",
+      "container:ad:StartedAt=2026-10-23T22:51:02.497117643Z",
+      "container:ad:NanoCpus=0",
+      "container:ad:Memory=314572800",
+      "container:otel-collector:Status=running",
+      "container:otel-collector:RestartCount=0",
+      "container:otel-collector:OOMKilled=false",
+      "container:otel-collector:StartedAt=2026-10-23T22:02:50.673261731Z",
+      "container:otel-collector:NanoCpus=0",
+      "container:otel-collector:Memory=209715200",
+      "container:quote:Status=running",
+      "container:quote:RestartCount=0",
+      "container:quote:OOMKilled=false",
+      "container:quote:StartedAt=2026-10-23T08:26:29.477930572Z",
+      "container:quote:NanoCpus=0",
+      "container:quote:Memory=41943040",
+      "container:frontend-proxy:Status=running",
+      "container:frontend-proxy:RestartCount=0",
+      "container:frontend-proxy:OOMKilled=false",
+      "container:frontend-proxy:StartedAt=2026-10-23T08:26:29.349062306Z",
+      "container:frontend-proxy:NanoCpus=0",
+      "container:frontend-proxy:Memory=68157440",
+      "container:load-generator:Status=running",
+      "container:load-generator:RestartCount=0",
+      "container:load-generator:OOMKilled=false",
+      "container:load-generator:StartedAt=2026-10-23T17:32:20.793766503Z",
+      "container:load-generator:NanoCpus=0",
+      "container:load-generator:Memory=125829120",
+      "container:frontend:Status=running",
+      "container:frontend:RestartCount=0",
+      "container:frontend:OOMKilled=false",
+      "container:frontend:StartedAt=2026-10-23T08:26:29.311548414Z",
+      "container:frontend:NanoCpus=0",
+      "container:frontend:Memory=262144000",
+      "container:checkout:Status=running",
+      "container:checkout:RestartCount=0",
+      "container:checkout:OOMKilled=false",
+      "container:checkout:StartedAt=2026-10-23T08:26:28.35551033Z",
+      "container:checkout:NanoCpus=0",
+      "container:checkout:Memory=20971520",
+      "container:image-provider:Status=running",
+      "container:image-provider:RestartCount=0",
+      "container:image-provider:OOMKilled=false",
+      "container:image-provider:StartedAt=2026-10-23T08:26:29.09780768Z",
+      "container:image-provider:NanoCpus=0",
+      "container:image-provider:Memory=125829120",
+      "container:email:Status=running",
+      "container:email:RestartCount=0",
+      "container:email:OOMKilled=false",
+      "container:email:StartedAt=2026-10-24T00:16:44.392688303Z",
+      "container:email:NanoCpus=0",
+      "container:email:Memory=104857600",
+      "container:payment:Status=running",
+      "container:payment:RestartCount=0",
+      "container:payment:OOMKilled=false",
+      "container:payment:StartedAt=2026-10-23T08:26:28.499506526Z",
+      "container:payment:NanoCpus=0",
+      "container:payment:Memory=125829120",
+      "container:cart:Status=running",
+      "container:cart:RestartCount=0",
+      "container:cart:OOMKilled=false",
+      "container:cart:StartedAt=2026-10-23T08:26:28.708327669Z",
+      "container:cart:NanoCpus=0",
+      "container:cart:Memory=167772160",
+      "container:currency:Status=running",
+      "container:currency:RestartCount=0",
+      "container:currency:OOMKilled=false",
+      "container:currency:StartedAt=2026-10-23T08:26:29.167214092Z",
+      "container:currency:NanoCpus=0",
+      "container:currency:Memory=20971520",
+      "container:product-catalog:Status=running",
+      "container:product-catalog:RestartCount=0",
+      "container:product-catalog:OOMKilled=false",
+      "container:product-catalog:StartedAt=2026-10-23T08:26:28.456561269Z",
+      "container:product-catalog:NanoCpus=0",
+      "container:product-catalog:Memory=20971520",
+      "container:shipping:Status=running",
+      "container:shipping:RestartCount=0",
+      "container:shipping:OOMKilled=false",
+      "container:shipping:StartedAt=2026-10-23T08:26:28.13565142Z",
+      "container:shipping:NanoCpus=0",
+      "container:shipping:Memory=20971520",
+      "container:opensearch:Status=running",
+      "container:opensearch:RestartCount=0",
+      "container:opensearch:OOMKilled=false",
+      "container:opensearch:StartedAt=2026-10-23T22:26:29.765291055Z",
+      "container:opensearch:NanoCpus=0",
+      "container:opensearch:Memory=1181116006",
+      "container:jaeger:Status=running",
+      "container:jaeger:RestartCount=0",
+      "container:jaeger:OOMKilled=false",
+      "container:jaeger:StartedAt=2026-10-23T08:26:28.898653815Z",
+      "container:jaeger:NanoCpus=0",
+      "container:jaeger:Memory=419430400",
+      "container:prometheus:Status=running",
+      "container:prometheus:RestartCount=0",
+      "container:prometheus:OOMKilled=false",
+      "container:prometheus:StartedAt=2026-10-23T08:26:29.528477315Z",
+      "container:prometheus:NanoCpus=0",
+      "container:prometheus:Memory=314572800",
+      "container:grafana:Status=running",
+      "container:grafana:RestartCount=0",
+      "container:grafana:OOMKilled=false",
+      "container:grafana:StartedAt=2026-10-23T08:26:29.201513885Z",
+      "container:grafana:NanoCpus=0",
+      "container:grafana:Memory=125829120"
+    ],
+    "truncated": false,
+    "warnings": [],
+    "telemetry_available": true,
+    "run_dir": "runs/preflight-20261024T035616.879919Z",
+    "evidence_paths": {
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"ad\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/ff26555cf244ab12b551d0f658d82ff506749a199c57cd60a4bb9e08aa7d54fb.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"cart\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/9a5f35a7a9d6d688aa8f5dab1eaf116bfca74a2bc33b5fc680a25fdfa3e32465.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"checkout\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/cf21d9b70fafe364c15ceeaae1b68dd41c25fbe34b573ce547ef6e6ace1de44c.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"currency\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/0b764c723ab210cce469389099dd287e8ff2b9916be98ece2147e38f100dd0da.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"email\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/4239f6b91f3325b9ac797621f28f1c5536f5e72ab92705c5057cb6f09d557e32.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/9148092dbd17b01c4425129f2f85cec798222c6a8f00e6f141444efc1778c813.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"frontend-proxy\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/71f3c4f250b392da11235f92b812cb2e6f429a5cb8af44902e924180a7c924b0.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"payment\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/315bdaa08fa4d554029f3f524eca7bb8278f1f44a93e5c5d63c5e3d9a6074e3a.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"product-catalog\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/5d67b334e445cd0889ffab3b427780260ae576bb24a710bbf07000b01d72d53f.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"quote\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/181990b0eedf8bf0e77f5053d18c763df31e4aead5b9171a0db60b24297bd483.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"recommendation\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/b153fcadbb6bd1e96820028f1e422f34d17376135931c41569c09aeff3333867.json",
+      "metric:query{__query__=\"named:error_rate_by_service\",service_name=\"shipping\"}@1792814177.742=0.0": "runs/preflight-20261024T035616.879919Z/evidence/1e9f1b484588aa73d9ca379994ddf8b6909a3b66713e1d9a34e3940ffbe5223e.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792814177.743=4.699999999999999": "runs/preflight-20261024T035616.879919Z/evidence/b3a0314acb6324340d8546921077b23211290fe56964edfb91858d5f5d616c19.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792814177.743=4.799999999999999": "runs/preflight-20261024T035616.879919Z/evidence/05f0294c67c1eccdf36d267611c164e4580923a2f35399d2d7b6a0007d815e04.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792814177.743=48.99999999999999": "runs/preflight-20261024T035616.879919Z/evidence/478e96ec69eddeebf379f3c47cc0c8c95a09c83e4c0362a65aa0a8506ab0c750.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792814177.743=1.9000000000000001": "runs/preflight-20261024T035616.879919Z/evidence/73857370e54817a5359bf20a0c520597b502a8d323de127b6cbdc829ebfd9a0b.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792814177.743=3.68": "runs/preflight-20261024T035616.879919Z/evidence/8fc637d9b12f03a85a3fb1e19fdac4113f06d2cd90ac04ab66e84f9a056944f7.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792814177.743=45.96078431372546": "runs/preflight-20261024T035616.879919Z/evidence/4e38d7aee56a85e06e038453dbf3f828e276200f238a258a46f3bc092a796d24.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792814177.743=47.77777777777777": "runs/preflight-20261024T035616.879919Z/evidence/e25a5abcc9670a9a8f437cad15733618bb09f938c37955742c07a6ffccd37a63.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792814177.743=1.9000000000000001": "runs/preflight-20261024T035616.879919Z/evidence/a44a1efc03fa89e91e95018380f92301febc41176dfa4aa161f0300ef03f0f3b.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792814177.743=1.9": "runs/preflight-20261024T035616.879919Z/evidence/08ab094df2b20512068518753baaac2e1ba7eeeed0ea11aaf8fa45f5ab7c4507.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792814177.743=1.9": "runs/preflight-20261024T035616.879919Z/evidence/821aa302898f7c4adfd16c05f10ea81f30d6d181dd04682376cde3d86e909c07.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792814177.743=32.00000000000001": "runs/preflight-20261024T035616.879919Z/evidence/355d77d11d6f67a1bef56d581b5a166a3a015d3c76989c71cb17f2c4ac04e8d1.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792814177.743=4.799999999999999": "runs/preflight-20261024T035616.879919Z/evidence/e648d23aa81492a5d2394df4745eec8dc06f18425099ac7e0b08d9ee271b0e80.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792814177.744=0.21668833550021668": "runs/preflight-20261024T035616.879919Z/evidence/0b7c64c809ca143bcb84506b5a97edef4d3258f48c28d78315a668665581c635.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792814177.744=0.6000600060006": "runs/preflight-20261024T035616.879919Z/evidence/2dc75162757a212eb85ddddf41c5fc7ffe02e74ee3e29d5bb5ad7fc81f06a0b1.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792814177.744=0.7334066740007333": "runs/preflight-20261024T035616.879919Z/evidence/606c06aae6ad5fba29a387779a0d4f57febb854ba7961c0e9b8578a927e100d1.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792814177.744=0.13334666800013334": "runs/preflight-20261024T035616.879919Z/evidence/357cfad40d8425c71abd0c972641466a555da11a4896c481048371720a1a150b.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792814177.744=0.2666933360002667": "runs/preflight-20261024T035616.879919Z/evidence/51ceffbd4a8912521c317e4af81905f2e354273547abc2e95eb2bf1370b83610.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792814177.744=4.383771710504384": "runs/preflight-20261024T035616.879919Z/evidence/349869497707d63bd42932f00b9e0e526ce33d1c6ea28e0f2130fc2bfbbc804f.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792814177.744=2.1668833550021667": "runs/preflight-20261024T035616.879919Z/evidence/80dd64b85158969cde151b35b277df4509909960474670cb2a5d54ec7bf301e1.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792814177.744=0.13334666800013334": "runs/preflight-20261024T035616.879919Z/evidence/6ace1c0d45664655d16cd0973dbfa2f4e16739022becb290c780be8cd54d1685.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792814177.744=1.000100010001": "runs/preflight-20261024T035616.879919Z/evidence/f5d294124e893d6ee8f77398906d0651b879092b7eee059f35db4934c408bf73.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792814177.744=0.2000200020002": "runs/preflight-20261024T035616.879919Z/evidence/eeca361f038924ae4ad3409931302a08e6a92b49c0fc4084eb581598d133e0f1.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792814177.744=0.3000300030003": "runs/preflight-20261024T035616.879919Z/evidence/a4f7e71090358240b2e2955681971b36760d430b8dae9286f7e70fa5d99126f6.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792814177.744=0.2000200020002": "runs/preflight-20261024T035616.879919Z/evidence/d47c4aded83e1eb165695fb0117d136be19474c03e7cd282a08f4cb165f63ef0.json",
+      "container:recommendation:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/361d0aa99fdfeef4adf68c6183a3c5c6341c55cd5696230b7db4b20acc82f251.json",
+      "container:recommendation:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/9aee5e60c48e2c7ea71664e49a6b39f78d4226c2d84ccc3f62c339e4fa6dc5cc.json",
+      "container:recommendation:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/aa57f7849d4e3debd34889c7c5d19c6cfe9a47470dc26491c7696f0c0a75926e.json",
+      "container:recommendation:StartedAt=2026-10-24T03:20:19.94576125Z": "runs/preflight-20261024T035616.879919Z/evidence/a37eb581a58f3f9ba62487fb38c71a23aba1e5655b305e72caa7b66df1a330ad.json",
+      "container:recommendation:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/4225129a78641cd01b33b9a58650422b4e3b54efdb23c89b742204f8aed9c379.json",
+      "container:recommendation:Memory=52428800": "runs/preflight-20261024T035616.879919Z/evidence/4bc0551cd60a5201ebafabb9a52cd83659325e0c8c0edd5a096000e08cde9911.json",
+      "container:valkey-cart:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/60bac2f12fafa69b0189cc5cf8935d0aef692bf476e461a67b9d9bb59dd0ba34.json",
+      "container:valkey-cart:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/806f4279820ce5d1cbf9c1152d43de6ab11db14c2728fd262b61cb660b88210a.json",
+      "container:valkey-cart:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/5d4f155883d536ada4bc28a80545b58acf8a0b316be3f305b01b6a3d8004bb42.json",
+      "container:valkey-cart:StartedAt=2026-10-24T01:07:46.419911647Z": "runs/preflight-20261024T035616.879919Z/evidence/58ec7e0b159d5fb5c661acbc57a9338e2f9c00cca8e405f5e20e190e07afd428.json",
+      "container:valkey-cart:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/995b15bfeb15bfc09e2c009a41c1afa924657c9525ef6f4362daa1acaba0e595.json",
+      "container:valkey-cart:Memory=20971520": "runs/preflight-20261024T035616.879919Z/evidence/0490b867b9ba77981b639e5a86e187a6954f029e681937cd6aa6952bd7a1f95b.json",
+      "container:ad:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/6e6f270584a087683f4042e636fe169ed8de024811b65bdef43636d5d4e04c87.json",
+      "container:ad:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/b0e4a0d78d6067bbb521a71e3cf4f5b53148fc045a3ee8ae56448f505d4d30ce.json",
+      "container:ad:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/a395e8f9c101c39334fa187c39f8c98e3b8378a0d5f9b7b84370e77358a17812.json",
+      "container:ad:StartedAt=2026-10-23T22:51:02.497117643Z": "runs/preflight-20261024T035616.879919Z/evidence/376eb76b1b383d38c7c129b7954a2c1ec8d1641768b1e1cf035c29eebcdac140.json",
+      "container:ad:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/d6e033a0caf750c09318215cd0bafc3ec88394a161a02a43feffa87e4a2c2367.json",
+      "container:ad:Memory=314572800": "runs/preflight-20261024T035616.879919Z/evidence/6c691479aed12fc7c8b219dd5ccf9417d00725405ba8dabb8e9fc845dbe36d05.json",
+      "container:otel-collector:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/e1c61c6d992e947f2a5ececabf6b8a3c71da8a51da18ebb7a1cc10ae78bb7dc0.json",
+      "container:otel-collector:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/fc5875b920401f0ac0c326723b8474bc80882154561c7051130b9f0db4965910.json",
+      "container:otel-collector:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/756356d6955b529cc1063c4f089883028b1e295de838f187eda33408883ebf0e.json",
+      "container:otel-collector:StartedAt=2026-10-23T22:02:50.673261731Z": "runs/preflight-20261024T035616.879919Z/evidence/79cdb057fde13eca07c9e1a0716bcf314448f43c276c57ebcaa7318bd57030c1.json",
+      "container:otel-collector:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/c5712e92c3f98675f3273116ce248af87789e7313760bf9e8a6ab3d1aa1a404a.json",
+      "container:otel-collector:Memory=209715200": "runs/preflight-20261024T035616.879919Z/evidence/d8d9d802709d92e073854aaa86fe23b13774331e489c95b7858500fbe68d125f.json",
+      "container:quote:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/0bc67816039a8aaba661837b38f65d6679289c41c9555f4d98d3399238271ff4.json",
+      "container:quote:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/a47242f520c24f57d503e7316bf477659802c37c09d1a060372009d4ac5e5b82.json",
+      "container:quote:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/aa25d6231339a3ee870592b31d3cf952f03324b4ffad0e0ab19d8ff3f2b23f3d.json",
+      "container:quote:StartedAt=2026-10-23T08:26:29.477930572Z": "runs/preflight-20261024T035616.879919Z/evidence/f7beff0c4e07f4216e3cba8055046ccbc1eec85e7a23d21aec316017155b3f35.json",
+      "container:quote:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/ecbfaa878db9e570cbb7f62fb97caf86741ac3262a0c28790cf52c32b9d92297.json",
+      "container:quote:Memory=41943040": "runs/preflight-20261024T035616.879919Z/evidence/fc02be88b8d92f13488c0225d23c9cebd54216edaa32bc771ba50cc61b5152f8.json",
+      "container:frontend-proxy:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/9f34b3292bc1918b37c3c81d53ec3b484516917d00a76c5889e809c12556b353.json",
+      "container:frontend-proxy:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/112b0bc80713430a3b52df98829e2764a5380189c4b92b3ee534f02c18222b6e.json",
+      "container:frontend-proxy:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/91d3e7f1356c5076695355cff481e019d29b1d28f0d56704568a40400dae157a.json",
+      "container:frontend-proxy:StartedAt=2026-10-23T08:26:29.349062306Z": "runs/preflight-20261024T035616.879919Z/evidence/dc7dbc9e02b7e2e3a385e97385f5428c45c7fbef282b16a688fab15053ba043c.json",
+      "container:frontend-proxy:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/5bc34ed644a5ae21ca6d47be27c95d40cc59dd1afc0832f316c7f742dd2abade.json",
+      "container:frontend-proxy:Memory=68157440": "runs/preflight-20261024T035616.879919Z/evidence/d9ca6785d7bf14a337aa9d6299c62e600dc8a7e3a188f7008f3e2d0b9b255855.json",
+      "container:load-generator:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/0e6f7bd6cc930dfc64c9d8105a1947225ad37e67ef157c48855b11f19680dd42.json",
+      "container:load-generator:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/f3d63114747ca9a194ea898ecbe4b5e16cb54b752785951e444739cb54704071.json",
+      "container:load-generator:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/77c4ba65114a43556d3f74a30c7c9b354c8eb9a71f51b463a4d05ebf19264508.json",
+      "container:load-generator:StartedAt=2026-10-23T17:32:20.793766503Z": "runs/preflight-20261024T035616.879919Z/evidence/ef84aa5782479db9e5b6cbe32c41c903ad7708b23f89e0e9839f978884c7831b.json",
+      "container:load-generator:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/f305b0905387c6c34d2883b15f469e464671c145d558192a7e26a2bc4b483559.json",
+      "container:load-generator:Memory=125829120": "runs/preflight-20261024T035616.879919Z/evidence/29edec9debdac3b10ce67053ef2047ee1766b3a12d53f49304b2058b18fefce5.json",
+      "container:frontend:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/33b4d9b21b9cb3af689353b8448735274c165fb8a85934cbdcebbac2bc32b1da.json",
+      "container:frontend:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/6547f1c594819a8cd2da74279a4b0d90b365e499fb4d83d2c404b7ea1a1b0b6f.json",
+      "container:frontend:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/c54e5b50d45c3a50b9986fb4f7bbf89af9b6827260f363dc03b07387c59d75a6.json",
+      "container:frontend:StartedAt=2026-10-23T08:26:29.311548414Z": "runs/preflight-20261024T035616.879919Z/evidence/baa8efdbefdbfe699cf431c62c215a69a9ddd55d083be419540accda84e2c01c.json",
+      "container:frontend:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/92bc6e8bc94d351ac3b27924243f11710be19f45f85a9c86c04116de07ef8bb2.json",
+      "container:frontend:Memory=262144000": "runs/preflight-20261024T035616.879919Z/evidence/4d28caf8908a8dbf37b36de4685171029afbcd73326c16589085e8b37bab991d.json",
+      "container:checkout:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/8dd2c21bb9202ae088789cfec4de9c3706e00a0cccd8d69d1e053e0d5283e9ff.json",
+      "container:checkout:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/ecc38629fc94d9cfb588645e7c4c1317c96a4d438518cfd26f3a18d5943d5632.json",
+      "container:checkout:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/7b74565a0a6c2a2f9b3e2a26aa49d4081fc570b355c97d154c1edb4e913eb295.json",
+      "container:checkout:StartedAt=2026-10-23T08:26:28.35551033Z": "runs/preflight-20261024T035616.879919Z/evidence/09b0f5e2b0a57bd67cb072a4ea8443ceec6439ac17555ec79e1479a1d1aa9d58.json",
+      "container:checkout:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/f76fec78fb0b861cd72532a191ac2b2980cc629eb3f9dc8a8268be681f2c465c.json",
+      "container:checkout:Memory=20971520": "runs/preflight-20261024T035616.879919Z/evidence/d090d2dc40b140ee3752c6ce830b31a089d34fdd65bbbe0dfe52bde4f639d831.json",
+      "container:image-provider:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/9495f8c137434fede5863ddf4c6de9ae0e1359b4446ebb333fd8d0579ab62ae5.json",
+      "container:image-provider:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/0b54d2c06462dd87b03ea61a477332fdcfabb7cba0e224e536f012bc7fa4c5d6.json",
+      "container:image-provider:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/fe3497ddb84390b92f0a0d59761d8a89ef904965bdfe8e8b08537523fb0deaf7.json",
+      "container:image-provider:StartedAt=2026-10-23T08:26:29.09780768Z": "runs/preflight-20261024T035616.879919Z/evidence/c935dc7ab94fb111808048be46717d1259d4abfe02095007475e86c7a2e286b1.json",
+      "container:image-provider:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/116444c67a3ec92c54a8ef116045704341c6386a9c188bdba1c7f6d616f38622.json",
+      "container:image-provider:Memory=125829120": "runs/preflight-20261024T035616.879919Z/evidence/e1bf6d1474305b347732cc71a638e598157c5d5261d52139d7b8bc9783a4922a.json",
+      "container:email:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/46a30e445757039763b71f70862c117b00284caf736f34c779a13665870b2d76.json",
+      "container:email:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/9674ba4375ca8a43275eee93ab8344e3e129c2a77f0b889eb803d6fb035bad4e.json",
+      "container:email:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/ea512bd2283ed1914bf5fa156839e515f0aaff9ae24f9ad945fe5c46a9b43276.json",
+      "container:email:StartedAt=2026-10-24T00:16:44.392688303Z": "runs/preflight-20261024T035616.879919Z/evidence/2afc767a6d54360e95d7e22064e56a692ca9b129df9def0b899059dd5101dde6.json",
+      "container:email:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/11de53038876912291ba1d0f1cea1ee9f74fc3a08a366af9d783a01ca439ce8d.json",
+      "container:email:Memory=104857600": "runs/preflight-20261024T035616.879919Z/evidence/274f8adc770f59ab8e313a152aaec02710cc76560e2ab0d5bafcc5158fe8cbfd.json",
+      "container:payment:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/84064825678e94648644ef1d92a9e456cdce933336e731246c1063986398581b.json",
+      "container:payment:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/451bc4bbe2ca0c01e7dc97c8ce66197e4ccb535476a8b4bf1374705421529353.json",
+      "container:payment:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/54abc003dead575259f2ed1606970123560d566175ec8aeaaca729920cca9bcd.json",
+      "container:payment:StartedAt=2026-10-23T08:26:28.499506526Z": "runs/preflight-20261024T035616.879919Z/evidence/fdcf8c0e671d61b357822025b41c285ea5ef7424ae1d34f3140a05edf2f400b6.json",
+      "container:payment:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/f8e327cb47da82ac1d58165cd5f31af3e70e2c63241d04fe55250a2aa02397d7.json",
+      "container:payment:Memory=125829120": "runs/preflight-20261024T035616.879919Z/evidence/0e68e5d59b69d790464cda13f2d9d7a66051639f0560c3560c545ee5a0a41d19.json",
+      "container:cart:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/9571f76c26cbb8d1c36eaedd2176673fc47784cecea5e0d25cc6ea6b1cad4d18.json",
+      "container:cart:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/1089cc769fa743398cf3cc0714f368ea0236d9c523e026d6a2671224d3a98ff9.json",
+      "container:cart:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/5f4b9cdcdd95fcb25b33b44eda017e1b9d629ecb90ea43858645ee100790f5f6.json",
+      "container:cart:StartedAt=2026-10-23T08:26:28.708327669Z": "runs/preflight-20261024T035616.879919Z/evidence/312e5bc7d3bbd5d6836be5d60782b856bcbfe01d752c6f0015938eba67c69ab3.json",
+      "container:cart:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/f9cd1b16076990c88c9cc4346cc8b8faacebfa4c57f426c73c12f4e49457a506.json",
+      "container:cart:Memory=167772160": "runs/preflight-20261024T035616.879919Z/evidence/fb930d8ce52443936ec3b2947e9a018004e28ae17057cf4b2ea84b7eb53d782c.json",
+      "container:currency:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/5c0da49f5de6bd1c88c9802df982a911990437f46f70b23d705809bf4232e38f.json",
+      "container:currency:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/8470054e9866ecc7f474e274d976e0a4ebda026625d3bd649447cd6357cc44e6.json",
+      "container:currency:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/0e47b4abc554f8fbf375b975e767e1be447f53e6883a1bb6283a5ddac94c1405.json",
+      "container:currency:StartedAt=2026-10-23T08:26:29.167214092Z": "runs/preflight-20261024T035616.879919Z/evidence/8dc3bead148d4314a6911878750d51f24b497efa73517f014de86699431935fb.json",
+      "container:currency:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/c5f254f4a0f7237c68019f962c055d3bf7664dcf55549154e59bc9a16b8276a9.json",
+      "container:currency:Memory=20971520": "runs/preflight-20261024T035616.879919Z/evidence/5ef20a5dba4ccf09882098f4024ef7ae1c68519db8d2328cef7a704469adedd7.json",
+      "container:product-catalog:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/60623af1368c7f2573cdcd3083731daede1eaeade3e2379b2186f4a723f41a1b.json",
+      "container:product-catalog:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/dc31e7a421803aa9cd17724a6e71cf28574ae40eaa4900b44d3f38c96cae6850.json",
+      "container:product-catalog:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/238735237c6fc9c0d74bb2b2e895b1dab4edd780d78a71b7df4ff740df25c915.json",
+      "container:product-catalog:StartedAt=2026-10-23T08:26:28.456561269Z": "runs/preflight-20261024T035616.879919Z/evidence/1460f9f5dced25873d8cec7a4d8a3ceb5bda89ccbca6b30b4b506db16455446b.json",
+      "container:product-catalog:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/30340e4ed606244445aa5dbd7bd78fcb41d205bda16865aef876319774cdbecd.json",
+      "container:product-catalog:Memory=20971520": "runs/preflight-20261024T035616.879919Z/evidence/942baaa35c53e72b2afb1db410c030ab739fd5b050d40d632a0e03402ae660c1.json",
+      "container:shipping:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/df277715962ed4d2dbb38512bd3ac27ec2f7efa31d4b1102dd2aef3211c1317b.json",
+      "container:shipping:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/32398f4e02778f8aa0c5d6a1b71a21ae1cdeefc266f3b4da8e61d5f1375f779b.json",
+      "container:shipping:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/0e5458470a387ec9e89ca9c68b57a7ad72aa878f66c6a5e3461517d6c449a575.json",
+      "container:shipping:StartedAt=2026-10-23T08:26:28.13565142Z": "runs/preflight-20261024T035616.879919Z/evidence/d15d27f6df01069fbbe85f32562b676b7ec34283b04edd2f1c8e46af4716bdf7.json",
+      "container:shipping:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/0243b1383fb131d9ebac87989cfb3c766fca150c4370f3e3aff9c6e0a5368ff0.json",
+      "container:shipping:Memory=20971520": "runs/preflight-20261024T035616.879919Z/evidence/6f54d46e1b216673cade83c91197b7c7f1deee0e5afe3facfbda01a3c70ff4fa.json",
+      "container:opensearch:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/bf57aa620e07d5894a8905080f2ec7705b72a1363ae226ed97e5c899aa06b94a.json",
+      "container:opensearch:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/ecf1be9d8ac0588bf7910f675c5888debe450ee33b025911750b4ed63cd426ce.json",
+      "container:opensearch:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/f254bb1167d6315625b0a013d26f177b522a8de0803f7edbda5b82acf876892d.json",
+      "container:opensearch:StartedAt=2026-10-23T22:26:29.765291055Z": "runs/preflight-20261024T035616.879919Z/evidence/693d25d71a18d8d9422cf2ea9f8a6687b4db555c78e25b40b06f45bd278a23c1.json",
+      "container:opensearch:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/597ef71df307f90b23da96f94ad79423c78911c303d81dde1dfb0474092d5633.json",
+      "container:opensearch:Memory=1181116006": "runs/preflight-20261024T035616.879919Z/evidence/cf7be28cdf978a8d75ce8384d0dd56393308e6f3fc2253480d4f8036eb1a6c98.json",
+      "container:jaeger:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/774555be580c5a4bdb0a157839c1b25b69f1064adfb26a3e9f4de9b052c62692.json",
+      "container:jaeger:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/d547a01f37a3d15077bdd93e2977f412a05186241af112c167dadcf00e14b1e0.json",
+      "container:jaeger:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/d0cf132b85f9f8dc4869191dc84f6f1fcc3892b00881ef453665065a906b825d.json",
+      "container:jaeger:StartedAt=2026-10-23T08:26:28.898653815Z": "runs/preflight-20261024T035616.879919Z/evidence/0cf572692bc3019fb300bc25938a16c04cb157a728682f1f1e794b9d1a3aa746.json",
+      "container:jaeger:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/f4ed79974c9c4cf841154e4a10fd8a70e2ac76bf2afccce4dd2d2ab17d6e0018.json",
+      "container:jaeger:Memory=419430400": "runs/preflight-20261024T035616.879919Z/evidence/59f624b8874b98a5d08464672b4cafce5a082cdb4b61d78c619ab05d2f3aca58.json",
+      "container:prometheus:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/4078ad6661267451848f90672c4fafcbee335529e58e428ccef9883be4d2e8c9.json",
+      "container:prometheus:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/519ec0d835cf5378c3897c52216e9f4ccae730e226865b8fc4eb80b789cf2aa0.json",
+      "container:prometheus:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/302c28ed3683c5ff7e57af4d08617787dfdfebc5ce6b00ca161cc4c478ecb313.json",
+      "container:prometheus:StartedAt=2026-10-23T08:26:29.528477315Z": "runs/preflight-20261024T035616.879919Z/evidence/0cdb5ee3cfdc4e3196baa34b5c7c4aed9116fa5f7759d8f8e8190f9788288c32.json",
+      "container:prometheus:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/ea25358bdeb8552178cba099608325dc3c92a68d42b731ee65c669600fd101e9.json",
+      "container:prometheus:Memory=314572800": "runs/preflight-20261024T035616.879919Z/evidence/6b5c3e4c4f2ac953e9e77411e9a3ae8045b1f4269a9fd006c93eaf5a4737110a.json",
+      "container:grafana:Status=running": "runs/preflight-20261024T035616.879919Z/evidence/1730687a463f98194def7ce1d7045cf0fee8746fcf9570e13b5fba0cb51965de.json",
+      "container:grafana:RestartCount=0": "runs/preflight-20261024T035616.879919Z/evidence/7e35ed0735884efa705a5377477b7a0b55ce53983595726aaa5d6c57e80389fe.json",
+      "container:grafana:OOMKilled=false": "runs/preflight-20261024T035616.879919Z/evidence/7ba9d7debadfa5178bbf0c4ce478471f10dcd098e890c818476b3862c91a0a00.json",
+      "container:grafana:StartedAt=2026-10-23T08:26:29.201513885Z": "runs/preflight-20261024T035616.879919Z/evidence/5ab471e4d36b66562906e39e6ee6980c00790721b40e6137fdbee7b29886588c.json",
+      "container:grafana:NanoCpus=0": "runs/preflight-20261024T035616.879919Z/evidence/df34eed31f23d98cb5d6f06c2f3400e159f1ad0bb0c249cde800cc3b66f057da.json",
+      "container:grafana:Memory=125829120": "runs/preflight-20261024T035616.879919Z/evidence/b401e79a58b1a77b27bb381ada7e9af6c4938ea09224c11414282507c7546a1d.json"
+    },
+    "elapsed_s": 2.8156
+  },
+  "baseline_metrics": {
+    "tool": "get_metrics",
+    "source": "prometheus",
+    "query": "named:rps_by_service",
+    "window": {
+      "from": "2026-10-24T03:44:17.589047+00:00",
+      "to": "2026-10-24T03:56:17.589047+00:00"
+    },
+    "data": [
+      {
+        "metric": {
+          "service_name": "ad"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.13334889070391545
+          ],
+          [
+            1792813592.589,
+            0.13334889070391545
+          ],
+          [
+            1792813607.589,
+            0.13334889070391545
+          ],
+          [
+            1792813622.589,
+            0.13334889070391545
+          ],
+          [
+            1792813637.589,
+            0.2000200020002
+          ],
+          [
+            1792813652.589,
+            0.2000200020002
+          ],
+          [
+            1792813667.589,
+            0.2000200020002
+          ],
+          [
+            1792813682.589,
+            0.2000200020002
+          ],
+          [
+            1792813697.589,
+            0.2500291700698415
+          ],
+          [
+            1792813712.589,
+            0.2500291700698415
+          ],
+          [
+            1792813727.589,
+            0.2500291700698415
+          ],
+          [
+            1792813742.589,
+            0.2500291700698415
+          ],
+          [
+            1792813757.589,
+            0.11667444496299754
+          ],
+          [
+            1792813772.589,
+            0.11667444496299754
+          ],
+          [
+            1792813787.589,
+            0.11667444496299754
+          ],
+          [
+            1792813802.589,
+            0.11667444496299754
+          ],
+          [
+            1792813817.589,
+            0.10001333511134818
+          ],
+          [
+            1792813832.589,
+            0.10001333511134818
+          ],
+          [
+            1792813847.589,
+            0.10001333511134818
+          ],
+          [
+            1792813862.589,
+            0.10001333511134818
+          ],
+          [
+            1792813877.589,
+            0.06667222268522378
+          ],
+          [
+            1792813892.589,
+            0.06667222268522378
+          ],
+          [
+            1792813907.589,
+            0.06667222268522378
+          ],
+          [
+            1792813922.589,
+            0.06667222268522378
+          ],
+          [
+            1792813937.589,
+            0.3333722267597886
+          ],
+          [
+            1792813952.589,
+            0.3333722267597886
+          ],
+          [
+            1792813967.589,
+            0.3333722267597886
+          ],
+          [
+            1792813982.589,
+            0.3333722267597886
+          ],
+          [
+            1792813997.589,
+            0.13334666800013334
+          ],
+          [
+            1792814012.589,
+            0.13334666800013334
+          ],
+          [
+            1792814027.589,
+            0.13334666800013334
+          ],
+          [
+            1792814042.589,
+            0.13334666800013334
+          ],
+          [
+            1792814057.589,
+            0.20002667022269635
+          ],
+          [
+            1792814072.589,
+            0.20002667022269635
+          ],
+          [
+            1792814087.589,
+            0.20002667022269635
+          ],
+          [
+            1792814102.589,
+            0.20002667022269635
+          ],
+          [
+            1792814117.589,
+            0.10000833402783563
+          ],
+          [
+            1792814132.589,
+            0.10000833402783563
+          ],
+          [
+            1792814147.589,
+            0.10000833402783568
+          ],
+          [
+            1792814162.589,
+            0.10000833402783568
+          ],
+          [
+            1792814177.589,
+            0.21668833550021668
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792813937.589=0.3333722267597886",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792814177.589=0.21668833550021668"
+      },
+      {
+        "metric": {
+          "service_name": "cart"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.4500525061257147
+          ],
+          [
+            1792813592.589,
+            0.4500525061257147
+          ],
+          [
+            1792813607.589,
+            0.4500525061257147
+          ],
+          [
+            1792813622.589,
+            0.4500525061257147
+          ],
+          [
+            1792813637.589,
+            0.8334166750008334
+          ],
+          [
+            1792813652.589,
+            0.8334166750008334
+          ],
+          [
+            1792813667.589,
+            0.8334166750008334
+          ],
+          [
+            1792813682.589,
+            0.8334166750008334
+          ],
+          [
+            1792813697.589,
+            0.2000233360558732
+          ],
+          [
+            1792813712.589,
+            0.2000233360558732
+          ],
+          [
+            1792813727.589,
+            0.2000233360558732
+          ],
+          [
+            1792813742.589,
+            0.2000233360558732
+          ],
+          [
+            1792813757.589,
+            0.4666977798519902
+          ],
+          [
+            1792813772.589,
+            0.4666977798519902
+          ],
+          [
+            1792813787.589,
+            0.4666977798519902
+          ],
+          [
+            1792813802.589,
+            0.4666977798519902
+          ],
+          [
+            1792813817.589,
+            0.13335111348179757
+          ],
+          [
+            1792813832.589,
+            0.13335111348179757
+          ],
+          [
+            1792813847.589,
+            0.13335111348179757
+          ],
+          [
+            1792813862.589,
+            0.13335111348179757
+          ],
+          [
+            1792813877.589,
+            0.9500791732644389
+          ],
+          [
+            1792813892.589,
+            0.9500791732644389
+          ],
+          [
+            1792813907.589,
+            0.9500791732644389
+          ],
+          [
+            1792813922.589,
+            0.9500791732644389
+          ],
+          [
+            1792813937.589,
+            0.500058340139683
+          ],
+          [
+            1792813952.589,
+            0.500058340139683
+          ],
+          [
+            1792813967.589,
+            0.500058340139683
+          ],
+          [
+            1792813982.589,
+            0.500058340139683
+          ],
+          [
+            1792813997.589,
+            0.8334166750008334
+          ],
+          [
+            1792814012.589,
+            0.8334166750008334
+          ],
+          [
+            1792814027.589,
+            0.8334166750008334
+          ],
+          [
+            1792814042.589,
+            0.8334166750008334
+          ],
+          [
+            1792814057.589,
+            0.5000666755567409
+          ],
+          [
+            1792814072.589,
+            0.5000666755567409
+          ],
+          [
+            1792814087.589,
+            0.5000666755567409
+          ],
+          [
+            1792814102.589,
+            0.5000666755567409
+          ],
+          [
+            1792814117.589,
+            0.43336944745395445
+          ],
+          [
+            1792814132.589,
+            0.43336944745395445
+          ],
+          [
+            1792814147.589,
+            0.43336944745395456
+          ],
+          [
+            1792814162.589,
+            0.43336944745395456
+          ],
+          [
+            1792814177.589,
+            0.6000600060006
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792813877.589=0.9500791732644389",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792814177.589=0.6000600060006"
+      },
+      {
+        "metric": {
+          "service_name": "checkout"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.4333838947877252
+          ],
+          [
+            1792813592.589,
+            0.4333838947877252
+          ],
+          [
+            1792813607.589,
+            0.4333838947877252
+          ],
+          [
+            1792813622.589,
+            0.4333838947877252
+          ],
+          [
+            1792813637.589,
+            1.2834616795012832
+          ],
+          [
+            1792813652.589,
+            1.2834616795012832
+          ],
+          [
+            1792813667.589,
+            1.2834616795012832
+          ],
+          [
+            1792813682.589,
+            1.2834616795012832
+          ],
+          [
+            1792813697.589,
+            0.0
+          ],
+          [
+            1792813712.589,
+            0.0
+          ],
+          [
+            1792813727.589,
+            0.0
+          ],
+          [
+            1792813742.589,
+            0.0
+          ],
+          [
+            1792813757.589,
+            0.5833722248149877
+          ],
+          [
+            1792813772.589,
+            0.5833722248149877
+          ],
+          [
+            1792813787.589,
+            0.5833722248149877
+          ],
+          [
+            1792813802.589,
+            0.5833722248149877
+          ],
+          [
+            1792813817.589,
+            0.0
+          ],
+          [
+            1792813832.589,
+            0.0
+          ],
+          [
+            1792813847.589,
+            0.0
+          ],
+          [
+            1792813862.589,
+            0.0
+          ],
+          [
+            1792813877.589,
+            1.0167513959496626
+          ],
+          [
+            1792813892.589,
+            1.0167513959496626
+          ],
+          [
+            1792813907.589,
+            1.0167513959496626
+          ],
+          [
+            1792813922.589,
+            1.0167513959496626
+          ],
+          [
+            1792813937.589,
+            0.733418898871535
+          ],
+          [
+            1792813952.589,
+            0.733418898871535
+          ],
+          [
+            1792813967.589,
+            0.733418898871535
+          ],
+          [
+            1792813982.589,
+            0.733418898871535
+          ],
+          [
+            1792813997.589,
+            1.05010501050105
+          ],
+          [
+            1792814012.589,
+            1.05010501050105
+          ],
+          [
+            1792814027.589,
+            1.05010501050105
+          ],
+          [
+            1792814042.589,
+            1.05010501050105
+          ],
+          [
+            1792814057.589,
+            0.6500866782237631
+          ],
+          [
+            1792814072.589,
+            0.6500866782237631
+          ],
+          [
+            1792814087.589,
+            0.6500866782237631
+          ],
+          [
+            1792814102.589,
+            0.6500866782237631
+          ],
+          [
+            1792814117.589,
+            0.4000333361113425
+          ],
+          [
+            1792814132.589,
+            0.4000333361113425
+          ],
+          [
+            1792814147.589,
+            0.40003333611134273
+          ],
+          [
+            1792814162.589,
+            0.40003333611134273
+          ],
+          [
+            1792814177.589,
+            0.7334066740007333
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792813637.589=1.2834616795012832",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792814177.589=0.7334066740007333"
+      },
+      {
+        "metric": {
+          "service_name": "currency"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.1000116680279366
+          ],
+          [
+            1792813592.589,
+            0.1000116680279366
+          ],
+          [
+            1792813607.589,
+            0.1000116680279366
+          ],
+          [
+            1792813622.589,
+            0.1000116680279366
+          ],
+          [
+            1792813637.589,
+            0.23335666900023333
+          ],
+          [
+            1792813652.589,
+            0.23335666900023333
+          ],
+          [
+            1792813667.589,
+            0.23335666900023333
+          ],
+          [
+            1792813682.589,
+            0.23335666900023333
+          ],
+          [
+            1792813697.589,
+            0.0
+          ],
+          [
+            1792813712.589,
+            0.0
+          ],
+          [
+            1792813727.589,
+            0.0
+          ],
+          [
+            1792813742.589,
+            0.0
+          ],
+          [
+            1792813757.589,
+            0.11667444496299754
+          ],
+          [
+            1792813772.589,
+            0.11667444496299754
+          ],
+          [
+            1792813787.589,
+            0.11667444496299754
+          ],
+          [
+            1792813802.589,
+            0.11667444496299754
+          ],
+          [
+            1792813817.589,
+            0.0
+          ],
+          [
+            1792813832.589,
+            0.0
+          ],
+          [
+            1792813847.589,
+            0.0
+          ],
+          [
+            1792813862.589,
+            0.0
+          ],
+          [
+            1792813877.589,
+            0.2166847237269773
+          ],
+          [
+            1792813892.589,
+            0.2166847237269773
+          ],
+          [
+            1792813907.589,
+            0.2166847237269773
+          ],
+          [
+            1792813922.589,
+            0.2166847237269773
+          ],
+          [
+            1792813937.589,
+            0.18335472471788375
+          ],
+          [
+            1792813952.589,
+            0.18335472471788375
+          ],
+          [
+            1792813967.589,
+            0.18335472471788375
+          ],
+          [
+            1792813982.589,
+            0.18335472471788375
+          ],
+          [
+            1792813997.589,
+            0.18335166850018333
+          ],
+          [
+            1792814012.589,
+            0.18335166850018333
+          ],
+          [
+            1792814027.589,
+            0.18335166850018333
+          ],
+          [
+            1792814042.589,
+            0.18335166850018333
+          ],
+          [
+            1792814057.589,
+            0.18335778103747166
+          ],
+          [
+            1792814072.589,
+            0.18335778103747166
+          ],
+          [
+            1792814087.589,
+            0.18335778103747166
+          ],
+          [
+            1792814102.589,
+            0.18335778103747166
+          ],
+          [
+            1792814117.589,
+            0.050004167013917813
+          ],
+          [
+            1792814132.589,
+            0.050004167013917813
+          ],
+          [
+            1792814147.589,
+            0.05000416701391784
+          ],
+          [
+            1792814162.589,
+            0.05000416701391784
+          ],
+          [
+            1792814177.589,
+            0.13334666800013334
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792813637.589=0.23335666900023333",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792814177.589=0.13334666800013334"
+      },
+      {
+        "metric": {
+          "service_name": "email"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.13334889070391545
+          ],
+          [
+            1792813592.589,
+            0.13334889070391545
+          ],
+          [
+            1792813607.589,
+            0.13334889070391545
+          ],
+          [
+            1792813622.589,
+            0.13334889070391545
+          ],
+          [
+            1792813637.589,
+            0.46671333800046666
+          ],
+          [
+            1792813652.589,
+            0.46671333800046666
+          ],
+          [
+            1792813667.589,
+            0.46671333800046666
+          ],
+          [
+            1792813682.589,
+            0.46671333800046666
+          ],
+          [
+            1792813697.589,
+            0.0
+          ],
+          [
+            1792813712.589,
+            0.0
+          ],
+          [
+            1792813727.589,
+            0.0
+          ],
+          [
+            1792813742.589,
+            0.0
+          ],
+          [
+            1792813757.589,
+            0.2000133342222815
+          ],
+          [
+            1792813772.589,
+            0.2000133342222815
+          ],
+          [
+            1792813787.589,
+            0.2000133342222815
+          ],
+          [
+            1792813802.589,
+            0.2000133342222815
+          ],
+          [
+            1792813817.589,
+            0.0
+          ],
+          [
+            1792813832.589,
+            0.0
+          ],
+          [
+            1792813847.589,
+            0.0
+          ],
+          [
+            1792813862.589,
+            0.0
+          ],
+          [
+            1792813877.589,
+            0.3333611134261189
+          ],
+          [
+            1792813892.589,
+            0.3333611134261189
+          ],
+          [
+            1792813907.589,
+            0.3333611134261189
+          ],
+          [
+            1792813922.589,
+            0.3333611134261189
+          ],
+          [
+            1792813937.589,
+            0.2666977814078309
+          ],
+          [
+            1792813952.589,
+            0.2666977814078309
+          ],
+          [
+            1792813967.589,
+            0.2666977814078309
+          ],
+          [
+            1792813982.589,
+            0.2666977814078309
+          ],
+          [
+            1792813997.589,
+            0.3333666700003334
+          ],
+          [
+            1792814012.589,
+            0.3333666700003334
+          ],
+          [
+            1792814027.589,
+            0.3333666700003334
+          ],
+          [
+            1792814042.589,
+            0.3333666700003334
+          ],
+          [
+            1792814057.589,
+            0.20002667022269635
+          ],
+          [
+            1792814072.589,
+            0.20002667022269635
+          ],
+          [
+            1792814087.589,
+            0.20002667022269635
+          ],
+          [
+            1792814102.589,
+            0.20002667022269635
+          ],
+          [
+            1792814117.589,
+            0.1333444453704475
+          ],
+          [
+            1792814132.589,
+            0.1333444453704475
+          ],
+          [
+            1792814147.589,
+            0.13334444537044757
+          ],
+          [
+            1792814162.589,
+            0.13334444537044757
+          ],
+          [
+            1792814177.589,
+            0.2666933360002667
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792813637.589=0.46671333800046666",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792814177.589=0.2666933360002667"
+      },
+      {
+        "metric": {
+          "service_name": "frontend"
+        },
+        "values": [
+          [
+            1792813577.589,
+            4.367176170553231
+          ],
+          [
+            1792813592.589,
+            4.367176170553231
+          ],
+          [
+            1792813607.589,
+            4.367176170553231
+          ],
+          [
+            1792813622.589,
+            4.367176170553231
+          ],
+          [
+            1792813637.589,
+            5.9839317265059835
+          ],
+          [
+            1792813652.589,
+            5.9839317265059835
+          ],
+          [
+            1792813667.589,
+            5.9839317265059835
+          ],
+          [
+            1792813682.589,
+            5.9839317265059835
+          ],
+          [
+            1792813697.589,
+            3.700431717033654
+          ],
+          [
+            1792813712.589,
+            3.700431717033654
+          ],
+          [
+            1792813727.589,
+            3.700431717033654
+          ],
+          [
+            1792813742.589,
+            3.700431717033654
+          ],
+          [
+            1792813757.589,
+            4.183612240816055
+          ],
+          [
+            1792813772.589,
+            4.183612240816055
+          ],
+          [
+            1792813787.589,
+            4.183612240816055
+          ],
+          [
+            1792813802.589,
+            4.183612240816055
+          ],
+          [
+            1792813817.589,
+            3.55047339645286
+          ],
+          [
+            1792813832.589,
+            3.55047339645286
+          ],
+          [
+            1792813847.589,
+            3.55047339645286
+          ],
+          [
+            1792813862.589,
+            3.55047339645286
+          ],
+          [
+            1792813877.589,
+            4.817068089007418
+          ],
+          [
+            1792813892.589,
+            4.817068089007418
+          ],
+          [
+            1792813907.589,
+            4.817068089007418
+          ],
+          [
+            1792813922.589,
+            4.817068089007418
+          ],
+          [
+            1792813937.589,
+            3.983798109779474
+          ],
+          [
+            1792813952.589,
+            3.983798109779474
+          ],
+          [
+            1792813967.589,
+            3.983798109779474
+          ],
+          [
+            1792813982.589,
+            3.983798109779474
+          ],
+          [
+            1792813997.589,
+            5.933926726005934
+          ],
+          [
+            1792814012.589,
+            5.933926726005934
+          ],
+          [
+            1792814027.589,
+            5.933926726005934
+          ],
+          [
+            1792814042.589,
+            5.933926726005934
+          ],
+          [
+            1792814057.589,
+            4.467262301640218
+          ],
+          [
+            1792814072.589,
+            4.467262301640218
+          ],
+          [
+            1792814087.589,
+            4.467262301640218
+          ],
+          [
+            1792814102.589,
+            4.467262301640218
+          ],
+          [
+            1792814117.589,
+            4.6170514209517455
+          ],
+          [
+            1792814132.589,
+            4.6170514209517455
+          ],
+          [
+            1792814147.589,
+            4.617051420951747
+          ],
+          [
+            1792814162.589,
+            4.617051420951747
+          ],
+          [
+            1792814177.589,
+            4.383771710504384
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792813637.589=5.9839317265059835",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792814177.589=4.383771710504384"
+      },
+      {
+        "metric": {
+          "service_name": "frontend-proxy"
+        },
+        "values": [
+          [
+            1792813577.589,
+            2.0502391945727
+          ],
+          [
+            1792813592.589,
+            2.0502391945727
+          ],
+          [
+            1792813607.589,
+            2.0502391945727
+          ],
+          [
+            1792813622.589,
+            2.0502391945727
+          ],
+          [
+            1792813637.589,
+            2.516918358502517
+          ],
+          [
+            1792813652.589,
+            2.516918358502517
+          ],
+          [
+            1792813667.589,
+            2.516918358502517
+          ],
+          [
+            1792813682.589,
+            2.516918358502517
+          ],
+          [
+            1792813697.589,
+            1.8668844698548164
+          ],
+          [
+            1792813712.589,
+            1.8668844698548164
+          ],
+          [
+            1792813727.589,
+            1.8668844698548164
+          ],
+          [
+            1792813742.589,
+            1.8668844698548164
+          ],
+          [
+            1792813757.589,
+            1.9667977865191013
+          ],
+          [
+            1792813772.589,
+            1.9667977865191013
+          ],
+          [
+            1792813787.589,
+            1.9667977865191013
+          ],
+          [
+            1792813802.589,
+            1.9667977865191013
+          ],
+          [
+            1792813817.589,
+            1.533537805040672
+          ],
+          [
+            1792813832.589,
+            1.533537805040672
+          ],
+          [
+            1792813847.589,
+            1.533537805040672
+          ],
+          [
+            1792813862.589,
+            1.533537805040672
+          ],
+          [
+            1792813877.589,
+            2.3335277939828325
+          ],
+          [
+            1792813892.589,
+            2.3335277939828325
+          ],
+          [
+            1792813907.589,
+            2.3335277939828325
+          ],
+          [
+            1792813922.589,
+            2.3335277939828325
+          ],
+          [
+            1792813937.589,
+            2.166919473938626
+          ],
+          [
+            1792813952.589,
+            2.166919473938626
+          ],
+          [
+            1792813967.589,
+            2.166919473938626
+          ],
+          [
+            1792813982.589,
+            2.166919473938626
+          ],
+          [
+            1792813997.589,
+            2.4002400240024
+          ],
+          [
+            1792814012.589,
+            2.4002400240024
+          ],
+          [
+            1792814027.589,
+            2.4002400240024
+          ],
+          [
+            1792814042.589,
+            2.4002400240024
+          ],
+          [
+            1792814057.589,
+            2.2669689291905586
+          ],
+          [
+            1792814072.589,
+            2.2669689291905586
+          ],
+          [
+            1792814087.589,
+            2.2669689291905586
+          ],
+          [
+            1792814102.589,
+            2.2669689291905586
+          ],
+          [
+            1792814117.589,
+            1.866822235186265
+          ],
+          [
+            1792814132.589,
+            1.866822235186265
+          ],
+          [
+            1792814147.589,
+            1.866822235186266
+          ],
+          [
+            1792814162.589,
+            1.866822235186266
+          ],
+          [
+            1792814177.589,
+            2.1668833550021667
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792813637.589=2.516918358502517",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792814177.589=2.1668833550021667"
+      },
+      {
+        "metric": {
+          "service_name": "payment"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.06667444535195773
+          ],
+          [
+            1792813592.589,
+            0.06667444535195773
+          ],
+          [
+            1792813607.589,
+            0.06667444535195773
+          ],
+          [
+            1792813622.589,
+            0.06667444535195773
+          ],
+          [
+            1792813637.589,
+            0.23335666900023333
+          ],
+          [
+            1792813652.589,
+            0.23335666900023333
+          ],
+          [
+            1792813667.589,
+            0.23335666900023333
+          ],
+          [
+            1792813682.589,
+            0.23335666900023333
+          ],
+          [
+            1792813697.589,
+            0.0
+          ],
+          [
+            1792813712.589,
+            0.0
+          ],
+          [
+            1792813727.589,
+            0.0
+          ],
+          [
+            1792813742.589,
+            0.0
+          ],
+          [
+            1792813757.589,
+            0.10000666711114076
+          ],
+          [
+            1792813772.589,
+            0.10000666711114076
+          ],
+          [
+            1792813787.589,
+            0.10000666711114076
+          ],
+          [
+            1792813802.589,
+            0.10000666711114076
+          ],
+          [
+            1792813817.589,
+            0.0
+          ],
+          [
+            1792813832.589,
+            0.0
+          ],
+          [
+            1792813847.589,
+            0.0
+          ],
+          [
+            1792813862.589,
+            0.0
+          ],
+          [
+            1792813877.589,
+            0.16668055671305945
+          ],
+          [
+            1792813892.589,
+            0.16668055671305945
+          ],
+          [
+            1792813907.589,
+            0.16668055671305945
+          ],
+          [
+            1792813922.589,
+            0.16668055671305945
+          ],
+          [
+            1792813937.589,
+            0.1000116680279366
+          ],
+          [
+            1792813952.589,
+            0.1000116680279366
+          ],
+          [
+            1792813967.589,
+            0.1000116680279366
+          ],
+          [
+            1792813982.589,
+            0.1000116680279366
+          ],
+          [
+            1792813997.589,
+            0.2000200020002
+          ],
+          [
+            1792814012.589,
+            0.2000200020002
+          ],
+          [
+            1792814027.589,
+            0.2000200020002
+          ],
+          [
+            1792814042.589,
+            0.2000200020002
+          ],
+          [
+            1792814057.589,
+            0.10001333511134818
+          ],
+          [
+            1792814072.589,
+            0.10001333511134818
+          ],
+          [
+            1792814087.589,
+            0.10001333511134818
+          ],
+          [
+            1792814102.589,
+            0.10001333511134818
+          ],
+          [
+            1792814117.589,
+            0.06667222268522376
+          ],
+          [
+            1792814132.589,
+            0.06667222268522376
+          ],
+          [
+            1792814147.589,
+            0.06667222268522378
+          ],
+          [
+            1792814162.589,
+            0.06667222268522378
+          ],
+          [
+            1792814177.589,
+            0.13334666800013334
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792813637.589=0.23335666900023333",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792814177.589=0.13334666800013334"
+      },
+      {
+        "metric": {
+          "service_name": "product-catalog"
+        },
+        "values": [
+          [
+            1792813577.589,
+            1.0334539029553447
+          ],
+          [
+            1792813592.589,
+            1.0334539029553447
+          ],
+          [
+            1792813607.589,
+            1.0334539029553447
+          ],
+          [
+            1792813622.589,
+            1.0334539029553447
+          ],
+          [
+            1792813637.589,
+            1.3001300130013
+          ],
+          [
+            1792813652.589,
+            1.3001300130013
+          ],
+          [
+            1792813667.589,
+            1.3001300130013
+          ],
+          [
+            1792813682.589,
+            1.3001300130013
+          ],
+          [
+            1792813697.589,
+            0.9167736235894187
+          ],
+          [
+            1792813712.589,
+            0.9167736235894187
+          ],
+          [
+            1792813727.589,
+            0.9167736235894187
+          ],
+          [
+            1792813742.589,
+            0.9167736235894187
+          ],
+          [
+            1792813757.589,
+            1.0167344489632644
+          ],
+          [
+            1792813772.589,
+            1.0167344489632644
+          ],
+          [
+            1792813787.589,
+            1.0167344489632644
+          ],
+          [
+            1792813802.589,
+            1.0167344489632644
+          ],
+          [
+            1792813817.589,
+            0.7000933457794372
+          ],
+          [
+            1792813832.589,
+            0.7000933457794372
+          ],
+          [
+            1792813847.589,
+            0.7000933457794372
+          ],
+          [
+            1792813862.589,
+            0.7000933457794372
+          ],
+          [
+            1792813877.589,
+            1.1667638969914162
+          ],
+          [
+            1792813892.589,
+            1.1667638969914162
+          ],
+          [
+            1792813907.589,
+            1.1667638969914162
+          ],
+          [
+            1792813922.589,
+            1.1667638969914162
+          ],
+          [
+            1792813937.589,
+            0.7167502875335456
+          ],
+          [
+            1792813952.589,
+            0.7167502875335456
+          ],
+          [
+            1792813967.589,
+            0.7167502875335456
+          ],
+          [
+            1792813982.589,
+            0.7167502875335456
+          ],
+          [
+            1792813997.589,
+            1.4334766810014334
+          ],
+          [
+            1792814012.589,
+            1.4334766810014334
+          ],
+          [
+            1792814027.589,
+            1.4334766810014334
+          ],
+          [
+            1792814042.589,
+            1.4334766810014334
+          ],
+          [
+            1792814057.589,
+            1.1834911321509534
+          ],
+          [
+            1792814072.589,
+            1.1834911321509534
+          ],
+          [
+            1792814087.589,
+            1.1834911321509534
+          ],
+          [
+            1792814102.589,
+            1.1834911321509534
+          ],
+          [
+            1792814117.589,
+            1.06675556296358
+          ],
+          [
+            1792814132.589,
+            1.06675556296358
+          ],
+          [
+            1792814147.589,
+            1.0667555629635805
+          ],
+          [
+            1792814162.589,
+            1.0667555629635805
+          ],
+          [
+            1792814177.589,
+            1.000100010001
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792813997.589=1.4334766810014334",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792814177.589=1.000100010001"
+      },
+      {
+        "metric": {
+          "service_name": "quote"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.1000116680279366
+          ],
+          [
+            1792813592.589,
+            0.1000116680279366
+          ],
+          [
+            1792813607.589,
+            0.1000116680279366
+          ],
+          [
+            1792813622.589,
+            0.1000116680279366
+          ],
+          [
+            1792813637.589,
+            0.35003500350035
+          ],
+          [
+            1792813652.589,
+            0.35003500350035
+          ],
+          [
+            1792813667.589,
+            0.35003500350035
+          ],
+          [
+            1792813682.589,
+            0.35003500350035
+          ],
+          [
+            1792813697.589,
+            0.0
+          ],
+          [
+            1792813712.589,
+            0.0
+          ],
+          [
+            1792813727.589,
+            0.0
+          ],
+          [
+            1792813742.589,
+            0.0
+          ],
+          [
+            1792813757.589,
+            0.15001000066671114
+          ],
+          [
+            1792813772.589,
+            0.15001000066671114
+          ],
+          [
+            1792813787.589,
+            0.15001000066671114
+          ],
+          [
+            1792813802.589,
+            0.15001000066671114
+          ],
+          [
+            1792813817.589,
+            0.0
+          ],
+          [
+            1792813832.589,
+            0.0
+          ],
+          [
+            1792813847.589,
+            0.0
+          ],
+          [
+            1792813862.589,
+            0.0
+          ],
+          [
+            1792813877.589,
+            0.25002083506958916
+          ],
+          [
+            1792813892.589,
+            0.25002083506958916
+          ],
+          [
+            1792813907.589,
+            0.25002083506958916
+          ],
+          [
+            1792813922.589,
+            0.25002083506958916
+          ],
+          [
+            1792813937.589,
+            0.2000233360558732
+          ],
+          [
+            1792813952.589,
+            0.2000233360558732
+          ],
+          [
+            1792813967.589,
+            0.2000233360558732
+          ],
+          [
+            1792813982.589,
+            0.2000233360558732
+          ],
+          [
+            1792813997.589,
+            0.25002500250025006
+          ],
+          [
+            1792814012.589,
+            0.25002500250025006
+          ],
+          [
+            1792814027.589,
+            0.25002500250025006
+          ],
+          [
+            1792814042.589,
+            0.25002500250025006
+          ],
+          [
+            1792814057.589,
+            0.15002000266702226
+          ],
+          [
+            1792814072.589,
+            0.15002000266702226
+          ],
+          [
+            1792814087.589,
+            0.15002000266702226
+          ],
+          [
+            1792814102.589,
+            0.15002000266702226
+          ],
+          [
+            1792814117.589,
+            0.10000833402783563
+          ],
+          [
+            1792814132.589,
+            0.10000833402783563
+          ],
+          [
+            1792814147.589,
+            0.10000833402783568
+          ],
+          [
+            1792814162.589,
+            0.10000833402783568
+          ],
+          [
+            1792814177.589,
+            0.2000200020002
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792813637.589=0.35003500350035",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792814177.589=0.2000200020002"
+      },
+      {
+        "metric": {
+          "service_name": "recommendation"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.2500291700698415
+          ],
+          [
+            1792813592.589,
+            0.2500291700698415
+          ],
+          [
+            1792813607.589,
+            0.2500291700698415
+          ],
+          [
+            1792813622.589,
+            0.2500291700698415
+          ],
+          [
+            1792813637.589,
+            0.4000400040004
+          ],
+          [
+            1792813652.589,
+            0.4000400040004
+          ],
+          [
+            1792813667.589,
+            0.4000400040004
+          ],
+          [
+            1792813682.589,
+            0.4000400040004
+          ],
+          [
+            1792813697.589,
+            0.3500408380977781
+          ],
+          [
+            1792813712.589,
+            0.3500408380977781
+          ],
+          [
+            1792813727.589,
+            0.3500408380977781
+          ],
+          [
+            1792813742.589,
+            0.3500408380977781
+          ],
+          [
+            1792813757.589,
+            0.2000133342222815
+          ],
+          [
+            1792813772.589,
+            0.2000133342222815
+          ],
+          [
+            1792813787.589,
+            0.2000133342222815
+          ],
+          [
+            1792813802.589,
+            0.2000133342222815
+          ],
+          [
+            1792813817.589,
+            0.25003333777837045
+          ],
+          [
+            1792813832.589,
+            0.25003333777837045
+          ],
+          [
+            1792813847.589,
+            0.25003333777837045
+          ],
+          [
+            1792813862.589,
+            0.25003333777837045
+          ],
+          [
+            1792813877.589,
+            0.20001666805567136
+          ],
+          [
+            1792813892.589,
+            0.20001666805567136
+          ],
+          [
+            1792813907.589,
+            0.20001666805567136
+          ],
+          [
+            1792813922.589,
+            0.20001666805567136
+          ],
+          [
+            1792813937.589,
+            0.1500175020419049
+          ],
+          [
+            1792813952.589,
+            0.1500175020419049
+          ],
+          [
+            1792813967.589,
+            0.1500175020419049
+          ],
+          [
+            1792813982.589,
+            0.1500175020419049
+          ],
+          [
+            1792813997.589,
+            0.3000300030003
+          ],
+          [
+            1792814012.589,
+            0.3000300030003
+          ],
+          [
+            1792814027.589,
+            0.3000300030003
+          ],
+          [
+            1792814042.589,
+            0.3000300030003
+          ],
+          [
+            1792814057.589,
+            0.3000400053340445
+          ],
+          [
+            1792814072.589,
+            0.3000400053340445
+          ],
+          [
+            1792814087.589,
+            0.3000400053340445
+          ],
+          [
+            1792814102.589,
+            0.3000400053340445
+          ],
+          [
+            1792814117.589,
+            0.3000250020835069
+          ],
+          [
+            1792814132.589,
+            0.3000250020835069
+          ],
+          [
+            1792814147.589,
+            0.300025002083507
+          ],
+          [
+            1792814162.589,
+            0.300025002083507
+          ],
+          [
+            1792814177.589,
+            0.3000300030003
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792813637.589=0.4000400040004",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792814177.589=0.3000300030003"
+      },
+      {
+        "metric": {
+          "service_name": "shipping"
+        },
+        "values": [
+          [
+            1792813577.589,
+            0.1000116680279366
+          ],
+          [
+            1792813592.589,
+            0.1000116680279366
+          ],
+          [
+            1792813607.589,
+            0.1000116680279366
+          ],
+          [
+            1792813622.589,
+            0.1000116680279366
+          ],
+          [
+            1792813637.589,
+            0.35003500350035
+          ],
+          [
+            1792813652.589,
+            0.35003500350035
+          ],
+          [
+            1792813667.589,
+            0.35003500350035
+          ],
+          [
+            1792813682.589,
+            0.35003500350035
+          ],
+          [
+            1792813697.589,
+            0.0
+          ],
+          [
+            1792813712.589,
+            0.0
+          ],
+          [
+            1792813727.589,
+            0.0
+          ],
+          [
+            1792813742.589,
+            0.0
+          ],
+          [
+            1792813757.589,
+            0.15001000066671114
+          ],
+          [
+            1792813772.589,
+            0.15001000066671114
+          ],
+          [
+            1792813787.589,
+            0.15001000066671114
+          ],
+          [
+            1792813802.589,
+            0.15001000066671114
+          ],
+          [
+            1792813817.589,
+            0.0
+          ],
+          [
+            1792813832.589,
+            0.0
+          ],
+          [
+            1792813847.589,
+            0.0
+          ],
+          [
+            1792813862.589,
+            0.0
+          ],
+          [
+            1792813877.589,
+            0.25002083506958916
+          ],
+          [
+            1792813892.589,
+            0.25002083506958916
+          ],
+          [
+            1792813907.589,
+            0.25002083506958916
+          ],
+          [
+            1792813922.589,
+            0.25002083506958916
+          ],
+          [
+            1792813937.589,
+            0.2000233360558732
+          ],
+          [
+            1792813952.589,
+            0.2000233360558732
+          ],
+          [
+            1792813967.589,
+            0.2000233360558732
+          ],
+          [
+            1792813982.589,
+            0.2000233360558732
+          ],
+          [
+            1792813997.589,
+            0.25002500250025006
+          ],
+          [
+            1792814012.589,
+            0.25002500250025006
+          ],
+          [
+            1792814027.589,
+            0.25002500250025006
+          ],
+          [
+            1792814042.589,
+            0.25002500250025006
+          ],
+          [
+            1792814057.589,
+            0.15002000266702226
+          ],
+          [
+            1792814072.589,
+            0.15002000266702226
+          ],
+          [
+            1792814087.589,
+            0.15002000266702226
+          ],
+          [
+            1792814102.589,
+            0.15002000266702226
+          ],
+          [
+            1792814117.589,
+            0.10000833402783563
+          ],
+          [
+            1792814132.589,
+            0.10000833402783563
+          ],
+          [
+            1792814147.589,
+            0.10000833402783568
+          ],
+          [
+            1792814162.589,
+            0.10000833402783568
+          ],
+          [
+            1792814177.589,
+            0.2000200020002
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792813637.589=0.35003500350035",
+        "latest_evidence_id": "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792814177.589=0.2000200020002"
+      }
+    ],
+    "evidence_ids": [
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792813937.589=0.3333722267597886",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792814177.589=0.21668833550021668",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792813877.589=0.9500791732644389",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792814177.589=0.6000600060006",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792813637.589=1.2834616795012832",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792814177.589=0.7334066740007333",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792813637.589=0.23335666900023333",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792814177.589=0.13334666800013334",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792813637.589=0.46671333800046666",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792814177.589=0.2666933360002667",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792813637.589=5.9839317265059835",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792814177.589=4.383771710504384",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792813637.589=2.516918358502517",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792814177.589=2.1668833550021667",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792813637.589=0.23335666900023333",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792814177.589=0.13334666800013334",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792813997.589=1.4334766810014334",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792814177.589=1.000100010001",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792813637.589=0.35003500350035",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792814177.589=0.2000200020002",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792813637.589=0.4000400040004",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792814177.589=0.3000300030003",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792813637.589=0.35003500350035",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792814177.589=0.2000200020002"
+    ],
+    "truncated": false,
+    "run_dir": "runs/preflight-20261024T035616.879919Z",
+    "evidence_paths": {
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792813937.589=0.3333722267597886": "runs/preflight-20261024T035616.879919Z/evidence/4f8cdd9626df16e902480b142a5734b75f68df93949f6c14a35a157ede417b1d.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"ad\"}@1792814177.589=0.21668833550021668": "runs/preflight-20261024T035616.879919Z/evidence/fc785f0cce49e65659102f372ad4ea4e7b7b39045b04fc23aac1a73bee7f22e1.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792813877.589=0.9500791732644389": "runs/preflight-20261024T035616.879919Z/evidence/e82eff56e08013322270e442b0693fdefda6bfe36c3dbc0bf5de8f8b7458d28f.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"cart\"}@1792814177.589=0.6000600060006": "runs/preflight-20261024T035616.879919Z/evidence/6df0e5fa211adfc481cfad25b39bad795dd09cacc0e5d9d40d4975b37df4d669.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792813637.589=1.2834616795012832": "runs/preflight-20261024T035616.879919Z/evidence/be1d53f2877f098b957b538768878ba7a43021eceb91ef3ee55080b0fa5c024b.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"checkout\"}@1792814177.589=0.7334066740007333": "runs/preflight-20261024T035616.879919Z/evidence/e640668cd32995e8cdad3f1d638e4e553864a9b2de5b31b6d38ae04321b96ef8.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792813637.589=0.23335666900023333": "runs/preflight-20261024T035616.879919Z/evidence/253f4975afcda6b2cfaf24f5d67c42ec5edeff4f0dd8569c49514b207e925427.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"currency\"}@1792814177.589=0.13334666800013334": "runs/preflight-20261024T035616.879919Z/evidence/5a9ac27ed2443866a954de4d2cd45762a9619666ef2071654d6c17eb9c7e8f8c.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792813637.589=0.46671333800046666": "runs/preflight-20261024T035616.879919Z/evidence/d96c32092c7b66afefe9827da962323c772a8497eb358e7993c7c2702befb3b7.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"email\"}@1792814177.589=0.2666933360002667": "runs/preflight-20261024T035616.879919Z/evidence/57ee6a7df0bb4c4d1180ed7a167da52bb7c867dad0310ac3f36170eef2c64ee6.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792813637.589=5.9839317265059835": "runs/preflight-20261024T035616.879919Z/evidence/828a1f568cf36896f86b67d2609c031ed4053dcb18cf755e88ea4a792d8a49d3.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend\"}@1792814177.589=4.383771710504384": "runs/preflight-20261024T035616.879919Z/evidence/45a523a65ee3eca968747fb03b7e481ba81804ef547b962a3ba7b147f201ecb8.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792813637.589=2.516918358502517": "runs/preflight-20261024T035616.879919Z/evidence/d84b409317354414f4ff0a3789fb7f3872440664e3701dac6fb4bfb37c87c01d.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"frontend-proxy\"}@1792814177.589=2.1668833550021667": "runs/preflight-20261024T035616.879919Z/evidence/9897a37080c75c2e5835c002737c44c056082509be17eef772d89f041faa7b53.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792813637.589=0.23335666900023333": "runs/preflight-20261024T035616.879919Z/evidence/0bf10d5b5d40bba59464a229db79be26c16a57c5bb97eeffc531e13179eb8b3a.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"payment\"}@1792814177.589=0.13334666800013334": "runs/preflight-20261024T035616.879919Z/evidence/45480c9b7e575369e18e4b4516e5edd2a1e4b06ea8e27c7feb3db5ee2723c2c7.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792813997.589=1.4334766810014334": "runs/preflight-20261024T035616.879919Z/evidence/6be1b8664e0897b0c5b369b2cbb0e26400862a352243ccade1ad71c9c7fc86f6.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"product-catalog\"}@1792814177.589=1.000100010001": "runs/preflight-20261024T035616.879919Z/evidence/087bb16cb54d90d50eca58a95d80861a53e31342c7bb0d961796f4957a1c6972.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792813637.589=0.35003500350035": "runs/preflight-20261024T035616.879919Z/evidence/6eae5df99949d2e0c1855e1ce74075ded045cb9605304e45b1974fdb37ed4cc8.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"quote\"}@1792814177.589=0.2000200020002": "runs/preflight-20261024T035616.879919Z/evidence/71a879e6c1d2155f085a81628b146674095504c414f2e53a6f7d9486e3b1639e.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792813637.589=0.4000400040004": "runs/preflight-20261024T035616.879919Z/evidence/a953721cc9cfd14a81c5b4a57fdbee703d626498752f02a290f5f7db5bee2fe6.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"recommendation\"}@1792814177.589=0.3000300030003": "runs/preflight-20261024T035616.879919Z/evidence/f746cf58eee1f6e8e67e339d01a64fab30ceff43ce9e98482e0094be99a74178.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792813637.589=0.35003500350035": "runs/preflight-20261024T035616.879919Z/evidence/388d466fc440f440c13178db6e799217cb11ed2bb9a2333e256a536269a03cbf.json",
+      "metric:query{__query__=\"named:rps_by_service\",service_name=\"shipping\"}@1792814177.589=0.2000200020002": "runs/preflight-20261024T035616.879919Z/evidence/6f4f57a475af5f4cd9a4ab6d4af9b61ecc74039c4de50c439bd8e95ccbe7a9a4.json"
+    },
+    "elapsed_s": 0.1435
+  },
+  "detector_alert": null,
+  "latency_baseline_metrics": {
+    "tool": "get_metrics",
+    "source": "prometheus",
+    "query": "named:p95_latency_by_service",
+    "window": {
+      "from": "2026-10-24T03:44:20.568524+00:00",
+      "to": "2026-10-24T03:56:20.568524+00:00"
+    },
+    "data": [
+      {
+        "metric": {
+          "service_name": "ad"
+        },
+        "values": [
+          [
+            1792813565.569,
+            7.2
+          ],
+          [
+            1792813580.569,
+            7.2
+          ],
+          [
+            1792813595.569,
+            7.2
+          ],
+          [
+            1792813610.569,
+            7.2
+          ],
+          [
+            1792813625.569,
+            3.8
+          ],
+          [
+            1792813640.569,
+            3.8
+          ],
+          [
+            1792813655.569,
+            3.8
+          ],
+          [
+            1792813670.569,
+            3.8
+          ],
+          [
+            1792813685.569,
+            20.000000000000014
+          ],
+          [
+            1792813700.569,
+            20.000000000000014
+          ],
+          [
+            1792813715.569,
+            20.000000000000014
+          ],
+          [
+            1792813730.569,
+            20.000000000000014
+          ],
+          [
+            1792813745.569,
+            9.299999999999999
+          ],
+          [
+            1792813760.569,
+            9.299999999999999
+          ],
+          [
+            1792813775.569,
+            9.299999999999999
+          ],
+          [
+            1792813790.569,
+            9.299999999999999
+          ],
+          [
+            1792813805.569,
+            37.999999999999986
+          ],
+          [
+            1792813820.569,
+            37.999999999999986
+          ],
+          [
+            1792813835.569,
+            37.999999999999986
+          ],
+          [
+            1792813850.569,
+            37.999999999999986
+          ],
+          [
+            1792813865.569,
+            5.6000000000000005
+          ],
+          [
+            1792813880.569,
+            5.6000000000000005
+          ],
+          [
+            1792813895.569,
+            5.6000000000000005
+          ],
+          [
+            1792813910.569,
+            5.6000000000000005
+          ],
+          [
+            1792813925.569,
+            3.999999999999999
+          ],
+          [
+            1792813940.569,
+            3.999999999999999
+          ],
+          [
+            1792813955.569,
+            3.999999999999999
+          ],
+          [
+            1792813970.569,
+            3.999999999999999
+          ],
+          [
+            1792813985.569,
+            9.200000000000001
+          ],
+          [
+            1792814000.569,
+            9.200000000000001
+          ],
+          [
+            1792814015.569,
+            9.200000000000001
+          ],
+          [
+            1792814030.569,
+            9.200000000000001
+          ],
+          [
+            1792814045.569,
+            26.0
+          ],
+          [
+            1792814060.569,
+            26.0
+          ],
+          [
+            1792814075.569,
+            26.0
+          ],
+          [
+            1792814090.569,
+            26.0
+          ],
+          [
+            1792814105.569,
+            9.4
+          ],
+          [
+            1792814120.569,
+            9.4
+          ],
+          [
+            1792814135.569,
+            9.4
+          ],
+          [
+            1792814150.569,
+            9.4
+          ],
+          [
+            1792814165.569,
+            4.699999999999999
+          ],
+          [
+            1792814180.569,
+            4.699999999999999
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792813805.569=37.999999999999986",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792814180.569=4.699999999999999"
+      },
+      {
+        "metric": {
+          "service_name": "cart"
+        },
+        "values": [
+          [
+            1792813565.569,
+            5.825
+          ],
+          [
+            1792813580.569,
+            5.825
+          ],
+          [
+            1792813595.569,
+            5.825
+          ],
+          [
+            1792813610.569,
+            5.825
+          ],
+          [
+            1792813625.569,
+            6.333333333333337
+          ],
+          [
+            1792813640.569,
+            6.333333333333337
+          ],
+          [
+            1792813655.569,
+            6.333333333333337
+          ],
+          [
+            1792813670.569,
+            6.333333333333337
+          ],
+          [
+            1792813685.569,
+            4.799999999999999
+          ],
+          [
+            1792813700.569,
+            4.799999999999999
+          ],
+          [
+            1792813715.569,
+            4.799999999999999
+          ],
+          [
+            1792813730.569,
+            4.799999999999999
+          ],
+          [
+            1792813745.569,
+            7.599999999999998
+          ],
+          [
+            1792813760.569,
+            7.599999999999998
+          ],
+          [
+            1792813775.569,
+            7.599999999999998
+          ],
+          [
+            1792813790.569,
+            7.599999999999998
+          ],
+          [
+            1792813805.569,
+            3.8
+          ],
+          [
+            1792813820.569,
+            3.8
+          ],
+          [
+            1792813835.569,
+            3.8
+          ],
+          [
+            1792813850.569,
+            3.8
+          ],
+          [
+            1792813865.569,
+            5.588888888888889
+          ],
+          [
+            1792813880.569,
+            5.588888888888889
+          ],
+          [
+            1792813895.569,
+            5.588888888888889
+          ],
+          [
+            1792813910.569,
+            5.588888888888889
+          ],
+          [
+            1792813925.569,
+            5.800000000000001
+          ],
+          [
+            1792813940.569,
+            5.800000000000001
+          ],
+          [
+            1792813955.569,
+            5.800000000000001
+          ],
+          [
+            1792813970.569,
+            5.800000000000001
+          ],
+          [
+            1792813985.569,
+            5.857142857142858
+          ],
+          [
+            1792814000.569,
+            5.857142857142858
+          ],
+          [
+            1792814015.569,
+            5.857142857142858
+          ],
+          [
+            1792814030.569,
+            5.857142857142858
+          ],
+          [
+            1792814045.569,
+            5.249999999999999
+          ],
+          [
+            1792814060.569,
+            5.249999999999999
+          ],
+          [
+            1792814075.569,
+            5.249999999999999
+          ],
+          [
+            1792814090.569,
+            5.249999999999999
+          ],
+          [
+            1792814105.569,
+            7.133333333333333
+          ],
+          [
+            1792814120.569,
+            7.133333333333333
+          ],
+          [
+            1792814135.569,
+            7.133333333333333
+          ],
+          [
+            1792814150.569,
+            7.133333333333333
+          ],
+          [
+            1792814165.569,
+            4.799999999999999
+          ],
+          [
+            1792814180.569,
+            4.799999999999999
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792813745.569=7.599999999999998",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792814180.569=4.799999999999999"
+      },
+      {
+        "metric": {
+          "service_name": "checkout"
+        },
+        "values": [
+          [
+            1792813565.569,
+            46.99999999999998
+          ],
+          [
+            1792813580.569,
+            46.99999999999998
+          ],
+          [
+            1792813595.569,
+            46.99999999999998
+          ],
+          [
+            1792813610.569,
+            46.99999999999998
+          ],
+          [
+            1792813625.569,
+            41.85714285714283
+          ],
+          [
+            1792813640.569,
+            41.85714285714283
+          ],
+          [
+            1792813655.569,
+            41.85714285714283
+          ],
+          [
+            1792813670.569,
+            41.85714285714283
+          ],
+          [
+            1792813685.569,
+            null
+          ],
+          [
+            1792813700.569,
+            null
+          ],
+          [
+            1792813715.569,
+            null
+          ],
+          [
+            1792813730.569,
+            null
+          ],
+          [
+            1792813745.569,
+            81.24999999999996
+          ],
+          [
+            1792813760.569,
+            81.24999999999996
+          ],
+          [
+            1792813775.569,
+            81.24999999999996
+          ],
+          [
+            1792813790.569,
+            81.24999999999996
+          ],
+          [
+            1792813805.569,
+            null
+          ],
+          [
+            1792813820.569,
+            null
+          ],
+          [
+            1792813835.569,
+            null
+          ],
+          [
+            1792813850.569,
+            null
+          ],
+          [
+            1792813865.569,
+            61.874999999999865
+          ],
+          [
+            1792813880.569,
+            61.874999999999865
+          ],
+          [
+            1792813895.569,
+            61.874999999999865
+          ],
+          [
+            1792813910.569,
+            61.874999999999865
+          ],
+          [
+            1792813925.569,
+            44.66666666666666
+          ],
+          [
+            1792813940.569,
+            44.66666666666666
+          ],
+          [
+            1792813955.569,
+            44.66666666666666
+          ],
+          [
+            1792813970.569,
+            44.66666666666666
+          ],
+          [
+            1792813985.569,
+            92.5000000000002
+          ],
+          [
+            1792814000.569,
+            92.5000000000002
+          ],
+          [
+            1792814015.569,
+            92.5000000000002
+          ],
+          [
+            1792814030.569,
+            92.5000000000002
+          ],
+          [
+            1792814045.569,
+            204.99999999999946
+          ],
+          [
+            1792814060.569,
+            204.99999999999946
+          ],
+          [
+            1792814075.569,
+            204.99999999999946
+          ],
+          [
+            1792814090.569,
+            204.99999999999946
+          ],
+          [
+            1792814105.569,
+            7000.000000000004
+          ],
+          [
+            1792814120.569,
+            7000.000000000004
+          ],
+          [
+            1792814135.569,
+            7000.000000000004
+          ],
+          [
+            1792814150.569,
+            7000.000000000004
+          ],
+          [
+            1792814165.569,
+            48.99999999999999
+          ],
+          [
+            1792814180.569,
+            48.99999999999999
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792814105.569=7000.000000000004",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792814180.569=48.99999999999999"
+      },
+      {
+        "metric": {
+          "service_name": "currency"
+        },
+        "values": [
+          [
+            1792813565.569,
+            1.9
+          ],
+          [
+            1792813580.569,
+            1.9
+          ],
+          [
+            1792813595.569,
+            1.9
+          ],
+          [
+            1792813610.569,
+            1.9
+          ],
+          [
+            1792813625.569,
+            1.9
+          ],
+          [
+            1792813640.569,
+            1.9
+          ],
+          [
+            1792813655.569,
+            1.9
+          ],
+          [
+            1792813670.569,
+            1.9
+          ],
+          [
+            1792813685.569,
+            null
+          ],
+          [
+            1792813700.569,
+            null
+          ],
+          [
+            1792813715.569,
+            null
+          ],
+          [
+            1792813730.569,
+            null
+          ],
+          [
+            1792813745.569,
+            1.8999999999999997
+          ],
+          [
+            1792813760.569,
+            1.8999999999999997
+          ],
+          [
+            1792813775.569,
+            1.8999999999999997
+          ],
+          [
+            1792813790.569,
+            1.8999999999999997
+          ],
+          [
+            1792813805.569,
+            null
+          ],
+          [
+            1792813820.569,
+            null
+          ],
+          [
+            1792813835.569,
+            null
+          ],
+          [
+            1792813850.569,
+            null
+          ],
+          [
+            1792813865.569,
+            1.9
+          ],
+          [
+            1792813880.569,
+            1.9
+          ],
+          [
+            1792813895.569,
+            1.9
+          ],
+          [
+            1792813910.569,
+            1.9
+          ],
+          [
+            1792813925.569,
+            1.9
+          ],
+          [
+            1792813940.569,
+            1.9
+          ],
+          [
+            1792813955.569,
+            1.9
+          ],
+          [
+            1792813970.569,
+            1.9
+          ],
+          [
+            1792813985.569,
+            2.8999999999999977
+          ],
+          [
+            1792814000.569,
+            2.8999999999999977
+          ],
+          [
+            1792814015.569,
+            2.8999999999999977
+          ],
+          [
+            1792814030.569,
+            2.8999999999999977
+          ],
+          [
+            1792814045.569,
+            4.8999999999999995
+          ],
+          [
+            1792814060.569,
+            4.8999999999999995
+          ],
+          [
+            1792814075.569,
+            4.8999999999999995
+          ],
+          [
+            1792814090.569,
+            4.8999999999999995
+          ],
+          [
+            1792814105.569,
+            1.9
+          ],
+          [
+            1792814120.569,
+            1.9
+          ],
+          [
+            1792814135.569,
+            1.9
+          ],
+          [
+            1792814150.569,
+            1.9
+          ],
+          [
+            1792814165.569,
+            1.9000000000000001
+          ],
+          [
+            1792814180.569,
+            1.9000000000000001
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792814045.569=4.8999999999999995",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792814180.569=1.9000000000000001"
+      },
+      {
+        "metric": {
+          "service_name": "email"
+        },
+        "values": [
+          [
+            1792813565.569,
+            3.8
+          ],
+          [
+            1792813580.569,
+            3.8
+          ],
+          [
+            1792813595.569,
+            3.8
+          ],
+          [
+            1792813610.569,
+            3.8
+          ],
+          [
+            1792813625.569,
+            4.599999999999999
+          ],
+          [
+            1792813640.569,
+            4.599999999999999
+          ],
+          [
+            1792813655.569,
+            4.599999999999999
+          ],
+          [
+            1792813670.569,
+            4.599999999999999
+          ],
+          [
+            1792813685.569,
+            null
+          ],
+          [
+            1792813700.569,
+            null
+          ],
+          [
+            1792813715.569,
+            null
+          ],
+          [
+            1792813730.569,
+            null
+          ],
+          [
+            1792813745.569,
+            6.800000000000001
+          ],
+          [
+            1792813760.569,
+            6.800000000000001
+          ],
+          [
+            1792813775.569,
+            6.800000000000001
+          ],
+          [
+            1792813790.569,
+            6.800000000000001
+          ],
+          [
+            1792813805.569,
+            null
+          ],
+          [
+            1792813820.569,
+            null
+          ],
+          [
+            1792813835.569,
+            null
+          ],
+          [
+            1792813850.569,
+            null
+          ],
+          [
+            1792813865.569,
+            7.333333333333332
+          ],
+          [
+            1792813880.569,
+            7.333333333333332
+          ],
+          [
+            1792813895.569,
+            7.333333333333332
+          ],
+          [
+            1792813910.569,
+            7.333333333333332
+          ],
+          [
+            1792813925.569,
+            6.399999999999999
+          ],
+          [
+            1792813940.569,
+            6.399999999999999
+          ],
+          [
+            1792813955.569,
+            6.399999999999999
+          ],
+          [
+            1792813970.569,
+            6.399999999999999
+          ],
+          [
+            1792813985.569,
+            8.0
+          ],
+          [
+            1792814000.569,
+            8.0
+          ],
+          [
+            1792814015.569,
+            8.0
+          ],
+          [
+            1792814030.569,
+            8.0
+          ],
+          [
+            1792814045.569,
+            4.799999999999998
+          ],
+          [
+            1792814060.569,
+            4.799999999999998
+          ],
+          [
+            1792814075.569,
+            4.799999999999998
+          ],
+          [
+            1792814090.569,
+            4.799999999999998
+          ],
+          [
+            1792814105.569,
+            3.7333333333333334
+          ],
+          [
+            1792814120.569,
+            3.7333333333333334
+          ],
+          [
+            1792814135.569,
+            3.7333333333333334
+          ],
+          [
+            1792814150.569,
+            3.7333333333333334
+          ],
+          [
+            1792814165.569,
+            3.68
+          ],
+          [
+            1792814180.569,
+            3.68
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792813985.569=8.0",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792814180.569=3.68"
+      },
+      {
+        "metric": {
+          "service_name": "frontend"
+        },
+        "values": [
+          [
+            1792813565.569,
+            44.80851063829783
+          ],
+          [
+            1792813580.569,
+            44.80851063829783
+          ],
+          [
+            1792813595.569,
+            44.80851063829783
+          ],
+          [
+            1792813610.569,
+            44.80851063829783
+          ],
+          [
+            1792813625.569,
+            50.17857142857133
+          ],
+          [
+            1792813640.569,
+            50.17857142857133
+          ],
+          [
+            1792813655.569,
+            50.17857142857133
+          ],
+          [
+            1792813670.569,
+            50.17857142857133
+          ],
+          [
+            1792813685.569,
+            39.674418604651144
+          ],
+          [
+            1792813700.569,
+            39.674418604651144
+          ],
+          [
+            1792813715.569,
+            39.674418604651144
+          ],
+          [
+            1792813730.569,
+            39.674418604651144
+          ],
+          [
+            1792813745.569,
+            143.125
+          ],
+          [
+            1792813760.569,
+            143.125
+          ],
+          [
+            1792813775.569,
+            143.125
+          ],
+          [
+            1792813790.569,
+            143.125
+          ],
+          [
+            1792813805.569,
+            43.179487179487175
+          ],
+          [
+            1792813820.569,
+            43.179487179487175
+          ],
+          [
+            1792813835.569,
+            43.179487179487175
+          ],
+          [
+            1792813850.569,
+            43.179487179487175
+          ],
+          [
+            1792813865.569,
+            76.96428571428561
+          ],
+          [
+            1792813880.569,
+            76.96428571428561
+          ],
+          [
+            1792813895.569,
+            76.96428571428561
+          ],
+          [
+            1792813910.569,
+            76.96428571428561
+          ],
+          [
+            1792813925.569,
+            89.46428571428567
+          ],
+          [
+            1792813940.569,
+            89.46428571428567
+          ],
+          [
+            1792813955.569,
+            89.46428571428567
+          ],
+          [
+            1792813970.569,
+            89.46428571428567
+          ],
+          [
+            1792813985.569,
+            255.00000000000085
+          ],
+          [
+            1792814000.569,
+            255.00000000000085
+          ],
+          [
+            1792814015.569,
+            255.00000000000085
+          ],
+          [
+            1792814030.569,
+            255.00000000000085
+          ],
+          [
+            1792814045.569,
+            329.9999999999982
+          ],
+          [
+            1792814060.569,
+            329.9999999999982
+          ],
+          [
+            1792814075.569,
+            329.9999999999982
+          ],
+          [
+            1792814090.569,
+            329.9999999999982
+          ],
+          [
+            1792814105.569,
+            1861.2500000000014
+          ],
+          [
+            1792814120.569,
+            1861.2500000000014
+          ],
+          [
+            1792814135.569,
+            1861.2500000000014
+          ],
+          [
+            1792814150.569,
+            1861.2500000000014
+          ],
+          [
+            1792814165.569,
+            45.96078431372546
+          ],
+          [
+            1792814180.569,
+            45.96078431372546
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792814105.569=1861.2500000000014",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792814180.569=45.96078431372546"
+      },
+      {
+        "metric": {
+          "service_name": "frontend-proxy"
+        },
+        "values": [
+          [
+            1792813565.569,
+            47.99999999999999
+          ],
+          [
+            1792813580.569,
+            47.99999999999999
+          ],
+          [
+            1792813595.569,
+            47.99999999999999
+          ],
+          [
+            1792813610.569,
+            47.99999999999999
+          ],
+          [
+            1792813625.569,
+            65.31250000000004
+          ],
+          [
+            1792813640.569,
+            65.31250000000004
+          ],
+          [
+            1792813655.569,
+            65.31250000000004
+          ],
+          [
+            1792813670.569,
+            65.31250000000004
+          ],
+          [
+            1792813685.569,
+            44.4
+          ],
+          [
+            1792813700.569,
+            44.4
+          ],
+          [
+            1792813715.569,
+            44.4
+          ],
+          [
+            1792813730.569,
+            44.4
+          ],
+          [
+            1792813745.569,
+            152.49999999999977
+          ],
+          [
+            1792813760.569,
+            152.49999999999977
+          ],
+          [
+            1792813775.569,
+            152.49999999999977
+          ],
+          [
+            1792813790.569,
+            152.49999999999977
+          ],
+          [
+            1792813805.569,
+            45.666666666666664
+          ],
+          [
+            1792813820.569,
+            45.666666666666664
+          ],
+          [
+            1792813835.569,
+            45.666666666666664
+          ],
+          [
+            1792813850.569,
+            45.666666666666664
+          ],
+          [
+            1792813865.569,
+            81.24999999999989
+          ],
+          [
+            1792813880.569,
+            81.24999999999989
+          ],
+          [
+            1792813895.569,
+            81.24999999999989
+          ],
+          [
+            1792813910.569,
+            81.24999999999989
+          ],
+          [
+            1792813925.569,
+            96.87500000000003
+          ],
+          [
+            1792813940.569,
+            96.87500000000003
+          ],
+          [
+            1792813955.569,
+            96.87500000000003
+          ],
+          [
+            1792813970.569,
+            96.87500000000003
+          ],
+          [
+            1792813985.569,
+            340.0000000000002
+          ],
+          [
+            1792814000.569,
+            340.0000000000002
+          ],
+          [
+            1792814015.569,
+            340.0000000000002
+          ],
+          [
+            1792814030.569,
+            340.0000000000002
+          ],
+          [
+            1792814045.569,
+            319.99999999999784
+          ],
+          [
+            1792814060.569,
+            319.99999999999784
+          ],
+          [
+            1792814075.569,
+            319.99999999999784
+          ],
+          [
+            1792814090.569,
+            319.99999999999784
+          ],
+          [
+            1792814105.569,
+            2599.999999999988
+          ],
+          [
+            1792814120.569,
+            2599.999999999988
+          ],
+          [
+            1792814135.569,
+            2599.999999999988
+          ],
+          [
+            1792814150.569,
+            2599.999999999988
+          ],
+          [
+            1792814165.569,
+            47.77777777777777
+          ],
+          [
+            1792814180.569,
+            47.77777777777777
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792814105.569=2599.999999999988",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792814180.569=47.77777777777777"
+      },
+      {
+        "metric": {
+          "service_name": "payment"
+        },
+        "values": [
+          [
+            1792813565.569,
+            1.9
+          ],
+          [
+            1792813580.569,
+            1.9
+          ],
+          [
+            1792813595.569,
+            1.9
+          ],
+          [
+            1792813610.569,
+            1.9
+          ],
+          [
+            1792813625.569,
+            1.9
+          ],
+          [
+            1792813640.569,
+            1.9
+          ],
+          [
+            1792813655.569,
+            1.9
+          ],
+          [
+            1792813670.569,
+            1.9
+          ],
+          [
+            1792813685.569,
+            null
+          ],
+          [
+            1792813700.569,
+            null
+          ],
+          [
+            1792813715.569,
+            null
+          ],
+          [
+            1792813730.569,
+            null
+          ],
+          [
+            1792813745.569,
+            3.4000000000000004
+          ],
+          [
+            1792813760.569,
+            3.4000000000000004
+          ],
+          [
+            1792813775.569,
+            3.4000000000000004
+          ],
+          [
+            1792813790.569,
+            3.4000000000000004
+          ],
+          [
+            1792813805.569,
+            null
+          ],
+          [
+            1792813820.569,
+            null
+          ],
+          [
+            1792813835.569,
+            null
+          ],
+          [
+            1792813850.569,
+            null
+          ],
+          [
+            1792813865.569,
+            2.9999999999999982
+          ],
+          [
+            1792813880.569,
+            2.9999999999999982
+          ],
+          [
+            1792813895.569,
+            2.9999999999999982
+          ],
+          [
+            1792813910.569,
+            2.9999999999999982
+          ],
+          [
+            1792813925.569,
+            3.6999999999999997
+          ],
+          [
+            1792813940.569,
+            3.6999999999999997
+          ],
+          [
+            1792813955.569,
+            3.6999999999999997
+          ],
+          [
+            1792813970.569,
+            3.6999999999999997
+          ],
+          [
+            1792813985.569,
+            1.9
+          ],
+          [
+            1792814000.569,
+            1.9
+          ],
+          [
+            1792814015.569,
+            1.9
+          ],
+          [
+            1792814030.569,
+            1.9
+          ],
+          [
+            1792814045.569,
+            3.6999999999999997
+          ],
+          [
+            1792814060.569,
+            3.6999999999999997
+          ],
+          [
+            1792814075.569,
+            3.6999999999999997
+          ],
+          [
+            1792814090.569,
+            3.6999999999999997
+          ],
+          [
+            1792814105.569,
+            1.9000000000000001
+          ],
+          [
+            1792814120.569,
+            1.9000000000000001
+          ],
+          [
+            1792814135.569,
+            1.9000000000000001
+          ],
+          [
+            1792814150.569,
+            1.9000000000000001
+          ],
+          [
+            1792814165.569,
+            1.9000000000000001
+          ],
+          [
+            1792814180.569,
+            1.9000000000000001
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792813925.569=3.6999999999999997",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792814180.569=1.9000000000000001"
+      },
+      {
+        "metric": {
+          "service_name": "product-catalog"
+        },
+        "values": [
+          [
+            1792813565.569,
+            1.9
+          ],
+          [
+            1792813580.569,
+            1.9
+          ],
+          [
+            1792813595.569,
+            1.9
+          ],
+          [
+            1792813610.569,
+            1.9
+          ],
+          [
+            1792813625.569,
+            1.9
+          ],
+          [
+            1792813640.569,
+            1.9
+          ],
+          [
+            1792813655.569,
+            1.9
+          ],
+          [
+            1792813670.569,
+            1.9
+          ],
+          [
+            1792813685.569,
+            1.9
+          ],
+          [
+            1792813700.569,
+            1.9
+          ],
+          [
+            1792813715.569,
+            1.9
+          ],
+          [
+            1792813730.569,
+            1.9
+          ],
+          [
+            1792813745.569,
+            1.9
+          ],
+          [
+            1792813760.569,
+            1.9
+          ],
+          [
+            1792813775.569,
+            1.9
+          ],
+          [
+            1792813790.569,
+            1.9
+          ],
+          [
+            1792813805.569,
+            1.9
+          ],
+          [
+            1792813820.569,
+            1.9
+          ],
+          [
+            1792813835.569,
+            1.9
+          ],
+          [
+            1792813850.569,
+            1.9
+          ],
+          [
+            1792813865.569,
+            1.9
+          ],
+          [
+            1792813880.569,
+            1.9
+          ],
+          [
+            1792813895.569,
+            1.9
+          ],
+          [
+            1792813910.569,
+            1.9
+          ],
+          [
+            1792813925.569,
+            1.9452380952380954
+          ],
+          [
+            1792813940.569,
+            1.9452380952380954
+          ],
+          [
+            1792813955.569,
+            1.9452380952380954
+          ],
+          [
+            1792813970.569,
+            1.9452380952380954
+          ],
+          [
+            1792813985.569,
+            1.9
+          ],
+          [
+            1792814000.569,
+            1.9
+          ],
+          [
+            1792814015.569,
+            1.9
+          ],
+          [
+            1792814030.569,
+            1.9
+          ],
+          [
+            1792814045.569,
+            1.9
+          ],
+          [
+            1792814060.569,
+            1.9
+          ],
+          [
+            1792814075.569,
+            1.9
+          ],
+          [
+            1792814090.569,
+            1.9
+          ],
+          [
+            1792814105.569,
+            1.9000000000000001
+          ],
+          [
+            1792814120.569,
+            1.9000000000000001
+          ],
+          [
+            1792814135.569,
+            1.9000000000000001
+          ],
+          [
+            1792814150.569,
+            1.9000000000000001
+          ],
+          [
+            1792814165.569,
+            1.9
+          ],
+          [
+            1792814180.569,
+            1.9
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792813925.569=1.9452380952380954",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792814180.569=1.9"
+      },
+      {
+        "metric": {
+          "service_name": "quote"
+        },
+        "values": [
+          [
+            1792813565.569,
+            1.9
+          ],
+          [
+            1792813580.569,
+            1.9
+          ],
+          [
+            1792813595.569,
+            1.9
+          ],
+          [
+            1792813610.569,
+            1.9
+          ],
+          [
+            1792813625.569,
+            1.8999999999999997
+          ],
+          [
+            1792813640.569,
+            1.8999999999999997
+          ],
+          [
+            1792813655.569,
+            1.8999999999999997
+          ],
+          [
+            1792813670.569,
+            1.8999999999999997
+          ],
+          [
+            1792813685.569,
+            null
+          ],
+          [
+            1792813700.569,
+            null
+          ],
+          [
+            1792813715.569,
+            null
+          ],
+          [
+            1792813730.569,
+            null
+          ],
+          [
+            1792813745.569,
+            1.9000000000000001
+          ],
+          [
+            1792813760.569,
+            1.9000000000000001
+          ],
+          [
+            1792813775.569,
+            1.9000000000000001
+          ],
+          [
+            1792813790.569,
+            1.9000000000000001
+          ],
+          [
+            1792813805.569,
+            null
+          ],
+          [
+            1792813820.569,
+            null
+          ],
+          [
+            1792813835.569,
+            null
+          ],
+          [
+            1792813850.569,
+            null
+          ],
+          [
+            1792813865.569,
+            1.9
+          ],
+          [
+            1792813880.569,
+            1.9
+          ],
+          [
+            1792813895.569,
+            1.9
+          ],
+          [
+            1792813910.569,
+            1.9
+          ],
+          [
+            1792813925.569,
+            1.9
+          ],
+          [
+            1792813940.569,
+            1.9
+          ],
+          [
+            1792813955.569,
+            1.9
+          ],
+          [
+            1792813970.569,
+            1.9
+          ],
+          [
+            1792813985.569,
+            1.9
+          ],
+          [
+            1792814000.569,
+            1.9
+          ],
+          [
+            1792814015.569,
+            1.9
+          ],
+          [
+            1792814030.569,
+            1.9
+          ],
+          [
+            1792814045.569,
+            1.9
+          ],
+          [
+            1792814060.569,
+            1.9
+          ],
+          [
+            1792814075.569,
+            1.9
+          ],
+          [
+            1792814090.569,
+            1.9
+          ],
+          [
+            1792814105.569,
+            1.9
+          ],
+          [
+            1792814120.569,
+            1.9
+          ],
+          [
+            1792814135.569,
+            1.9
+          ],
+          [
+            1792814150.569,
+            1.9
+          ],
+          [
+            1792814165.569,
+            1.9
+          ],
+          [
+            1792814180.569,
+            1.9
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792813745.569=1.9000000000000001",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792814180.569=1.9"
+      },
+      {
+        "metric": {
+          "service_name": "recommendation"
+        },
+        "values": [
+          [
+            1792813565.569,
+            20.000000000000068
+          ],
+          [
+            1792813580.569,
+            20.000000000000068
+          ],
+          [
+            1792813595.569,
+            20.000000000000068
+          ],
+          [
+            1792813610.569,
+            20.000000000000068
+          ],
+          [
+            1792813625.569,
+            6.799999999999999
+          ],
+          [
+            1792813640.569,
+            6.799999999999999
+          ],
+          [
+            1792813655.569,
+            6.799999999999999
+          ],
+          [
+            1792813670.569,
+            6.799999999999999
+          ],
+          [
+            1792813685.569,
+            3.9941176470588236
+          ],
+          [
+            1792813700.569,
+            3.9941176470588236
+          ],
+          [
+            1792813715.569,
+            3.9941176470588236
+          ],
+          [
+            1792813730.569,
+            3.9941176470588236
+          ],
+          [
+            1792813745.569,
+            5.6
+          ],
+          [
+            1792813760.569,
+            5.6
+          ],
+          [
+            1792813775.569,
+            5.6
+          ],
+          [
+            1792813790.569,
+            5.6
+          ],
+          [
+            1792813805.569,
+            3.8928571428571423
+          ],
+          [
+            1792813820.569,
+            3.8928571428571423
+          ],
+          [
+            1792813835.569,
+            3.8928571428571423
+          ],
+          [
+            1792813850.569,
+            3.8928571428571423
+          ],
+          [
+            1792813865.569,
+            3.88
+          ],
+          [
+            1792813880.569,
+            3.88
+          ],
+          [
+            1792813895.569,
+            3.88
+          ],
+          [
+            1792813910.569,
+            3.88
+          ],
+          [
+            1792813925.569,
+            5.550000000000001
+          ],
+          [
+            1792813940.569,
+            5.550000000000001
+          ],
+          [
+            1792813955.569,
+            5.550000000000001
+          ],
+          [
+            1792813970.569,
+            5.550000000000001
+          ],
+          [
+            1792813985.569,
+            6.200000000000001
+          ],
+          [
+            1792814000.569,
+            6.200000000000001
+          ],
+          [
+            1792814015.569,
+            6.200000000000001
+          ],
+          [
+            1792814030.569,
+            6.200000000000001
+          ],
+          [
+            1792814045.569,
+            3.8875
+          ],
+          [
+            1792814060.569,
+            3.8875
+          ],
+          [
+            1792814075.569,
+            3.8875
+          ],
+          [
+            1792814090.569,
+            3.8875
+          ],
+          [
+            1792814105.569,
+            3.8941176470588235
+          ],
+          [
+            1792814120.569,
+            3.8941176470588235
+          ],
+          [
+            1792814135.569,
+            3.8941176470588235
+          ],
+          [
+            1792814150.569,
+            3.8941176470588235
+          ],
+          [
+            1792814165.569,
+            32.00000000000001
+          ],
+          [
+            1792814180.569,
+            32.00000000000001
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792814165.569=32.00000000000001",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792814180.569=32.00000000000001"
+      },
+      {
+        "metric": {
+          "service_name": "shipping"
+        },
+        "values": [
+          [
+            1792813565.569,
+            3.8499999999999996
+          ],
+          [
+            1792813580.569,
+            3.8499999999999996
+          ],
+          [
+            1792813595.569,
+            3.8499999999999996
+          ],
+          [
+            1792813610.569,
+            3.8499999999999996
+          ],
+          [
+            1792813625.569,
+            5.579999999999999
+          ],
+          [
+            1792813640.569,
+            5.579999999999999
+          ],
+          [
+            1792813655.569,
+            5.579999999999999
+          ],
+          [
+            1792813670.569,
+            5.579999999999999
+          ],
+          [
+            1792813685.569,
+            null
+          ],
+          [
+            1792813700.569,
+            null
+          ],
+          [
+            1792813715.569,
+            null
+          ],
+          [
+            1792813730.569,
+            null
+          ],
+          [
+            1792813745.569,
+            5.550000000000001
+          ],
+          [
+            1792813760.569,
+            5.550000000000001
+          ],
+          [
+            1792813775.569,
+            5.550000000000001
+          ],
+          [
+            1792813790.569,
+            5.550000000000001
+          ],
+          [
+            1792813805.569,
+            null
+          ],
+          [
+            1792813820.569,
+            null
+          ],
+          [
+            1792813835.569,
+            null
+          ],
+          [
+            1792813850.569,
+            null
+          ],
+          [
+            1792813865.569,
+            5.699999999999999
+          ],
+          [
+            1792813880.569,
+            5.699999999999999
+          ],
+          [
+            1792813895.569,
+            5.699999999999999
+          ],
+          [
+            1792813910.569,
+            5.699999999999999
+          ],
+          [
+            1792813925.569,
+            4.799999999999999
+          ],
+          [
+            1792813940.569,
+            4.799999999999999
+          ],
+          [
+            1792813955.569,
+            4.799999999999999
+          ],
+          [
+            1792813970.569,
+            4.799999999999999
+          ],
+          [
+            1792813985.569,
+            7.25
+          ],
+          [
+            1792814000.569,
+            7.25
+          ],
+          [
+            1792814015.569,
+            7.25
+          ],
+          [
+            1792814030.569,
+            7.25
+          ],
+          [
+            1792814045.569,
+            5.55
+          ],
+          [
+            1792814060.569,
+            5.55
+          ],
+          [
+            1792814075.569,
+            5.55
+          ],
+          [
+            1792814090.569,
+            5.55
+          ],
+          [
+            1792814105.569,
+            3.8499999999999996
+          ],
+          [
+            1792814120.569,
+            3.8499999999999996
+          ],
+          [
+            1792814135.569,
+            3.8499999999999996
+          ],
+          [
+            1792814150.569,
+            3.8499999999999996
+          ],
+          [
+            1792814165.569,
+            4.799999999999999
+          ],
+          [
+            1792814180.569,
+            4.799999999999999
+          ]
+        ],
+        "peak_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792813985.569=7.25",
+        "latest_evidence_id": "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792814180.569=4.799999999999999"
+      }
+    ],
+    "evidence_ids": [
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792813805.569=37.999999999999986",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792814180.569=4.699999999999999",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792813745.569=7.599999999999998",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792814180.569=4.799999999999999",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792814105.569=7000.000000000004",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792814180.569=48.99999999999999",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792814045.569=4.8999999999999995",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792814180.569=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792813985.569=8.0",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792814180.569=3.68",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792814105.569=1861.2500000000014",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792814180.569=45.96078431372546",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792814105.569=2599.999999999988",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792814180.569=47.77777777777777",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792813925.569=3.6999999999999997",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792814180.569=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792813925.569=1.9452380952380954",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792814180.569=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792813745.569=1.9000000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792814180.569=1.9",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792814165.569=32.00000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792814180.569=32.00000000000001",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792813985.569=7.25",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792814180.569=4.799999999999999"
+    ],
+    "truncated": false,
+    "run_dir": "runs/preflight-20261024T035616.879919Z",
+    "evidence_paths": {
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792813805.569=37.999999999999986": "runs/preflight-20261024T035616.879919Z/evidence/88fb6d9c09e916ea642c3b1f29eee406a41c03b05322b0191bc05de7c77f7476.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"ad\"}@1792814180.569=4.699999999999999": "runs/preflight-20261024T035616.879919Z/evidence/6e96a8e6ad1d8f5eda154483f7d8342912bf109adf574b572b701e046be2512d.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792813745.569=7.599999999999998": "runs/preflight-20261024T035616.879919Z/evidence/d787609e69955f226a425a816da638ee404d7265a9c1fb3b1e1936170e8a31de.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"cart\"}@1792814180.569=4.799999999999999": "runs/preflight-20261024T035616.879919Z/evidence/98ce93bc9acb77752efd7e742b6154b00d08078b378dcc9b494aaf105406326c.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792814105.569=7000.000000000004": "runs/preflight-20261024T035616.879919Z/evidence/180895e7b1fb9ee26ad5ee9c49e85cc3a9c9d7a9cbf16b79fdf58a1562217cd6.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"checkout\"}@1792814180.569=48.99999999999999": "runs/preflight-20261024T035616.879919Z/evidence/22e8479ab08d91ca0f79492e5b3ee3da42da37cda227b1a5b28827e5ef57e3f0.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792814045.569=4.8999999999999995": "runs/preflight-20261024T035616.879919Z/evidence/e1c0d1f67eb2189681b48a97df58073e3ac602aa9a8e684d96b8180f2b7d1dc3.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"currency\"}@1792814180.569=1.9000000000000001": "runs/preflight-20261024T035616.879919Z/evidence/84759639157980782f3cdd07cef7b1614f9eec743bc522f906c6dba5241414ac.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792813985.569=8.0": "runs/preflight-20261024T035616.879919Z/evidence/76740e600cc2222a38491f2862a0019f710fe116e10745bc6f7cfcde8bf5cbb7.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"email\"}@1792814180.569=3.68": "runs/preflight-20261024T035616.879919Z/evidence/0bb31d6b078c63b7f75c41ab51fb7834f050fa0e6631bfd8f0b013a4902b60c0.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792814105.569=1861.2500000000014": "runs/preflight-20261024T035616.879919Z/evidence/c95d6aa9aaf06700bd339116ebca010df14af72319d950d0c9b2ed51c051e3c9.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend\"}@1792814180.569=45.96078431372546": "runs/preflight-20261024T035616.879919Z/evidence/2f4d0998ddeec26b143a4284e0f6be9504b91602824bd2f8afc9281933818b04.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792814105.569=2599.999999999988": "runs/preflight-20261024T035616.879919Z/evidence/3102d634c463faa38247a39c712ceec1c0930a2bef334a6cb34308c017d20d8a.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"frontend-proxy\"}@1792814180.569=47.77777777777777": "runs/preflight-20261024T035616.879919Z/evidence/0edd7fa653923985d401c2dd5616cdca7b4a505b6afbc02f29e7d74b3cbe9027.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792813925.569=3.6999999999999997": "runs/preflight-20261024T035616.879919Z/evidence/a327d25fdf837c927369dd0da35ee566941edacd77f17a4c2f4766d94ae9af23.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"payment\"}@1792814180.569=1.9000000000000001": "runs/preflight-20261024T035616.879919Z/evidence/190d7cbb50d473b172b8ca237d8f0fdea047b19150c8a690210683e6ab068859.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792813925.569=1.9452380952380954": "runs/preflight-20261024T035616.879919Z/evidence/d544d66911a91068eb3e9b07380c8bcc16e634739c78488c1a22a17fc445c9c4.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"product-catalog\"}@1792814180.569=1.9": "runs/preflight-20261024T035616.879919Z/evidence/573a8348023d932cf9c9f38a5cf6081d6879f670645ea86ff05f70489a2bd920.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792813745.569=1.9000000000000001": "runs/preflight-20261024T035616.879919Z/evidence/f7d4547115530e2cb1f44abe7dcd0317503fd2449d4c092da589a2bf18b325eb.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"quote\"}@1792814180.569=1.9": "runs/preflight-20261024T035616.879919Z/evidence/999ec4f67eff50c75fceaaa462a01657ab767a5861d72140c7f070379744bea0.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792814165.569=32.00000000000001": "runs/preflight-20261024T035616.879919Z/evidence/6bb272750b46c44b4a34e8c7271ece45ce8b667918c9a7b16af319c5f0d8a397.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"recommendation\"}@1792814180.569=32.00000000000001": "runs/preflight-20261024T035616.879919Z/evidence/92ff15f83ab2360d6dfa43cec79429efc1e76f7e78438b4b3009624f2527c18a.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792813985.569=7.25": "runs/preflight-20261024T035616.879919Z/evidence/341c3d89e007e04ac294c4ffd51c9fb25317a78fce4ee21f6ce47d46143d5b98.json",
+      "metric:query{__query__=\"named:p95_latency_by_service\",service_name=\"shipping\"}@1792814180.569=4.799999999999999": "runs/preflight-20261024T035616.879919Z/evidence/c64f07df129e9ad3ce83da0366eb3827c3a516f70398124cd57a9ecb980d9726.json"
+    },
+    "elapsed_s": 0.1599
+  },
+  "rows": [
+    [
+      "stack",
+      "PASS",
+      "21/21 expected containers running"
+    ],
+    [
+      "collector",
+      "PASS",
+      "collector uptime 21207s; needs >120s"
+    ],
+    [
+      "official demo unchanged",
+      "PASS",
+      "official demo Git working tree must be unchanged"
+    ],
+    [
+      "application metrics",
+      "PASS",
+      "frontend SERVER application series must exist"
+    ],
+    [
+      "Prometheus freshness",
+      "PASS",
+      "actual newest sample age 14.5s; needs <90s"
+    ],
+    [
+      "Jaeger",
+      "PASS",
+      "15 services; needs >=10"
+    ],
+    [
+      "OpenSearch",
+      "PASS",
+      "otel index exists via published HTTP port"
+    ],
+    [
+      "clean detector",
+      "PASS",
+      "detect.once path: no_alert for every service"
+    ],
+    [
+      "traffic health and baseline",
+      "PASS",
+      "12 traffic services; nonzero errors/missing baseline/high p95: []"
+    ],
+    [
+      "tool metrics",
+      "PASS",
+      "0.117s; needs <5s and no error"
+    ],
+    [
+      "tool traces",
+      "PASS",
+      "0.269s; needs <5s and no error"
+    ],
+    [
+      "tool logs",
+      "PASS",
+      "1.193s; needs <5s and no error"
+    ],
+    [
+      "tool containers",
+      "PASS",
+      "2.696s; needs <5s and no error"
+    ],
+    [
+      "tool history",
+      "PASS",
+      "0.568s; needs <5s and no error"
+    ],
+    [
+      "evidence resolver",
+      "PASS",
+      "tools.resolve: live"
+    ],
+    [
+      "pristine overlay",
+      "PASS",
+      "operator-only byte comparison; settings never enter diagnosis"
+    ],
+    [
+      "control overlay mount",
+      "PASS",
+      "repository-owned control overlay is mounted"
+    ],
+    [
+      "STOP absent",
+      "PASS",
+      "checked stack owner's STOP file"
+    ],
+    [
+      "test mode absent",
+      "PASS",
+      "INCIDENT_ZERO_TEST must not be 1"
+    ],
+    [
+      "Action API",
+      "PASS",
+      "health OK, STOP false, auto_approve_tiers empty (policy file if API omits it)"
+    ],
+    [
+      "attempts and cooldown",
+      "PASS",
+      "read-only attempt DB (state CLI absent): 0 stuck, 0 cooldown"
+    ],
+    [
+      "fresh real Control Room",
+      "FAIL",
+      "fresh real server not verified from process start/source times or API revision; operator restart required"
+    ],
+    [
+      "Locust",
+      "PASS",
+      "Locust responds within 5s; running with positive users"
+    ],
+    [
+      "disk",
+      "PASS",
+      "99.63 GiB free; needs >5"
+    ],
+    [
+      "RAM",
+      "PASS",
+      "1.92 GiB free; needs >=1"
+    ],
+    [
+      "models and OpenRouter",
+      "PASS",
+      "model ids resolved; authenticated inference HTTP 200; no key logged"
+    ]
+  ],
+  "passed": false,
+  "summary": "FAIL preflight 20261024T035616.879919Z: 25/26 checks"
+}
