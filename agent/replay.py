@@ -36,6 +36,8 @@ class ReplayRouter:
         self.entries: list[dict] = []
         self.index = 0
         self.secrets = ()
+        # Replaying a primary trajectory must never start a new remote review.
+        self.env = {'INCIDENT_ZERO_REVIEWER': '0'}
 
     def complete(self, messages, functions, *, purpose="investigate"):
         if purpose == 'plan' and (self.index >= len(self.records)

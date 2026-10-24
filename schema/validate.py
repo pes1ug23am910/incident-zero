@@ -168,6 +168,30 @@ def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir
     if len(set(evidence_ids)) != len(evidence_ids):
         fail("evidence", "evidence ids must be unique")
     known = set(evidence_ids)
+    review = report.get('review')
+    if review:
+        reviewed_causes = report.get('root_causes') or [root]
+        standing = set()
+        for index, objection in enumerate(review['objections']):
+            if objection['cause_index'] >= len(reviewed_causes):
+                fail(f'review.objections[{index}].cause_index', 'must name a report cause')
+            if not set(objection['evidence_ids']) <= known:
+                fail(f'review.objections[{index}].evidence_ids', 'must cite retained evidence')
+            if objection['stands']:
+                standing.add(objection['cause_index'])
+                if not objection['evidence_ids']:
+                    fail(f'review.objections[{index}]', 'standing objections require evidence')
+        for index, item in enumerate(review['extra_evidence']):
+            if not set(item['evidence_ids']) <= known:
+                fail(f'review.extra_evidence[{index}]', 'must cite retained evidence')
+        if bool(standing) != (review['verdict'] == 'objected'):
+            fail('review.verdict', 'must agree with standing objections')
+        for index in standing:
+            if index < len(reviewed_causes) and (reviewed_causes[index].get('confidence_review', 1) > .59
+                                               or reviewed_causes[index]['confidence'] > .59):
+                fail('review.objections', 'standing objections require a confidence cap below 0.6')
+        if standing and (report.get('proposed_action') or report.get('proposed_actions')):
+            fail('proposed_actions', 'standing reviewer objections forbid proposals')
     for collection in ("symptoms", "investigation"):
         for index, item in enumerate(report[collection]):
             for id_index, evidence_id in enumerate(item["evidence_ids"]):
@@ -184,9 +208,9 @@ def validate_report(report: Any, *, resolver: Resolver | None = None, bundle_dir
             fail("root_causes", "must be ordered by descending confidence")
         services = {item["service"] for item in report["symptoms"]}
         for index, cause in enumerate(causes):
-            expected = min(cause["confidence_model"], cause["confidence_evidence"])
+            expected = min(cause["confidence_model"], cause["confidence_evidence"], cause.get("confidence_review", 1))
             if not math.isclose(cause["confidence"], expected, abs_tol=1e-9):
-                fail(f"root_causes[{index}].confidence", "must equal min(confidence_model, confidence_evidence)")
+                fail(f"root_causes[{index}].confidence", "must equal min(confidence_model, confidence_evidence, confidence_review if present)")
             for id_index, evidence_id in enumerate(cause["evidence_ids"]):
                 if evidence_id not in known:
                     fail(f"root_causes[{index}].evidence_ids[{id_index}]", "id does not appear in evidence")

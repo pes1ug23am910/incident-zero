@@ -39,6 +39,55 @@ Affected wrapper/checkpoint/hands checks: **73 passed**. The previously recorded
 | [stable09-recommendation-on-r1](../reports/stable09-recommendation-on-r1/report.json) | `runs/20261024T023315.758052Z-0903788b` | diagnosed; 0.80; 56.537 s agent |
 | [stable09-recommendation-on-r2](../reports/stable09-recommendation-on-r2/report.json) | `runs/20261024T024152.039733Z-dc7d26df` | diagnosed; 0.90; 172.794 s agent |
 
+## Calibration (measured)
+
+Reproduce with `python -m eval.calibration reports/`. Only retained `report.json` files are read; no stack access or injection is performed.
+
+Bundles: 29; labelled: 19; unlabelled: 10; cause-confidence samples: 18; labelled abstentions/clean reports excluded: 1. Brier score (labelled cause-confidence samples): 0.0372.
+
+| Stated confidence | Labelled count | Hits | Hit rate | Wilson 95% | Unlabelled | Excluded |
+|---|---:|---:|---:|---|---:|---:|
+| below 0.60 | 2 | 2 | 1.0000 | 0.3424–1.0000 | 0 | 1 |
+| 0.60–0.74 | 1 | 1 | 1.0000 | 0.2065–1.0000 | 0 | 0 |
+| 0.75–0.89 | 2 | 2 | 1.0000 | 0.3424–1.0000 | 1 | 0 |
+| 0.90–1.00 | 13 | 13 | 1.0000 | 0.7719–1.0000 | 9 | 0 |
+
+Labels use exact cause-set `correct` from the evaluator against `eval/cases.jsonl`, not recovery status. IDs match exact case IDs or unique single-injection IDs, with optional `-rN` / `-loop-rN` repetition suffixes. No label is inferred from the predicted component, directory name or a successful action. Injection journals are not verified by this command.
+
+Small-sample caveat: these are retained practice bundles, with repeated cases and different models/prompts pooled descriptively. Wilson intervals assume independent Bernoulli trials; correlated repetitions and selective retention limit that interpretation. This is not evidence of calibrated probabilities, held-out accuracy, or the current prompt's accuracy. Unlabelled bundles are excluded from hit rates and Brier, never counted as incorrect. Unknown-only abstentions and clean no-fault reports have no asserted cause probability; false-positive causes on no-fault cases remain eligible.
+
+| Bundle | Matched case | Correct | Confidence | Included in calibration |
+|---|---|---|---:|---|
+| cache-unavailable-r1/report.json | cache-unavailable | yes | 0.5500 | yes |
+| cache-unavailable-r2/report.json | cache-unavailable | yes | 0.5500 | yes |
+| container-stopped-loop-r1/report.json | container-stopped-recommendation | yes | 0.9000 | yes |
+| container-stopped-r1/report.json | container-stopped-recommendation | yes | 0.8500 | yes |
+| container-stopped-r2/report.json | container-stopped-recommendation | yes | 0.9000 | yes |
+| container-stopped-r3/report.json | container-stopped-recommendation | yes | 0.9000 | yes |
+| mock-homepage-throttle/report.json | unlabelled | unlabelled | 0.9000 | no |
+| mock-non-recovery/report.json | unlabelled | unlabelled | 0.9000 | no |
+| mock-payment-approved/report.json | unlabelled | unlabelled | 0.9000 | no |
+| mock-payment-rejected/report.json | unlabelled | unlabelled | 0.9000 | no |
+| mock-recommendation-restart/report.json | unlabelled | unlabelled | 0.9000 | no |
+| mock-stop-mid-run/report.json | unlabelled | unlabelled | 0.9000 | no |
+| payment-failure-loop-r3/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-loop-r4/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-loop-r5/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-loop-r6/report.json | payment-failure | yes | 0.8500 | yes |
+| payment-failure-loop-r7/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-loop-r8/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-loop-r9/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-r1/report.json | payment-failure | no | 0.3000 | no |
+| payment-failure-r2/report.json | payment-failure | yes | 0.7000 | yes |
+| payment-failure-r3/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-r4/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-r5/report.json | payment-failure | yes | 0.9000 | yes |
+| payment-failure-r6/report.json | payment-failure | yes | 0.9000 | yes |
+| stable09-payment-on-r2/report.json | unlabelled | unlabelled | 0.9000 | no |
+| stable09-payment-on-r4/report.json | unlabelled | unlabelled | 0.9500 | no |
+| stable09-recommendation-on-r1/report.json | unlabelled | unlabelled | 0.8000 | no |
+| stable09-recommendation-on-r2/report.json | unlabelled | unlabelled | 0.9000 | no |
+
 ## Historical diagnosis runs
 
 Seconds are `report.agent.elapsed_s` (investigation), not alert latency, total
