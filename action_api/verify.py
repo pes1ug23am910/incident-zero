@@ -73,7 +73,8 @@ class LiveSampler:
                 "load_running": container_running and load['load_available'] and load['load_state'] == 'running' and load['load_user_count'] > 0,
                 "evidence_ids": table.get("evidence_ids", []) + counts.get("evidence_ids", [])}
 
-
+# Keep recovery evaluation conservative: missing or invalid telemetry
+# must never be treated as proof that the incident has recovered.
 def evaluate(alert, sample):
     checks = signals(alert)
     values = sample.get("values", [])
