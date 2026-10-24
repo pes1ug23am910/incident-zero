@@ -141,9 +141,11 @@ class KnowledgeIndex:
 
     def _memory_chunk(self, record: dict[str, Any], file: str | Path | None = None) -> dict[str, Any]:
         clean = sanitize(record)
-        identity = clean.get("incident_id") if isinstance(clean, dict) else None
-        if not isinstance(identity, str) or not _SAFE_ID.fullmatch(identity):
-            raise ValueError("Memory must have a safe incident_id")
+        identity = clean.get("memory_id") if isinstance(clean, dict) else None
+        if not isinstance(identity, str) or not re.fullmatch(r"[0-9a-f]{64}", identity):
+            raise ValueError("Memory must have an opaque memory_id")
+        if any(key in clean for key in ("incident_id", "run_id", "report_path")):
+            raise ValueError("Memory must not retain operator identifiers or report paths")
         text = _json(clean)
         path = Path(file) if file is not None else self.root / "memory" / "store" / f"{identity}.json"
         return {"id": f"mem:{identity}", "kind": "memory", "document_id": identity,
